@@ -1,1 +1,0 @@
-del /F /Q VersionOne*.nupkg

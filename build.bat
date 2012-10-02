@@ -1,2 +1,0 @@
-
-msbuild VersionOne.SDK.NET.APIClient.sln /p:Configuration=Release /p:Platform="Any CPU" /p:Major=12 /p:Minor=2  /p:Revision=0 /p:AssemblyInformationalVersion="12.2.1.3588 Summer 2012" /p:AssemblyCopyright="Copyright 2012, VersionOne, Inc. Licensed under modified BSD." /p:CompanyName="VersionOne, Inc" /p:AssemblyProduct="VersionOne.SDK.APIClient" /p:AssemblyTitle="VersionOne SDK API Client" /p:AssemblyDescription="VersionOne SDK .NET API Client Release Build"

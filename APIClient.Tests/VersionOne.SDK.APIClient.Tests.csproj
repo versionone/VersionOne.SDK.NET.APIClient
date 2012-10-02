@@ -249,4 +249,5 @@
     <PostBuildEvent>rem copy /Y $(ProjectDir)TestData.xml .</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\..\GetBuildTools\bin\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(SolutionDir)\..\GetBuildTools\bin\MSBuild\VersionOne\Versioning.targets')" />
 </Project>

@@ -1,1 +1,0 @@
-..\.nuget\NuGet.exe pack VersionOne.SDK.APIClient.csproj -prop Configuration=Release
