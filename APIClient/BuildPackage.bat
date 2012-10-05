@@ -1,1 +1,0 @@
-..\..\GetBuildTools\bin\NuGet\BuildPackage.bat VersionOne.SDK.APIClient.csproj

@@ -286,6 +286,6 @@
     </PreBuildEvent>
     <PostBuildEvent>rem copy $(ProjectDir)app.config $(TargetPath).config</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />  
-  <Import Project="$(SolutionDir)\..\GetBuildTools\bin\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(SolutionDir)\..\GetBuildTools\bin\MSBuild\VersionOne\Versioning.targets')" />
+  <Import Condition="Exists('$(V1BuildToolsPath)\NuGet.targets')" Project="$(V1BuildToolsPath)\NuGet.targets" />
+  <Import Project="$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets')" />
 </Project>
