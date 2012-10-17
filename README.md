@@ -14,8 +14,7 @@ This product includes software developed at VersionOne (http://versionone.com/).
 
 Other resources:
 
-* [DEVELOPING.md](DEVELOPING.md) - Documentation on developing with 
-  VersionOne SDK.NET APIClient
+* [DEVELOPING.md](DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient, including how to get a precompiled NuGet package
 * [LICENSE.md](LICENSE.md) - User license
 
 ## System Requirements
