@@ -81,7 +81,7 @@ _Note: If the NUnit runner version changes, you'll need to modify that path slig
 
 1. Build the VersionOne.SDK.ObjectModel.Tests project.
 2. Right-click on the VersionOne.SDK.ObjectModel.Tests project and select 
-   `Debug > Start new instance` or `Debug > Step Into new instance`.
+   `Debug > Start new instance` or `Debug > Step Into new instance`
 
 By default Visual Studio's debugger will not stop on breakpoints when executing the tests in the external NUnit tool. To enable breakpoints, modify the `packages\NUnit.Runners.<verion>\tools\nunit.exe.config` file under `startup > supportedRuntime` as follows:
 
