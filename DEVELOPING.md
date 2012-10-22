@@ -69,7 +69,7 @@ If package updates are available, you'll messages showing how NuGet upgraded the
 VersionOne.SDK.APIClient.Tests run without a VersionOne installation. In order to ease execution of the unit tests, the project file has a reference to: `$(SolutionDir)\packages\NUnit.Runners.<version>\tools\nunit.exe`
 
 1. Build the VersionOne.SDK.APIClient.Tests project.
-2. Right-click on the VersionOne.SDK.APIClient.Tests project and select `Debug > Start new instance` or `Debug > Step Into new instance`.
+2. Right-click on the VersionOne.SDK.APIClient.Tests project and select `Debug > Start new instance` or `Debug > Step Into new instance`
 
 ### Notes on running the unit tests from Visual Studio for debugging
 
