@@ -15,13 +15,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("VersionOne, Inc")]
-[assembly: AssemblyCopyright("Copyright 2012, VersionOne, Inc. Licensed under modified BSD.")]
-[assembly: AssemblyVersion("12.2.0.0")]
-[assembly: AssemblyFileVersion("12.2.0.0")]
-[assembly: AssemblyInformationalVersion("12.2.1.3588 Summer 2012")]
-[assembly: AssemblyConfiguration("Release")]
-[assembly: AssemblyProduct("VersionOne.SDK.APIClient")]
-[assembly: AssemblyTitle("VersionOne SDK API Client")]
-[assembly: AssemblyDescription("VersionOne SDK .NET API Client Release Build")]
+[assembly: AssemblyCopyright("VersionOne, Inc")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyConfiguration("Debug")]
+[assembly: AssemblyTitle("VersionOne, Inc")]
+[assembly: AssemblyDescription("VersionOne, Inc")]
 
 
