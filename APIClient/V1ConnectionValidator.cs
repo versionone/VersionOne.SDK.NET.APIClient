@@ -48,7 +48,7 @@ namespace VersionOne.SDK.APIClient {
                 CheckAuthentication();
             } catch(ConnectionException) {
                 throw;
-            } catch(Exception ex) {
+            } catch(System.Net.WebException ex) {
                 throw new ConnectionException("Connection Check: " + ex.Message, ex);
             }
         }
@@ -58,7 +58,7 @@ namespace VersionOne.SDK.APIClient {
             
             try {
                 connector.GetData().Close();
-            } catch(Exception ex) {
+            } catch(System.Net.WebException ex) {
                 throw new ConnectionException("Application not found at the URL: " + connectionUrl, ex);
             }
         }
@@ -83,7 +83,7 @@ namespace VersionOne.SDK.APIClient {
 
             try {
                 loggedin = services.LoggedIn;
-            } catch(Exception ex) {
+            } catch(System.Net.WebException ex) {
                 throw new ConnectionException("Unable to log in. Incorrect username or password.", ex);
             }
 
