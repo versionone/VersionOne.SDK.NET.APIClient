@@ -5,6 +5,7 @@ namespace GettingStarted
 {
     public class Program
     {
+        // Modify to have your own url and credentials here...
         private const string BaseUrl = "http://localhost/VersionOne.Web";
         private const string UserName = "admin";
         private const string Password = "admin";
