@@ -1,1 +1,1 @@
-build.bat ..\..\GetBuildTools\bin
+build.bat %CD%\..\..\GetBuildTools\bin
