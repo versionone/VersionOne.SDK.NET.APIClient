@@ -38,17 +38,9 @@ The APIClient provides access to the Core API without concern for the underlying
 
 Other resources:
 
-<<<<<<< HEAD
 * [[DEVELOPING.md]] - Documentation on developing with VersionOne SDK.NET APIClient
 * [[LICENSE.md]] - Source code and user license
 * [[ACKNOWLEDGEMENTS.md]] - Acknowledgments of included software and associated licenses
-=======
-* [DEVELOPING.md](DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient, including how to get a precompiled NuGet package
-
-* [LICENSE.md](LICENSE.md) - User license
->>>>>>> 2be6e25d16e3a2401f4a9adef0bf4d05f9eb843b
-
-* [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) - Credits
 
 ## System Requirements
 
@@ -56,7 +48,6 @@ Other resources:
 * .NET Framework 4.0
 These libraries have only been tested in a Windows environment. They have not been tested under Mono.
 
-<<<<<<< HEAD
 ## The VersionOne Information Model
 
 Practically all data in VersionOne is stored in the form of assets, which have attributes. Each asset is classified by an asset type, which describes a number of attribute definitions, operations, rules, and possibly an inheritance from another asset type. A list of all the types within VersionOne can be obtained by accessing the meta data url of your VersionOne instance. Additionally, VersionOne comes with an xsl stylesheet, which can be referenced as a parameter to the meta data url and makes it easier to read the response: 
@@ -902,6 +893,3 @@ public void StoryAndDefectTrackingLevel()
 ```
 
 A value of "On" indicates that Detail Estimate, ToDo, and Effort input is accepted at the PrimaryWorkitem level only. A value of "Off" indicates that Detail Estimate, ToDo, and Effort input is accepted at the Task/Test level only. A value of "Mix" indicates that Detail Estimate, ToDo, and Effort input is accepted at both the PrimaryWorkitem and Task/Test level. 
-
-=======
->>>>>>> 2be6e25d16e3a2401f4a9adef0bf4d05f9eb843b
