@@ -20,8 +20,8 @@ Using the APIClient is as simple as making a reference to the APIClient.dll in y
 To use VersionOne authentication, specify the username and password:
 
 ```csharp
-V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/", "username", "password");
-V1APIConnector metaConnector = new V1APIConnector("http://server/v1instance/meta.v1/");
+V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/", "remote", "remote");
+V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
 IMetaModel metaModel = new MetaModel(metaConnector);
 IServices services = new Services(metaModel, dataConnector);
 ```
@@ -30,8 +30,8 @@ IServices services = new Services(metaModel, dataConnector);
 If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector:
 
 ```csharp
-V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/");
-V1APIConnector metaConnector = new V1APIConnector("http://server/v1instance/meta.v1/");
+V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/");
+V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
 IMetaModel metaModel = new MetaModel(metaConnector);
 IServices services = new Services(metaModel, dataConnector);
 ```
@@ -41,8 +41,8 @@ IServices services = new Services(metaModel, dataConnector);
 You may also explicitly identify the domain user you wish to use to authenticate to VersionOne, and provide an extra boolean argument indicating that you wish to use Windows Integrated Authentication:
 
 ```csharp
-V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/", @"username@FullyQualifiedDomainName", "password", true);
-V1APIConnector metaConnector = new V1APIConnector("http://server/v1instance/meta.v1/");
+V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/", @"username@FullyQualifiedDomainName", "password", true);
+V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
 IMetaModel metaModel = new MetaModel(metaConnector);
 IServices services = new Services(metaModel, dataConnector);
 ```
@@ -671,7 +671,7 @@ To get the system settings, create an instance of the V1Configuration class, usi
 ```csharp
 public void GetV1configuration()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("http://server/v1instance/config.v1/"));
+    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
 }
 ```
 
@@ -682,7 +682,7 @@ The V1Configuration.EffortTracking property indicates whether or not Effort Trac
 ```csharp
 public void IsEffortTrackingEnabled()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("http://server/v1instance/config.v1/"));
+    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
 
     if(configuration.EffortTracking)
     	Console.WriteLine("Effort Tracking is enabled");
@@ -704,7 +704,7 @@ In this example, the VersionOne instance is configured to take DetailEstimate, T
 ```csharp
 public void StoryAndDefectTrackingLevel()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("http://server/v1instance/config.v1/"));
+    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
 
     Console.Writeline(configuration.StoryTrackingLevel);
     Console.Writeline(configuration.DefectTrackingLevel);
@@ -857,9 +857,17 @@ On every asset are a number of attributes, which attach specific values to the a
 
 As data changes in VersionOne, a history is maintained. Every change to every asset is journaled within the system, and assigned a chronologically-increasing integer called a moment. A past version of an asset is uniquely identified by it's asset type, ID, and Moment. A past version of a relation attribute will refer to the past version of it's target asset. For example, Member:20:563 identifies the Member asset with ID of 20, as it was at the time of moment 563.
 
-## Other resources:
+## Other Resources
 
 * [DEVELOPING.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient
 * [LICENSE.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/LICENSE.md) - Source code and user license
 * [ACKNOWLEDGEMENTS.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/ACKNOWLEDGEMENTS.md) - Acknowledgments of included software and associated licenses
 
+### Getting Help
+Need to bootstrap on VersionOne SDK.NET quickly? VersionOne services brings a wealth of development experience to training and mentoring on VersionOne SDK.NET:
+
+http://www.versionone.com/training/product_training_services/
+
+Have a question? Get help from the community of VersionOne developers:
+
+http://groups.google.com/group/versionone-dev/
