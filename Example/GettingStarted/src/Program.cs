@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using VersionOne.SDK.APIClient;
 using ApiVNext;
 
@@ -45,15 +46,16 @@ namespace GettingStarted
         {
             dynamic member = new Query<Member>().Execute(
                 "Member:20",
-                 new [] { "Name", "Email" }
+                new[] {"Name", "Email"}
                 // Can also use:
                 // new object[] { Member.Fields.Name, Member.Fields.Email }
-            );
-            
-            Console.WriteLine("Name: " + member.Name);
-            Console.WriteLine("Email: " + member.Email);
+                ).FirstOrDefault();
 
-
+            if (member != null)
+            {
+                Console.WriteLine("Name: " + member.Name);
+                Console.WriteLine("Email: " + member.Email);
+            }
         }
 
         public void ShowMultipleAttributes()

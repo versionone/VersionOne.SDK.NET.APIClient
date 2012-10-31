@@ -6,7 +6,7 @@ namespace ApiVNext
 {
     public class Query<T> where T : AssetClassBase, new()
     {
-        public T Execute(string token, object[] selectFields)
+        public IEnumerable<T> Execute(string token, object[] selectFields)
         {
             var oid = Oid.FromToken(token, MetaModelProvider.Meta);
 
@@ -18,16 +18,18 @@ namespace ApiVNext
             attributes.AddRange(selectFields.Select(emptyObj.GetAttribute));
             query.Selection.AddRange(attributes);
 
+            var list = new List<T>();
+
             var result = ServicesProvider.Services.Retrieve(query);
 
             if (result.Assets.Count == 0)
             {
-                return null; // or maybe return emptyObj or a new empty instance?
+                return list;
             }
 
-            dynamic assetObject = emptyObj.Create(result.Assets[0]);
+            list.AddRange(result.Assets.Select(emptyObj.Create).Select(asssetObject => asssetObject).Cast<dynamic>().Cast<T>());
 
-            return (T) assetObject;
+            return list;
         }
     }
 }
