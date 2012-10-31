@@ -1,23 +1,15 @@
-# VersionOne SDK.NET APIClient #
+# VersionOne SDK.NET APIClient
 
 The APIClient provides access to the Core API without concern for the underlying RESTful API or the HTTP/XML plumbing. Through the APIClient, developers can query for simple or complex sets of information, update the information, and execute system-defined operations. The APIClient is best suited for course-grained and bulk access.
 
-## Table of Contents ##
-
-* auto-gen TOC:
-{:toc}
-
-Other resources:
-
-* [DEVELOPING.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient
-* [LICENSE.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/LICENSE.md) - Source code and user license
-* [ACKNOWLEDGEMENTS.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/ACKNOWLEDGEMENTS.md) - Acknowledgments of included software and associated licenses
-
 ## System Requirements
+These libraries have only been tested in a Windows environment with .NET Framework 4.0. They have not been tested under Mono.
 
-### VersionOne SDK.NET Libraries
-* .NET Framework 4.0
-These libraries have only been tested in a Windows environment. They have not been tested under Mono.
+## How to get the library as a precompiled package
+
+_Do this if you only want to use the functionality, but are not interested in compiling from source or in contributing code to the project._
+
+Use the NuGet package manager from Visual Studio or nuget.exe. Search for `VersionOne.SDK.NET.APIClient` to find the precompiled package. VersionOne tests packages distributed via NuGet against product releases as they become available. For details, see [the specific versions tested](https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki/Which-product-releases-has-the-APIClient-library-been-tested-against%3F). Learn more about NuGet from [the NuGet Overview](http://docs.nuget.org/docs/start-here/overview).
 
 ## Learn By Example: APIClient Setup
 
@@ -864,3 +856,10 @@ On every asset are a number of attributes, which attach specific values to the a
 ### Moment
 
 As data changes in VersionOne, a history is maintained. Every change to every asset is journaled within the system, and assigned a chronologically-increasing integer called a moment. A past version of an asset is uniquely identified by it's asset type, ID, and Moment. A past version of a relation attribute will refer to the past version of it's target asset. For example, Member:20:563 identifies the Member asset with ID of 20, as it was at the time of moment 563.
+
+## Other resources:
+
+* [DEVELOPING.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient
+* [LICENSE.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/LICENSE.md) - Source code and user license
+* [ACKNOWLEDGEMENTS.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/ACKNOWLEDGEMENTS.md) - Acknowledgments of included software and associated licenses
+
