@@ -1,5 +1,6 @@
 ﻿using System;
 using VersionOne.SDK.APIClient;
+using ApiVNext;
 
 namespace GettingStarted
 {
@@ -16,11 +17,15 @@ namespace GettingStarted
                 "Showing the admin member oid value...",
                 "Press any key to show admin member oid token");
 
-            RunExample(ShowMultipleAttributes, 
+            RunExample(ShowMultipleAttributes,
                 "Showing multiple attributes from the admin member...",
                 "Press any key to update admin member name");
-            
-            RunExample(UpdateAdminMemberName, 
+
+            RunExample(ShowMultipleAttributesVNext,
+                "*NEW DYNAMIC VNEXT Approach* Showing multiple attributes from the admin member...",
+                "Press any key to update admin member name");
+
+            RunExample(UpdateAdminMemberName,
                 "Updating the admin member's name...",
                 "Press any key to exit...");
         }
@@ -36,6 +41,21 @@ namespace GettingStarted
             Console.WriteLine(member.Oid.Token);
         }
 
+        public void ShowMultipleAttributesVNext()
+        {
+            dynamic member = new Query<Member>().Execute(
+                "Member:20",
+                 new [] { "Name", "Email" }
+                // Can also use:
+                // new object[] { Member.Fields.Name, Member.Fields.Email }
+            );
+            
+            Console.WriteLine("Name: " + member.Name);
+            Console.WriteLine("Email: " + member.Email);
+
+
+        }
+
         public void ShowMultipleAttributes()
         {
             var query = new Query(Oid.FromToken("Member:20", _metaModel));
@@ -43,6 +63,7 @@ namespace GettingStarted
             var emailAttribute = _metaModel.GetAttributeDefinition("Member.Email");
             query.Selection.Add(nameAttribute);
             query.Selection.Add(emailAttribute);
+
             var result = _services.Retrieve(query);
             var member = result.Assets[0];
 
@@ -111,6 +132,9 @@ namespace GettingStarted
             var servicesFactory = new V1ServicesFactory();
             _services = servicesFactory.CreateServices(BaseUrl, UserName, Password);
             _metaModel = servicesFactory.GetMetaModel();
+
+            ServicesProvider.Services = _services;
+            MetaModelProvider.Meta = _metaModel;
         }
 
         #endregion
