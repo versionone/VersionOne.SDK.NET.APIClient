@@ -4,43 +4,14 @@ The APIClient provides access to the Core API without concern for the underlying
 
 ## Table of Contents ##
 
-* [System Requirements][]
-* [The VersionOne Information Model][]
-* [Learn By Example: APIClient Setup][]
-  * [Setup using VersionOne Authentication][]
-  * [Setup using Windows Integrated Authentication][]
-  * [Setup using Windows Integrated Authentication, specifying credentials][]
-* [Learn By Example: Queries][]
-   * [How to query a single asset][]
-   * [How to query for specific attributes][]
-   * [How to get a list of all Story assets][]
-   * [How to filter a query][]
-   * [How to use find in a query][]
-   * [How to sort a query][]
-   * [How to select a portion of query results][]
-   * [How to query the history of a single asset][]
-   * [How to query the history of many assets][]
-   * [How to query an asset "as of" a specific time][]
-* [Learn By Example: Updates][]
-   * [How to update a scalar attribute on an asset][]
-   * [How to update a single-value relation on an asset][]
-   * [How to add and remove values from a multi-value relation][]
-* [Learn By Example: New Asset][]
-   * [How to get a new Story asset template in the context of a Scope asset][]
-* [Learn By Example: Operations][]
-   * [How to delete a Story asset][]
-   * [How to close a Story asset][]
-   * [How to reopen a Story asset][]
-* [Learn By Example: System Settings][]
-   * [Getting VersionOne System Settings][]
-   * [Effort Tracking setting][]
-   * [Tracking Level settings][]
+* auto-gen TOC:
+{:toc}
 
 Other resources:
 
-* [[DEVELOPING.md]] - Documentation on developing with VersionOne SDK.NET APIClient
-* [[LICENSE.md]] - Source code and user license
-* [[ACKNOWLEDGEMENTS.md]] - Acknowledgments of included software and associated licenses
+* [DEVELOPING.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/DEVELOPING.md) - Documentation on developing with VersionOne SDK.NET APIClient
+* [LICENSE.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/LICENSE.md) - Source code and user license
+* [ACKNOWLEDGEMENTS.md](https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/ACKNOWLEDGEMENTS.md) - Acknowledgments of included software and associated licenses
 
 ## System Requirements
 
@@ -48,152 +19,13 @@ Other resources:
 * .NET Framework 4.0
 These libraries have only been tested in a Windows environment. They have not been tested under Mono.
 
-## The VersionOne Information Model
-
-Practically all data in VersionOne is stored in the form of assets, which have attributes. Each asset is classified by an asset type, which describes a number of attribute definitions, operations, rules, and possibly an inheritance from another asset type. A list of all the types within VersionOne can be obtained by accessing the meta data url of your VersionOne instance. Additionally, VersionOne comes with an xsl stylesheet, which can be referenced as a parameter to the meta data url and makes it easier to read the response: 
-
-```url
-https://www14.v1host.com/v1sdktesting/meta.v1/?xsl=api.xsl
-```
-
-Individual types can also be viewed through the meta url: 
-
-```url
-https://www14.v1host.com/v1sdktesting/meta.v1/Story?xsl=api.xsl 
-```
-
-You must use the system name for the type you would like to retrieve. This is true whether using the API directly or the APIClient. For instance, in the example above the system name is "Story", which certain methodology templates display as "Backlog Item" or "Requirement". Here is a list of some of the most important system names and their corresponding default display names in the available methodology templates: 
-
-### System Names
-<table summary="System Names" cellspacing="0" cellpadding="0" border="0">
-<thead>
-	<tr>
-		<th>System Name</th>
-		<th>XP Display Name</th>
-		<th>Scrum Display Name</th>
-		<th>AgileUP Display Name</th>
-		<th>DSDM Display Name</th>
-	</tr>
-</thead>
-<tbody>
-	<tr>
-		<td>Scope</td>
-		<td>Project</td>
-		<td>Project</td>
-		<td>Project</td>
-		<td>Project</td>
-	</tr>
-	<tr>
-		<td>Timebox</td>
-		<td>Iteration</td>
-		<td>Sprint</td>
-		<td>Iteration</td>
-		<td>Iteration</td>
-	</tr>
-	<tr>
-		<td>Theme</td>
-		<td>Theme</td>
-		<td>Feature Group</td>
-		<td>Use Case</td>
-		<td>Feature Group</td>
-	</tr>
-	<tr>
-		<td>Story</td>
-		<td>Story</td>
-		<td>Backlog Item</td>
-		<td>Requirement</td>
-		<td>Requirement</td>
-	</tr>
-	<tr>
-		<td>Defect</td>
-		<td>Defect</td>
-		<td>Defect</td>
-		<td>Defect</td>
-		<td>Defect</td>
-	</tr>
-	<tr>
-		<td>Task</td>
-		<td>Task</td>
-		<td>Task</td>
-		<td>Task</td>
-		<td>Task</td>
-	</tr>
-	<tr>
-		<td>Test</td>
-		<td>Test</td>
-		<td>Test</td>
-		<td>Test</td>
-		<td>Test</td>
-	</tr>
-	<tr>
-		<td>RegressionTest</td>
-		<td>RegressionTest</td>
-		<td>RegressionTest</td>
-		<td>RegressionTest</td>
-		<td>RegressionTest</td>
-	</tr>
-	<tr>
-		<td>RegressionPlan</td>
-		<td>RegressionPlan</td>
-		<td>RegressionPlan</td>
-		<td>RegressionPlan</td>
-		<td>RegressionPlan</td>
-	</tr>
-	<tr>
-		<td>RegressionSuite</td>
-		<td>RegressionSuite</td>
-		<td>RegressionSuite</td>
-		<td>RegressionSuite</td>
-		<td>RegressionSuite</td>
-	</tr>
-	<tr>
-		<td>TestSet</td>
-		<td>TestSet</td>
-		<td>TestSet</td>
-		<td>TestSet</td>
-		<td>TestSet</td>
-	</tr>
-	<tr>
-		<td>Environment</td>
-		<td>Environment</td>
-		<td>Environment</td>
-		<td>Environment</td>
-		<td>Environment</td>
-	</tr>
-</tbody>
-</table>
-
-### Asset Type
-
-Asset types describe the "classes" of business data available. Asset types form an inheritance hierarchy, such that each asset type inherits attribute definitions, operations, and rules from it's "parent" asset type. Those asset types at the leaves of this hierarchy are concrete, whereas asset types with "children" asset types are abstract. Assets are all instances of concrete asset types. Asset types are identified by unique names. 
-
-By way of example, Story and Defect are concrete asset types. On the other hand, Workitem is an abstract asset type, from which Story and Defect ultimately derive. 
-
-### Attribute Definition
-
-Attribute definitions describe the properties that "make up" each asset type. An attribute definition defines the type of its value, whether it is required and/or read-only, and many other qualities. Attribute definitions are identified by a name that is unique within its asset type. 
-
-Attribute definitions are defined as either scalars or relations to other assets. Further, relation attribute definitions can be either single-value or multi-value. For example, the Estimate attribute definition on the Workitem asset type is a scalar (specifically, a floating-point number). On the other hand, the Workitem asset type's Scope attribute definition is a single-value relation (to a Scope asset). The reverse relation, Workitems on the Scope asset type, is a multi-value relation (to Workitem assets). 
-
-### Asset
-
-Actual business objects in VersionOne are assets, which are instances of concrete asset types. Each asset is uniquely identified by it's asset type and ID (an integer). For example, Member:20 identifies the Member asset with ID of 20. 
-
-### Attribute
-
-On every asset are a number of attributes, which attach specific values to the attribute definitions defined in the asset type. If the attribute's definition is a relation, then the value(s) of the attribute are references to an asset(s). 
-
-### Moment
-
-As data changes in VersionOne, a history is maintained. Every change to every asset is journaled within the system, and assigned a chronologically-increasing integer called a moment. A past version of an asset is uniquely identified by it's asset type, ID, and Moment. A past version of a relation attribute will refer to the past version of it's target asset. For example, Member:20:563 identifies the Member asset with ID of 20, as it was at the time of moment 563. 
-
 ## Learn By Example: APIClient Setup
 
-Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects within the APIClient. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You need to create an instance of IMetaModel and and instance of IServices and provide them with connection information via instances of the V1APIConnector. 
+Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects within the APIClient. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You need to create an instance of IMetaModel and and instance of IServices and provide them with connection information via instances of the V1APIConnector.
 
 ### Setup using VersionOne Authentication
 
-To use VersionOne authentication, specify the username and password: 
+To use VersionOne authentication, specify the username and password:
 
 ```csharp
 V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/", "username", "password");
@@ -203,7 +35,7 @@ IServices services = new Services(metaModel, dataConnector);
 ```
 ### Setup using Windows Integrated Authentication
 
-If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector: 
+If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector:
 
 ```csharp
 V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/");
@@ -214,7 +46,7 @@ IServices services = new Services(metaModel, dataConnector);
 
 ### Setup using Windows Integrated Authentication, specifying credentials
 
-You may also explicitly identify the domain user you wish to use to authenticate to VersionOne, and provide an extra boolean argument indicating that you wish to use Windows Integrated Authentication: 
+You may also explicitly identify the domain user you wish to use to authenticate to VersionOne, and provide an extra boolean argument indicating that you wish to use Windows Integrated Authentication:
 
 ```csharp
 V1APIConnector dataConnector = new V1APIConnector("http://server/v1instance/rest-1.v1/", @"username@FullyQualifiedDomainName", "password", true);
@@ -223,11 +55,11 @@ IMetaModel metaModel = new MetaModel(metaConnector);
 IServices services = new Services(metaModel, dataConnector);
 ```
 
-Note that you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog. 
+Note that you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog.
 
 ## Learn By Example: Queries
 
-This section is a series of examples, starting with simpler queries and moving to more advanced queries. You'll need to create an instance of both IMetaModel and IServices, as outlined above, to perform the queries. 
+This section is a series of examples, starting with simpler queries and moving to more advanced queries. You'll need to create an instance of both IMetaModel and IServices, as outlined above, to perform the queries.
 
 ### How to query a single asset
 
@@ -241,7 +73,7 @@ public Asset SingleAsset()
     QueryResult result = services.Retrieve(query);
     Asset member = result.Assets[0];
 
-    Console.WriteLine(member.Oid.Token); 
+    Console.WriteLine(member.Oid.Token);
     /***** OUTPUT *****
         Member:20
     ******************/
@@ -250,7 +82,7 @@ public Asset SingleAsset()
 }
 ```
 
-In this example, the asset will have its Oid populated, but will not have any other attributes populated. This is to minimize the size of the data sets returned. The next example shows how to ask for an asset with specific attributes populated. 
+In this example, the asset will have its Oid populated, but will not have any other attributes populated. This is to minimize the size of the data sets returned. The next example shows how to ask for an asset with specific attributes populated.
 
 ### How to query for specific attributes
 
@@ -330,11 +162,11 @@ public AssetList FilterListOfAssets()
     IAttributeDefinition todoAttribute = taskType.GetAttributeDefinition("ToDo");
     query.Selection.Add(nameAttribute);
     query.Selection.Add(todoAttribute);
-    
+
     FilterTerm term = new FilterTerm(todoAttribute);
     term.Equal(0);
     query.Filter = term;
-	
+
     QueryResult result = services.Retrieve(query);
 
     foreach (Asset task in result.Assets)
@@ -369,9 +201,9 @@ public AssetList FilterListOfAssets()
     Query query = new Query(requestType);
     IAttributeDefinition nameAttribute = requestType.GetAttributeDefinition("Name");
     query.Selection.Add(nameAttribute);
-    
+
     query.Find = new QueryFind("Urgent", new AttributeSelection(nameAttribute));
-	
+
     QueryResult result = services.Retrieve(query);
 
     foreach (Asset request in result.Assets)
@@ -429,7 +261,7 @@ public AssetList SortListOfAssets()
 }
 ```
 
-There are two methods you can call on the OrderBy class to sort your results: MinorSort and MajorSort. If you are sorting by only one field, it does not matter which one you use. If you want to sort by multiple fields, you need to call either MinorSort or MajorSort multiple times. The difference is: Each time you call MinorSort, the parameter will be added to the end of the OrderBy statement. Each time you call MajorSort, the parameter will be inserted at the beginning of the OrderBy statement. 
+There are two methods you can call on the OrderBy class to sort your results: MinorSort and MajorSort. If you are sorting by only one field, it does not matter which one you use. If you want to sort by multiple fields, you need to call either MinorSort or MajorSort multiple times. The difference is: Each time you call MinorSort, the parameter will be added to the end of the OrderBy statement. Each time you call MajorSort, the parameter will be inserted at the beginning of the OrderBy statement.
 
 ### How to select a portion of query results
 
@@ -489,7 +321,7 @@ public AssetList HistorySingleAsset()
 	IAttributeDefinition emailAttribute = memberType.GetAttributeDefinition("Email");
 	query.Selection.Add(changeDateAttribute);
 	query.Selection.Add(emailAttribute);
-	
+
 	QueryResult result = services.Retrieve(query);
 	AssetList memberHistory = result.Assets;
 
@@ -514,7 +346,7 @@ public AssetList HistorySingleAsset()
 }
 ```
 
-To create a history query, provide a boolean "true" second argument to the Query constructor. 
+To create a history query, provide a boolean "true" second argument to the Query constructor.
 
 ### How to query the history of many assets
 
@@ -539,15 +371,15 @@ public AssetList HistoryListOfAssets()
         Console.WriteLine(member.GetAttribute(emailAttribute).Value);
         Console.WriteLine();
     }
-    /***** OUTPUT *****             
+    /***** OUTPUT *****
         Member:1010:106
         4/2/2007 3:27:23 PM
         tammy.coder@company.com
-        
+
         Member:1000:105
         4/2/2007 1:22:03 PM
         andre.agile@company.com
-        
+
         Member:1000:101
         3/29/2007 4:10:29 PM
         andre@company.net
@@ -557,13 +389,13 @@ public AssetList HistoryListOfAssets()
 }
 ```
 
-Again, the response is a list of historical assets. There will be multiple Asset objects returned for an asset that has changed previously. 
+Again, the response is a list of historical assets. There will be multiple Asset objects returned for an asset that has changed previously.
 
 All of the previously demonstrated query properties can be used with historical queries also.
 
 ### How to query an asset "as of" a specific time
 
-Use the AsOf property of the Query object to retrieve data as it existed at some point in time. This query finds the version of each Story asset as it existed seven days ago: 
+Use the AsOf property of the Query object to retrieve data as it existed at some point in time. This query finds the version of each Story asset as it existed seven days ago:
 
 ```csharp
 public AssetList HistoryAsOfTime()
@@ -604,11 +436,11 @@ public AssetList HistoryAsOfTime()
 
 ## Learn By Example: Updates
 
-Updating assets through the APIClient involves calling the Save method on the IServices object. 
+Updating assets through the APIClient involves calling the Save method on the IServices object.
 
 ### How to update a scalar attribute on an asset
 
-Updating a scalar attribute on an asset is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the new scalar value. This code will update the Name attribute on the Story with ID 1094: 
+Updating a scalar attribute on an asset is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the new scalar value. This code will update the Name attribute on the Story with ID 1094:
 
 ```csharp
 public Asset UpdateScalarAttribute()
@@ -639,7 +471,7 @@ public Asset UpdateScalarAttribute()
 
 ### How to update a single-value relation on an asset
 
-Updating a single-value relation is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID for the new relation. This code will change the source of the Story with ID 1094: 
+Updating a single-value relation is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID for the new relation. This code will change the source of the Story with ID 1094:
 
 ```csharp
 public Asset UpdateSingleValueRelation()
@@ -670,7 +502,7 @@ public Asset UpdateSingleValueRelation()
 
 ### How to add and remove values from a multi-value relation
 
-Updating a multi-value relation is accomplished by calling either the RemoveAttributeValue or AddAttributeValue method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID of the relation you wish to add or remove. This code will add one Member and remove another Member from the Story with ID 1094: 
+Updating a multi-value relation is accomplished by calling either the RemoveAttributeValue or AddAttributeValue method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID of the relation you wish to add or remove. This code will add one Member and remove another Member from the Story with ID 1094:
 
 ```csharp
 public Asset UpdateMultiValueRelation()
@@ -709,7 +541,7 @@ public Asset UpdateMultiValueRelation()
 
 ## Learn By Example: New Asset
 
-When you create a new asset in the APIClient you need to specify the "context" of another asset that will be the parent. For example, if you create a new Story asset you can specify which Scope it should be created in. 
+When you create a new asset in the APIClient you need to specify the "context" of another asset that will be the parent. For example, if you create a new Story asset you can specify which Scope it should be created in.
 
 How to get a new Story asset template in the context of a Scope asset
 This code will create a Story asset in the context of Scope with ID 1012:
@@ -739,7 +571,7 @@ public Asset AddNewAsset()
 
 ## Learn By Example: Operations
 
-An operation is an action that is executed against a single asset. For example, to delete an asset you must execute the Delete operation on the asset. To close or inactivate a Workitem, you must use the Inactivate Operation. Available operations for each asset are listed at the bottom of the the meta data description for that asset, for instance: 
+An operation is an action that is executed against a single asset. For example, to delete an asset you must execute the Delete operation on the asset. To close or inactivate a Workitem, you must use the Inactivate Operation. Available operations for each asset are listed at the bottom of the the meta data description for that asset, for instance:
 
 ```url
 https://www1/VersionOne/meta.v1/Story?xsl=api.xsl
@@ -759,7 +591,7 @@ public Oid DeleteAsset()
     {
         Query query = new Query(deletedID.Momentless);
         services.Retrieve(query);
-    } 
+    }
     catch(WebException)
     {
         Console.WriteLine("Story has been deleted: " + story.Oid.Momentless);
@@ -772,7 +604,7 @@ public Oid DeleteAsset()
 }
 ```
 
-The delete operation returns the Oid, with the new Moment, of the deleted asset. Future current info queries will automatically exclude deleted assets from results. 
+The delete operation returns the Oid, with the new Moment, of the deleted asset. Future current info queries will automatically exclude deleted assets from results.
 
 Currently, there is no support for undeleting a deleted asset.
 
@@ -805,7 +637,7 @@ public Asset CloseAsset()
 }
 ```
 
-The AssetState attribute is the internal state of an asset. 
+The AssetState attribute is the internal state of an asset.
 
 ### How to reopen a Story asset
 
@@ -838,11 +670,11 @@ public Asset ReOpenAsset()
 
 ## Learn By Example: System Settings
 
-Some system settings are exposed (read-only) to the APIClient, to allow client-side data validation. Specifically, the system settings for Effort Tracking, Story Tracking Level and Defect Tracking Level are now available to the APIClient, so that entry of Effort, Detail Estimate, and ToDo can be done consistently with the way VersionOne Enterprise is configured. In previous versions, there was no way for the APIClient to check these settings, and the developer would have to code with knowledge of the system's configured state.  Using the V1Configuration component, you can get the system's configured state, and apply these settings appropriately in code. 
+Some system settings are exposed (read-only) to the APIClient, to allow client-side data validation. Specifically, the system settings for Effort Tracking, Story Tracking Level and Defect Tracking Level are now available to the APIClient, so that entry of Effort, Detail Estimate, and ToDo can be done consistently with the way VersionOne Enterprise is configured. In previous versions, there was no way for the APIClient to check these settings, and the developer would have to code with knowledge of the system's configured state.  Using the V1Configuration component, you can get the system's configured state, and apply these settings appropriately in code.
 
 ### Getting VersionOne System Settings
 
-To get the system settings, create an instance of the V1Configuration class, using a V1APIConnector (directed to the "config.v1" http address): 
+To get the system settings, create an instance of the V1Configuration class, using a V1APIConnector (directed to the "config.v1" http address):
 
 ```csharp
 public void GetV1configuration()
@@ -853,13 +685,13 @@ public void GetV1configuration()
 
 ### Effort Tracking setting
 
-The V1Configuration.EffortTracking property indicates whether or not Effort Tracking has been enabled in VersionOne Enterprise.  In this example, the VersionOne instance has Effort Tracking turned off: 
+The V1Configuration.EffortTracking property indicates whether or not Effort Tracking has been enabled in VersionOne Enterprise.  In this example, the VersionOne instance has Effort Tracking turned off:
 
 ```csharp
 public void IsEffortTrackingEnabled()
 {
     V1Configuration configuration = new V1Configuration(new V1APIConnector("http://server/v1instance/config.v1/"));
-    
+
     if(configuration.EffortTracking)
     	Console.WriteLine("Effort Tracking is enabled");
     else
@@ -873,15 +705,15 @@ public void IsEffortTrackingEnabled()
 
 ### Tracking Level settings
 
-Detail Estimate, ToDo and Effort can be entered for Stories and Defects, or for their child Tasks and Tests, depending on how the system is configured.  The V1Configuration.StoryTrackingLevel and V1Configuration.DefectTrackingLevel properties indicate where input of Detail Estimate, ToDo and Effort are taken. 
+Detail Estimate, ToDo and Effort can be entered for Stories and Defects, or for their child Tasks and Tests, depending on how the system is configured.  The V1Configuration.StoryTrackingLevel and V1Configuration.DefectTrackingLevel properties indicate where input of Detail Estimate, ToDo and Effort are taken.
 
-In this example, the VersionOne instance is configured to take DetailEstimate, ToDo, and Effort at the Task/Test level for Stories (Off), and to take DetailEstimate, ToDo, and Effort at the Defect level for Defects (On): 
+In this example, the VersionOne instance is configured to take DetailEstimate, ToDo, and Effort at the Task/Test level for Stories (Off), and to take DetailEstimate, ToDo, and Effort at the Defect level for Defects (On):
 
 ```csharp
 public void StoryAndDefectTrackingLevel()
 {
     V1Configuration configuration = new V1Configuration(new V1APIConnector("http://server/v1instance/config.v1/"));
-    
+
     Console.Writeline(configuration.StoryTrackingLevel);
     Console.Writeline(configuration.DefectTrackingLevel);
 
@@ -892,4 +724,143 @@ public void StoryAndDefectTrackingLevel()
 }
 ```
 
-A value of "On" indicates that Detail Estimate, ToDo, and Effort input is accepted at the PrimaryWorkitem level only. A value of "Off" indicates that Detail Estimate, ToDo, and Effort input is accepted at the Task/Test level only. A value of "Mix" indicates that Detail Estimate, ToDo, and Effort input is accepted at both the PrimaryWorkitem and Task/Test level. 
+A value of "On" indicates that Detail Estimate, ToDo, and Effort input is accepted at the PrimaryWorkitem level only. A value of "Off" indicates that Detail Estimate, ToDo, and Effort input is accepted at the Task/Test level only. A value of "Mix" indicates that Detail Estimate, ToDo, and Effort input is accepted at both the PrimaryWorkitem and Task/Test level.
+
+## The VersionOne Information Model
+
+Practically all data in VersionOne is stored in the form of assets, which have attributes. Each asset is classified by an asset type, which describes a number of attribute definitions, operations, rules, and possibly an inheritance from another asset type. A list of all the types within VersionOne can be obtained by accessing the meta data url of your VersionOne instance. Additionally, VersionOne comes with an xsl stylesheet, which can be referenced as a parameter to the meta data url and makes it easier to read the response:
+
+```url
+https://www14.v1host.com/v1sdktesting/meta.v1/?xsl=api.xsl
+```
+
+Individual types can also be viewed through the meta url:
+
+```url
+https://www14.v1host.com/v1sdktesting/meta.v1/Story?xsl=api.xsl
+```
+
+You must use the system name for the type you would like to retrieve. This is true whether using the API directly or the APIClient. For instance, in the example above the system name is "Story", which certain methodology templates display as "Backlog Item" or "Requirement". Here is a list of some of the most important system names and their corresponding default display names in the available methodology templates:
+
+### System Names
+<table summary="System Names" cellspacing="0" cellpadding="0" border="0">
+<thead>
+    <tr>
+        <th>System Name</th>
+        <th>XP Display Name</th>
+        <th>Scrum Display Name</th>
+        <th>AgileUP Display Name</th>
+        <th>DSDM Display Name</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Scope</td>
+        <td>Project</td>
+        <td>Project</td>
+        <td>Project</td>
+        <td>Project</td>
+    </tr>
+    <tr>
+        <td>Timebox</td>
+        <td>Iteration</td>
+        <td>Sprint</td>
+        <td>Iteration</td>
+        <td>Iteration</td>
+    </tr>
+    <tr>
+        <td>Theme</td>
+        <td>Theme</td>
+        <td>Feature Group</td>
+        <td>Use Case</td>
+        <td>Feature Group</td>
+    </tr>
+    <tr>
+        <td>Story</td>
+        <td>Story</td>
+        <td>Backlog Item</td>
+        <td>Requirement</td>
+        <td>Requirement</td>
+    </tr>
+    <tr>
+        <td>Defect</td>
+        <td>Defect</td>
+        <td>Defect</td>
+        <td>Defect</td>
+        <td>Defect</td>
+    </tr>
+    <tr>
+        <td>Task</td>
+        <td>Task</td>
+        <td>Task</td>
+        <td>Task</td>
+        <td>Task</td>
+    </tr>
+    <tr>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+    </tr>
+    <tr>
+        <td>RegressionTest</td>
+        <td>RegressionTest</td>
+        <td>RegressionTest</td>
+        <td>RegressionTest</td>
+        <td>RegressionTest</td>
+    </tr>
+    <tr>
+        <td>RegressionPlan</td>
+        <td>RegressionPlan</td>
+        <td>RegressionPlan</td>
+        <td>RegressionPlan</td>
+        <td>RegressionPlan</td>
+    </tr>
+    <tr>
+        <td>RegressionSuite</td>
+        <td>RegressionSuite</td>
+        <td>RegressionSuite</td>
+        <td>RegressionSuite</td>
+        <td>RegressionSuite</td>
+    </tr>
+    <tr>
+        <td>TestSet</td>
+        <td>TestSet</td>
+        <td>TestSet</td>
+        <td>TestSet</td>
+        <td>TestSet</td>
+    </tr>
+    <tr>
+        <td>Environment</td>
+        <td>Environment</td>
+        <td>Environment</td>
+        <td>Environment</td>
+        <td>Environment</td>
+    </tr>
+</tbody>
+</table>
+
+### Asset Type
+
+Asset types describe the "classes" of business data available. Asset types form an inheritance hierarchy, such that each asset type inherits attribute definitions, operations, and rules from it's "parent" asset type. Those asset types at the leaves of this hierarchy are concrete, whereas asset types with "children" asset types are abstract. Assets are all instances of concrete asset types. Asset types are identified by unique names.
+
+By way of example, Story and Defect are concrete asset types. On the other hand, Workitem is an abstract asset type, from which Story and Defect ultimately derive.
+
+### Attribute Definition
+
+Attribute definitions describe the properties that "make up" each asset type. An attribute definition defines the type of its value, whether it is required and/or read-only, and many other qualities. Attribute definitions are identified by a name that is unique within its asset type.
+
+Attribute definitions are defined as either scalars or relations to other assets. Further, relation attribute definitions can be either single-value or multi-value. For example, the Estimate attribute definition on the Workitem asset type is a scalar (specifically, a floating-point number). On the other hand, the Workitem asset type's Scope attribute definition is a single-value relation (to a Scope asset). The reverse relation, Workitems on the Scope asset type, is a multi-value relation (to Workitem assets).
+
+### Asset
+
+Actual business objects in VersionOne are assets, which are instances of concrete asset types. Each asset is uniquely identified by it's asset type and ID (an integer). For example, Member:20 identifies the Member asset with ID of 20.
+
+### Attribute
+
+On every asset are a number of attributes, which attach specific values to the attribute definitions defined in the asset type. If the attribute's definition is a relation, then the value(s) of the attribute are references to an asset(s).
+
+### Moment
+
+As data changes in VersionOne, a history is maintained. Every change to every asset is journaled within the system, and assigned a chronologically-increasing integer called a moment. A past version of an asset is uniquely identified by it's asset type, ID, and Moment. A past version of a relation attribute will refer to the past version of it's target asset. For example, Member:20:563 identifies the Member asset with ID of 20, as it was at the time of moment 563.
