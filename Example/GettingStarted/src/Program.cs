@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VersionOne.SDK.APIClient;
 using ApiVNext;
@@ -15,15 +16,19 @@ namespace GettingStarted
         public void Run()
         {
             RunExample(ShowAdminMemberToken,
-                "Showing the admin member oid value...",
-                "Press any key to show admin member oid token");
+            "Showing the admin member oid value...",
+            "Press any key to show admin member oid token");
 
             RunExample(ShowMultipleAttributes,
                 "Showing multiple attributes from the admin member...",
                 "Press any key to update admin member name");
 
-            RunExample(ShowMultipleAttributesVNext,
-                "*NEW DYNAMIC VNEXT Approach* Showing multiple attributes from the admin member...",
+            RunExample(ShowMultipleAttributesVNextTypedQuery,
+                "*NEW DYNAMIC VNEXT TypedQuery Approach* Showing multiple attributes from the admin member...",
+                "Press any key to update admin member name");
+
+            RunExample(ShowMultipleAttributesVNextFreeQuery,
+                "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing multiple attributes from the admin member...",
                 "Press any key to update admin member name");
 
             RunExample(UpdateAdminMemberName,
@@ -42,11 +47,40 @@ namespace GettingStarted
             Console.WriteLine(member.Oid.Token);
         }
 
-        public void ShowMultipleAttributesVNext()
+        public void ShowMultipleAttributesVNextFreeQuery()
         {
-            dynamic member = new Query<Member>().Execute(
+            new FreeQuery(
+                "Member",
+
+                where: new Dictionary<string, object>
+                           {
+                               {
+                                   "Email", "admin@company.com"
+                               }
+                           },
+
+                select: new[] { "Name", "Email", "Username", "OwnedWorkitems.@Count" },
+
+                success: (assets) =>
+                {
+                    dynamic member = assets.FirstOrDefault();
+
+                    if (member != null)
+                    {
+                        Console.WriteLine("Name: " + member.Name);
+                        Console.WriteLine("Email: " + member.Email);
+                        Console.WriteLine("Username: " + member.Username);
+                    }
+                },
+
+                error: (exception) => Console.WriteLine("Exception! " + exception.Message));
+        }
+
+        public void ShowMultipleAttributesVNextTypedQuery()
+        {
+            dynamic member = new TypedQuery<Member>().Execute(
                 "Member:20",
-                new[] {"Name", "Email"}
+                new[] { "Name", "Email" }
                 // Can also use:
                 // new object[] { Member.Fields.Name, Member.Fields.Email }
                 ).FirstOrDefault();
@@ -57,6 +91,7 @@ namespace GettingStarted
                 Console.WriteLine("Email: " + member.Email);
             }
         }
+
 
         public void ShowMultipleAttributes()
         {

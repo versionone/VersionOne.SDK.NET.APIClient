@@ -2,7 +2,7 @@ using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
-    public class Member : AssetClassBase
+    public class Member : TypedAssetClass
     {
         public enum Fields
         {
@@ -10,22 +10,15 @@ namespace ApiVNext
             Email
         }
 
-        public static string GetAssetBasePrefixName()
-        {
-            return "Member";
-        }
-        protected override string GetAssetBasePrefix()
-        {
-            return Member.GetAssetBasePrefixName();
-        }
-
         public Member()
         {
+            AssetBasePrefix = "Member";
         }
 
         public Member(Asset wrapped)
             : base(wrapped)
         {
+            AssetBasePrefix = "Member";
         }
 
         public override AssetClassBase Create(Asset wrapped)

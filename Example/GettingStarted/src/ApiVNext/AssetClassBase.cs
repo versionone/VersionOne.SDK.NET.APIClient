@@ -3,15 +3,26 @@ using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
+    public abstract class TypedAssetClass : AssetClassBase
+    {
+        public TypedAssetClass()
+        {
+            
+        }
+
+        public TypedAssetClass(Asset wrapped) : base(wrapped)
+        {
+        }
+
+        public abstract AssetClassBase Create(Asset wrapped);
+    }
+
     public abstract class AssetClassBase : DynamicObject
     {
-        protected abstract string GetAssetBasePrefix();
-
         private readonly Asset _wrapped;
 
         public AssetClassBase()
         {
-            
         }
 
         protected AssetClassBase(Asset wrapped)
@@ -19,7 +30,12 @@ namespace ApiVNext
             _wrapped = wrapped;
         }
 
-        public abstract AssetClassBase Create(Asset wrapped);
+        protected string AssetBasePrefix { get; set; }
+
+        protected virtual string GetAssetBasePrefix()
+        {
+            return AssetBasePrefix;
+        }
 
         public override bool TryGetMember(GetMemberBinder binder,
                                           out object result)

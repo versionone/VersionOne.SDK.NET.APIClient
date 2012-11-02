@@ -4,7 +4,7 @@ using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
-    public class Query<T> where T : AssetClassBase, new()
+    public class TypedQuery<T> where T : TypedAssetClass, new()
     {
         public IEnumerable<T> Execute(string token, object[] selectFields)
         {
@@ -27,7 +27,7 @@ namespace ApiVNext
                 return list;
             }
 
-            list.AddRange(result.Assets.Select(emptyObj.Create).Select(asssetObject => asssetObject).Cast<dynamic>().Cast<T>());
+            list.AddRange(result.Assets.Select(emptyObj.Create).Select(asssetObject => asssetObject).Cast<T>());
 
             return list;
         }
