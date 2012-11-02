@@ -51,16 +51,31 @@ namespace GettingStarted
             Console.WriteLine(member.Oid.Token);
         }
 
+        public void ShowMultipleAttributesVNextTypedQuery()
+        {
+            dynamic member = new TypedQuery<Member>().Execute(
+                "Member:20",
+                new[] { "Name", "Email" }
+                // Can also use:
+                // new object[] { Member.Fields.Name, Member.Fields.Email }
+                ).FirstOrDefault();
+
+            if (member != null)
+            {
+                Console.WriteLine("Name: " + member.Name);
+                Console.WriteLine("Email: " + member.Email);
+            }
+        }
+
         public void ShowMultipleAttributesVNextFreeQuery()
         {
             new FreeQuery(
                 "Member",
 
-                where: new Dictionary<string, object>
+                where: new []
                            {
-                               {
-                                   "Email", "admin@company.com"
-                               }
+                                                     // The term is optional, it's the default
+                               Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal),
                            },
 
                 select: new[] { "Name", "Email", "Username", "OwnedWorkitems.@Count" },
@@ -80,32 +95,14 @@ namespace GettingStarted
                 error: (exception) => Console.WriteLine("Exception! " + exception.Message));
         }
 
-        public void ShowMultipleAttributesVNextTypedQuery()
-        {
-            dynamic member = new TypedQuery<Member>().Execute(
-                "Member:20",
-                new[] { "Name", "Email" }
-                // Can also use:
-                // new object[] { Member.Fields.Name, Member.Fields.Email }
-                ).FirstOrDefault();
-
-            if (member != null)
-            {
-                Console.WriteLine("Name: " + member.Name);
-                Console.WriteLine("Email: " + member.Email);
-            }
-        }
-
         public void ShowProjectNameWithVNextFreeQuery()
         {
             new FreeQuery(
                 "Scope",
 
-                where: new Dictionary<string, object>
+                where: new [] 
                            {
-                               {
-                                   "Name", "Call Center"
-                                }
+                                Op.Get("Name", "Call Center")  
                            },
 
                 select: new[] {"Name"},

@@ -1,18 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
+    public static class Op
+    {
+        public static Tuple<string, object, FilterTerm.Operator> Get(string field,
+            object value, FilterTerm.Operator oper = FilterTerm.Operator.Equal)
+        {
+            return new Tuple<string, object, FilterTerm.Operator>(field, value, oper);
+        }
+    }
+
     public class FreeQuery
     {
         //public void Execute(
         public FreeQuery(
             string assetTypeName,
             object[] select = null,
-            Dictionary<string, object> where = null, 
+            Tuple<string, object, FilterTerm.Operator>[] where = null, 
             Action<IEnumerable<AssetClassBase>> success = null,
             Action<Exception> error = null
             )
@@ -45,13 +53,13 @@ namespace ApiVNext
                 {
                     var andTerms = new List<FilterTerm>();
 
-                    foreach (var key in where.Keys)
+                    foreach (var tuple in where)
                     {
                         var attribute = MetaModelProvider.Meta.GetAttributeDefinition(assetTypeName
-                                                                                      + "." + key);
-                        var item = where[key];
+                                                                                      + "." + tuple.Item1);
+                        var item = tuple.Item2;
                         var term = new FilterTerm(attribute);
-                        term.Equal(item);
+                        term.Operate(tuple.Item3, item);
                         andTerms.Add(term);
                     }
 
