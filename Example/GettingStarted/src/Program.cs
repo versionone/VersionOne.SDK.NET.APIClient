@@ -16,19 +16,23 @@ namespace GettingStarted
         public void Run()
         {
             RunExample(ShowAdminMemberToken,
-            "Showing the admin member oid value...",
-            "Press any key to show admin member oid token");
+                "Showing the admin member oid value...",
+                "Press any key to show admin member oid token");
 
             RunExample(ShowMultipleAttributes,
                 "Showing multiple attributes from the admin member...",
-                "Press any key to update admin member name");
+                "Press any key to continue");
 
             RunExample(ShowMultipleAttributesVNextTypedQuery,
                 "*NEW DYNAMIC VNEXT TypedQuery Approach* Showing multiple attributes from the admin member...",
-                "Press any key to update admin member name");
+                "Press any key to continue");
 
             RunExample(ShowMultipleAttributesVNextFreeQuery,
                 "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing multiple attributes from the admin member...",
+                "Press any key to continue");
+
+            RunExample(ShowProjectNameWithVNextFreeQuery,
+                "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing project name...",
                 "Press any key to update admin member name");
 
             RunExample(UpdateAdminMemberName,
@@ -92,6 +96,28 @@ namespace GettingStarted
             }
         }
 
+        public void ShowProjectNameWithVNextFreeQuery()
+        {
+            new FreeQuery(
+                "Scope",
+
+                where: new Dictionary<string, object>
+                           {
+                               {
+                                   "Name", "Call Center"
+                                }
+                           },
+
+                select: new[] {"Name"},
+
+                success: (assets) =>
+                             {
+                                 foreach (dynamic asset in assets)
+                                     Console.WriteLine(asset.Name);
+                             },
+
+                error: (exception) => Console.WriteLine("Exception! " + exception.Message));
+        }
 
         public void ShowMultipleAttributes()
         {
