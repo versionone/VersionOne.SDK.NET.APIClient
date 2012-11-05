@@ -5,22 +5,13 @@ using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
-    public static class Op
-    {
-        public static Tuple<string, object, FilterTerm.Operator> Get(string field,
-            object value, FilterTerm.Operator oper = FilterTerm.Operator.Equal)
-        {
-            return new Tuple<string, object, FilterTerm.Operator>(field, value, oper);
-        }
-    }
-
     public class FreeQuery
     {
         //public void Execute(
         public FreeQuery(
             string assetTypeName,
             object[] select = null,
-            Tuple<string, object, FilterTerm.Operator>[] where = null, 
+            IEnumerable<Tuple<string, object, FilterTerm.Operator>> where = null, 
             Action<IEnumerable<AssetClassBase>> success = null,
             Action<Exception> error = null
             )
@@ -76,7 +67,7 @@ namespace ApiVNext
                     success(list);
                 }
 
-                list.AddRange(result.Assets.Select(a => new AssetClass(a, assetTypeName)));
+                list.AddRange(result.Assets.Select(a => new AssetClassBase(a, assetTypeName)));
 
                 success(list);
             } catch (Exception exception)

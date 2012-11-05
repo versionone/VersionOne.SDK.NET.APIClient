@@ -3,26 +3,18 @@ using VersionOne.SDK.APIClient;
 
 namespace ApiVNext
 {
-    public abstract class TypedAssetClass : AssetClassBase
-    {
-        public TypedAssetClass()
-        {
-            
-        }
-
-        public TypedAssetClass(Asset wrapped) : base(wrapped)
-        {
-        }
-
-        public abstract AssetClassBase Create(Asset wrapped);
-    }
-
-    public abstract class AssetClassBase : DynamicObject
+    public class AssetClassBase : DynamicObject
     {
         private readonly Asset _wrapped;
 
         public AssetClassBase()
         {
+        }
+
+        public AssetClassBase(Asset wrapped, string basePrefix)
+        {
+            _wrapped = wrapped;
+            AssetBasePrefix = basePrefix;
         }
 
         protected AssetClassBase(Asset wrapped)
@@ -32,15 +24,10 @@ namespace ApiVNext
 
         protected string AssetBasePrefix { get; set; }
 
-        protected virtual string GetAssetBasePrefix()
-        {
-            return AssetBasePrefix;
-        }
-
         public override bool TryGetMember(GetMemberBinder binder,
                                           out object result)
         {
-            var attribute = MetaModelProvider.Meta.GetAttributeDefinition(GetAssetBasePrefix() + "." + binder.Name);
+            var attribute = MetaModelProvider.Meta.GetAttributeDefinition(AssetBasePrefix + "." + binder.Name);
             result = _wrapped.GetAttribute(attribute).Value;
             return result != null;
         }
@@ -48,7 +35,7 @@ namespace ApiVNext
         public IAttributeDefinition GetAttribute(object fieldName)
         {
             return MetaModelProvider.Meta.GetAttributeDefinition(
-                GetAssetBasePrefix() + "." + fieldName);
+                AssetBasePrefix + "." + fieldName);
         }
     }
 }

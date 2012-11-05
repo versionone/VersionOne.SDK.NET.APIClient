@@ -31,6 +31,10 @@ namespace GettingStarted
                 "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing multiple attributes from the admin member...",
                 "Press any key to continue");
 
+            RunExample(ShowMultipleAttributesVNextFluentQuery,
+                "*NEW DYNAMIC VNEXT FluentQuery Approach* Showing multiple attributes from the admin member...",
+                "Press any key to continue");
+
             RunExample(ShowProjectNameWithVNextFreeQuery,
                 "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing project name...",
                 "Press any key to update admin member name");
@@ -72,7 +76,7 @@ namespace GettingStarted
             new FreeQuery(
                 "Member",
 
-                where: new []
+                where: new[]
                            {
                                                      // The term is optional, it's the default
                                Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal),
@@ -95,17 +99,41 @@ namespace GettingStarted
                 error: (exception) => Console.WriteLine("Exception! " + exception.Message));
         }
 
+        public void ShowMultipleAttributesVNextFluentQuery()
+        {
+            new
+                FluentQuery("Member")
+                .Where(
+                    Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal) // default is Equal
+                )
+                .Select(
+                    "Name", "Email", "Username", "OwnedWorkitems.@Count"
+                )
+                .Success(assets =>
+                    {
+                        dynamic member = assets.FirstOrDefault();
+                        if (member != null)
+                        {
+                            Console.WriteLine("Name: " + member.Name);
+                            Console.WriteLine("Email: " + member.Email);
+                            Console.WriteLine("Username: " + member.Username);
+                        }
+                    }
+                )
+                .Error(exception => Console.WriteLine("Exception! " + exception.Message));
+        }
+
         public void ShowProjectNameWithVNextFreeQuery()
         {
             new FreeQuery(
                 "Scope",
 
-                where: new [] 
+                where: new[] 
                            {
                                 Op.Get("Name", "Call Center")  
                            },
 
-                select: new[] {"Name"},
+                select: new[] { "Name" },
 
                 success: (assets) =>
                              {
