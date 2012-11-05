@@ -27,15 +27,20 @@ namespace ApiVNext
         public override bool TryGetMember(GetMemberBinder binder,
                                           out object result)
         {
-            var attribute = MetaModelProvider.Meta.GetAttributeDefinition(AssetBasePrefix + "." + binder.Name);
+            var attribute = GetAttribute(binder.Name);
             result = _wrapped.GetAttribute(attribute).Value;
             return result != null;
         }
 
+        public object GetValueByName(string fieldName)
+        {
+            var attribute = GetAttribute(fieldName);
+            return _wrapped.GetAttribute(attribute).Value;
+        }
+
         public IAttributeDefinition GetAttribute(object fieldName)
         {
-            return MetaModelProvider.Meta.GetAttributeDefinition(
-                AssetBasePrefix + "." + fieldName);
+            return MetaModelProvider.Meta.GetAttributeDefinition(AssetBasePrefix + "." + fieldName);
         }
     }
 }

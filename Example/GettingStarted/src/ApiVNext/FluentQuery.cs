@@ -18,6 +18,7 @@ namespace ApiVNext
             string assetTypeName)
         {
             RawQuery = new Query(MetaModelProvider.Meta.GetAssetType(assetTypeName));
+            AssetTypeName = assetTypeName;
 
             WhereCriteria = new List<Tuple<string, object, FilterTerm.Operator>>();
             SelectFields = new List<object>();
