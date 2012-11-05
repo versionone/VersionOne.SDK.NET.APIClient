@@ -144,9 +144,9 @@ namespace GettingStarted
 
             query.Select(selectTerms.ToArray());
 
-            query.OnSuccess = (assets) =>
+            query.OnSuccess = assets =>
             {
-                if (assets.Any())
+                if (!assets.Any())
                 {
                     Console.WriteLine("No results found");
                 }
