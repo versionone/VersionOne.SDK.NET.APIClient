@@ -16,37 +16,51 @@ namespace GettingStarted
 
         public void Run()
         {
-            RunExample(ShowAdminMemberToken,
-                "Showing the admin member oid value...",
-                "Press any key to show admin member oid token");
+            var runStaticExamples = ReadString("VersionOne API Client Example Runner: Type i for interactive mode or s to run the static examples: ");
 
-            RunExample(ShowMultipleAttributes,
-                "Showing multiple attributes from the admin member...",
-                "Press any key to continue");
+            if (runStaticExamples.Equals("i", StringComparison.OrdinalIgnoreCase))
+            {
+                var keepGoing = "y";
 
-            RunExample(ShowMultipleAttributesVNextTypedQuery,
-                "*NEW DYNAMIC VNEXT TypedQuery Approach* Showing multiple attributes from the admin member...",
-                "Press any key to continue");
+                while (keepGoing.Equals("y", StringComparison.OrdinalIgnoreCase))
+                {
+                    RunExample(ShowInteractiveFluentQuery, pauseBeforeContinue:false);
 
-            RunExample(ShowMultipleAttributesVNextFreeQuery,
-                "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing multiple attributes from the admin member...",
-                "Press any key to continue");
+                    keepGoing = ReadString("Continue? y for yes, n to exit");
+                }
+            }
+            else
+            {
+                // Static Examples
 
-            RunExample(ShowMultipleAttributesVNextFluentQuery,
-                "*NEW DYNAMIC VNEXT FluentQuery Approach* Showing multiple attributes from the admin member...",
-                "Press any key to continue");
+                RunExample(ShowAdminMemberToken,
+                           "Showing the admin member oid value...",
+                           "Press any key to show admin member oid token");
 
-            RunExample(ShowInteractiveFluentQuery,
-                "*NEW DYNAMIC VNEXT FluentQuery Approach Interactive* Showing multiple attributes from user-specified asset type...",
-                "Press any key to continue");
+                RunExample(ShowMultipleAttributes,
+                           "Showing multiple attributes from the admin member...",
+                           "Press any key to continue");
 
-            RunExample(ShowProjectNameWithVNextFreeQuery,
-                "*NEW DYNAMIC VNEXT FreeQuery Approach* Showing project name...",
-                "Press any key to continue");
+                RunExample(ShowMultipleAttributesVNextTypedQuery,
+                           "TypedQuery Approach Showing multiple attributes from the admin member...",
+                           "Press any key to continue");
 
-            RunExample(UpdateAdminMemberName,
-                "Updating the admin member's name...",
-                "Press any key to exit...");
+                RunExample(ShowMultipleAttributesVNextFreeQuery,
+                           "FreeQuery Approach Showing multiple attributes from the admin member...",
+                           "Press any key to continue");
+
+                RunExample(ShowMultipleAttributesVNextFluentQuery,
+                           "FluentQuery Approach Showing multiple attributes from the admin member...",
+                           "Press any key to continue");
+
+                RunExample(ShowProjectNameWithVNextFreeQuery,
+                           "FreeQuery Approach Showing project name...",
+                           "Press any key to continue");
+
+                RunExample(UpdateAdminMemberName,
+                           "Updating the admin member's name...",
+                           "Press any key to exit...");
+            }
         }
 
         #region Examples
@@ -131,16 +145,18 @@ namespace GettingStarted
 
         public void ShowInteractiveFluentQuery()
         {
-            var assetTypeName = ReadString("What asset type do you want to query?");
+            var assetTypeName = ReadString("What asset type do you want to query? (ex: Story, Member)");
             var query = new FluentQuery(assetTypeName);
 
+            Console.WriteLine();
             var criteria = ReadValues(
-                "Enter a where term in the form of Field=value (ex: Email=admin@company.com). Hit enter to continue.",
+                "Enter a where term in the form of Field=value (ex: ID=Story:1083, Email=admin@company.com). Hit enter to continue.",
                ParseFilterTerm);
 
             query.Where(criteria.ToArray());
 
-            var selectTerms = ReadValues("Enter a field name. Hit enter to continue)");
+            Console.WriteLine();
+            var selectTerms = ReadValues("Enter a field name. (ex: Name, Username). Hit enter to continue.)");
 
             query.Select(selectTerms.ToArray());
 
@@ -222,7 +238,11 @@ namespace GettingStarted
             var nameValue = member.GetAttribute(nameAttribute).Value as string;
             Console.WriteLine("Name is currently: " + nameValue);
 
-            var newName = ReadString("Please enter a new name and hit enter");
+            var newName = string.Empty;
+            while (newName == string.Empty)
+            {
+                newName = ReadString("Please enter a new name and hit enter");
+            }
 
             member.SetAttributeValue(nameAttribute, newName);
             _services.Save(member);
@@ -241,15 +261,25 @@ namespace GettingStarted
 
         #region Execution
 
-        private static void RunExample(Action exampleMethod, string exmapleMessage, string nextMessage = null)
+        private static void RunExample(Action exampleMethod, string exampleMessage = null, string nextMessage = null,
+            bool pauseBeforeContinue = true)
         {
-            Console.WriteLine(exmapleMessage);
+            if (exampleMessage != null)
+            {
+                Console.WriteLine(exampleMessage);
+            }
             Console.WriteLine();
             exampleMethod();
             Console.WriteLine();
-            Console.WriteLine(nextMessage);
+            if (nextMessage != null)
+            {
+                Console.WriteLine(nextMessage);
+            }
             Console.WriteLine();
-            Console.ReadKey();
+            if (pauseBeforeContinue)
+            {
+                Console.ReadKey();
+            }
         }
 
         private string ReadString(string message)
