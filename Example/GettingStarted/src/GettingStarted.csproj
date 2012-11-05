@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +52,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiVNext\AssetClass.cs" />
     <Compile Include="ApiVNext\AssetClassBase.cs" />
+    <Compile Include="ApiVNext\FluentQuery.cs" />
     <Compile Include="ApiVNext\FreeQuery.cs" />
     <Compile Include="ApiVNext\Member.cs" />
     <Compile Include="ApiVNext\MetaModelProvider.cs" />
+    <Compile Include="ApiVNext\Op.cs" />
+    <Compile Include="ApiVNext\TypedAssetClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApiVNext\TypedQuery.cs" />
