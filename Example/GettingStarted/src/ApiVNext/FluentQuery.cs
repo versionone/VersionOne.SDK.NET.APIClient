@@ -12,6 +12,7 @@ namespace ApiVNext
         public List<Tuple<string, object, FilterTerm.Operator>> WhereCriteria { get; set; }
         public List<object> SelectFields { get; set; }
         public Action<IEnumerable<AssetClassBase>> OnSuccess { get; set; }
+        public Action OnEmptyResults { get; set; }
         public Action<Exception> OnError { get; set; }
 
         public FluentQuery(
@@ -45,6 +46,13 @@ namespace ApiVNext
             return this;
         }
 
+        public FluentQuery WhenEmpty(Action callback)
+        {
+            OnEmptyResults = callback;
+
+            return this;
+        }
+
         public FluentQuery Error(Action<Exception> callback)
         {
             OnError = callback;
@@ -56,12 +64,7 @@ namespace ApiVNext
         {
             if (OnSuccess == null)
             {
-                throw new NullReferenceException("Must specify the OnSuccess callback property before calling Execute");
-            }
-
-            if (OnError == null)
-            {
-                throw new NullReferenceException("Must specify the OnError callback property before calling Execute");
+                throw new NullReferenceException("Must specify the OnSuccess callback before calling Execute");
             }
 
             try
@@ -106,11 +109,23 @@ namespace ApiVNext
 
                 list.AddRange(result.Assets.Select(a => new AssetClassBase(a, AssetTypeName)));
 
+                if (list.Count == 0 && OnEmptyResults != null)
+                {
+                    OnEmptyResults();
+                }
+
                 OnSuccess(list);
             }
             catch (Exception exception)
             {
-                OnError(exception);
+                if (OnError != null)
+                {
+                    OnError(exception);
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return this;
