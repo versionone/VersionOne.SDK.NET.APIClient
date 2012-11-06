@@ -60,11 +60,11 @@ namespace ApiVNext
             return this;
         }
 
-        public FluentQuery Execute()
+        public FluentQuery Execute(Action<IEnumerable<AssetClassBase>> successCallback = null)
         {
-            if (OnSuccess == null)
+            if (OnSuccess == null && successCallback == null)
             {
-                throw new NullReferenceException("Must specify the OnSuccess callback before calling Execute");
+                throw new NullReferenceException("Must specify the OnSuccess callback before calling Execute or pass it directly to Execute as a parameter");
             }
 
             try
@@ -114,7 +114,14 @@ namespace ApiVNext
                     OnEmptyResults();
                 }
 
-                OnSuccess(list);
+                if (successCallback != null)
+                {
+                    successCallback(list);
+                }
+                else
+                {
+                    OnSuccess(list);
+                }
             }
             catch (Exception exception)
             {

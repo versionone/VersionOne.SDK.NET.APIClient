@@ -57,6 +57,10 @@ namespace GettingStarted
                            "FreeQuery Approach Showing project name...",
                            "Press any key to continue");
 
+                RunExample(UpdateAdminMemberNameFluentQuery,
+                           "Updating the admin member's name with a FluentQuery result",
+                           "Press any key to continue...");
+
                 RunExample(UpdateAdminMemberName,
                            "Updating the admin member's name...",
                            "Press any key to exit...");
@@ -144,7 +148,6 @@ namespace GettingStarted
                 .Execute();
         }
 
-
         public void ShowInteractiveFluentQuery()
         {
             var assetTypeName = ReadString("What asset type do you want to query? (ex: Story, Member)");
@@ -152,13 +155,13 @@ namespace GettingStarted
 
             Console.WriteLine();
             var criteria = ReadValues(
-                "Enter one or more comma-separated filter terms ins the form of Field=value (ex: ID=Story:1083, Name=My Story). Hit enter to continue.", 
+                "Enter one or more comma-separated filter terms ins the form of Field=value (ex: ID=Story:1083, Name=My Story). Hit enter to continue.",
                 ParseCommaDelimItems, ParseFilterTerm);
 
             query.Where(criteria.ToArray());
 
             Console.WriteLine();
-            var selectTerms = ReadValues("Enter one or more comma-separated field names to select. (ex: Name, CreatedBy). Hit enter to continue.)", 
+            var selectTerms = ReadValues("Enter one or more comma-separated field names to select. (ex: Name, CreatedBy). Hit enter to continue.)",
                 ParseCommaDelimItems);
 
             query.Select(selectTerms.ToArray());
@@ -226,6 +229,52 @@ namespace GettingStarted
             Console.WriteLine("Oid Token: " + member.Oid.Token);
             Console.WriteLine("Name: " + member.GetAttribute(nameAttribute).Value);
             Console.WriteLine("Email: " + member.GetAttribute(emailAttribute).Value);
+        }
+
+        public void UpdateAdminMemberNameFluentQuery()
+        {
+            FluentQuery query = null;
+            query = new FluentQuery("Member")
+                .Where(
+                    Op.Get("ID", "Member:20")
+                )
+                .Select(
+                    "Name"
+                )
+                .Success(assets =>
+                             {
+                                 dynamic member = assets.FirstOrDefault();
+                                 if (member != null)
+                                 {
+                                     Console.WriteLine("Name is currently: " + member.Name);
+
+                                     var newName = string.Empty;
+                                     while (newName == string.Empty)
+                                     {
+                                         newName = ReadString("Please enter a new name and hit enter");
+                                     }
+
+                                     member.Name = newName;
+
+                                     var asset = (AssetClassBase)member;
+                                     asset.SaveChanges();
+                                 }
+                             }
+                )
+                .WhenEmpty(() => Console.WriteLine("No results found..."))
+                .Execute();
+
+            Console.WriteLine();
+            Console.WriteLine("Saved member, now requerying...");
+            Console.WriteLine();
+
+            query.Execute(assets => {
+                dynamic memberNow = assets.FirstOrDefault();
+                if (memberNow != null)
+                {
+                    Console.WriteLine("Name is now: " + memberNow.Name);
+                }
+            });
         }
 
         public void UpdateAdminMemberName()

@@ -32,6 +32,17 @@ namespace ApiVNext
             return result != null;
         }
 
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            var attribute = GetAttribute(binder.Name);
+            if (attribute != null)
+            {
+                _wrapped.SetAttributeValue(attribute, value);
+                return true;
+            }
+            return false;
+        }
+
         public object GetValueByName(string fieldName)
         {
             var attribute = GetAttribute(fieldName);
@@ -41,6 +52,16 @@ namespace ApiVNext
         public IAttributeDefinition GetAttribute(object fieldName)
         {
             return MetaModelProvider.Meta.GetAttributeDefinition(AssetBasePrefix + "." + fieldName);
+        }
+
+        public void SaveChanges()
+        {
+            ServicesProvider.Services.Save(_wrapped);
+        }
+
+        public void SaveChanges(string comment)
+        {
+            ServicesProvider.Services.Save(_wrapped, comment);
         }
     }
 }
