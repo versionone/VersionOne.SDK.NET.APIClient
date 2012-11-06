@@ -24,7 +24,7 @@ namespace GettingStarted
 
                 while (keepGoing.Equals("y", StringComparison.OrdinalIgnoreCase))
                 {
-                    RunExample(ShowInteractiveFluentQuery, pauseBeforeContinue:false);
+                    RunExample(ShowInteractiveFluentQuery, pauseBeforeContinue: false);
 
                     keepGoing = ReadString("Continue? y for yes, n to exit");
                 }
@@ -139,9 +139,11 @@ namespace GettingStarted
                                  }
                              }
                 )
+                .WhenEmpty(() => Console.WriteLine("No results found..."))
                 .Error(exception => Console.WriteLine("Exception! " + exception.Message))
                 .Execute();
         }
+
 
         public void ShowInteractiveFluentQuery()
         {
@@ -150,22 +152,19 @@ namespace GettingStarted
 
             Console.WriteLine();
             var criteria = ReadValues(
-                "Enter a where term in the form of Field=value (ex: ID=Story:1083, Email=admin@company.com). Hit enter to continue.",
-               ParseFilterTerm);
+                "Enter one or more comma-separated filter terms ins the form of Field=value (ex: ID=Story:1083, Name=My Story). Hit enter to continue.", 
+                ParseCommaDelimItems, ParseFilterTerm);
 
             query.Where(criteria.ToArray());
 
             Console.WriteLine();
-            var selectTerms = ReadValues("Enter a field name. (ex: Name, Username). Hit enter to continue.)");
+            var selectTerms = ReadValues("Enter one or more comma-separated field names to select. (ex: Name, CreatedBy). Hit enter to continue.)", 
+                ParseCommaDelimItems);
 
             query.Select(selectTerms.ToArray());
 
             query.OnSuccess = assets =>
             {
-                if (!assets.Any())
-                {
-                    Console.WriteLine("No results found");
-                }
                 assets.ForEach(asset =>
                     selectTerms.ForEach(fieldName =>
                         Console.WriteLine(fieldName + ": " + asset.GetValueByName(fieldName))
@@ -180,6 +179,7 @@ namespace GettingStarted
                 //    }
                 //}
             };
+            query.OnEmptyResults = () => Console.WriteLine("No results found...");
             query.OnError = PrintError;
 
             query.Execute();
@@ -287,8 +287,8 @@ namespace GettingStarted
             Console.WriteLine(message);
             return Console.ReadLine();
         }
-        
-        private IEnumerable<string> ReadValues(string lineMessage, string terminationPattern = "")
+
+        private IEnumerable<string> ReadValues(string lineMessage, Func<string, IEnumerable<string>> parseLine, string terminationPattern = "")
         {
             var lines = new List<string>();
             string newLine = null;
@@ -297,13 +297,23 @@ namespace GettingStarted
                 newLine = ReadString(lineMessage);
                 if (newLine != terminationPattern)
                 {
-                    lines.Add(newLine);
+                    if (parseLine != null)
+                    {
+                        var items = parseLine(newLine);
+                        lines.AddRange(items);
+                    }
+                    else
+                    {
+                        lines.Add(newLine);
+                    }
                 }
             }
             return lines;
         }
 
-        private IEnumerable<T> ReadValues<T>(string lineMessage, Func<string, T> converter,
+        private IEnumerable<T> ReadValues<T>(string lineMessage,
+            Func<string, IEnumerable<string>> parseLine,
+            Func<string, T> converter,
             string terminationPattern = "") where T : class
         {
             var results = new List<T>();
@@ -313,25 +323,47 @@ namespace GettingStarted
                 newLine = ReadString(lineMessage);
                 if (newLine != terminationPattern)
                 {
-                    var item = converter(newLine);
-                    if (item != null)
-                    {
-                        results.Add(item);
-                    }
+                    var items = parseLine(newLine);
+                    items.ForEach(part =>
+                        {
+                            var item = converter(part);
+                            if (item != null)
+                            {
+                                results.Add(item);
+                            }
+                        }
+                    );
                 }
             }
             return results;
         }
 
-        private Tuple<string,object,FilterTerm.Operator> ParseFilterTerm(string line)
+        private IEnumerable<string> ParseCommaDelimItems(string line)
         {
-            if (!line.Contains("="))
+            if (line.Contains(','))
+            {
+                var items = line.Split(',');
+
+                var trimmedItems = items.Select(x => x.Trim());
+
+                return trimmedItems;
+            }
+
+            return new[] { line };
+        }
+
+        private Tuple<string, object, FilterTerm.Operator> ParseFilterTerm(string item)
+        {
+            if (!item.Contains("="))
             {
                 Console.WriteLine("Must enter terms in the form Field=value (ex: Email=admin@company.com).");
                 return null;
             }
-            var values = line.Split('=');
-            return Op.Get(values[0], values[1]);
+
+            var items = item.Split('=');
+            var trimmedItems = items.Select(x => x.Trim()).ToList();
+
+            return Op.Get(trimmedItems[0], trimmedItems[1]);
         }
 
         public static void Main(string[] args)
