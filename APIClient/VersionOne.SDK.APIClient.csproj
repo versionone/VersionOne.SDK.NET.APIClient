@@ -141,6 +141,10 @@
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Connectors.cs" />
+    <Compile Include="Credentials.cs" />
+    <Compile Include="EnvironmentContext.cs" />
+    <Compile Include="ModelsAndServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -158,6 +162,7 @@
     <Compile Include="Query\ValueProvider.cs" />
     <Compile Include="Query\ValueStringizer.cs" />
     <Compile Include="SingleValueAttribute.cs" />
+    <Compile Include="Urls.cs" />
     <Compile Include="XmlApiWriter.cs">
       <SubType>Code</SubType>
     </Compile>
