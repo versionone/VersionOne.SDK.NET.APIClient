@@ -201,10 +201,14 @@
     <Compile Include="ServicesTests\ServicesTesterBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\ConnectorsTester.cs" />
+    <Compile Include="UtilityTests\CredentialsTester.cs" />
     <Compile Include="UtilityTests\DurationTester.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\EnvironmentContextTester.cs" />
     <Compile Include="UtilityTests\MimeTypeTester.cs" />
+    <Compile Include="UtilityTests\ModelsAndServicesTester.cs" />
     <Compile Include="UtilityTests\OidTester.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -212,6 +216,7 @@
     <Compile Include="UtilityTests\TextBuilderTester.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\UrlsTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationTester.cs" />
     <Content Include="SingleTestData.xml" />
     <EmbeddedResource Include="TestData.xml" />
