@@ -1,4 +1,3 @@
-using System.Configuration;
 using System.Diagnostics;
 
 namespace VersionOne.SDK.APIClient
@@ -11,7 +10,7 @@ namespace VersionOne.SDK.APIClient
 			get
 			{
 				if ( _listener == null )
-					_listener = new DebugListener(ConfigurationManager.AppSettings["DebugFileName"]);
+					_listener = new DebugListener(System.Configuration.ConfigurationManager.AppSettings["DebugFileName"]);
 				return _listener;
 			}
 		}
@@ -21,7 +20,7 @@ namespace VersionOne.SDK.APIClient
 			get
 			{
 				bool res;
-				bool.TryParse(ConfigurationManager.AppSettings["Debug"], out res);
+                bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["Debug"], out res);
 				if (res && !Debug.Listeners.Contains(Listener))
 					Debug.Listeners.Add(Listener);
 				else if (!res && Debug.Listeners.Contains(Listener))

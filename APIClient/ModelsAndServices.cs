@@ -31,7 +31,8 @@ namespace VersionOne.SDK.APIClient
 
         public IMetaModel MetaModel
         {
-            get { 
+            get 
+            { 
                 if (_metaModel != null) return _metaModel;
                 _metaModel = new MetaModel(_connectors.MetaConnector);
                 return _metaModel;

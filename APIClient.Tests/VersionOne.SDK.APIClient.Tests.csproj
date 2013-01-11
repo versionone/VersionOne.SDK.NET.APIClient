@@ -201,6 +201,7 @@
     <Compile Include="ServicesTests\ServicesTesterBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\ConfigurationManagerTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
     <Compile Include="UtilityTests\CredentialsTester.cs" />
     <Compile Include="UtilityTests\DurationTester.cs">
@@ -239,6 +240,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\APIClient\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -97,7 +97,7 @@ namespace VersionOne.SDK.APIClient
 		/// </summary>
 		private static void OverrideMapFromAppConfig(IDictionary map)
 		{
-			IDictionary config = (IDictionary)ConfigurationManager.GetSection("VersionOne.SDK.APIClient.MimeTypes");
+            IDictionary config = (IDictionary)System.Configuration.ConfigurationManager.GetSection("VersionOne.SDK.APIClient.MimeTypes");
 			if (config == null) return;
 			foreach (DictionaryEntry entry in config)
 			{

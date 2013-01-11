@@ -141,6 +141,7 @@
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Connectors.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="EnvironmentContext.cs" />
