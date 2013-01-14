@@ -45,7 +45,7 @@ namespace VersionOne.SDK.APIClient
             MetaConnector = new V1APIConnector(_urls.MetaUrl);
             MetaConnectorWithProxy = new V1APIConnector(_urls.MetaUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
             ConfigurationConnector = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password);
-            ConfigurationConnector = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
+            ConfigurationConnectorWithProxy = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
 
         }
 
