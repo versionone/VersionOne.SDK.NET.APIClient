@@ -10,7 +10,7 @@ namespace VersionOne.SDK.APIClient
 			get
 			{
 				if ( _listener == null )
-					_listener = new DebugListener(ConfigurationManager.GetValue(Settings.DebugFileName, @"C:\VersionOneAPIClientDebug.txt"));
+					_listener = new DebugListener(V1ConfigurationManager.GetValue(Settings.DebugFileName, @"C:\VersionOneAPIClientDebug.txt"));
 				return _listener;
 			}
 		}
@@ -20,7 +20,7 @@ namespace VersionOne.SDK.APIClient
 			get
 			{
 			    bool res;
-			    bool.TryParse(ConfigurationManager.GetValue(Settings.Debug, "False"), out res);
+			    bool.TryParse(V1ConfigurationManager.GetValue(Settings.Debug, "False"), out res);
 				if (res && !Debug.Listeners.Contains(Listener))
 					Debug.Listeners.Add(Listener);
 				else if (!res && Debug.Listeners.Contains(Listener))

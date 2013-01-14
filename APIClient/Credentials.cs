@@ -17,10 +17,10 @@
 
         public Credentials()
         {
-            V1UserName = ConfigurationManager.GetValue(Settings.V1UserName, "admin");
-            V1Password = ConfigurationManager.GetValue(Settings.V1Password, "admin");
-            ProxyUserName = ConfigurationManager.GetValue(Settings.ProxyUserName, "Administrator");
-            ProxyPassword = ConfigurationManager.GetValue(Settings.ProxyPassword, "12345678");
+            V1UserName = V1ConfigurationManager.GetValue(Settings.V1UserName, "admin");
+            V1Password = V1ConfigurationManager.GetValue(Settings.V1Password, "admin");
+            ProxyUserName = V1ConfigurationManager.GetValue(Settings.ProxyUserName, "Administrator");
+            ProxyPassword = V1ConfigurationManager.GetValue(Settings.ProxyPassword, "12345678");
         }
 
         public string V1UserName { get; private set; }

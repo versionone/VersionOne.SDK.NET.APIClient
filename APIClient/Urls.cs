@@ -20,11 +20,11 @@ namespace VersionOne.SDK.APIClient
 
         public Urls()
         {
-            V1Url = ConfigurationManager.GetValue(Settings.V1Url, "http://localhost/VersionOne");
-            MetaUrl = string.Concat(V1Url, ConfigurationManager.GetValue(Settings.MetaUrl, "meta.v1/"));
-            DataUrl = string.Concat(V1Url, ConfigurationManager.GetValue(Settings.DataUrl, "rest-1.v1/"));
-            ProxyUrl = ConfigurationManager.GetValue(Settings.ProxyUrl, "https://myProxyServer:3128");
-            ConfigUrl = ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
+            V1Url = V1ConfigurationManager.GetValue(Settings.V1Url, "http://localhost/VersionOne");
+            MetaUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.MetaUrl, "meta.v1/"));
+            DataUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.DataUrl, "rest-1.v1/"));
+            ProxyUrl = V1ConfigurationManager.GetValue(Settings.ProxyUrl, "https://myProxyServer:3128");
+            ConfigUrl = V1ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
         }
 
         public string V1Url { get; private set; }
