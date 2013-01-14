@@ -27,6 +27,7 @@ namespace VersionOne.SDK.APIClient
         }
 
         public IMetaModel MetaModel { get; private set; }
+        public IMetaModel MetaModelWithProxy { get; private set; }
         public IServices Services { get; private set; }
 
 

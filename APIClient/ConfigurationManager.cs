@@ -19,6 +19,7 @@ namespace VersionOne.SDK.APIClient
         public static string ConfigUrl { get { return "ConfigUrl"; } }
         public static string DebugFileName { get { return "DebugFileName"; } }
         public static string Debug { get { return "Debug"; } }
+        public static string UseWindowsIntegratedAuth { get { return "UseWindowsIntegratedAuth"; } }
     }
 
     public static class ConfigurationManager
