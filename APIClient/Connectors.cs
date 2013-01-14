@@ -39,7 +39,7 @@ namespace VersionOne.SDK.APIClient
 
         private void SetConnectors()
         {
-            var useWindowsIntegratedAuth = ConfigurationManager.GetValue(Settings.UseWindowsIntegratedAuth, false);
+            var useWindowsIntegratedAuth = V1ConfigurationManager.GetValue(Settings.UseWindowsIntegratedAuth, false);
             DataConnector = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth);
             DataConnectorWithProxy = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
             MetaConnector = new V1APIConnector(_urls.MetaUrl);

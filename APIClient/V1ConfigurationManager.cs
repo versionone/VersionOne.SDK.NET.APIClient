@@ -22,7 +22,7 @@ namespace VersionOne.SDK.APIClient
         public static string UseWindowsIntegratedAuth { get { return "UseWindowsIntegratedAuth"; } }
     }
 
-    public static class ConfigurationManager
+    public static class V1ConfigurationManager
     {
         public static TPrimativeType GetValue<TPrimativeType>(string key, TPrimativeType defaultValue)
         {
