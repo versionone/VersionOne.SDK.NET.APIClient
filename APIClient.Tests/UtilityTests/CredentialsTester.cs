@@ -21,15 +21,27 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
         }
 
         [Test]
-        public void UserNameTest()
+        public void V1UserNameTest()
         {
             Assert.IsNotNullOrEmpty(_target.V1UserName);
         }
 
         [Test]
-        public void PasswordTest()
+        public void V1PasswordTest()
         {
             Assert.IsNotNullOrEmpty(_target.V1Password);
+        }
+
+        [Test]
+        public void ProxyUserNameTest()
+        {
+            Assert.IsNotNullOrEmpty(_target.ProxyUserName);
+        }
+
+        [Test]
+        public void ProxyPasswordTest()
+        {
+            Assert.IsNotNullOrEmpty(_target.ProxyPassword);
         }
 
     }
