@@ -6,30 +6,34 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
     public class ConnectorsTester
     {
 
-        private IConnectors _defaultTarget;
-        private IConnectors _nonDefaultTarget;
+        private IConnectors _connectors;
+        private IConnectors _connectorsWithInjectedUrlsAndCreds;
 
         [SetUp]
         public void TestFixtureSetup()
         {
 
-            _defaultTarget = new Connectors();
-            _nonDefaultTarget = new Connectors(new Urls(), new Credentials()); //can inject your own urls/credentials implementations...
+            _connectors = new Connectors();
+            _connectorsWithInjectedUrlsAndCreds = new Connectors(new Urls(), new Credentials()); //can inject your own urls/credentials implementations...
 
         }
 
         [TearDown]
         public void TestFixtureTearDown()
         {
-            _defaultTarget = null;
-            _nonDefaultTarget = null;
+            _connectors = null;
+            _connectorsWithInjectedUrlsAndCreds = null;
         }
 
         [Test]
-        public void DataConnectorTest()
+        public void ConnectorTest()
         {
-            Assert.IsNotNull(_defaultTarget.DataConnector);
-            Assert.IsNotNull(_nonDefaultTarget.DataConnector);
+            Assert.IsNotNull(_connectors.DataConnector);
+            Assert.IsNotNull(_connectors.DataConnectorWithProxy);
+            Assert.IsNotNull(_connectorsWithInjectedUrlsAndCreds.DataConnector);
+            Assert.IsNotNull(_connectorsWithInjectedUrlsAndCreds.DataConnectorWithProxy);
+            Assert.IsNotNull(_connectors.ConfigurationConnector);
+            Assert.IsNotNull(_connectors.ConfigurationConnectorWithProxy);
         }
     }
 }

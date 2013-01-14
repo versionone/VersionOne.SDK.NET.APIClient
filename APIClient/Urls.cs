@@ -11,6 +11,8 @@ namespace VersionOne.SDK.APIClient
         string V1Url { get; }
         string MetaUrl { get; }
         string DataUrl { get; }
+        string ProxyUrl { get; }
+        string ConfigUrl { get; }
     }
 
     public sealed class Urls : IUrls
@@ -18,13 +20,17 @@ namespace VersionOne.SDK.APIClient
 
         public Urls()
         {
-            V1Url = "https://www14.v1host.com/v1sdktesting/";
-            MetaUrl = string.Concat(V1Url, "meta.v1/");
-            DataUrl = string.Concat(V1Url, "rest-1.v1/");
+            V1Url = ConfigurationManager.GetValue(Settings.V1Url, "http://localhost/VersionOne");
+            MetaUrl = string.Concat(V1Url, ConfigurationManager.GetValue(Settings.MetaUrl, "meta.v1/"));
+            DataUrl = string.Concat(V1Url, ConfigurationManager.GetValue(Settings.DataUrl, "rest-1.v1/"));
+            ProxyUrl = ConfigurationManager.GetValue(Settings.ProxyUrl, "https://myProxyServer:3128");
+            ConfigUrl = ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
         }
 
         public string V1Url { get; private set; }
         public string MetaUrl { get; private set; }
         public string DataUrl { get; private set; }
+        public string ProxyUrl { get; private set; }
+        public string ConfigUrl { get; private set; }
     }
 }

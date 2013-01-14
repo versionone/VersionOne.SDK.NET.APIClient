@@ -38,5 +38,17 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             Assert.IsNotNullOrEmpty(_target.MetaUrl);
         }
 
+        [Test]
+        public void ProxyUrlTest()
+        {
+            Assert.IsNotNullOrEmpty(_target.ProxyUrl);
+        }
+
+        [Test]
+        public void ConfigUrlTest()
+        {
+            Assert.IsNotNullOrEmpty(_target.ConfigUrl);
+        }
+
     }
 }

@@ -27,5 +27,11 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             var v1Url = ConfigurationManager.GetValue<string>(Settings.V1Url, null);
             Assert.AreNotEqual(null, v1Url);
         }
+
+        [Test, ExpectedException(typeof(InvalidCastException))]
+        public void NonPrimativeTypeTest()
+        {
+            ConfigurationManager.GetValue(Settings.V1Url, new Uri("http://www.versionone.com/"));
+        }
     }
 }

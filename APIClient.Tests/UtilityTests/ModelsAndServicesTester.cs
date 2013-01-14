@@ -28,15 +28,29 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
         public void ServicesTest()
         {
             Assert.IsNotNull(_defaultTarget.Services);
+            Assert.IsNotNull(_defaultTarget.ServicesWithProxy);
             Assert.IsNotNull(_nonDefaultTarget.Services);
+            Assert.IsNotNull(_nonDefaultTarget.ServicesWithProxy);
         }
 
         [Test]
         public void MetaModelTests()
         {
             Assert.IsNotNull(_defaultTarget.MetaModel);
+            Assert.IsNotNull(_defaultTarget.MetaModelWithProxy);
             Assert.IsNotNull(_nonDefaultTarget.MetaModel);
+            Assert.IsNotNull(_nonDefaultTarget.MetaModelWithProxy);
         }
+
+        [Test]
+        public void ConfigTests()
+        {
+            Assert.IsNotNull(_defaultTarget.V1Configuration);
+            Assert.IsNotNull(_defaultTarget.V1ConfigurationWithProxy);
+            Assert.IsNotNull(_nonDefaultTarget.V1Configuration);
+            Assert.IsNotNull(_nonDefaultTarget.V1ConfigurationWithProxy);
+        }
+
 
     }
 }
