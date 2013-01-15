@@ -5,9 +5,9 @@ msbuild VersionOne.SDK.APIClient.csproj /p:V1BuildToolsPath=%1 ^
 /p:NuGetExePath=%1\NuGet.exe /p:RequireRestoreConsent=false ^
 /p:Configuration=Release ^
 /p:Platform=AnyCPU ^
-/p:Major=12 ^
-/p:Minor=3  ^
-/p:Revision=0 ^
+/p:Major=%MajorVersion% ^
+/p:Minor=%MinorVersion  ^
+/p:Revision=%Revision% ^
 /p:AssemblyInformationalVersion="See https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki" ^
 /p:AssemblyCopyright="Copyright 2012, VersionOne, Inc. Licensed under modified BSD." ^
 /p:CompanyName="VersionOne, Inc" ^
