@@ -14,3 +14,8 @@ The original software is available from:
 
 This library is available under an NUnit License:
   http://www.nunit.org/index.php?p=license&r=2.6
+
+Lightweight object identity is provided by an adaptation of Paul Hsieh's SuperFastHash.
+
+The original algorithm is documented in C++ at:
+  http://www.azillionmonkeys.com/qed/hash.html
