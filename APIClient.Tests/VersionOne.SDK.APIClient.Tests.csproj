@@ -181,6 +181,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProxyTester.cs" />
+    <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
+    <Compile Include="QueryTests\QueryFindTester.cs" />
     <Compile Include="ServicesTests\MultiValueAttributeTester.cs" />
     <Compile Include="MetaTests\OperationTester.cs">
       <SubType>Code</SubType>
