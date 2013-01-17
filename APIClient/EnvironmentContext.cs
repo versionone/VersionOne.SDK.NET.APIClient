@@ -10,32 +10,78 @@ namespace VersionOne.SDK.APIClient
         public EnvironmentContext()
         {
             _modelsAndServices = new ModelsAndServices();
-            SetModelsAndServices();
         }  
         
         public EnvironmentContext(IModelsAndServices modelsAndServices)
         {
             if (modelsAndServices == null) throw new ArgumentNullException("modelsAndServices");
             _modelsAndServices = modelsAndServices;
-            SetModelsAndServices();
         }
 
-        private void SetModelsAndServices()
+        private IMetaModel _metaModel;
+        public IMetaModel MetaModel
         {
-            MetaModel = _modelsAndServices.MetaModel;
-            MetaModelWithProxy = _modelsAndServices.MetaModelWithProxy;
-            Services = _modelsAndServices.Services;
-            ServicesWithProxy = _modelsAndServices.ServicesWithProxy;
-            V1Configuration = _modelsAndServices.V1Configuration;
-            V1ConfigurationWithProxy = _modelsAndServices.V1ConfigurationWithProxy;
+            get
+            {
+                if (_metaModel != null) return _metaModel;
+                _metaModel = _modelsAndServices.MetaModel;
+                return _metaModel;
+            }
         }
 
-        public IMetaModel MetaModel { get; private set; }
-        public IMetaModel MetaModelWithProxy { get; private set; }
-        public IServices Services { get; private set; }
-        public IServices ServicesWithProxy { get; private set; }
-        public IV1Configuration V1Configuration { get; private set; }
-        public IV1Configuration V1ConfigurationWithProxy { get; private set; }
+        private IMetaModel _metaModelWithProxy;
+        public IMetaModel MetaModelWithProxy {
+            get
+            {
+                if (_metaModelWithProxy != null) return _metaModelWithProxy;
+                _metaModelWithProxy = _modelsAndServices.MetaModelWithProxy;
+                return _metaModelWithProxy;
+            }
+        }
+
+        private IServices _services;
+        public IServices Services
+        {
+            get
+            {
+                if (_services != null) return _services;
+                _services = _modelsAndServices.Services;
+                return _services;
+            }
+        }
+
+        private IServices _servicesWithProxy;
+        public IServices ServicesWithProxy
+        {
+            get
+            {
+                if (_servicesWithProxy != null) return _servicesWithProxy;
+                _servicesWithProxy = _modelsAndServices.ServicesWithProxy;
+                return _servicesWithProxy;
+            }
+        }
+
+        private IV1Configuration _v1Configuration;
+        public IV1Configuration V1Configuration
+        {
+            get
+            {
+                if (_v1Configuration != null) return _v1Configuration;
+                _v1Configuration = _modelsAndServices.V1Configuration;
+                return _v1Configuration;
+            }
+        }
+
+        private IV1Configuration _v1ConfigurationWithProxy;
+        public IV1Configuration V1ConfigurationWithProxy
+        {
+            get
+            {
+                if (_v1ConfigurationWithProxy != null) return _v1ConfigurationWithProxy;
+                _v1ConfigurationWithProxy = _modelsAndServices.V1ConfigurationWithProxy;
+                return _v1ConfigurationWithProxy;
+            }
+        }
 
     }
 }
