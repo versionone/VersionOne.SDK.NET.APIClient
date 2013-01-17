@@ -1,11 +1,13 @@
 
+set -e
+set -x
 
 
 # This file must be updated by hand when you wish to bump the version number.
 # The build script files will use these values in the build process
 
 MAJOR=12
-MINOR=2
+MINOR=3
 REVISION=0
 
 # -------------------------------------------------------------------------
@@ -36,15 +38,20 @@ function parentwith() {  # used to find $WORKSPACE, below.
   echo "$DIR"
   }
 
-if [ -z "$BUILD_NUMBER" ]; then export BUILD_NUMBER=`date -u +%s`; fi
+if [ -z "$BUILD_NUMBER" ]; then export BUILD_NUMBER=`date -u +%y%m%d%h%m`; fi
 if [ -z "$WORKSPACE" ]; then export WORKSPACE=`parentwith .git`; fi
 if [ -z "$SIGNING_KEY_DIR" ]; then export SIGNING_KEY_DIR=`pwd`; echo "Please plase VersionOne.snk in `pwd` for signing."; fi
 
 
+
 export BUILDTOOLS_PATH="$WORKSPACE/GetBuildTools"
+if [ ! -d "$BUILDTOOLS_PATH" ]; then
+  export BUILDTOOLS_PATH="$WORKSPACE/../v1_build_tools"
+fi
+
 export DOTNET_PATH="/c/Windows/Microsoft.Net/Framework/v4.0.30319"
 
-export PATH="$PATH:$NUGET_TOOLS_PATH:$DOTNET_PATH"
+export PATH="$PATH:$BUILDTOOLS_PATH/bin:$DOTNET_PATH"
 
 export Configuration="Release"
 export Platform="AnyCPU"
@@ -143,9 +150,10 @@ EOF
 
 cd $WORKSPACE/APIClient
 
-msbuild VersionOneApiClient.csproj \
-  /p:SignAssembly=$SIGN_ASSEMBLY \
-  /p:AssemblyOriginatorKeyFile=`winpath "$SIGNING_KEY"`
+MSBuild.exe VersionOne.SDK.APIClient.csproj
+# \
+#   /p:SignAssembly=$SIGN_ASSEMBLY \
+#   /p:AssemblyOriginatorKeyFile=`winpath "$SIGNING_KEY"`
 
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
@@ -159,9 +167,10 @@ cd $WORKSPACE/APIClient.Tests
 
 update_nuget_deps  # this also gets the nunit runner used below
 
-msbuild VersionOneApiClient.csproj \
-  /p:SignAssembly=$SIGN_ASSEMBLY \
-  /p:AssemblyOriginatorKeyFile=`winpath "$SIGNING_KEY"`
+MSBuild.exe VersionOne.SDK.APIClient.Tests.csproj 
+# \
+#   /p:SignAssembly=$SIGN_ASSEMBLY \
+#   /p:AssemblyOriginatorKeyFile=`winpath "$SIGNING_KEY"`
 
 # ---- Run Tests --------------------------------------------------------------------------
 
@@ -175,10 +184,10 @@ then
 fi
 
 $NUNIT_CONSOLE_RUNNER \
-  /framework:net-4.0 \
-  /labels \
-  /stoponerror \
-  /xml=nunit-objmodel-result.xml \
+  //framework:net-4.0 \
+  //labels \
+  //stoponerror \
+  //xml=nunit-objmodel-result.xml \
   `winpath "${WORKSPACE}/APIClient.Tests/bin/Release/VersionOne.SDK.APIClient.Tests.dll"`
 
 
