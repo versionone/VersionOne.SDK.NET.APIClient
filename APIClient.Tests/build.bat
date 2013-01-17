@@ -1,4 +1,0 @@
-mkdir ..\packages
-call NuGetRestorePackagesOnly.bat VersionOne.SDK.APIClient.Tests.csproj %1
-call NuGetUpdatePackages.bat packages.config
-msbuild VersionOne.SDK.APIClient.Tests.csproj /p:NuGetExePath=%1\NuGet.exe /p:RequireRestoreConsent=false /p:Configuration=Release /p:Platform=AnyCPU /p:Major=%MajorVersion% /p:Minor=%MinorVersion%  /p:Revision=%Revision% /p:AssemblyInformationalVersion="%InformationalVersion%" /p:AssemblyCopyright="Copyright 2012, VersionOne, Inc. Licensed under modified BSD." /p:CompanyName="VersionOne, Inc" /p:AssemblyProduct="VersionOne.SDK.APIClient.Tests" /p:AssemblyTitle="VersionOne SDK API Client Tests" /p:AssemblyDescription="VersionOne SDK .NET API Client Tests Release Build"
