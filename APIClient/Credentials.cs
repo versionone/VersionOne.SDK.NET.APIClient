@@ -15,18 +15,49 @@
     public sealed class Credentials : ICredentials
     {
 
-        public Credentials()
+        private string _v1UserName;
+        public string V1UserName
         {
-            V1UserName = V1ConfigurationManager.GetValue(Settings.V1UserName, "admin");
-            V1Password = V1ConfigurationManager.GetValue(Settings.V1Password, "admin");
-            ProxyUserName = V1ConfigurationManager.GetValue(Settings.ProxyUserName, "Administrator");
-            ProxyPassword = V1ConfigurationManager.GetValue(Settings.ProxyPassword, "12345678");
+            get
+            {
+                if (string.IsNullOrEmpty(_v1UserName) == false) return _v1UserName;
+                _v1UserName = V1ConfigurationManager.GetValue(Settings.V1UserName, "admin");
+                return _v1UserName;
+            }
         }
 
-        public string V1UserName { get; private set; }
-        public string V1Password { get; private set; }
-        public string ProxyUserName { get; private set; }
-        public string ProxyPassword { get; private set; }
+        private string _v1Password;
+        public string V1Password
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_v1Password) == false) return _v1Password;
+                _v1Password = V1ConfigurationManager.GetValue(Settings.V1Password, "admin");
+                return _v1Password;
+            }
+        }
+
+        private string _proxyUserName;
+        public string ProxyUserName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_proxyUserName) == false) return _proxyUserName;
+                _proxyUserName = V1ConfigurationManager.GetValue(Settings.ProxyUserName, "Administrator");
+                return _proxyUserName;
+            }
+        }
+
+        private string _proxyPassword;
+        public string ProxyPassword
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_proxyPassword) == false) return _proxyPassword;
+                _proxyPassword = V1ConfigurationManager.GetValue(Settings.ProxyPassword, "12345678");
+                return _proxyPassword;
+            }
+        }
 
     }
 }

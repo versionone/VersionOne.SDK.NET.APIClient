@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace VersionOne.SDK.APIClient
+﻿namespace VersionOne.SDK.APIClient
 {
 
     public interface  IUrls
@@ -15,22 +10,65 @@ namespace VersionOne.SDK.APIClient
         string ConfigUrl { get; }
     }
 
+    /// <summary>
+    /// Retrieves url information from the executing assemblies .config file.
+    /// </summary>
     public sealed class Urls : IUrls
     {
 
-        public Urls()
+        private string _v1Url;
+        public string V1Url
         {
-            V1Url = V1ConfigurationManager.GetValue(Settings.V1Url, "http://localhost/VersionOne");
-            MetaUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.MetaUrl, "meta.v1/"));
-            DataUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.DataUrl, "rest-1.v1/"));
-            ProxyUrl = V1ConfigurationManager.GetValue(Settings.ProxyUrl, "https://myProxyServer:3128");
-            ConfigUrl = V1ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
+            get
+            {
+                if (string.IsNullOrEmpty(_v1Url) == false) return _v1Url;
+                _v1Url = V1ConfigurationManager.GetValue(Settings.V1Url, "http://localhost/VersionOne");
+                return _v1Url;
+            }
         }
 
-        public string V1Url { get; private set; }
-        public string MetaUrl { get; private set; }
-        public string DataUrl { get; private set; }
-        public string ProxyUrl { get; private set; }
-        public string ConfigUrl { get; private set; }
+        private string _metaUrl;
+        public string MetaUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_metaUrl) == false) return _metaUrl;
+                _metaUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.MetaUrl, "meta.v1/"));
+                return _metaUrl;
+            }
+        }
+
+        private string _dataUrl;
+        public string DataUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_dataUrl) == false) return _dataUrl;
+                _dataUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.DataUrl, "rest-1.v1/"));
+                return _dataUrl;
+            }
+        }
+
+        private string _proxyUrl;
+        public string ProxyUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_proxyUrl) == false) return _proxyUrl;
+                _proxyUrl = V1ConfigurationManager.GetValue(Settings.ProxyUrl, "https://myProxyServer:3128");
+                return _proxyUrl;
+            }
+        }
+
+        private string _configUrl;
+        public string ConfigUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_configUrl) == false) return _configUrl;
+                _configUrl = V1ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
+                return _configUrl;
+            }
+        }
     }
 }
