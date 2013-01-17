@@ -1,6 +1,5 @@
 
 set -e
-set -x
 
 
 # This file must be updated by hand when you wish to bump the version number.
@@ -38,7 +37,7 @@ function parentwith() {  # used to find $WORKSPACE, below.
   echo "$DIR"
   }
 
-if [ -z "$BUILD_NUMBER" ]; then export BUILD_NUMBER=`date -u +%y%m%d%h%m`; fi
+if [ -z "$BUILD_NUMBER" ]; then export BUILD_NUMBER=`date -u +%y%j`; fi
 if [ -z "$WORKSPACE" ]; then export WORKSPACE=`parentwith .git`; fi
 if [ -z "$SIGNING_KEY_DIR" ]; then export SIGNING_KEY_DIR=`pwd`; echo "Please plase VersionOne.snk in `pwd` for signing."; fi
 
@@ -99,7 +98,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 
-[assembly: AssemblyVersion("$MAJOR.$MINOR.$REVISION.0")]
+[assembly: AssemblyVersion("$MAJOR.$MINOR.$REVISION.$BUILD_NUMBER")]
 [assembly: AssemblyFileVersion("$MAJOR.$MINOR.$REVISION.$BUILD_NUMBER")]
 [assembly: AssemblyInformationalVersion("See https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki")]
 
@@ -131,7 +130,7 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("$MAJOR.$MINOR.$REVISION.0")]
+[assembly: AssemblyVersion("$MAJOR.$MINOR.$REVISION.$BUILD_NUMBER")]
 [assembly: AssemblyFileVersion("$MAJOR.$MINOR.$REVISION.$BUILD_NUMBER")]
 [assembly: AssemblyInformationalVersion("12.2.1.3588 Summer 2012")]
 
@@ -146,7 +145,10 @@ using System.Runtime.InteropServices;
 EOF
 
 
+
 # ---- Build API Client using msbuild -----------------------------------------------------
+
+
 
 cd $WORKSPACE/APIClient
 
@@ -157,7 +159,7 @@ MSBuild.exe VersionOne.SDK.APIClient.csproj
 
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
-
+rm -rf *.nupkg
 NuGet.exe pack VersionOne.SDK.APIClient.csproj -Symbols -prop Configuration=Release
 
 
@@ -197,5 +199,6 @@ cd APIClient
 
 for PKG in `ls *.nupkg`
 do
+  echo "Pushing $PKG"
   NuGet.exe push `winpath "$PKG"` $MYGET_API_KEY -Source "$MYGET_REPO_URL"
 done
