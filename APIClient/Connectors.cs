@@ -20,12 +20,13 @@ namespace VersionOne.SDK.APIClient
 
         private readonly IUrls _urls;
         private readonly ICredentials _credentials;
+        private bool _useWindowsIntegratedAuth;
 
         public Connectors()
         {
             _urls = new Urls();
             _credentials = new Credentials();
-            SetConnectors();
+            InitializeInternal();
         }
 
         public Connectors(IUrls urls, ICredentials credentials)
@@ -34,19 +35,12 @@ namespace VersionOne.SDK.APIClient
             if (credentials == null) throw new ArgumentNullException("credentials");
             _urls = urls;
             _credentials = credentials;
-            SetConnectors();
+            InitializeInternal();
         }
 
-        private void SetConnectors()
+        private void InitializeInternal()
         {
-            var useWindowsIntegratedAuth = V1ConfigurationManager.GetValue(Settings.UseWindowsIntegratedAuth, false);
-            DataConnector = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth);
-            DataConnectorWithProxy = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
-            MetaConnector = new V1APIConnector(_urls.MetaUrl);
-            MetaConnectorWithProxy = new V1APIConnector(_urls.MetaUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
-            ConfigurationConnector = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password);
-            ConfigurationConnectorWithProxy = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password, useWindowsIntegratedAuth, GetProxyProvider());
-
+            _useWindowsIntegratedAuth = V1ConfigurationManager.GetValue(Settings.UseWindowsIntegratedAuth, false);
         }
 
         private ProxyProvider GetProxyProvider()
@@ -55,12 +49,71 @@ namespace VersionOne.SDK.APIClient
             return new ProxyProvider(proxyUri, _credentials.ProxyUserName, _credentials.ProxyPassword);
         }
 
-        public V1APIConnector MetaConnector { get; private set; }
-        public V1APIConnector MetaConnectorWithProxy { get; private set; }
-        public V1APIConnector DataConnector { get; private set; }
-        public V1APIConnector DataConnectorWithProxy { get; private set; }
-        public V1APIConnector ConfigurationConnector { get; private set; }
-        public V1APIConnector ConfigurationConnectorWithProxy { get; private set; }
+        private V1APIConnector _metaConnector;
+        public V1APIConnector MetaConnector
+        {
+            get
+            {
+                if (_metaConnector != null) return _metaConnector;
+                _metaConnector = new V1APIConnector(_urls.MetaUrl);
+                return _metaConnector;
+            }
+        }
+
+        private V1APIConnector _metaConnectorWithProxy;
+        public V1APIConnector MetaConnectorWithProxy
+        {
+            get
+            {
+                if (_metaConnectorWithProxy != null) return _metaConnectorWithProxy;
+                _metaConnectorWithProxy = new V1APIConnector(_urls.MetaUrl, _credentials.V1UserName, _credentials.V1Password, _useWindowsIntegratedAuth, GetProxyProvider());
+                return _metaConnectorWithProxy;
+            }
+        }
+
+        private V1APIConnector _dataConnector;
+        public V1APIConnector DataConnector
+        {
+            get
+            {
+                if (_dataConnector != null) return _dataConnector;
+                _dataConnector = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, _useWindowsIntegratedAuth);
+                return _dataConnector;
+            }
+        }
+
+        private V1APIConnector _dataConnectorWithProxy;
+        public V1APIConnector DataConnectorWithProxy
+        {
+            get
+            {
+                if (_dataConnectorWithProxy != null) return _dataConnectorWithProxy;
+                _dataConnectorWithProxy = new V1APIConnector(_urls.DataUrl, _credentials.V1UserName, _credentials.V1Password, _useWindowsIntegratedAuth, GetProxyProvider());
+                return _dataConnectorWithProxy;
+            }
+        }
+
+        private V1APIConnector _configurationConnector;
+        public V1APIConnector ConfigurationConnector
+        {
+            get
+            {
+                if (_configurationConnector != null) return _configurationConnector;
+                _configurationConnector = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password);
+                return _configurationConnector;
+            }
+        }
+
+        private V1APIConnector _configurationConnectorWithProxy;
+        public V1APIConnector ConfigurationConnectorWithProxy
+        {
+            get
+            {
+                if (_configurationConnectorWithProxy != null) return _configurationConnectorWithProxy;
+                _configurationConnectorWithProxy = new V1APIConnector(_urls.ConfigUrl, _credentials.V1UserName, _credentials.V1Password, _useWindowsIntegratedAuth, GetProxyProvider());
+                return _configurationConnectorWithProxy;
+            }
+        }
 
     }
 }
