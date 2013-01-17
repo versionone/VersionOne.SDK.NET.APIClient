@@ -37,7 +37,10 @@ function parentwith() {  # used to find $WORKSPACE, below.
   echo "$DIR"
   }
 
-if [ -z "$BUILD_NUMBER" ]; then export BUILD_NUMBER=`date -u +%y%j`; fi
+if [ -z "$BUILD_NUMBER" ]; then
+  export REVISION=`date +%y%j`
+  export BUILD_NUMBER=`date +%H%M`
+fi
 if [ -z "$WORKSPACE" ]; then export WORKSPACE=`parentwith .git`; fi
 if [ -z "$SIGNING_KEY_DIR" ]; then export SIGNING_KEY_DIR=`pwd`; echo "Please plase VersionOne.snk in `pwd` for signing."; fi
 
