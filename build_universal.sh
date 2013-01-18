@@ -66,10 +66,12 @@ if [ -z "$WORKSPACE" ]; then
   export WORKSPACE=`parentwith .git`;
 fi
 
-BUILDTOOLS_PATH="$WORKSPACE/GetBuildTools"
-if [ ! -d "$BUILDTOOLS_PATH" ]; then
-  BUILDTOOLS_PATH="$WORKSPACE/../v1_build_tools"
-fi
+for D in "$WORKSPACE/GetBuildTools" "$WORKSPACE/v1_build_tools" "$WORKSPACE/../v1_build_tools" .
+do
+  if [ -d $D ]; then
+    export BUILDTOOLS_PATH="$D"
+  fi
+done
 
 export PATH="$PATH:$BUILDTOOLS_PATH/bin:$DOTNET_PATH"
 
@@ -203,11 +205,3 @@ $NUNIT_CONSOLE_RUNNER \
 
 
 
-# ---- publish nuget package to local repo -----------------------------------------------
-
-cd $WORKSPACE/$MAIN_DIR
-
-for PKG in *[0-9].nupkg; do
-  echo "Pushing $PKG to myget"
-  NuGet.exe push `winpath "$PKG"` $MYGET_API_KEY -Source "$MYGET_REPO_URL"
-done
