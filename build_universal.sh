@@ -70,11 +70,13 @@ for D in "$WORKSPACE/GetBuildTools" "$WORKSPACE/v1_build_tools" "$WORKSPACE/../v
 do
   if [ -d $D ]; then
     export BUILDTOOLS_PATH="$D"
+    echo "Chose $BUILDTOOLS_PATH for tools"
   fi
 done
 
 export PATH="$PATH:$BUILDTOOLS_PATH/bin:$DOTNET_PATH"
 
+echo "PATH=$PATH"
 
 if [ -z "$SIGNING_KEY_DIR" ]; then
   export SIGNING_KEY_DIR=`pwd`;
