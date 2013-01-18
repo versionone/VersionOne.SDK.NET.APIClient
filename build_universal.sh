@@ -1,5 +1,7 @@
 
 set -e -x
+set
+
 
 # This file must be updated by hand when you wish to bump the version number.
 # The build script files will use these values in the build process
