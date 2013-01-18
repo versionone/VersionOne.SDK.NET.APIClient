@@ -66,9 +66,9 @@ if [ -z "$WORKSPACE" ]; then
   export WORKSPACE=`parentwith .git`;
 fi
 
-for D in . "$WORKSPACE/GetBuildTools" "$WORKSPACE/v1_build_tools" "$WORKSPACE/../v1_build_tools"
-do
-  if [ -d $D ]; then
+TOOLSDIRS=". $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools"
+for D in $TOOLSDIRS; do
+  if [ -d "$D" ]; then
     export BUILDTOOLS_PATH="$D"
     echo "Chose $BUILDTOOLS_PATH for tools"
   fi
