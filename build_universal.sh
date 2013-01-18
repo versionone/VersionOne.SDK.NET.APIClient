@@ -106,8 +106,8 @@ function update_nuget_deps() {
   then
     PKGSCONFIGW=`winpath "${PKGSCONFIG}"`
     PKGSDIRW=`winpath "$WORKSPACE/packages"`
-    NuGet.exe install $PKGSCONFIGW -o $PKGSDIRW -Source $NUGET_FETCH_URL 
-    NuGet.exe update $PKGSCONFIGW -Verbose -Source $NUGET_FETCH_URL
+    $BUILDTOOLS_PATH/bin/NuGet.exe install $PKGSCONFIGW -o $PKGSDIRW -Source $NUGET_FETCH_URL 
+    $BUILDTOOLS_PATH/bin/NuGet.exe update $PKGSCONFIGW -Verbose -Source $NUGET_FETCH_URL
   fi
 }
 
@@ -177,7 +177,7 @@ MSBuild.exe $MAIN_CSPROJ //p:SignAssembly=$SIGN_ASSEMBLY //p:AssemblyOriginatorK
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
 rm -rf *.nupkg
-NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
+$BUILDTOOLS_PATH/bin/NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
 
 
 
