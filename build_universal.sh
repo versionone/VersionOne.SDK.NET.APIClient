@@ -191,7 +191,7 @@ MSBuild.exe $TEST_CSPROJ //p:SignAssembly=$SIGN_ASSEMBLY //p:AssemblyOriginatorK
 
 cd $WORKSPACE
 # Make sure the nunit-console is available first...
-NUNIT_CONSOLE_RUNNER=`find packages | grep "${NUNIT_RUNNER_NAME}\$"`
+NUNIT_CONSOLE_RUNNER=`/usr/bin/find packages | grep "${NUNIT_RUNNER_NAME}\$"`
 if [ -z "$NUNIT_CONSOLE_RUNNER" ]
 then
 	echo "Could not find $NUNIT_RUNNER_NAME in the $WORKSPACE/packages folder."
