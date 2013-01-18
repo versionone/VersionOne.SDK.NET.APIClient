@@ -68,17 +68,15 @@ if [ -z "$WORKSPACE" ]; then
   export WORKSPACE=`parentwith .git`;
 fi
 
-TOOLSDIRS=". $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools"
+TOOLSDIRS=". $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools $WORKSPACE/nuget_tools"
 for D in $TOOLSDIRS; do
   if [ -d "$D" ]; then
     export BUILDTOOLS_PATH="$D"
-    echo "Chose $BUILDTOOLS_PATH for tools"
   fi
 done
+echo "Chose $BUILDTOOLS_PATH for tools"
 
 export PATH="$PATH:$BUILDTOOLS_PATH/bin:$DOTNET_PATH"
-
-echo "PATH=$PATH"
 
 if [ -z "$SIGNING_KEY_DIR" ]; then
   export SIGNING_KEY_DIR=`pwd`;
