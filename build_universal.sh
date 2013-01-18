@@ -1,7 +1,5 @@
 
 set -e -x
-set
-
 
 # This file must be updated by hand when you wish to bump the version number.
 # The build script files will use these values in the build process
@@ -33,7 +31,9 @@ DOTNET_PATH="/c/Windows/Microsoft.Net/Framework/v4.0.30319"
 
 # -------------------------------------------------------------------------
 
-
+# fix for jenkins inserting the windows-style path in $WORKSPACE
+cd "$WORKSPACE"
+export WORKSPACE=`pwd`
 
 
 # ----- Utility functions 
