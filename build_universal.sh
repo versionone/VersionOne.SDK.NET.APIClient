@@ -1,5 +1,5 @@
 
-set -e -x
+set -e
 
 # This file must be updated by hand when you wish to bump the version number.
 # The build script files will use these values in the build process
@@ -106,8 +106,8 @@ function update_nuget_deps() {
   then
     PKGSCONFIGW=`winpath "${PKGSCONFIG}"`
     PKGSDIRW=`winpath "$WORKSPACE/packages"`
-    $BUILDTOOLS_PATH/bin/NuGet.exe install $PKGSCONFIGW -o $PKGSDIRW -Source $NUGET_FETCH_URL 
-    $BUILDTOOLS_PATH/bin/NuGet.exe update $PKGSCONFIGW -Verbose -Source $NUGET_FETCH_URL
+    NuGet.exe install $PKGSCONFIGW -o $PKGSDIRW -Source $NUGET_FETCH_URL 
+    NuGet.exe update $PKGSCONFIGW -Verbose -Source $NUGET_FETCH_URL
   fi
 }
 
@@ -177,7 +177,7 @@ MSBuild.exe $MAIN_CSPROJ //p:SignAssembly=$SIGN_ASSEMBLY //p:AssemblyOriginatorK
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
 rm -rf *.nupkg
-$BUILDTOOLS_PATH/bin/NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
+NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
 
 
 
