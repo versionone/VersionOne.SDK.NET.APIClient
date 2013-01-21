@@ -30,7 +30,22 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         [Test]
         public void GetSingleAssetTest()
         {
-            Assert.IsNotNull(_examples.GetSingleAsset());
+            var asset = _examples.GetSingleAsset();
+            Assert.IsNotNull(asset);
+            Assert.IsFalse(string.IsNullOrEmpty(asset.Oid.Token));
+        }
+
+        [Test]
+        public void EffortTrackingTest()
+        {
+            Assert.IsTrue(_examples.EffortTrackingIsEnabled());
+        }
+
+        [Test]
+        public void GetMultipleAssetsTest()
+        {
+            var assets = _examples.GetMultipleAssets();
+            Assert.AreNotEqual(0, assets.Count);
         }
 
     }

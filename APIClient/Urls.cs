@@ -66,7 +66,7 @@
             get
             {
                 if (string.IsNullOrEmpty(_configUrl) == false) return _configUrl;
-                _configUrl = V1ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/");
+                _configUrl = string.Concat(V1Url, V1ConfigurationManager.GetValue(Settings.ConfigUrl, "config.v1/"));
                 return _configUrl;
             }
         }
