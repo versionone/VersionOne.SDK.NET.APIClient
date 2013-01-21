@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using VersionOne.SDK.APIClient.Examples;
 
 namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
 {
@@ -6,24 +7,31 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
     public class GettingStartedTests
     {
 
-        private EnvironmentContext _context;
-        
+        private GettingStarted _examples;
+
         [SetUp]
         public void Setup()
         {
-            _context = new EnvironmentContext();
+            _examples = new GettingStarted();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _context = null;
+            _examples = null;
         }
 
         [Test]
-        public void Test()
+        public void GetV1ConfigurationTest()
         {
-
+            Assert.IsNotNull(_examples.GetV1Configuration());
         }
+
+        [Test]
+        public void GetSingleAssetTest()
+        {
+            Assert.IsNotNull(_examples.GetSingleAsset());
+        }
+
     }
 }

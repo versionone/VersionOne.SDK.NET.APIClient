@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace VersionOne.SDK.APIClient.Examples
 {
-    class GettingStarted
+    public sealed class GettingStarted
     {
 
         private readonly EnvironmentContext _context;
 
-        private IMetaModel _metaModel;
-        private IMetaModel _metaModelWithProxy;
-        private IServices _services;
-        private IServices _servicesWithProxy;
-        private IV1Configuration _config;
+        private readonly IMetaModel _metaModel;
+        private readonly IMetaModel _metaModelWithProxy;
+        private readonly IServices _services;
+        private readonly IServices _servicesWithProxy;
+        private readonly IV1Configuration _config;
 
         public GettingStarted()
         {
@@ -29,5 +30,38 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
+        public IV1Configuration GetV1Configuration()
+        {
+            return _context.V1Configuration;
+        }
+
+
+        public Asset GetSingleAsset()
+        {
+            
+            var memberId = Oid.FromToken("Member:20", _metaModel);
+            var query = new Query(memberId);
+            var nameAttribute = _metaModel.GetAttributeDefinition("Member.Name");
+            var emailAttribute = _metaModel.GetAttributeDefinition("Member.Email");
+
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(emailAttribute);
+            
+            var result = _services.Retrieve(query);
+            var member = result.Assets[0];
+
+            Trace.WriteLine(member.Oid.Token);
+            Trace.WriteLine(member.GetAttribute(nameAttribute).Value);
+            Trace.WriteLine(member.GetAttribute(emailAttribute).Value);
+
+            /***** OUTPUT *****
+             Member:20
+             Administrator
+             admin@company.com
+             ******************/
+
+            return member;
+
+        }
     }
 }
