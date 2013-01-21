@@ -44,8 +44,8 @@ namespace VersionOne.SDK.APIClient.Examples
             var result = _context.Services.Retrieve(query);
             var member = result.Assets[0];
 
-            LogResult(member.Oid.Token, 
-                member.GetAttribute(nameAttribute).Value.ToString(), 
+            LogResult(member.Oid.Token,
+                member.GetAttribute(nameAttribute).Value.ToString(),
                 member.GetAttribute(emailAttribute).Value.ToString());
 
             /***** OUTPUT *****
@@ -82,9 +82,9 @@ namespace VersionOne.SDK.APIClient.Examples
 
             var result = _context.Services.Retrieve(query);
 
-            result.Assets.ForEach(story => 
-                    LogResult(story.Oid.Token, 
-                        story.GetAttribute(nameAttribute).Value.ToString(), 
+            result.Assets.ForEach(story =>
+                    LogResult(story.Oid.Token,
+                        story.GetAttribute(nameAttribute).Value.ToString(),
                         GetIntegerValue(story.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));  //stories may not have an estimate assigned.
 
             /***** OUTPUT *****
@@ -106,14 +106,81 @@ namespace VersionOne.SDK.APIClient.Examples
             var query = new Query(assetType);
             var nameAttribute = assetType.GetAttributeDefinition("Name");
             query.Selection.Add(nameAttribute);
-            query.Find = new QueryFind("High");  //retrieve only stories marked as urgent
+            query.Find = new QueryFind("High");  //retrieve only stories marked as high priority
             var result = _context.Services.Retrieve(query);
-            
+
             result.Assets.ForEach(asset => LogResult(asset.Oid.Token, asset.GetAttribute(nameAttribute).Value.ToString()));
 
             return result.Assets;
 
-        } 
+        }
+
+        public List<Asset> FilterListOfAssets()
+        {
+            var assetType = _context.MetaModel.GetAssetType("Task");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            var todoAttribute = assetType.GetAttributeDefinition("ToDo");
+
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(todoAttribute);
+
+            var toDoTerm = new FilterTerm(todoAttribute);
+            toDoTerm.Equal(0);
+            query.Filter = toDoTerm;
+            var result = _context.Services.Retrieve(query);
+
+            result.Assets.ForEach(taskAsset =>
+                LogResult(taskAsset.Oid.Token,
+                    taskAsset.GetAttribute(nameAttribute).Value.ToString(),
+                    taskAsset.GetAttribute(todoAttribute).Value.ToString()));
+
+            /***** OUTPUT *****
+             Task:1153
+             Code Review
+             0
+
+             Task:1154
+             Design Component
+             0 ...
+             ******************/
+
+            return result.Assets;
+
+        }
+
+        public List<Asset> SortListOfAssets()
+        {
+            var assetType = _context.MetaModel.GetAssetType("Story");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            var estimateAttribute = assetType.GetAttributeDefinition("Estimate");
+
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(estimateAttribute);
+            query.OrderBy.MinorSort(estimateAttribute, OrderBy.Order.Ascending);
+
+            var result = _context.Services.Retrieve(query);
+
+            result.Assets.ForEach(asset =>
+                LogResult(asset.Oid.Token,
+                    asset.GetAttribute(nameAttribute).Value.ToString(),
+                    asset.GetAttribute(estimateAttribute).Value.ToString()));
+
+            /***** OUTPUT *****
+             Task:1153
+             Code Review
+             0
+
+             Task:1154
+             Design Component
+             0 ...
+             ******************/
+
+            return result.Assets;
+
+        }
+
 
         private static int GetIntegerValue(object value)
         {

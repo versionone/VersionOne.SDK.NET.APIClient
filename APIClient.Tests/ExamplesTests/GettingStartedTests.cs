@@ -55,5 +55,14 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, assets.Count);
         }
 
+        [Test]
+        public void FilterListOfAssetsTest()
+        {
+            var assets = _examples.FindListOfAssets();
+            Assert.AreNotEqual(0, assets.Count);
+        }
+
+
+
     }
 }
