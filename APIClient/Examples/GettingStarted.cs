@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace VersionOne.SDK.APIClient.Examples
 {
@@ -45,8 +42,8 @@ namespace VersionOne.SDK.APIClient.Examples
             var member = result.Assets[0];
 
             LogResult(member.Oid.Token,
-                member.GetAttribute(nameAttribute).Value.ToString(),
-                member.GetAttribute(emailAttribute).Value.ToString());
+                GetValue(member.GetAttribute(nameAttribute).Value),
+                GetValue(member.GetAttribute(emailAttribute).Value));
 
             /***** OUTPUT *****
              Member:20
@@ -84,8 +81,8 @@ namespace VersionOne.SDK.APIClient.Examples
 
             result.Assets.ForEach(story =>
                     LogResult(story.Oid.Token,
-                        story.GetAttribute(nameAttribute).Value.ToString(),
-                        GetIntegerValue(story.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));  //stories may not have an estimate assigned.
+                        GetValue(story.GetAttribute(nameAttribute).Value),
+                        GetValue(story.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));  //stories may not have an estimate assigned.
 
             /***** OUTPUT *****
              Story:1083
@@ -109,7 +106,7 @@ namespace VersionOne.SDK.APIClient.Examples
             query.Find = new QueryFind("High");  //retrieve only stories marked as high priority
             var result = _context.Services.Retrieve(query);
 
-            result.Assets.ForEach(asset => LogResult(asset.Oid.Token, asset.GetAttribute(nameAttribute).Value.ToString()));
+            result.Assets.ForEach(asset => LogResult(GetValue(asset.Oid.Token), GetValue(asset.GetAttribute(nameAttribute).Value)));
 
             return result.Assets;
 
@@ -132,8 +129,8 @@ namespace VersionOne.SDK.APIClient.Examples
 
             result.Assets.ForEach(taskAsset =>
                 LogResult(taskAsset.Oid.Token,
-                    taskAsset.GetAttribute(nameAttribute).Value.ToString(),
-                    taskAsset.GetAttribute(todoAttribute).Value.ToString()));
+                    GetValue(taskAsset.GetAttribute(nameAttribute).Value),
+                    GetValue(taskAsset.GetAttribute(todoAttribute).Value.ToString())));
 
             /***** OUTPUT *****
              Task:1153
@@ -164,8 +161,8 @@ namespace VersionOne.SDK.APIClient.Examples
 
             result.Assets.ForEach(asset =>
                 LogResult(asset.Oid.Token,
-                    asset.GetAttribute(nameAttribute).Value.ToString(),
-                    asset.GetAttribute(estimateAttribute).Value.ToString()));
+                    GetValue(asset.GetAttribute(nameAttribute).Value),
+                    GetValue(asset.GetAttribute(estimateAttribute).Value)));
 
             /***** OUTPUT *****
              Task:1153
@@ -194,10 +191,10 @@ namespace VersionOne.SDK.APIClient.Examples
             query.Paging.Start = 0;
             var result = _context.Services.Retrieve(query);
 
-            result.Assets.ForEach(asset => 
-                LogResult(asset.Oid.Token, 
-                    asset.GetAttribute(nameAttribute).Value.ToString(), 
-                    GetIntegerValue(asset.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));
+            result.Assets.ForEach(asset =>
+                LogResult(asset.Oid.Token,
+                    GetValue(asset.GetAttribute(nameAttribute).Value),
+                    GetValue(asset.GetAttribute(estimateAttribute).Value)));
 
             /***** OUTPUT *****
              Story:1063
@@ -216,12 +213,44 @@ namespace VersionOne.SDK.APIClient.Examples
             return result.Assets;
         }
 
-        private static int GetIntegerValue(object value)
+        public List<Asset> HistorySingleAsset()
         {
-            var returnValue = 0;
-            if (value == null) return returnValue;
-            int.TryParse(value.ToString(), out returnValue);
-            return returnValue;
+            var memberType = _context.MetaModel.GetAssetType("Member");
+            var query = new Query(memberType, true);
+            var idAttribute = memberType.GetAttributeDefinition("ID");
+            var changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
+            var emailAttribute = memberType.GetAttributeDefinition("Email");
+            query.Selection.Add(changeDateAttribute);
+            query.Selection.Add(emailAttribute);
+            var idTerm = new FilterTerm(idAttribute);
+            idTerm.Equal("Member:20");
+            query.Filter = idTerm;
+            var result = _context.Services.Retrieve(query);
+
+            result.Assets.ForEach(asset =>
+                LogResult(asset.Oid.Token,
+                    GetValue(asset.GetAttribute(changeDateAttribute).Value),
+                    GetValue(asset.GetAttribute(emailAttribute).Value)));
+
+            /***** OUTPUT *****
+             Member:1000:105
+             4/2/2007 1:22:03 PM
+             andre.agile@company.com
+
+             Member:1000:101
+             3/29/2007 4:10:29 PM
+             andre@company.net
+             ******************/
+
+            return result.Assets;
+
         }
+
+        private static string GetValue(object value)
+        {
+            var returnValue = string.Empty;
+            return value == null ? returnValue : value.ToString();
+        }
+
     }
 }
