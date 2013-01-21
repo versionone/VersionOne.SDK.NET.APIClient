@@ -72,10 +72,10 @@ namespace VersionOne.SDK.APIClient.Examples
 
         public List<Asset> GetMultipleAssets()
         {
-            var storyType = _context.MetaModel.GetAssetType("Story");
-            var query = new Query(storyType);
-            var nameAttribute = storyType.GetAttributeDefinition("Name");
-            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+            var assetType = _context.MetaModel.GetAssetType("Story");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            var estimateAttribute = assetType.GetAttributeDefinition("Estimate");
 
             query.Selection.Add(nameAttribute);
             query.Selection.Add(estimateAttribute);
@@ -99,6 +99,21 @@ namespace VersionOne.SDK.APIClient.Examples
 
             return result.Assets;
         }
+
+        public List<Asset> FindListOfAssets()
+        {
+            var assetType = _context.MetaModel.GetAssetType("Story");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            query.Selection.Add(nameAttribute);
+            query.Find = new QueryFind("High");  //retrieve only stories marked as urgent
+            var result = _context.Services.Retrieve(query);
+            
+            result.Assets.ForEach(asset => LogResult(asset.Oid.Token, asset.GetAttribute(nameAttribute).Value.ToString()));
+
+            return result.Assets;
+
+        } 
 
         private static int GetIntegerValue(object value)
         {
