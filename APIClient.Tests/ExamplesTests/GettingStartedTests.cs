@@ -62,7 +62,12 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, assets.Count);
         }
 
-
+        [Test]
+        public void PageListOfAssetsTest()
+        {
+            var assets = _examples.PageListOfAssets();
+            Assert.AreEqual(3, assets.Count);
+        }
 
     }
 }

@@ -181,6 +181,40 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
+        public List<Asset> PageListOfAssets()
+        {
+
+            var storyType = _context.MetaModel.GetAssetType("Story");
+            var query = new Query(storyType);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(estimateAttribute);
+            query.Paging.PageSize = 3;
+            query.Paging.Start = 0;
+            var result = _context.Services.Retrieve(query);
+
+            result.Assets.ForEach(asset => 
+                LogResult(asset.Oid.Token, 
+                    asset.GetAttribute(nameAttribute).Value.ToString(), 
+                    GetIntegerValue(asset.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));
+
+            /***** OUTPUT *****
+             Story:1063
+             Logon
+             2
+
+             Story:1064
+             Add Customer Details
+             2
+
+             Story:1065
+             Add Customer Header
+             3
+             ******************/
+
+            return result.Assets;
+        }
 
         private static int GetIntegerValue(object value)
         {
