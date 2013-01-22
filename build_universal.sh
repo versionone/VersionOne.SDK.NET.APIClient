@@ -8,8 +8,6 @@ MAJOR=12
 MINOR=3
 REVISION=0
 
-export NUGET_API_KEY="7df1856b-7448-4d94-bffd-6d8585fc1826"
-export MYGET_API_KEY="05c7fd08-2673-411f-90fb-c794e632f32d"
 export MYGET_REPO_URL="http://www.myget.org/F/versionone/api/v2/package"
 export NUGET_FETCH_URL="$MYGET_REPO_URL;http://packages.nuget.org/api/v2/"
 
