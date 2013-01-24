@@ -45,7 +45,7 @@ namespace VersionOne.SDK.APIClient.Examples
                 GetValue(member.GetAttribute(nameAttribute).Value),
                 GetValue(member.GetAttribute(emailAttribute).Value));
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Member:20
              Administrator
              admin@company.com
@@ -62,7 +62,7 @@ namespace VersionOne.SDK.APIClient.Examples
 
             return _context.V1Configuration.EffortTracking;
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
             False
             ******************/
         }
@@ -84,7 +84,7 @@ namespace VersionOne.SDK.APIClient.Examples
                         GetValue(story.GetAttribute(nameAttribute).Value),
                         GetValue(story.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));  //stories may not have an estimate assigned.
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Story:1083
              View Daily Call Count
              5
@@ -132,7 +132,7 @@ namespace VersionOne.SDK.APIClient.Examples
                     GetValue(taskAsset.GetAttribute(nameAttribute).Value),
                     GetValue(taskAsset.GetAttribute(todoAttribute).Value.ToString())));
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Task:1153
              Code Review
              0
@@ -164,7 +164,7 @@ namespace VersionOne.SDK.APIClient.Examples
                     GetValue(asset.GetAttribute(nameAttribute).Value),
                     GetValue(asset.GetAttribute(estimateAttribute).Value)));
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Task:1153
              Code Review
              0
@@ -196,7 +196,7 @@ namespace VersionOne.SDK.APIClient.Examples
                     GetValue(asset.GetAttribute(nameAttribute).Value),
                     GetValue(asset.GetAttribute(estimateAttribute).Value)));
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Story:1063
              Logon
              2
@@ -232,7 +232,7 @@ namespace VersionOne.SDK.APIClient.Examples
                     GetValue(asset.GetAttribute(changeDateAttribute).Value),
                     GetValue(asset.GetAttribute(emailAttribute).Value)));
 
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Member:1000:105
              4/2/2007 1:22:03 PM
              andre.agile@company.com
@@ -244,6 +244,43 @@ namespace VersionOne.SDK.APIClient.Examples
 
             return result.Assets;
 
+        }
+
+        public List<Asset> HistoryListOfAssets()
+        {
+            var memberType = _context.MetaModel.GetAssetType("Member");
+            var query = new Query(memberType, true);
+            var changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
+            var emailAttribute = memberType.GetAttributeDefinition("Email");
+            query.Selection.Add(changeDateAttribute);
+            query.Selection.Add(emailAttribute);
+            var result = _context.Services.Retrieve(query);
+            var memberHistory = result.Assets;
+
+            memberHistory.ForEach(member => 
+                LogResult(member.Oid.Token, 
+                    GetValue(member.GetAttribute(changeDateAttribute).Value), 
+                    GetValue(member.GetAttribute(emailAttribute))));
+
+            /***** OUTPUT EXAMPLE *****
+             Member:20:0
+             Thu Nov 30 19:00:00 EST 1899
+             null
+
+             Member:20:17183
+             Fri Nov 09 09:46:25 EST 2012
+             versionone@mailinator.com
+
+             Member:20:17190
+             Sun Nov 11 22:59:23 EST 2012
+             versionone@mailinator.com
+
+             Member:20:17191
+             Sun Nov 11 22:59:47 EST 2012
+             versionone@mailinator.com
+             ******************/
+
+            return memberHistory;
         }
 
         private static string GetValue(object value)

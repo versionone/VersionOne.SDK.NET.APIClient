@@ -76,5 +76,12 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, assets.Count);
         }
 
+        [Test]
+        public void HistoryListOfAssetsTest()
+        {
+            var assets = _examples.HistoryListOfAssets();
+            Assert.AreNotEqual(0, assets.Count);
+        }
+
     }
 }
