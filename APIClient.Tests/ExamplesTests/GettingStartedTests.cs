@@ -89,6 +89,19 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, assets.Count);
         }
 
+        [Test]
+        public void HistoryAsOfTimeTest()
+        {
+            var assets = _examples.HistoryAsOfTime();
+            Assert.AreNotEqual(0, assets.Count);
+        }
+
+        [Test]
+        public void UpdateScalarAttributeTest()
+        {
+            Assert.IsTrue(_examples.UpdateScalarAttribute());
+        }
+
 
     }
 }

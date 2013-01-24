@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -30,14 +31,6 @@ namespace VersionOne.SDK.APIClient.Examples
             Defect tracking level:  On
             ******************/
 
-        }
-
-        private static void LogResult(params string[] results)
-        {
-            foreach (var result in results)
-            {
-                Debug.WriteLine(result);
-            }
         }
 
         public Asset GetSingleAsset()
@@ -270,9 +263,9 @@ namespace VersionOne.SDK.APIClient.Examples
             var result = _context.Services.Retrieve(query);
             var memberHistory = result.Assets;
 
-            memberHistory.ForEach(member => 
-                LogResult(member.Oid.Token, 
-                    GetValue(member.GetAttribute(changeDateAttribute).Value), 
+            memberHistory.ForEach(member =>
+                LogResult(member.Oid.Token,
+                    GetValue(member.GetAttribute(changeDateAttribute).Value),
                     GetValue(member.GetAttribute(emailAttribute))));
 
             /***** OUTPUT EXAMPLE *****
@@ -296,10 +289,87 @@ namespace VersionOne.SDK.APIClient.Examples
             return memberHistory;
         }
 
+        public List<Asset> HistoryAsOfTime()
+        {
+            var storyType = _context.MetaModel.GetAssetType("Story");
+            var query = new Query(storyType, true);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(estimateAttribute);
+
+            query.AsOf = DateTime.Now.AddDays(-7);
+            QueryResult result = _context.Services.Retrieve(query);
+
+            result.Assets.ForEach(asset =>
+                LogResult(asset.Oid.Token,
+                    GetValue(asset.GetAttribute(nameAttribute).Value),
+                    GetValue(asset.GetAttribute(estimateAttribute).Value)));
+
+            /***** OUTPUT EXAMPLE *****
+            Story:5807:7830
+            Investigate and fix priority update and data integrity issues.
+            12
+            Story:8440:13019
+            OneHundredThousandAndOne1/7/2012 10:24:56 AM_i5
+
+            Story:8564:13143
+            OneHundredThousandAndOne1/7/2012 10:26:35 AM_i115
+
+            Story:10194:14838
+            Story Object Model Single Call Test 2/13/2012 3:12:18 PM
+
+            Story:8424:13003
+            OneHundredThousandAndOne1/7/2012 10:23:39 AM_i3
+
+            Story:9228:13807
+            OneHundredThousandAndOne1/7/2012 10:39:17 AM_i466
+
+             ******************/
+
+            return result.Assets;
+
+        }
+
+        public bool UpdateScalarAttribute()
+        {
+            var storyId = Oid.FromToken("Story:1094", _context.MetaModel);
+            var query = new Query(storyId);
+            var storyType = _context.MetaModel.GetAssetType("Story");
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+
+            query.Selection.Add(nameAttribute);
+            var result = _context.Services.Retrieve(query);
+            var story = result.Assets[0];
+            var oldName = GetValue(story.GetAttribute(nameAttribute).Value);
+            story.SetAttributeValue(nameAttribute, Guid.NewGuid().ToString());
+            _context.Services.Save(story);
+
+            LogResult(story.Oid.Token, oldName, GetValue(story.GetAttribute(nameAttribute).Value));
+
+            //System.out.println(story.getOid().getToken());
+            //System.out.println(oldName);
+            //System.out.println(story.getAttribute(nameAttribute).getValue());
+            /***** OUTPUT *****
+             Story:1094:1446
+             Logon
+             F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4
+             ******************/
+
+            return true;
+        }
+
         private static string GetValue(object value)
         {
-            var returnValue = string.Empty;
-            return value == null ? returnValue : value.ToString();
+            return value == null ? "No Value Available" : value.ToString();
+        }
+
+        private static void LogResult(params string[] results)
+        {
+            foreach (var result in results)
+            {
+                Debug.WriteLine(result);
+            }
         }
 
     }
