@@ -102,6 +102,10 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.IsTrue(_examples.UpdateScalarAttribute());
         }
 
-
+        [Test]
+        public void UpdateSingleValueRelationTest()
+        {
+            Assert.IsTrue(_examples.UpdateSingleValueRelation());
+        }
     }
 }

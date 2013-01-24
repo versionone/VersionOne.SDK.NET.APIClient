@@ -347,16 +347,46 @@ namespace VersionOne.SDK.APIClient.Examples
 
             LogResult(story.Oid.Token, oldName, GetValue(story.GetAttribute(nameAttribute).Value));
 
-            //System.out.println(story.getOid().getToken());
-            //System.out.println(oldName);
-            //System.out.println(story.getAttribute(nameAttribute).getValue());
-            /***** OUTPUT *****
+            /***** OUTPUT EXAMPLE *****
              Story:1094:1446
              Logon
              F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4
              ******************/
 
             return true;
+        }
+
+        public bool UpdateSingleValueRelation()
+        {
+            
+            var storyId = Oid.FromToken("Story:1094", _context.MetaModel);
+            var query = new Query(storyId);
+            var storyType = _context.MetaModel.GetAssetType("Story");
+            var sourceAttribute = storyType.GetAttributeDefinition("Source");
+            query.Selection.Add(sourceAttribute);
+            var result = _context.Services.Retrieve(query);
+            var story = result.Assets[0];
+            var oldSource = GetValue(story.GetAttribute(sourceAttribute).Value);
+            story.SetAttributeValue(sourceAttribute, GetNextSourceId(oldSource));
+            _context.Services.Save(story);
+
+            LogResult(story.Oid.Token, oldSource, GetValue(story.GetAttribute(sourceAttribute).Value));
+            
+            /***** OUTPUT EXAMPLE *****
+            Story:1094:17726
+            StorySource:148
+            StorySource:149
+            ******************/
+
+            return true;
+
+        }
+
+        private static string GetNextSourceId(string oldSource)
+        {
+            if (oldSource == "StorySource:148") return "StorySource:149";
+            if (oldSource == "StorySource:149") return "StorySource:150";
+            return "StorySource:148";
         }
 
         private static string GetValue(object value)
