@@ -19,6 +19,19 @@ namespace VersionOne.SDK.APIClient.Examples
             return _context.V1Configuration;
         }
 
+        public void GetStoryAndDefectTrackingLevel()
+        {
+
+            LogResult(string.Concat("Story tracking level:  ", _context.V1Configuration.StoryTrackingLevel));
+            LogResult(string.Concat("Defect tracking level:  ", _context.V1Configuration.DefectTrackingLevel));
+
+            /***** OUTPUT EXAMPLE *****
+            Story tracking level:  Mix
+            Defect tracking level:  On
+            ******************/
+
+        }
+
         private static void LogResult(params string[] results)
         {
             foreach (var result in results)

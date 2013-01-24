@@ -28,6 +28,12 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         }
 
         [Test]
+        public void StoryAndDefectTrackingLevelTest()
+        {
+            _examples.GetStoryAndDefectTrackingLevel();
+        }
+
+        [Test]
         public void GetSingleAssetTest()
         {
             var asset = _examples.GetSingleAsset();
@@ -82,6 +88,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var assets = _examples.HistoryListOfAssets();
             Assert.AreNotEqual(0, assets.Count);
         }
+
 
     }
 }
