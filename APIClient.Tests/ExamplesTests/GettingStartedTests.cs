@@ -34,6 +34,12 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         }
 
         [Test]
+        public void AddNewAssetTest()
+        {
+            Assert.IsTrue(_examples.AddNewAsset());
+        }
+
+        [Test]
         public void GetSingleAssetTest()
         {
             var asset = _examples.GetSingleAsset();

@@ -36,6 +36,28 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
+        public bool AddNewAsset()
+        {
+            var projectId = Oid.FromToken("Scope:0", _context.MetaModel);
+            var assetType = _context.MetaModel.GetAssetType("Story");
+            var newStory = _context.Services.New(assetType, projectId);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            newStory.SetAttributeValue(nameAttribute, "My New Story");
+            _context.Services.Save(newStory);
+
+            LogResult(newStory.Oid.Token, 
+                GetValue(newStory.GetAttribute(assetType.GetAttributeDefinition("Scope")).Value), 
+                GetValue(newStory.GetAttribute(nameAttribute).Value));
+
+            /***** OUTPUT *****
+             Story:1094
+             Scope:1012
+             My New Story
+             ******************/
+
+            return newStory;
+        }
+
         public Asset GetSingleAsset()
         {
 
@@ -361,7 +383,7 @@ namespace VersionOne.SDK.APIClient.Examples
 
         public bool UpdateSingleValueRelation()
         {
-            
+
             var storyId = Oid.FromToken("Story:1094", _context.MetaModel);
             var query = new Query(storyId);
             var storyType = _context.MetaModel.GetAssetType("Story");
@@ -374,7 +396,7 @@ namespace VersionOne.SDK.APIClient.Examples
             _context.Services.Save(story);
 
             LogResult(story.Oid.Token, oldSource, GetValue(story.GetAttribute(sourceAttribute).Value));
-            
+
             /***** OUTPUT EXAMPLE *****
             Story:1094:17726
             StorySource:148
