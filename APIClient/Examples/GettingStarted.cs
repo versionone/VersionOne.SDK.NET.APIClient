@@ -36,7 +36,7 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
-        public bool AddNewAsset()
+        public Asset AddNewAsset()
         {
             var projectId = Oid.FromToken("Scope:0", _context.MetaModel);
             var assetType = _context.MetaModel.GetAssetType("Story");
@@ -45,8 +45,8 @@ namespace VersionOne.SDK.APIClient.Examples
             newStory.SetAttributeValue(nameAttribute, "My New Story");
             _context.Services.Save(newStory);
 
-            LogResult(newStory.Oid.Token, 
-                GetValue(newStory.GetAttribute(assetType.GetAttributeDefinition("Scope")).Value), 
+            LogResult(newStory.Oid.Token,
+                GetValue(newStory.GetAttribute(assetType.GetAttributeDefinition("Scope")).Value),
                 GetValue(newStory.GetAttribute(nameAttribute).Value));
 
             /***** OUTPUT *****
@@ -56,6 +56,31 @@ namespace VersionOne.SDK.APIClient.Examples
              ******************/
 
             return newStory;
+        }
+
+        public bool DeleteAnAsset()
+        {
+
+            var story = AddNewAsset();
+            var deleteOperation = _context.MetaModel.GetOperation("Story.Delete");
+            var deletedId = _context.Services.ExecuteOperation(deleteOperation, story.Oid);
+            var query = new Query(deletedId.Momentless);
+
+            try
+            {
+                QueryResult result = _context.Services.Retrieve(query);
+            }
+            catch (ConnectionException e)
+            {
+                LogResult("Story has been deleted: " + story.Oid.Momentless);
+            }
+
+            /***** OUTPUT *****
+             Story has been deleted: Story:1049
+             ******************/
+
+            return true;
+
         }
 
         public Asset GetSingleAsset()

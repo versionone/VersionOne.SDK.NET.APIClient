@@ -36,7 +36,13 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         [Test]
         public void AddNewAssetTest()
         {
-            Assert.IsTrue(_examples.AddNewAsset());
+            Assert.IsNotNull(_examples.AddNewAsset());
+        }
+
+        [Test]
+        public void DeleteAnAssetTest()
+        {
+            Assert.IsTrue(_examples.DeleteAnAsset());
         }
 
         [Test]
