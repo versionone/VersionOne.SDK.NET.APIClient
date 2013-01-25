@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 
 namespace VersionOne.SDK.APIClient.Examples
 {
@@ -377,6 +380,29 @@ namespace VersionOne.SDK.APIClient.Examples
             StorySource:148
             StorySource:149
             ******************/
+
+            return true;
+
+        }
+
+        public bool UpdateMultiValueRelation()
+        {
+
+            var storyId = Oid.FromToken("Story:1124", _context.MetaModel);
+            var query = new Query(storyId);
+            var storyType = _context.MetaModel.GetAssetType("Story");
+            var ownersAttribute = storyType.GetAttributeDefinition("Owners");
+
+            query.Selection.Add(ownersAttribute);
+
+            var result = _context.Services.Retrieve(query);
+            var story = result.Assets[0];
+            var values = story.GetAttribute(ownersAttribute).Values;
+            var owners = values.Cast<object>().ToList();
+
+            if (owners.Count >= 1) story.RemoveAttributeValue(ownersAttribute, owners[0]);
+
+            _context.Services.Save(story);
 
             return true;
 

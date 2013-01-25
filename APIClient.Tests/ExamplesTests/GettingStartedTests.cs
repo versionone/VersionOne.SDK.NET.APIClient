@@ -107,5 +107,11 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         {
             Assert.IsTrue(_examples.UpdateSingleValueRelation());
         }
+
+        [Test]
+        public void UpdateMultiValueRelationTest()
+        {
+            Assert.IsTrue(_examples.UpdateMultiValueRelation());
+        }
     }
 }
