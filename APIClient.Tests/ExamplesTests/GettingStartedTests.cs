@@ -39,6 +39,13 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.IsNotNull(_examples.AddNewAsset());
         }
 
+        [Test, Ignore] //needs an active and configured proxy to run
+        public void AddNewAssetWithProxyTest()
+        {
+            Assert.IsNotNull(_examples.AddNewAssetWithProxy());
+        }
+
+
         [Test]
         public void DeleteAnAssetTest()
         {

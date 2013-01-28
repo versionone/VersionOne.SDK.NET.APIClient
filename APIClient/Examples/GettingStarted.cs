@@ -58,6 +58,31 @@ namespace VersionOne.SDK.APIClient.Examples
             return newStory;
         }
 
+        public Asset AddNewAssetWithProxy()
+        {
+            
+            var projectId = Oid.FromToken("Scope:0", _context.MetaModelWithProxy);
+            var assetType = _context.MetaModelWithProxy.GetAssetType("Story");
+            var newStory = _context.ServicesWithProxy.New(assetType, projectId);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            
+            newStory.SetAttributeValue(nameAttribute, "My New Story");
+            _context.ServicesWithProxy.Save(newStory);
+
+            LogResult(newStory.Oid.Token,
+                GetValue(newStory.GetAttribute(assetType.GetAttributeDefinition("Scope")).Value),
+                GetValue(newStory.GetAttribute(nameAttribute).Value));
+
+            /***** OUTPUT *****
+             Story:1094
+             Scope:1012
+             My New Story
+             ******************/
+
+            return newStory;
+
+        }
+
         public bool DeleteAnAsset()
         {
 
@@ -105,6 +130,12 @@ namespace VersionOne.SDK.APIClient.Examples
                 closedStory.GetAttribute(assetName).Value.ToString(),
                 state.ToString());
 
+            /***** OUTPUT *****
+             Story:12079
+             My New Story
+             Closed
+             ******************/
+
             return closedStory;
 
         }
@@ -124,6 +155,11 @@ namespace VersionOne.SDK.APIClient.Examples
             var state = AssetStateManager.GetAssetStateFromString(GetValue(activeStory.GetAttribute(assetState)));
 
             LogResult(activeStory.Oid.ToString(), state.ToString());
+
+            /***** OUTPUT EXAMPLE *****
+             Story:1098
+             Future
+             ******************/
 
             return true;
 
