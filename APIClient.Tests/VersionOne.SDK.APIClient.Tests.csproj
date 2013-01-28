@@ -262,6 +262,4 @@
     </PreBuildEvent>
     <PostBuildEvent>rem copy /Y $(ProjectDir)TestData.xml .</PostBuildEvent>
   </PropertyGroup>
-  <Import Condition="Exists('$(V1BuildToolsPath)\NuGet.targets')" Project="$(V1BuildToolsPath)\NuGet.targets" />
-  <Import Project="$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets')" />
 </Project>
