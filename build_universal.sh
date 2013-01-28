@@ -5,7 +5,7 @@ set -e
 # The build script files will use these values in the build process
 
 MAJOR=12
-MINOR=3
+MINOR=4
 REVISION=0
 
 export MYGET_REPO_URL="http://www.myget.org/F/versionone/api/v2/package"
