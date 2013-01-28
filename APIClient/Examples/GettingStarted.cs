@@ -83,9 +83,36 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
-        public Asset GetSingleAsset()
+        public bool CloseAnAsset()
         {
 
+            var story = AddNewAsset();
+            var closeOperation = _context.MetaModel.GetOperation("Story.Inactivate");
+            var assetName = _context.MetaModel.GetAttributeDefinition("Story.Name");
+            var assetState = _context.MetaModel.GetAttributeDefinition("Story.AssetState");
+            var closeId = _context.Services.ExecuteOperation(closeOperation, story.Oid);
+
+            var query = new Query(closeId.Momentless);
+            
+            query.Selection.Add(assetState);
+            query.Selection.Add(assetName);
+
+            var result = _context.Services.Retrieve(query);
+            var closedStory = result.Assets[0];
+            var state = AssetStateManager.GetAssetStateFromString(GetValue(closedStory.GetAttribute(assetState).Value));
+
+            LogResult(closedStory.Oid.Token, 
+                closedStory.GetAttribute(assetName).Value.ToString(), 
+                state.ToString());
+
+            return true;
+
+        }
+
+
+        public Asset GetSingleAsset()
+        {
+            
             var memberId = Oid.FromToken("Member:20", _context.MetaModel);
             var query = new Query(memberId);
             var nameAttribute = _context.MetaModel.GetAttributeDefinition("Member.Name");

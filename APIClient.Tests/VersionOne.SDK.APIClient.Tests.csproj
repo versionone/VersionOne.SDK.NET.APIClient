@@ -204,6 +204,7 @@
     <Compile Include="ServicesTests\ServicesTesterBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
     <Compile Include="UtilityTests\CredentialsTester.cs" />

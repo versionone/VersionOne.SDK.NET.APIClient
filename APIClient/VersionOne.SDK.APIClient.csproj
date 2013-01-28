@@ -134,7 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregate.cs" />
-    <Compile Include="AssetState.cs" />
+    <Compile Include="AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeType.cs" />

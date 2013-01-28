@@ -157,15 +157,15 @@ namespace VersionOne.SDK.APIClient {
                 return null;
             }
 
-            if(value is AssetState) {
-                return (AssetState) value;
+            if(value is AssetStateManager.AssetState) {
+                return (AssetStateManager.AssetState) value;
             }
 
             if(value is Enum) {
                 return (byte) value;
             }
 
-            var statetype = typeof (AssetState);
+            var statetype = typeof (AssetStateManager.AssetState);
             
             if (value is byte) {
                 var byteval = (byte) value;
