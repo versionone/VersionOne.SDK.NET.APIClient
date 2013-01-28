@@ -148,6 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExamplesTests\GettingStartedTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DBTests\BitTester.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -252,9 +255,6 @@
       <Project>{B5062999-ADF0-4F51-A0D2-449C9A344804}</Project>
       <Name>VersionOne.SDK.APIClient</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
