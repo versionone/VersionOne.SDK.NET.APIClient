@@ -132,8 +132,9 @@
     <StartWorkingDirectory>$(SolutionDir)\APIClient.Tests\bin\Debug\</StartWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -146,6 +147,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExamplesTests\GettingStartedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -202,6 +204,7 @@
     <Compile Include="ServicesTests\ServicesTesterBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
     <Compile Include="UtilityTests\CredentialsTester.cs" />
@@ -243,6 +246,7 @@
   <ItemGroup>
     <None Include="..\APIClient\App.config">
       <Link>App.config</Link>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -258,5 +262,6 @@
     </PreBuildEvent>
     <PostBuildEvent>rem copy /Y $(ProjectDir)TestData.xml .</PostBuildEvent>
   </PropertyGroup>
-
+  <Import Condition="Exists('$(V1BuildToolsPath)\NuGet.targets')" Project="$(V1BuildToolsPath)\NuGet.targets" />
+  <Import Project="$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets')" />
 </Project>

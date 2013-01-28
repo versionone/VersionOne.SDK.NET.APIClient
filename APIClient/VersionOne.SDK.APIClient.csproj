@@ -134,13 +134,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregate.cs" />
-    <Compile Include="AssetState.cs" />
+    <Compile Include="AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeType.cs" />
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="V1ConfigurationManager.cs" />
     <Compile Include="Connectors.cs" />
     <Compile Include="Credentials.cs" />
@@ -292,4 +293,6 @@
     </PreBuildEvent>
     <PostBuildEvent>rem copy $(ProjectDir)app.config $(TargetPath).config</PostBuildEvent>
   </PropertyGroup>
+  <Import Condition="Exists('$(V1BuildToolsPath)\NuGet.targets')" Project="$(V1BuildToolsPath)\NuGet.targets" />
+  <Import Project="$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets" Condition="Exists('$(V1BuildToolsPath)\MSBuild\VersionOne\Versioning.targets')" />
 </Project>
