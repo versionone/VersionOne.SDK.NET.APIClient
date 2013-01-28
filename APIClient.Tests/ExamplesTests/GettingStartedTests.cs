@@ -48,7 +48,13 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         [Test]
         public void CloseAnAssetTest()
         {
-            Assert.IsTrue(_examples.CloseAnAsset());
+            Assert.IsNotNull(_examples.CloseAnAsset());
+        }
+
+        [Test]
+        public void ReOpenAnAssetTest()
+        {
+            Assert.IsTrue(_examples.ReOpenAnAsset());
         }
 
         [Test]

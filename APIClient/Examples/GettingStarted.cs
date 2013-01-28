@@ -83,7 +83,7 @@ namespace VersionOne.SDK.APIClient.Examples
 
         }
 
-        public bool CloseAnAsset()
+        public Asset CloseAnAsset()
         {
 
             var story = AddNewAsset();
@@ -93,7 +93,7 @@ namespace VersionOne.SDK.APIClient.Examples
             var closeId = _context.Services.ExecuteOperation(closeOperation, story.Oid);
 
             var query = new Query(closeId.Momentless);
-            
+
             query.Selection.Add(assetState);
             query.Selection.Add(assetName);
 
@@ -101,9 +101,29 @@ namespace VersionOne.SDK.APIClient.Examples
             var closedStory = result.Assets[0];
             var state = AssetStateManager.GetAssetStateFromString(GetValue(closedStory.GetAttribute(assetState).Value));
 
-            LogResult(closedStory.Oid.Token, 
-                closedStory.GetAttribute(assetName).Value.ToString(), 
+            LogResult(closedStory.Oid.Token,
+                closedStory.GetAttribute(assetName).Value.ToString(),
                 state.ToString());
+
+            return closedStory;
+
+        }
+
+        public bool ReOpenAnAsset()
+        {
+
+            var story = CloseAnAsset();
+            var activateOperation = _context.MetaModel.GetOperation("Story.Reactivate");
+            var activeId = _context.Services.ExecuteOperation(activateOperation, story.Oid);
+
+            var query = new Query(activeId.Momentless);
+            var assetState = _context.MetaModel.GetAttributeDefinition("Story.AssetState");
+            query.Selection.Add(assetState);
+            var result = _context.Services.Retrieve(query);
+            var activeStory = result.Assets[0];
+            var state = AssetStateManager.GetAssetStateFromString(GetValue(activeStory.GetAttribute(assetState)));
+
+            LogResult(activeStory.Oid.ToString(), state.ToString());
 
             return true;
 
@@ -112,7 +132,7 @@ namespace VersionOne.SDK.APIClient.Examples
 
         public Asset GetSingleAsset()
         {
-            
+
             var memberId = Oid.FromToken("Member:20", _context.MetaModel);
             var query = new Query(memberId);
             var nameAttribute = _context.MetaModel.GetAttributeDefinition("Member.Name");
