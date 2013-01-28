@@ -95,7 +95,7 @@ namespace VersionOne.SDK.APIClient.Examples
             }
             catch (ConnectionException e)
             {
-                LogResult("Story has been deleted: " + story.Oid.Momentless);
+                LogResult(string.Format("Story has been deleted: {0}.  Exception was:  {1}", story.Oid.Momentless, e.InnerException.Message));
             }
 
             /***** OUTPUT *****
