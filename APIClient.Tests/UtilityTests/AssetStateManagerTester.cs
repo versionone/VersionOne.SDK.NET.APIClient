@@ -11,23 +11,23 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
         {
             
             var state = AssetStateManager.GetAssetStateFromString("64");
-            Assert.AreEqual(AssetStateManager.AssetState.Active, state);
+            Assert.AreEqual(AssetState.Active, state);
 
             state = AssetStateManager.GetAssetStateFromString("0");
-            Assert.AreEqual(AssetStateManager.AssetState.Future, state);
+            Assert.AreEqual(AssetState.Future, state);
 
             state = AssetStateManager.GetAssetStateFromString("128");
-            Assert.AreEqual(AssetStateManager.AssetState.Closed, state);
+            Assert.AreEqual(AssetState.Closed, state);
 
             state = AssetStateManager.GetAssetStateFromString("192");
-            Assert.AreEqual(AssetStateManager.AssetState.Dead, state);
+            Assert.AreEqual(AssetState.Dead, state);
 
             state = AssetStateManager.GetAssetStateFromString("255");
-            Assert.AreEqual(AssetStateManager.AssetState.Deleted, state);
+            Assert.AreEqual(AssetState.Deleted, state);
 
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void NullArgumentTest()
         {
             var state = AssetStateManager.GetAssetStateFromString(null);
