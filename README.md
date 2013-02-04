@@ -35,6 +35,12 @@ Using the APIClient is as simple as making a reference to the APIClient.dll in y
 </appSettings>
 ```
 
+## Setup using Windows Integrated Authentication
+
+If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password argumentt in the configuration.  Be sure to set the "UseWindowsIntegratedAuth" value to "true".
+
+Note that if you are using Windows Integrated Authentication, you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog in Windows.
+
 ## Where to find sample code ##
 Sample code is available in the github repository in the VersionOne.SDK.APIClient/APIClient/Examples folder.  There are associated unit tests in the VersionOne.SDK.APIClient.Tests/ExamplesTests folder.  The tests are runable when you first clone the repository so that you can step through them immediately to see how they work.  The examples below are a reflection of these examples.  
 
@@ -86,11 +92,6 @@ private static void LogResult(params string[] results)
 }
 ```
 
-## Setup using Windows Integrated Authentication
-
-If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector:
-
-Note that if you are using Windows Integrated Authentication, you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog in Windows.
 
 ## Learn By Example: Queries
 
