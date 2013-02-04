@@ -37,12 +37,12 @@ Using the APIClient is as simple as making a reference to the APIClient.dll in y
 
 ## Setup using Windows Integrated Authentication
 
-If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password argumentt in the configuration.  Be sure to set the "UseWindowsIntegratedAuth" value to "true".
+If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password argument in the configuration.  Be sure to set the "UseWindowsIntegratedAuth" value to "true".
 
-Note that if you are using Windows Integrated Authentication, you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog in Windows.
+If you wish to impersonate another user, you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog in Windows.
 
 ## Where to find sample code ##
-Sample code is available in the github repository in the VersionOne.SDK.APIClient/APIClient/Examples folder.  There are associated unit tests in the VersionOne.SDK.APIClient.Tests/ExamplesTests folder.  The tests are runable when you first clone the repository so that you can step through them immediately to see how they work.  The examples below are a reflection of these examples.  
+Sample code is available in the github repository in the VersionOne.SDK.APIClient/APIClient/Examples folder.  There are associated unit tests in the VersionOne.SDK.APIClient.Tests/ExamplesTests folder that you can make use of in order to drive and step through these tests.  The tests are runable when you first clone the repository so that you can step through them immediately to see how they work.  The examples below are a reflection of these examples.  
 
 There are also some experimental examples available from the root directory of the cloned repository in \Example\GettingStarted.  These examples have their own solution.
 
@@ -54,7 +54,7 @@ var context = new EnvironmentContext();
 ```
 Please note that the EnvironmentContext class optionally takes one parameter to afford flexiblity.  If needed, you can pass in your own implementation of the IModelsAndServices interface.  However, by default, you do not need to do this.
 
-In the examples mentioned earlier, there are a few utility methods you should be aware of.  You will see these methods used in several places throughout the code samples.  Though it's not critical that you know what these methods do in order to understand how to best use the APIClient library, they may confuse you if you arent' aware of them.
+In the examples mentioned earlier, there are a few utility methods you should be aware of.  You will see these methods used in several places throughout the code samples.  Though it's not critical that you know what these methods do in order to understand how to best use the APIClient library, they may confuse you if you aren't aware of them.  These helper methods are:
 
 ```csharp
 /// <summary>
