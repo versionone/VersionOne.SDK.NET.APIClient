@@ -48,7 +48,45 @@ var context = new EnvironmentContext();
 ```
 Please note that the EnvironmentContext class optionally takes one parameter to afford flexiblity.  If needed, you can pass in your own implementation of the IModelsAndServices interface.  However, by default, you do not need to do this.
 
-### Setup using Windows Integrated Authentication
+In the examples mentioned earlier, there are a few utility methods you should be aware of.  You will see these methods used in several places throughout the code samples.  Though it's not critical that you know what these methods do in order to understand how to best use the APIClient library, they may confuse you if you arent' aware of them.
+
+```csharp
+/// <summary>
+/// Retrieves the next source id in a series of three.
+/// </summary>
+/// <param name="oldSource"></param>
+/// <returns></returns>
+private static string GetNextSourceId(string oldSource)
+{
+    if (oldSource == "StorySource:148") return "StorySource:149";
+    if (oldSource == "StorySource:149") return "StorySource:150";
+    return "StorySource:148";
+}
+
+/// <summary>
+/// Null checks an object type value for the purpose of console output.
+/// </summary>
+/// <param name="value"></param>
+/// <returns></returns>
+private static string GetValue(object value)
+{
+    return value == null ? "No Value Available" : value.ToString();
+}
+
+/// <summary>
+/// Logs a result set to the debug view.
+/// </summary>
+/// <param name="results"></param>
+private static void LogResult(params string[] results)
+{
+    foreach (var result in results)
+    {
+        Debug.WriteLine(result);
+    }
+}
+```
+
+## Setup using Windows Integrated Authentication
 
 If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector:
 
@@ -63,19 +101,32 @@ This section is a series of examples, starting with simpler queries and moving t
 Retrieve the Member with ID 20:
 
 ```csharp
-public Asset SingleAsset()
+public Asset GetSingleAsset()
 {
-    Oid memberId = Oid.FromToken("Member:20", metaModel);
-    Query query = new Query(memberId);
-    QueryResult result = services.Retrieve(query);
-    Asset member = result.Assets[0];
 
-    Console.WriteLine(member.Oid.Token);
-    /***** OUTPUT *****
+    var memberId = Oid.FromToken("Member:20", _context.MetaModel);
+    var query = new Query(memberId);
+    var nameAttribute = _context.MetaModel.GetAttributeDefinition("Member.Name");
+    var emailAttribute = _context.MetaModel.GetAttributeDefinition("Member.Email");
+
+    query.Selection.Add(nameAttribute);
+    query.Selection.Add(emailAttribute);
+
+    var result = _context.Services.Retrieve(query);
+    var member = result.Assets[0];
+
+    LogResult(member.Oid.Token,
+        GetValue(member.GetAttribute(nameAttribute).Value),
+        GetValue(member.GetAttribute(emailAttribute).Value));
+
+    /***** OUTPUT EXAMPLE *****
         Member:20
-    ******************/
+        Administrator
+        admin@company.com
+        ******************/
 
     return member;
+
 }
 ```
 
