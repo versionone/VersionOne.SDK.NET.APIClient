@@ -3,7 +3,7 @@
 The APIClient provides access to the Core API without concern for the underlying RESTful API or the HTTP/XML plumbing. Through the APIClient, developers can query for simple or complex sets of information, update the information, and execute system-defined operations. The APIClient is best suited for course-grained and bulk access.
 
 ## System Requirements
-These libraries have only been tested in a Windows environment with .NET Framework 4.0. They have not been tested under Mono.
+These libraries have only been tested in a Windows environment with .NET Framework 4.5. They have not been tested under Mono.
 
 ## How to get the library as a precompiled package
 
@@ -11,43 +11,48 @@ _Do this if you only want to use the functionality, but are not interested in co
 
 Use the NuGet package manager from Visual Studio or nuget.exe. Search for `VersionOne.SDK.NET.APIClient` to find the precompiled package. VersionOne tests packages distributed via NuGet against product releases as they become available. For details, see [the specific versions tested](https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki/Which-product-releases-has-the-APIClient-library-been-tested-against%3F). Learn more about NuGet from [the NuGet Overview](http://docs.nuget.org/docs/start-here/overview).
 
+## How to get the library source code
+
+_Do this if you want to compile, customize, investigate, debug, or contribute code to the project._
+
+You can find the information necessary to clone the github repository here:  https://github.com/versionone/VersionOne.SDK.NET.APIClient.  
+
 ## Learn By Example: APIClient Setup
 
-Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects within the APIClient. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You need to create an instance of IMetaModel and and instance of IServices and provide them with connection information via instances of the V1APIConnector.
+Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects in an included app.config file for your EXECUTING assembly. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You can then configure your project using an app.config file similar to the one included with the unit test project.  Please take note of the "UseWindowsIntegratedAuth" setting so that it represents your particular environment.
 
-### Setup using VersionOne Authentication
-
-To use VersionOne authentication, specify the username and password:
-
-```csharp
-V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/", "remote", "remote");
-V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
-IMetaModel metaModel = new MetaModel(metaConnector);
-IServices services = new Services(metaModel, dataConnector);
+```html
+<appSettings>
+    <add key="DebugFileName" value="C:\VersionOneAPIClientDebug.txt" />
+    <add key="V1Url" value="https://www14.v1host.com/v1sdktesting/" />
+    <add key="V1UserName" value="admin" />
+    <add key="V1Password" value="admin" />
+    <add key="ProxyUrl" value="https://myProxyServer:3128" />
+    <add key="ConfigUrl" value="config.v1/" />
+    <add key="ProxyUserName" value="Administrator" />
+    <add key="ProxyPassword" value="12345678" />
+    <add key="UseWindowsIntegratedAuth" value="false" />
+</appSettings>
 ```
+
+## Where to find sample code ##
+Sample code is available in the github repository in the VersionOne.SDK.APIClient/APIClient/Examples folder.  There are associated unit tests in the VersionOne.SDK.APIClient.Tests/ExamplesTests folder.  The tests are runable when you first clone the repository so that you can step through them immediately to see how they work.  The examples below are a reflection of these examples.  
+
+There are also some experimental examples available from the root directory of the cloned repository in \Example\GettingStarted.  These examples have their own solution.
+
+## Getting Started ##
+
+To get started after you have setup your app.config file for your executing assembly/project, you first need to create an instanace of the EnvironmentContext class.  This class encapsulates the objects you will need to execute your code against a instance of VersionOne.
+```csharp
+var context = new EnvironmentContext();
+```
+Please note that the EnvironmentContext class optionally takes one parameter to afford flexiblity.  If needed, you can pass in your own implementation of the IModelsAndServices interface.  However, by default, you do not need to do this.
+
 ### Setup using Windows Integrated Authentication
 
 If your VersionOne instance uses Windows Integrated Authentication, and you wish to connect to the API using the credentials of the user running your program, you can omit the username and password arguments to the V1APIConnector:
 
-```csharp
-V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/");
-V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
-IMetaModel metaModel = new MetaModel(metaConnector);
-IServices services = new Services(metaModel, dataConnector);
-```
-
-### Setup using Windows Integrated Authentication, specifying credentials
-
-You may also explicitly identify the domain user you wish to use to authenticate to VersionOne, and provide an extra boolean argument indicating that you wish to use Windows Integrated Authentication:
-
-```csharp
-V1APIConnector dataConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/rest-1.v1/", @"username@FullyQualifiedDomainName", "password", true);
-V1APIConnector metaConnector = new V1APIConnector("https://www14.v1host.com/v1sdktesting/meta.v1/");
-IMetaModel metaModel = new MetaModel(metaConnector);
-IServices services = new Services(metaModel, dataConnector);
-```
-
-Note that you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog.
+Note that if you are using Windows Integrated Authentication, you must specify the windows domain account in the form "User@FullyQualifiedDomainName". If you are unsure what the fully qualified domain name is, see the Domain name shown on the 'Computer Name' tab in the My Computer...Properties dialog in Windows.
 
 ## Learn By Example: Queries
 
@@ -307,7 +312,7 @@ This query will retrieve the history of the Member asset with ID 1000.
 public AssetList HistorySingleAsset()
 {
     IAssetType memberType = metaModel.GetAssetType("Member");
-	Query query = new Query(Oid.FromToken("Member:1000", metamodel), true);
+    Query query = new Query(Oid.FromToken("Member:1000", metamodel), true);
 
 	IAttributeDefinition changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
 	IAttributeDefinition emailAttribute = memberType.GetAttributeDefinition("Email");
