@@ -98,7 +98,7 @@ This section is a series of examples, starting with simpler queries and moving t
 
 ### How to query a single asset
 
-Retrieve the Member with ID 20:
+Retrieve the Member with ID 20 and list their name and email addresses:
 
 ```csharp
 public Asset GetSingleAsset()
@@ -130,58 +130,27 @@ public Asset GetSingleAsset()
 }
 ```
 
-In this example, the asset will have its Oid populated, but will not have any other attributes populated. This is to minimize the size of the data sets returned. The next example shows how to ask for an asset with specific attributes populated.
-
-### How to query for specific attributes
-
-Retrieve an asset with populated attributes by using the Selection property of the Query object.
-
-```csharp
-public Asset SingleAssetWithAttributes()
-{
-    Oid memberId = Oid.FromToken("Member:20", metaModel);
-    Query query = new Query(memberId);
-    IAttributeDefinition nameAttribute = metaModel.GetAttributeDefinition("Member.Name");
-    IAttributeDefinition emailAttribute = metaModel.GetAttributeDefinition("Member.Email");
-    query.Selection.Add(nameAttribute);
-    query.Selection.Add(emailAttribute);
-    QueryResult result = services.Retrieve(query);
-    Asset member = result.Assets[0];
-
-    Console.WriteLine(member.Oid.Token);
-    Console.WriteLine(member.GetAttribute(nameAttribute).Value);
-    Console.WriteLine(member.GetAttribute(emailAttribute).Value);
-    /***** OUTPUT *****
-        Member:20
-        Administrator
-        admin@company.com
-    ******************/
-
-    return member;
-}
-```
-
 ### How to get a list of all Story assets
 
 ```csharp
-public AssetList ListOfAssets()
+public List<Asset> GetMultipleAssets()
 {
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    Query query = new Query(storyType);
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
-    IAttributeDefinition estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+    var assetType = _context.MetaModel.GetAssetType("Story");
+    var query = new Query(assetType);
+    var nameAttribute = assetType.GetAttributeDefinition("Name");
+    var estimateAttribute = assetType.GetAttributeDefinition("Estimate");
+
     query.Selection.Add(nameAttribute);
     query.Selection.Add(estimateAttribute);
-    QueryResult result = services.Retrieve(query);
 
-    foreach (Asset story in result.Assets)
-    {
-        Console.WriteLine(story.Oid.Token);
-        Console.WriteLine(story.GetAttribute(nameAttribute).Value);
-        Console.WriteLine(story.GetAttribute(estimateAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
+    var result = _context.Services.Retrieve(query);
+
+    result.Assets.ForEach(story =>
+            LogResult(story.Oid.Token,
+                GetValue(story.GetAttribute(nameAttribute).Value),
+                GetValue(story.GetAttribute(estimateAttribute).Value).ToString(CultureInfo.InvariantCulture)));  		//stories may not have an estimate assigned.
+
+    /***** OUTPUT EXAMPLE *****
         Story:1083
         View Daily Call Count
         5
@@ -189,7 +158,7 @@ public AssetList ListOfAssets()
         Story:1554
         Multi-View Customer Calendar
         1 ...
-    ******************/
+        ******************/
 
     return result.Assets;
 }
@@ -202,29 +171,27 @@ Depending on your security role, you may not be able to see all the Story assets
 Use the Filter property of the Query object to filter the results that are returned. This query will retrieve only Story assets with a To Do of zero:
 
 ```csharp
-public AssetList FilterListOfAssets()
+public List<Asset> FilterListOfAssets()
 {
-    IAssetType taskType = metaModel.GetAssetType("Task");
-    Query query = new Query(taskType);
-    IAttributeDefinition nameAttribute = taskType.GetAttributeDefinition("Name");
-    IAttributeDefinition todoAttribute = taskType.GetAttributeDefinition("ToDo");
+    var assetType = _context.MetaModel.GetAssetType("Task");
+    var query = new Query(assetType);
+    var nameAttribute = assetType.GetAttributeDefinition("Name");
+    var todoAttribute = assetType.GetAttributeDefinition("ToDo");
+
     query.Selection.Add(nameAttribute);
     query.Selection.Add(todoAttribute);
 
-    FilterTerm term = new FilterTerm(todoAttribute);
-    term.Equal(0);
-    query.Filter = term;
+    var toDoTerm = new FilterTerm(todoAttribute);
+    toDoTerm.Equal(0);
+    query.Filter = toDoTerm;
+    var result = _context.Services.Retrieve(query);
 
-    QueryResult result = services.Retrieve(query);
+    result.Assets.ForEach(taskAsset =>
+        LogResult(taskAsset.Oid.Token,
+            GetValue(taskAsset.GetAttribute(nameAttribute).Value),
+            GetValue(taskAsset.GetAttribute(todoAttribute).Value.ToString())));
 
-    foreach (Asset task in result.Assets)
-    {
-        Console.WriteLine(task.Oid.Token);
-        Console.WriteLine(task.GetAttribute(nameAttribute).Value);
-        Console.WriteLine(task.GetAttribute(todoAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
+    /***** OUTPUT EXAMPLE *****
         Task:1153
         Code Review
         0
@@ -232,9 +199,10 @@ public AssetList FilterListOfAssets()
         Task:1154
         Design Component
         0 ...
-    ******************/
+        ******************/
 
     return result.Assets;
+
 }
 ```
 
@@ -243,32 +211,19 @@ public AssetList FilterListOfAssets()
 Use the Find property of the Query object to search for text. This query will retrieve only Request assets with the word "Urgent" in the name:
 
 ```csharp
-public AssetList FilterListOfAssets()
+public List<Asset> FindListOfAssets()
 {
-    IAssetType requestType = metaModel.GetAssetType("Request");
-    Query query = new Query(requestType);
-    IAttributeDefinition nameAttribute = requestType.GetAttributeDefinition("Name");
+    var assetType = _context.MetaModel.GetAssetType("Story");
+    var query = new Query(assetType);
+    var nameAttribute = assetType.GetAttributeDefinition("Name");
     query.Selection.Add(nameAttribute);
+    query.Find = new QueryFind("High");  //retrieve only stories marked as high priority
+    var result = _context.Services.Retrieve(query);
 
-    query.Find = new QueryFind("Urgent", new AttributeSelection(nameAttribute));
-
-    QueryResult result = services.Retrieve(query);
-
-    foreach (Asset request in result.Assets)
-    {
-        Console.WriteLine(request.Oid.Token);
-        Console.WriteLine(request.GetAttribute(nameAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
-        Request:1195
-        Urgent!  Filter by owner
-
-        Task:1244
-        Urgent: improve search performance ...
-    ******************/
+    result.Assets.ForEach(asset => LogResult(GetValue(asset.Oid.Token), GetValue(asset.GetAttribute(nameAttribute).Value)));
 
     return result.Assets;
+
 }
 ```
 
@@ -277,33 +232,33 @@ public AssetList FilterListOfAssets()
 Use the OrderBy property of the Query object to sort the results. This query will retrieve Story assets sorted by increasing Estimate:
 
 ```csharp
-public AssetList SortListOfAssets()
+public List<Asset> SortListOfAssets()
 {
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    Query query = new Query(storyType);
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
-    IAttributeDefinition estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+    var assetType = _context.MetaModel.GetAssetType("Story");
+    var query = new Query(assetType);
+    var nameAttribute = assetType.GetAttributeDefinition("Name");
+    var estimateAttribute = assetType.GetAttributeDefinition("Estimate");
+
     query.Selection.Add(nameAttribute);
     query.Selection.Add(estimateAttribute);
     query.OrderBy.MinorSort(estimateAttribute, OrderBy.Order.Ascending);
-    QueryResult result = services.Retrieve(query);
 
-    foreach (Asset story in result.Assets)
-    {
-        Console.WriteLine(story.Oid.Token);
-        Console.WriteLine(story.GetAttribute(nameAttribute).Value);
-        Console.WriteLine(story.GetAttribute(estimateAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
-        Story:1073
-        Add Order Line
-        1
+    var result = _context.Services.Retrieve(query);
 
-        Story:1068
-        Update Member
-        2 ...
-    ******************/
+    result.Assets.ForEach(asset =>
+        LogResult(asset.Oid.Token,
+            GetValue(asset.GetAttribute(nameAttribute).Value),
+            GetValue(asset.GetAttribute(estimateAttribute).Value)));
+
+    /***** OUTPUT EXAMPLE *****
+        Task:1153
+        Code Review
+        0
+
+        Task:1154
+        Design Component
+        0 ...
+        ******************/
 
     return result.Assets;
 }
@@ -316,26 +271,25 @@ There are two methods you can call on the OrderBy class to sort your results: Mi
 Retrieve a "page" of query results by using the Paging propery of the Query object. This query will retrieve the first 3 Story assets:
 
 ```csharp
-public AssetList PageListOfAssets()
+public List<Asset> PageListOfAssets()
 {
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    Query query = new Query(storyType);
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
-    IAttributeDefinition estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+
+    var storyType = _context.MetaModel.GetAssetType("Story");
+    var query = new Query(storyType);
+    var nameAttribute = storyType.GetAttributeDefinition("Name");
+    var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
     query.Selection.Add(nameAttribute);
     query.Selection.Add(estimateAttribute);
     query.Paging.PageSize = 3;
     query.Paging.Start = 0;
-    QueryResult result = services.Retrieve(query);
+    var result = _context.Services.Retrieve(query);
 
-    foreach (Asset story in result.Assets)
-    {
-        Console.WriteLine(story.Oid.Token);
-        Console.WriteLine(story.GetAttribute(nameAttribute).Value);
-        Console.WriteLine(story.GetAttribute(estimateAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
+    result.Assets.ForEach(asset =>
+        LogResult(asset.Oid.Token,
+            GetValue(asset.GetAttribute(nameAttribute).Value),
+            GetValue(asset.GetAttribute(estimateAttribute).Value)));
+
+    /***** OUTPUT EXAMPLE *****
         Story:1063
         Logon
         2
@@ -347,7 +301,7 @@ public AssetList PageListOfAssets()
         Story:1065
         Add Customer Header
         3
-    ******************/
+        ******************/
 
     return result.Assets;
 }
@@ -360,37 +314,36 @@ The PageSize property shown asks for 3 items, and the Start property indicates t
 This query will retrieve the history of the Member asset with ID 1000.
 
 ```csharp
-public AssetList HistorySingleAsset()
+public List<Asset> HistorySingleAsset()
 {
-    IAssetType memberType = metaModel.GetAssetType("Member");
-    Query query = new Query(Oid.FromToken("Member:1000", metamodel), true);
+    var memberType = _context.MetaModel.GetAssetType("Member");
+    var query = new Query(memberType, true);
+    var idAttribute = memberType.GetAttributeDefinition("ID");
+    var changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
+    var emailAttribute = memberType.GetAttributeDefinition("Email");
+    query.Selection.Add(changeDateAttribute);
+    query.Selection.Add(emailAttribute);
+    var idTerm = new FilterTerm(idAttribute);
+    idTerm.Equal("Member:20");
+    query.Filter = idTerm;
+    var result = _context.Services.Retrieve(query);
 
-	IAttributeDefinition changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
-	IAttributeDefinition emailAttribute = memberType.GetAttributeDefinition("Email");
-	query.Selection.Add(changeDateAttribute);
-	query.Selection.Add(emailAttribute);
+    result.Assets.ForEach(asset =>
+        LogResult(asset.Oid.Token,
+            GetValue(asset.GetAttribute(changeDateAttribute).Value),
+            GetValue(asset.GetAttribute(emailAttribute).Value)));
 
-	QueryResult result = services.Retrieve(query);
-	AssetList memberHistory = result.Assets;
+    /***** OUTPUT EXAMPLE *****
+        Member:1000:105
+        4/2/2007 1:22:03 PM
+        andre.agile@company.com
 
-	foreach (Asset member in memberHistory)
-	{
-		Console.WriteLine(member.Oid.Token);
-		Console.WriteLine(member.GetAttribute(changeDateAttribute).Value);
-		Console.WriteLine(member.GetAttribute(emailAttribute).Value);
-		Console.WriteLine();
-	}
-	/***** OUTPUT *****
-		Member:1000:105
-		4/2/2007 1:22:03 PM
-		andre.agile@company.com
+        Member:1000:101
+        3/29/2007 4:10:29 PM
+        andre@company.net
+        ******************/
 
-		Member:1000:101
-		3/29/2007 4:10:29 PM
-		andre@company.net
-	******************/
-
-	return memberHistory;
+    return result.Assets;
 }
 ```
 
@@ -401,37 +354,39 @@ To create a history query, provide a boolean "true" second argument to the Query
 This query will retrieve history for all Member assets:
 
 ```csharp
-public AssetList HistoryListOfAssets()
+public List<Asset> HistoryListOfAssets()
 {
-    IAssetType memberType = metaModel.GetAssetType("Member");
-    Query query = new Query(memberType, true);
-    IAttributeDefinition changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
-    IAttributeDefinition emailAttribute = memberType.GetAttributeDefinition("Email");
+    var memberType = _context.MetaModel.GetAssetType("Member");
+    var query = new Query(memberType, true);
+    var changeDateAttribute = memberType.GetAttributeDefinition("ChangeDate");
+    var emailAttribute = memberType.GetAttributeDefinition("Email");
     query.Selection.Add(changeDateAttribute);
     query.Selection.Add(emailAttribute);
-    QueryResult result = services.Retrieve(query);
-    AssetList memberHistory = result.Assets;
+    var result = _context.Services.Retrieve(query);
+    var memberHistory = result.Assets;
 
-    foreach (Asset member in memberHistory)
-    {
-        Console.WriteLine(member.Oid.Token);
-        Console.WriteLine(member.GetAttribute(changeDateAttribute).Value);
-        Console.WriteLine(member.GetAttribute(emailAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
-        Member:1010:106
-        4/2/2007 3:27:23 PM
-        tammy.coder@company.com
+    memberHistory.ForEach(member =>
+        LogResult(member.Oid.Token,
+            GetValue(member.GetAttribute(changeDateAttribute).Value),
+            GetValue(member.GetAttribute(emailAttribute))));
 
-        Member:1000:105
-        4/2/2007 1:22:03 PM
-        andre.agile@company.com
+    /***** OUTPUT EXAMPLE *****
+        Member:20:0
+        Thu Nov 30 19:00:00 EST 1899
+        null
 
-        Member:1000:101
-        3/29/2007 4:10:29 PM
-        andre@company.net
-    ******************/
+        Member:20:17183
+        Fri Nov 09 09:46:25 EST 2012
+        versionone@mailinator.com
+
+        Member:20:17190
+        Sun Nov 11 22:59:23 EST 2012
+        versionone@mailinator.com
+
+        Member:20:17191
+        Sun Nov 11 22:59:47 EST 2012
+        versionone@mailinator.com
+        ******************/
 
     return memberHistory;
 }
