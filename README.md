@@ -401,39 +401,46 @@ All of the previously demonstrated query properties can be used with historical 
 Use the AsOf property of the Query object to retrieve data as it existed at some point in time. This query finds the version of each Story asset as it existed seven days ago:
 
 ```csharp
-public AssetList HistoryAsOfTime()
+public List<Asset> HistoryAsOfTime()
 {
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    Query query = new Query(storyType, true);
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
-    IAttributeDefinition estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+    var storyType = _context.MetaModel.GetAssetType("Story");
+    var query = new Query(storyType, true);
+    var nameAttribute = storyType.GetAttributeDefinition("Name");
+    var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
     query.Selection.Add(nameAttribute);
     query.Selection.Add(estimateAttribute);
-    query.AsOf = DateTime.Now.AddDays(-7); //7 days ago
-    QueryResult result = services.Retrieve(query);
 
-    foreach (Asset story in result.Assets)
-    {
-        Console.WriteLine(story.Oid.Token);
-        Console.WriteLine(story.GetAttribute(nameAttribute).Value);
-        Console.WriteLine(story.GetAttribute(estimateAttribute).Value);
-        Console.WriteLine();
-    }
-    /***** OUTPUT *****
-        Story:1063
-        Logon
-        3
+    query.AsOf = DateTime.Now.AddDays(-7);
+    QueryResult result = _context.Services.Retrieve(query);
 
-        Story:1064
-        Add Customer Details
-        1
+    result.Assets.ForEach(asset =>
+        LogResult(asset.Oid.Token,
+            GetValue(asset.GetAttribute(nameAttribute).Value),
+            GetValue(asset.GetAttribute(estimateAttribute).Value)));
 
-        Story:1065
-        Add Customer Header
-        3
-    ******************/
+    /***** OUTPUT EXAMPLE *****
+    Story:5807:7830
+    Investigate and fix priority update and data integrity issues.
+    12
+    Story:8440:13019
+    OneHundredThousandAndOne1/7/2012 10:24:56 AM_i5
+
+    Story:8564:13143
+    OneHundredThousandAndOne1/7/2012 10:26:35 AM_i115
+
+    Story:10194:14838
+    Story Object Model Single Call Test 2/13/2012 3:12:18 PM
+
+    Story:8424:13003
+    OneHundredThousandAndOne1/7/2012 10:23:39 AM_i3
+
+    Story:9228:13807
+    OneHundredThousandAndOne1/7/2012 10:39:17 AM_i466
+
+        ******************/
 
     return result.Assets;
+
 }
 ```
 
@@ -446,29 +453,29 @@ Updating assets through the APIClient involves calling the Save method on the IS
 Updating a scalar attribute on an asset is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the new scalar value. This code will update the Name attribute on the Story with ID 1094:
 
 ```csharp
-public Asset UpdateScalarAttribute()
+public bool UpdateScalarAttribute()
 {
-    Oid storyId = Oid.FromToken("Story:1094", metaModel);
-    Query query = new Query(storyId);
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
-    query.Selection.Add(nameAttribute);
-    QueryResult result = services.Retrieve(query);
-    Asset story = result.Assets[0];
-    string oldName = story.GetAttribute(nameAttribute).Value.ToString();
-    story.SetAttributeValue(nameAttribute, GetNewName());
-    services.Save(story);
+    var storyId = Oid.FromToken("Story:1094", _context.MetaModel);
+    var query = new Query(storyId);
+    var storyType = _context.MetaModel.GetAssetType("Story");
+    var nameAttribute = storyType.GetAttributeDefinition("Name");
 
-    Console.WriteLine(story.Oid.Token);
-    Console.WriteLine(oldName);
-    Console.WriteLine(story.GetAttribute(nameAttribute).Value);
-    /***** OUTPUT *****
+    query.Selection.Add(nameAttribute);
+    var result = _context.Services.Retrieve(query);
+    var story = result.Assets[0];
+    var oldName = GetValue(story.GetAttribute(nameAttribute).Value);
+    story.SetAttributeValue(nameAttribute, Guid.NewGuid().ToString());
+    _context.Services.Save(story);
+
+    LogResult(story.Oid.Token, oldName, GetValue(story.GetAttribute(nameAttribute).Value));
+
+    /***** OUTPUT EXAMPLE *****
         Story:1094:1446
         Logon
-        New Name
-    ******************/
+        F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4
+        ******************/
 
-    return story;
+    return true;
 }
 ```
 
@@ -477,29 +484,30 @@ public Asset UpdateScalarAttribute()
 Updating a single-value relation is accomplished by calling the SetAttribute method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID for the new relation. This code will change the source of the Story with ID 1094:
 
 ```csharp
-public Asset UpdateSingleValueRelation()
+public bool UpdateSingleValueRelation()
 {
-    Oid storyId = Oid.FromToken("Story:1094", metaModel);
-    Query query = new Query(storyId);
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    IAttributeDefinition sourceAttribute = storyType.GetAttributeDefinition("Source");
-    query.Selection.Add(sourceAttribute);
-    QueryResult result = services.Retrieve(query);
-    Asset story = result.Assets[0];
-    string oldSource = story.GetAttribute(sourceAttribute).Value.ToString();
-    story.SetAttributeValue(sourceAttribute, GetNextSourceID(oldSource));
-    services.Save(story);
 
-    Console.WriteLine(story.Oid.Token);
-    Console.WriteLine(oldSource);
-    Console.WriteLine(story.GetAttribute(sourceAttribute).Value);
-    /***** OUTPUT *****
-        Story:1094:1446
-        StorySource:148
-        StorySource:149
+    var storyId = Oid.FromToken("Story:1094", _context.MetaModel);
+    var query = new Query(storyId);
+    var storyType = _context.MetaModel.GetAssetType("Story");
+    var sourceAttribute = storyType.GetAttributeDefinition("Source");
+    query.Selection.Add(sourceAttribute);
+    var result = _context.Services.Retrieve(query);
+    var story = result.Assets[0];
+    var oldSource = GetValue(story.GetAttribute(sourceAttribute).Value);
+    story.SetAttributeValue(sourceAttribute, GetNextSourceId(oldSource));
+    _context.Services.Save(story);
+
+    LogResult(story.Oid.Token, oldSource, GetValue(story.GetAttribute(sourceAttribute).Value));
+
+    /***** OUTPUT EXAMPLE *****
+    Story:1094:17726
+    StorySource:148
+    StorySource:149
     ******************/
 
-    return story;
+    return true;
+
 }
 ```
 
@@ -508,37 +516,27 @@ public Asset UpdateSingleValueRelation()
 Updating a multi-value relation is accomplished by calling either the RemoveAttributeValue or AddAttributeValue method on an asset, specifying the IAttributeDefinition of the attribute you wish to change and the ID of the relation you wish to add or remove. This code will add one Member and remove another Member from the Story with ID 1094:
 
 ```csharp
-public Asset UpdateMultiValueRelation()
+public bool UpdateMultiValueRelation()
 {
-    Oid storyId = Oid.FromToken("Story:1094", metaModel);
-    Query query = new Query(storyId);
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    IAttributeDefinition ownersAttribute = storyType.GetAttributeDefinition("Owners");
+
+    var storyId = Oid.FromToken("Story:1124", _context.MetaModel);
+    var query = new Query(storyId);
+    var storyType = _context.MetaModel.GetAssetType("Story");
+    var ownersAttribute = storyType.GetAttributeDefinition("Owners");
+
     query.Selection.Add(ownersAttribute);
-    QueryResult result = services.Retrieve(query);
-    Asset story = result.Assets[0];
-    ArrayList oldOwners = new ArrayList();
-    oldOwners.AddRange(story.GetAttribute(ownersAttribute).Values);
-    story.RemoveAttributeValue(ownersAttribute, GetOwnerToRemove(oldOwners));
-    story.AddAttributeValue(ownersAttribute, GetOwnerToAdd(oldOwners));
-    services.Save(story);
 
-    Console.WriteLine(story.Oid.Token);
-    foreach (Oid oid in oldOwners)
-    {
-        Console.WriteLine(oid.Token);
-    }
-    foreach (Oid oid in story.GetAttribute(ownersAttribute).Values)
-    {
-        Console.WriteLine(oid.Token);
-    }
-    /***** OUTPUT *****
-        Story:1094:1446
-        Member:1003
-        Member:1000
-    ******************/
+    var result = _context.Services.Retrieve(query);
+    var story = result.Assets[0];
+    var values = story.GetAttribute(ownersAttribute).Values;
+    var owners = values.Cast<object>().ToList();
 
-    return story;
+    if (owners.Count >= 1) story.RemoveAttributeValue(ownersAttribute, owners[0]);
+
+    _context.Services.Save(story);
+
+    return true;
+
 }
 ```
 
@@ -552,21 +550,22 @@ This code will create a Story asset in the context of Scope with ID 1012:
 ```csharp
 public Asset AddNewAsset()
 {
-    Oid projectId = Oid.FromToken("Scope:1012", metaModel);
-    IAssetType storyType = metaModel.GetAssetType("Story");
-    Asset newStory = services.New(storyType, projectId);
-    IAttributeDefinition nameAttribute = storyType.GetAttributeDefinition("Name");
+    var projectId = Oid.FromToken("Scope:0", _context.MetaModel);
+    var assetType = _context.MetaModel.GetAssetType("Story");
+    var newStory = _context.Services.New(assetType, projectId);
+    var nameAttribute = assetType.GetAttributeDefinition("Name");
     newStory.SetAttributeValue(nameAttribute, "My New Story");
-    services.Save(newStory);
+    _context.Services.Save(newStory);
 
-    Console.WriteLine(newStory.Oid.Token);
-    Console.WriteLine(newStory.GetAttribute(storyType.GetAttributeDefinition("Scope")).Value);
-    Console.WriteLine(newStory.GetAttribute(nameAttribute).Value);
+    LogResult(newStory.Oid.Token,
+        GetValue(newStory.GetAttribute(assetType.GetAttributeDefinition("Scope")).Value),
+        GetValue(newStory.GetAttribute(nameAttribute).Value));
+
     /***** OUTPUT *****
         Story:1094
         Scope:1012
         My New Story
-    ******************/
+        ******************/
 
     return newStory;
 }
@@ -584,26 +583,32 @@ https://www1/VersionOne/meta.v1/Story?xsl=api.xsl
 
 Get the Delete operation from the IMetaModel, and use IServices to execute it against a story Oid.
 
+***Important note:  it's standard operating procedure to inactivate or close an asset versus deleting it.
+
 ```csharp
-public Oid DeleteAsset()
+public bool DeleteAnAsset()
 {
-    Asset story = AddNewAsset();
-    IOperation deleteOperation = metaModel.GetOperation("Story.Delete");
-    Oid deletedID = services.ExecuteOperation(deleteOperation, story.Oid);
+
+    var story = AddNewAsset();
+    var deleteOperation = _context.MetaModel.GetOperation("Story.Delete");
+    var deletedId = _context.Services.ExecuteOperation(deleteOperation, story.Oid);
+    var query = new Query(deletedId.Momentless);
+
     try
     {
-        Query query = new Query(deletedID.Momentless);
-        services.Retrieve(query);
+        QueryResult result = _context.Services.Retrieve(query);
     }
-    catch(WebException)
+    catch (ConnectionException e)
     {
-        Console.WriteLine("Story has been deleted: " + story.Oid.Momentless);
+        LogResult(string.Format("Story has been deleted: {0}.  Exception was:  {1}", story.Oid.Momentless, e.InnerException.Message));
     }
+
     /***** OUTPUT *****
         Story has been deleted: Story:1049
-    ******************/
+        ******************/
 
-    return deletedID;
+    return true;
+
 }
 ```
 
@@ -616,27 +621,36 @@ Currently, there is no support for undeleting a deleted asset.
 Get the Inactivate operation from the IMetaModel, and use IServices to execute it against a story Oid.
 
 ```csharp
-public Asset CloseAsset()
+public Asset CloseAnAsset()
 {
-    Asset story = AddNewAsset();
-    IOperation closeOperation = metaModel.GetOperation("Story.Inactivate");
-    Oid closeID = services.ExecuteOperation(closeOperation, story.Oid);
 
-    Query query = new Query(closeID.Momentless);
-    IAttributeDefinition assetState = metaModel.GetAttributeDefinition("Story.AssetState");
+    var story = AddNewAsset();
+    var closeOperation = _context.MetaModel.GetOperation("Story.Inactivate");
+    var assetName = _context.MetaModel.GetAttributeDefinition("Story.Name");
+    var assetState = _context.MetaModel.GetAttributeDefinition("Story.AssetState");
+    var closeId = _context.Services.ExecuteOperation(closeOperation, story.Oid);
+
+    var query = new Query(closeId.Momentless);
+
     query.Selection.Add(assetState);
-    QueryResult result = services.Retrieve(query);
-    Asset closeStory = result.Assets[0];
-    AssetState state = (AssetState) closeStory.GetAttribute(assetState).Value;
+    query.Selection.Add(assetName);
 
-    Console.WriteLine(closeStory.Oid);
-    Console.WriteLine(Enum.GetName(typeof(AssetState), state));
+    var result = _context.Services.Retrieve(query);
+    var closedStory = result.Assets[0];
+    var state = AssetStateManager.GetAssetStateFromString(GetValue(closedStory.GetAttribute(assetState).Value));
+
+    LogResult(closedStory.Oid.Token,
+        closedStory.GetAttribute(assetName).Value.ToString(),
+        state.ToString());
+
     /***** OUTPUT *****
-        Story:1050
+        Story:12079
+        My New Story
         Closed
-    ******************/
+        ******************/
 
-    return closeStory;
+    return closedStory;
+
 }
 ```
 
@@ -647,27 +661,29 @@ The AssetState attribute is the internal state of an asset.
 Get the Reactivate operation from the IMetaModel, and use IServices to execute it against a story Oid.
 
 ```csharp
-public Asset ReOpenAsset()
+public bool ReOpenAnAsset()
 {
-    Asset story = CloseAsset();
-    IOperation activateOperation = metaModel.GetOperation("Story.Reactivate");
-    Oid activeID = services.ExecuteOperation(activateOperation, story.Oid);
 
-    Query query = new Query(activeID.Momentless);
-    IAttributeDefinition assetState = metaModel.GetAttributeDefinition("Story.AssetState");
+    var story = CloseAnAsset();
+    var activateOperation = _context.MetaModel.GetOperation("Story.Reactivate");
+    var activeId = _context.Services.ExecuteOperation(activateOperation, story.Oid);
+
+    var query = new Query(activeId.Momentless);
+    var assetState = _context.MetaModel.GetAttributeDefinition("Story.AssetState");
     query.Selection.Add(assetState);
-    QueryResult result = services.Retrieve(query);
-    Asset activeStory = result.Assets[0];
-    AssetState state = (AssetState)activeStory.GetAttribute(assetState).Value;
+    var result = _context.Services.Retrieve(query);
+    var activeStory = result.Assets[0];
+    var state = AssetStateManager.GetAssetStateFromString(GetValue(activeStory.GetAttribute(assetState)));
 
-    Console.WriteLine(activeStory.Oid);
-    Console.WriteLine(Enum.GetName(typeof(AssetState), state));
-    /***** OUTPUT *****
-        Story:1051
-        Active
-    ******************/
+    LogResult(activeStory.Oid.ToString(), state.ToString());
 
-    return activeStory;
+    /***** OUTPUT EXAMPLE *****
+        Story:1098
+        Future
+        ******************/
+
+    return true;
+
 }
 ```
 
@@ -680,9 +696,9 @@ Some system settings are exposed (read-only) to the APIClient, to allow client-s
 To get the system settings, create an instance of the V1Configuration class, using a V1APIConnector (directed to the "config.v1" http address):
 
 ```csharp
-public void GetV1configuration()
+public IV1Configuration GetV1Configuration()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
+    return _context.V1Configuration;
 }
 ```
 
@@ -691,17 +707,15 @@ public void GetV1configuration()
 The V1Configuration.EffortTracking property indicates whether or not Effort Tracking has been enabled in VersionOne Enterprise.  In this example, the VersionOne instance has Effort Tracking turned off:
 
 ```csharp
-public void IsEffortTrackingEnabled()
+public bool EffortTrackingIsEnabled()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
 
-    if(configuration.EffortTracking)
-    	Console.WriteLine("Effort Tracking is enabled");
-    else
-    	Console.WriteLine("Effort Tracking is disabled");
+    LogResult(_context.V1Configuration.EffortTracking.ToString());
 
-    /***** OUTPUT *****
-        Effort Tracking is disabled
+    return _context.V1Configuration.EffortTracking;
+
+    /***** OUTPUT EXAMPLE *****
+    False
     ******************/
 }
 ```
@@ -713,17 +727,17 @@ Detail Estimate, ToDo and Effort can be entered for Stories and Defects, or for 
 In this example, the VersionOne instance is configured to take DetailEstimate, ToDo, and Effort at the Task/Test level for Stories (Off), and to take DetailEstimate, ToDo, and Effort at the Defect level for Defects (On):
 
 ```csharp
-public void StoryAndDefectTrackingLevel()
+public void GetStoryAndDefectTrackingLevel()
 {
-    V1Configuration configuration = new V1Configuration(new V1APIConnector("https://www14.v1host.com/v1sdktesting/config.v1/"));
 
-    Console.Writeline(configuration.StoryTrackingLevel);
-    Console.Writeline(configuration.DefectTrackingLevel);
+    LogResult(string.Concat("Story tracking level:  ", _context.V1Configuration.StoryTrackingLevel));
+    LogResult(string.Concat("Defect tracking level:  ", _context.V1Configuration.DefectTrackingLevel));
 
-    /***** OUTPUT *****
-        Off
-    	On
+    /***** OUTPUT EXAMPLE *****
+    Story tracking level:  Mix
+    Defect tracking level:  On
     ******************/
+
 }
 ```
 
