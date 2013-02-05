@@ -308,7 +308,7 @@ public List<Asset> PageListOfAssets()
 }
 ```
 
-The PageSize property shown asks for 3 items, and the Start property indicates to start at 0. The next 3 items can be retrieve with PageSize=3, Start=3.
+The PageSize property shown asks for 3 items, and the Start property indicates to start at 0. The next 3 items can be retrieved with PageSize=3, Start=3.
 
 ###How to query the history of a single asset
 
