@@ -17,6 +17,8 @@ _Do this if you want to compile, customize, investigate, debug, or contribute co
 
 You can find the information necessary to clone the github repository here:  https://github.com/versionone/VersionOne.SDK.NET.APIClient.  
 
+***Important Note:  After cloning the github repository, type "build_universal.sh" in your command prompt to run the build script.  This will update all the necessary dependancies so that the project will compile properly.
+
 ## Learn By Example: APIClient Setup
 
 Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects in an included app.config file for your EXECUTING assembly. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You can then configure your project using an app.config file similar to the one included with the unit test project.  Please take note of the "UseWindowsIntegratedAuth" setting so that it represents your particular environment.
