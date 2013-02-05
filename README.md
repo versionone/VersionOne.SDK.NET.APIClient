@@ -545,7 +545,8 @@ public bool UpdateMultiValueRelation()
 
 When you create a new asset in the APIClient you need to specify the "context" of another asset that will be the parent. For example, if you create a new Story asset you can specify which Scope it should be created in.
 
-How to get a new Story asset template in the context of a Scope asset
+### How to add a new Story asset template in the context of a Scope asset
+
 This code will create a Story asset in the context of Scope with ID 1012:
 
 ```csharp
