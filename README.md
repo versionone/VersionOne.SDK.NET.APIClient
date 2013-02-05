@@ -48,7 +48,7 @@ There are also some experimental examples available from the root directory of t
 
 ## Getting Started ##
 
-To get started after you have setup your app.config file for your executing assembly/project, you first need to create an instanace of the EnvironmentContext class.  This class encapsulates the objects you will need to execute your code against a instance of VersionOne.
+To get started after you have setup your app.config file for your executing assembly/project, you first need to create an instanace of the EnvironmentContext class.  This class encapsulates the objects you will need to execute your code against an instance of VersionOne.
 ```csharp
 var context = new EnvironmentContext();
 ```
