@@ -23,6 +23,8 @@ You can find the information necessary to clone the github repository here:  htt
 
 Using the APIClient is as simple as making a reference to the APIClient.dll in your .Net project, then providing connection information to the main service objects in an included app.config file for your EXECUTING assembly. There are three possible ways to connect to your VersionOne instance using the APIClient. Before you attempt to connect, find out whether your VersionOne instance uses VersionOne authentication or Windows Integrated Authentication. You can then configure your project using an app.config file similar to the one included with the unit test project.  Please take note of the "UseWindowsIntegratedAuth" setting so that it represents your particular environment.
 
+In the sample appSettings configuration section below, please note the V1Url setting.  It's currently pointed to a public test instance of VersionOne (https://www14.v1host.com/v1sdktesting/), however, you can easily point the tests at your own testing instance by changing the URL.  It's important to note that you should not run the unit tests against for the examples against a production instance of VersionOne.  The unit tests may make irreversable changes to your data structures.
+
 ```html
 <appSettings>
     <add key="DebugFileName" value="C:\VersionOneAPIClientDebug.txt" />
