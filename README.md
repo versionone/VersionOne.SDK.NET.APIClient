@@ -17,7 +17,7 @@ _Do this if you want to compile, customize, investigate, debug, or contribute co
 
 You can find the information necessary to clone the github repository here:  https://github.com/versionone/VersionOne.SDK.NET.APIClient.  
 
-***Important Note:  After cloning the github repository, type "build_universal.sh" in your command prompt to run the build script.  This will update all the necessary dependancies so that the project will compile properly.
+***Important Note:  After cloning the github repository, type "build_universal.sh" in your git bash command prompt to run the build script.  This will update all the necessary dependancies so that the project will compile properly.
 
 ## Learn By Example: APIClient Setup
 
@@ -38,6 +38,9 @@ In the sample appSettings configuration section below, please note the V1Url set
     <add key="UseWindowsIntegratedAuth" value="false" />
 </appSettings>
 ```
+
+## Choosing a Test Driver ##
+By default, after running the "build_universal.sh" build script, you will be able to select the tests project as your startup project and then execute the example tests (GettingStartedTests.cs) through the nunit GUI runner.  However, we recommend using a tool called TestDriven.NET if you have it available.  This will make it easier to run and/or debug the tests you specifically want to see directly from the code itself instead of having to load the nunit GUI runner first.  To do this, right click the test you want to run, choose 'TestDriven.NET' from the context menu, and then pick either the 'Run' or 'Debug' options.  TestDriven.NET can bet downloaded here:  http://www.testdriven.net/download.aspx.
 
 ## Setup using Windows Integrated Authentication
 
