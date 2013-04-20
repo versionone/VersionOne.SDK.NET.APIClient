@@ -1,0 +1,15 @@
+# Text files
+# Normalize crlf => lf
+*.cs		text diff=csharp
+*.sln		text merge=union
+*.csproj	text merge=union
+*.nuspec	text merge=union
+*.config	text
+*.md		text
+
+# *nix only
+*.sh			eol=lf
+*.properties	eol=lf
+
+# Binary files
+*.png		binary
