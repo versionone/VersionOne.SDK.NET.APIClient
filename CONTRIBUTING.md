@@ -1,4 +1,4 @@
-# Contributing to VersionOne SDK.NET API Client
+# Contributing to VersionOne ServiceHost Core Library
 
  1. [Getting Involved](#getting-involved)
  2. [Reporting Bugs](#reporting-bugs)
@@ -6,18 +6,18 @@
 
 ## Getting Involved
 
-We need your help to make the VersionOne SDK.NET API Client a useful tool for developing integrations and complementary applications/utilities. While third-party patches are absolutely essential, they are not the only way to get involved. You can help the project by discovering and [reporting bugs](#reporting-bugs) and helping others on the [versionone-dev group](http://groups.google.com/group/versionone-dev/) and [GitHub issues](https://github.com/versionone/VersionOne.SDK.NET.APIClient/issues).
+We need your help to make the VersionOne ServiceHost Core Library a useful tool for developing integrations and complementary applications/utilities. While third-party patches are absolutely essential, they are not the only way to get involved. You can help the project by discovering and [reporting bugs](#reporting-bugs) and helping others on the [versionone-dev group](http://groups.google.com/group/versionone-dev/) and [GitHub issues](https://github.com/versionone/VersionOne.ServiceHost.Core/issues).
 
 ## Reporting Bugs
 
-Before reporting a bug on the project's [issues page](https://github.com/versionone/VersionOne.SDK.NET.APIClient/issues), first make sure that your issue is caused by the SDK.NET API Client, not your application code (e.g. passing incorrect arguments to methods, etc.). Second, search the already reported issues for similar cases, and if it has been reported already, just add any additional details in the comments.
+Before reporting a bug on the project's [issues page](https://github.com/versionone/VersionOne.ServiceHost.Core/issues), first make sure that your issue is caused by the SericeHost Core Library, not your application code (e.g. passing incorrect arguments to methods, etc.). Second, search the already reported issues for similar cases, and if it has been reported already, just add any additional details in the comments.
 
 After you made sure that you have found a new Object Model Library bug, here are some tips for creating a helpful report that will make fixing it much easier and quicker:
 
  * Write a **descriptive, specific title**. Bad: *Problem with filtering*. Good: *Scope.GetThisAndAllChildProjects() always returns an empty list*.
  * Whenever possible, include **Class and Method** info in the description.
  * Create a **simple test case** that demonstrates the bug (e.g. using [NUnit](http://www.nunit.org/)).
-
+ 
 ## Contributing Code
 
 ### Considerations for Accepting Patches
