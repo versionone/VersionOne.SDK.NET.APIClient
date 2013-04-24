@@ -194,19 +194,24 @@ then
   NUNIT_XML_OUTPUT="nunit-result.xml"
 fi
 
-echo $NUNIT_CONSOLE_RUNNER \
-  -framework:net-4.0 \
-  -labels \
-  -stoponerror \
-  -xml=$NUNIT_XML_OUTPUT \
-  `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
+if [ -e /etc/bash.bashrc ] ; then
+  # Cygwin specific settings
+  $NUNIT_CONSOLE_RUNNER \
+    -framework:net-4.0 \
+    -labels \
+    -stoponerror \
+    -xml=$NUNIT_XML_OUTPUT \
+    `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
+else
+  # Msysgit specific settings
+  $NUNIT_CONSOLE_RUNNER \
+    //framework:net-4.0 \
+    //labels \
+    //stoponerror \
+    //xml=$NUNIT_XML_OUTPUT \
+    `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
+fi
 
-$NUNIT_CONSOLE_RUNNER \
-  -framework:net-4.0 \
-  -labels \
-  -stoponerror \
-  -xml=$NUNIT_XML_OUTPUT \
-  `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
 
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
