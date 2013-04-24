@@ -138,7 +138,7 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("$VERSION_NUMBER.0")]
+[assembly: AssemblyVersion("$VERSION_NUMBER.$BUILD_NUMBER")]
 [assembly: AssemblyFileVersion("$VERSION_NUMBER.$BUILD_NUMBER")]
 [assembly: AssemblyInformationalVersion("See $GITHUB_WEB_URL/wiki")]
 
