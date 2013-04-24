@@ -65,7 +65,7 @@ if [ -z "$WORKSPACE" ]; then
   export WORKSPACE=`parentwith .git`;
 fi
 
-TOOLSDIRS=". $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools $WORKSPACE/nuget_tools"
+TOOLSDIRS=". $WORKSPACE/nuget_tools $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools"
 #TOOLSDIRS="."
 for D in $TOOLSDIRS; do
   if [ -d "$D/bin" ]; then
@@ -156,7 +156,7 @@ done
 # ---- Clean solution ---------------------------------------------------------
 
 rm -rf $WORKSPACE/$MAIN_DIR/*.nupkg
-MSBuild.exe $SOLUTION_FILE /m /t:Clean
+MSBuild.exe $SOLUTION_FILE -m -t:Clean
 
 
 
