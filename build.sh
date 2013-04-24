@@ -195,19 +195,18 @@ then
 fi
 
 echo $NUNIT_CONSOLE_RUNNER \
-  "/framework:net-4.0" \
-  "/labels" \
-  "/stoponerror" \
-  "/xml=$NUNIT_XML_OUTPUT" \
+  -framework:net-4.0 \
+  -labels \
+  -stoponerror \
+  -xml=$NUNIT_XML_OUTPUT \
   `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
 
 $NUNIT_CONSOLE_RUNNER \
-  "/framework:net-4.0" \
-  "/labels" \
-  "/stoponerror" \
-  "/xml=$NUNIT_XML_OUTPUT" \
+  -framework:net-4.0 \
+  -labels \
+  -stoponerror \
+  -xml=$NUNIT_XML_OUTPUT \
   `winpath "$WORKSPACE/$TEST_DIR/bin/$Configuration/$TEST_DLL"`
-
 
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
