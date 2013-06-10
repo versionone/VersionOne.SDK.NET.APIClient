@@ -1,0 +1,49 @@
+{
+    "id": "VersionOne.SDK.NET.APICLient",
+    "titleSection": {
+        "name": "VersionOne SDK NET APIClient",
+        "shortDescription": "a library for custom .NET development against the VersionOne Platform's REST-based API",
+        "pricing": "Free",
+        "support": {
+            "text": "VersionOne",
+            "href": "http://support.versionone.com/home"
+        }
+    },
+    "descriptionSection": {
+        "description": "The APIClient provides access to the Core API without concern for the underlying RESTful API or the HTTP/XML plumbing. Through the APIClient, developers can query for simple or complex sets of information, update the information, and execute system-defined operations. The APIClient is best suited for course-grained and bulk access."
+    },
+    "linksSection": [
+        {
+            "type": "download",
+            "title": "APIClient in the NuGet Gallery",
+            "href": "http://nuget.org/packages/VersionOne.SDK.APIClient"
+        },
+        {
+            "type": "documentation",
+            "title": "Documentation",
+            "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki"
+        }
+    ],
+    "updatesSection": {
+        "updates": [
+            
+        ],
+        "qualityBands": [
+            {
+                "name": "seed",
+                "shortDesc": "The initial idea of a product. May not be stable code.",
+                "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/CONTRIBUTING.md#seed"
+            },
+            {
+                "name": "sapling",
+                "shortDesc": "The product is undergoing rapid growth. The code works but expect major changes.",
+                "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/CONTRIBUTING.md#sapling"
+            },
+            {
+                "name": "mature",
+                "shortDesc": "The product is stable. The code will continue to evolve with minimum breaking changes.",
+                "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/CONTRIBUTING.md#mature"
+            }
+        ]
+    }
+}
