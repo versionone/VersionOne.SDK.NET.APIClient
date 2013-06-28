@@ -90,7 +90,7 @@ namespace VersionOne.SDK.APIClient {
         }
 
         public void Save(Asset asset, string comment) {
-            if (asset.HasChanged) {
+            if (asset.HasChanged || asset.Oid.IsNull) {
                 var doc = new XmlDocument();
 
                 var s = new StringWriter();
