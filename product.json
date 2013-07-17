@@ -1,8 +1,8 @@
 {
     "id": "VersionOne.SDK.NET.APICLient",
     "titleSection": {
-        "name": "VersionOne SDK NET APIClient",
-        "shortDescription": "a library for custom .NET development against the VersionOne Platform's REST-based API",
+        "name": "VersionOne SDK.NET APIClient",
+        "shortDescription": "A library for custom .NET development against the VersionOne Platform's REST-based API",
         "pricing": "Free",
         "support": {
             "text": "VersionOne",
