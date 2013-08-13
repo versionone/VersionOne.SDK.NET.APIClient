@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3782C976-71E2-4969-9A10-B25F07C82EC5}"
 	ProjectSection(SolutionItems) = preProject
 		DEVELOPING.md = DEVELOPING.md
@@ -11,6 +11,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient", "APIClient\VersionOne.SDK.APIClient.csproj", "{B5062999-ADF0-4F51-A0D2-449C9A344804}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Tests", "APIClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{9E98ED82-88DB-40CD-9718-BC4B089D071A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FA7DD697-9956-471D-969F-F6BE37F4C59F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
