@@ -111,6 +111,7 @@ namespace VersionOne.SDK.APIClient
 				{
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
 					_creds = authclient.refreshAuthCode(_creds);
+					_creds = _storage.StoreCredentials(_creds);
 					return HttpGet(path, refreshTokenIfNeeded: false);
 				}
 				throw;
@@ -147,6 +148,7 @@ namespace VersionOne.SDK.APIClient
 				{
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
 					_creds = authclient.refreshAuthCode(_creds);
+					_creds = _storage.StoreCredentials(_creds);
 					return HttpPost(path, body, refreshTokenIfNeeded: false);
 				}
 				throw;
