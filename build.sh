@@ -170,6 +170,7 @@ update_nuget_deps
 
 WIN_SIGNING_KEY="`winpath "$SIGNING_KEY"`"
 MSBuild.exe $SOLUTION_FILE \
+  -p:DownloadNuGetExe=true \
   -p:SignAssembly=$SIGN_ASSEMBLY \
   -p:AssemblyOriginatorKeyFile=$WIN_SIGNING_KEY \
   -p:RequireRestoreConsent=false \
