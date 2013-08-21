@@ -9,10 +9,17 @@ namespace GettingStarted
 {
     public class Program
     {
-        // Modify to have your own url and credentials here:
+        // Modify to point to your application URL:
         private const string BaseUrl = "http://localhost/VersionOne.Web";
+
+        // If you want to use the standard username and password credentials, set your credentials here:
         private const string UserName = "admin";
         private const string Password = "admin";
+
+        // Otherwise, if you want to use OAuth2 instead of username and password, set these values appropriately:
+        private const bool UseOAuth2 = false;
+        private const string OAuth2_client_secrets_path = @"C:\temp\client_secrets.json";
+        private const string OAuth2_stored_credentials_path = @"C:\temp\stored_credentials.json";
 
         public void Run()
         {
@@ -417,18 +424,36 @@ namespace GettingStarted
 
         public static void Main(string[] args)
         {
-            var program = new Program();
+            var clientType = ClientType.Standard;
+            if (UseOAuth2 || (args.Length > 0 && args[0].Equals("oauth2", StringComparison.OrdinalIgnoreCase)))
+            {
+                clientType = ClientType.OAuth2;
+            }
+            var program = new Program(clientType);
             program.Run();
         }
 
         private readonly IServices _services;
         private readonly IMetaModel _metaModel;
 
-        public Program()
+        public enum ClientType
+        {
+            Standard,
+            OAuth2
+        }
+
+        public Program(ClientType clientType)
         {
 			var servicesFactory = new V1ServicesFactory();
-			System.IO.Directory.SetCurrentDirectory(@"C:\Users\JKoberg\src\VersionOne.SDK.NET.APIClient\Example\GettingStarted\src\bin\Debug");
-			_services = servicesFactory.CreateServices(BaseUrl, OAuth2Client.Storage.JsonFileStorage.Default);
+            if (clientType == ClientType.Standard)
+            {
+                _services = servicesFactory.CreateServices(BaseUrl, UserName, Password);
+            }
+            else if (clientType == ClientType.OAuth2)
+            {
+                _services = servicesFactory.CreateServices(BaseUrl, 
+                    new OAuth2Client.Storage.JsonFileStorage(OAuth2_client_secrets_path, OAuth2_stored_credentials_path));
+            }
             _metaModel = servicesFactory.GetMetaModel();
 
             ServicesProvider.Services = _services;
