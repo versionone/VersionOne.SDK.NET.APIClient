@@ -426,8 +426,9 @@ namespace GettingStarted
 
         public Program()
         {
-            var servicesFactory = new V1ServicesFactory();
-            _services = servicesFactory.CreateServices(BaseUrl, UserName, Password);
+			var servicesFactory = new V1ServicesFactory();
+			System.IO.Directory.SetCurrentDirectory(@"C:\Users\JKoberg\src\VersionOne.SDK.NET.APIClient\Example\GettingStarted\src\bin\Debug");
+			_services = servicesFactory.CreateServices(BaseUrl, OAuth2Client.Storage.JsonFileStorage.Default);
             _metaModel = servicesFactory.GetMetaModel();
 
             ServicesProvider.Services = _services;

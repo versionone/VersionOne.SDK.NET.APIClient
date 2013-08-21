@@ -19,8 +19,8 @@ namespace GettingStarted
 
 		public IServices CreateServices(string baseUrl, OAuth2Client.IStorage storage)
 		{
-			var dataConnector = new V1APIConnector(baseUrl + "/rest-1.v1/", userName, password, integratedAuth);
-			var metaConnector = new V1APIConnector(baseUrl + "/meta.v1/");
+			var dataConnector = new V1OAuth2APIConnector(baseUrl + "/rest-1.v1/", storage);
+			var metaConnector = new V1OAuth2APIConnector(baseUrl + "/meta.v1/", storage);
 			_metaModel = new MetaModel(metaConnector);
 			var services = new Services(_metaModel, dataConnector);
 
