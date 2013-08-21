@@ -28,8 +28,8 @@ namespace VersionOne.SDK.APIClient
 		}
 
 		public V1OAuth2APIConnector(string url)
+			: this(url, OAuth2Client.Storage.JsonFileStorage.Default)
 		{
-			this.url = url;
 		}
 
 		public V1OAuth2APIConnector(string url, IStorage storage)
@@ -39,7 +39,15 @@ namespace VersionOne.SDK.APIClient
 			RefreshCreds();
 		}
 
-		public V1OAuth2APIConnector(string url, IStorage storage, ProxyProvider proxyProvider) : this(url, storage)
+		public V1OAuth2APIConnector(string url, ProxyProvider proxyProvider = null)
+			: this(url)
+		{
+			this.proxyProvider = proxyProvider;
+		}
+
+
+		public V1OAuth2APIConnector(string url, IStorage storage, ProxyProvider proxyProvider=null)
+			: this(url, storage)
 		{
 			this.proxyProvider = proxyProvider;
 		}
@@ -50,50 +58,32 @@ namespace VersionOne.SDK.APIClient
 			_creds = _storage.GetCredentials();
 		}
 
-		public Stream GetData()
+		private HttpWebRequest CreateRequest(string path)
 		{
-			return GetData(string.Empty);
-		}
-
-		public Stream GetData(string path)
-		{
-			return HttpGet(url + path);
-		}
-
-		public Stream SendData(string path, string data)
-		{
-			return HttpPost(url + path, System.Text.Encoding.UTF8.GetBytes(data));
-		}
-
-		public Stream BeginRequest(string path)
-		{
-			var stream = new MemoryStream();
-			_pendingStreams[path] = stream;
-			return stream;
-		}
-
-		public Stream EndRequest(string path, string contentType)
-		{
-			var inputstream = _pendingStreams[path];
-			var body = inputstream.ToArray();
-			if (body.Length > 0)
+			var request = (HttpWebRequest)WebRequest.Create(path);
+			AddBearer(request);
+			if (proxyProvider != null)
 			{
-				return HttpPost(path, body, contentType:contentType);
+				request.Proxy = proxyProvider.CreateWebProxy();
 			}
-			return HttpGet(path, contentType: contentType);
+
+			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
+
+			foreach (var pair in customHttpHeaders)
+			{
+				request.Headers.Add(pair.Key, pair.Value);
+			}
+
+			request.CookieContainer = CookieContainer;
+			request.UnsafeAuthenticatedConnectionSharing = true;
+			return request;
 		}
 
-		private readonly IDictionary<string, HttpWebRequest> requests = new Dictionary<string, HttpWebRequest>();
-		private readonly IDictionary<string, string> customHttpHeaders = new Dictionary<string, string>();
-		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
-
-		public Stream HttpGet(string path, bool refreshTokenIfNeeded=true, string contentType="text/xml")
+		public Stream HttpGet(string path, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
 		{
 			var req = CreateRequest(path);
 			req.ContentType = contentType;
 			req.Method = "GET";
-
-
 			try
 			{
 				var resp = req.GetResponse();
@@ -116,7 +106,7 @@ namespace VersionOne.SDK.APIClient
 			}
 			catch (WebException ex)
 			{
-				var resp = (HttpWebResponse) ex.Response;
+				var resp = (HttpWebResponse)ex.Response;
 				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
@@ -152,36 +142,49 @@ namespace VersionOne.SDK.APIClient
 			}
 			catch (WebException ex)
 			{
-				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError)
+				var resp = (HttpWebResponse)ex.Response;
+				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
 					_creds = authclient.refreshAuthCode(_creds);
-					return HttpPost(path, body, refreshTokenIfNeeded:false);
+					return HttpPost(path, body, refreshTokenIfNeeded: false);
 				}
 				throw;
 			}
 		}
 
-		private HttpWebRequest CreateRequest(string path)
+		public Stream GetData()
 		{
-			var request = (HttpWebRequest)WebRequest.Create(path);
-			AddBearer(request);
-			if (proxyProvider != null)
-			{
-				request.Proxy = proxyProvider.CreateWebProxy();
-			}
-
-			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-
-			foreach (var pair in customHttpHeaders)
-			{
-				request.Headers.Add(pair.Key, pair.Value);
-			}
-
-			request.CookieContainer = CookieContainer;
-			request.UnsafeAuthenticatedConnectionSharing = true;
-			return request;
+			return GetData(string.Empty);
 		}
+
+		public Stream GetData(string path)
+		{
+			return HttpGet(url + path);
+		}
+
+		public Stream SendData(string path, string data)
+		{
+			return HttpPost(url + path, System.Text.Encoding.UTF8.GetBytes(data));
+		}
+
+		public Stream BeginRequest(string path)
+		{
+			var stream = new MemoryStream();
+			_pendingStreams[path] = stream;
+			return stream;
+		}
+
+		public Stream EndRequest(string path, string contentType)
+		{
+			var inputstream = _pendingStreams[path];
+			var body = inputstream.ToArray();
+			return HttpPost(path, body, contentType: contentType);
+		}
+
+		private readonly IDictionary<string, HttpWebRequest> requests = new Dictionary<string, HttpWebRequest>();
+		private readonly IDictionary<string, string> customHttpHeaders = new Dictionary<string, string>();
+		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
 
 		private void AddBearer(HttpWebRequest request)
 		{
