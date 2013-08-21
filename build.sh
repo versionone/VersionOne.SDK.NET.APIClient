@@ -147,7 +147,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyInformationalVersion("See $GITHUB_WEB_URL/wiki")]
 
 [assembly: AssemblyProduct("$COMPONENT_NAME")]
-[assembly: AssemblyTitle("$COMPONENT_NAME")]
+[assembly: AssemblyTitle("$PRODUCT_TITLE")]
 [assembly: AssemblyDescription("$PRODUCT_NAME $COMPONENT_NAME $Configuration Build")]
 [assembly: AssemblyCompany("$ORGANIZATION_NAME")]
 [assembly: AssemblyCopyright("Copyright $COPYRIGHT_RANGE, $ORGANIZATION_NAME, Licensed under modified BSD.")]
