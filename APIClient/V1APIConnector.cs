@@ -55,6 +55,16 @@ namespace VersionOne.SDK.APIClient {
 			_callerUserAgent = userAgent;
 		}
 
+		private string MyUserAgent
+		{
+			get
+			{
+				var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof(V1APIConnector)).GetName();
+				return String.Format("{0}/{1} ({2}) {3}", myAssemblyName.Name, myAssemblyName.Version,
+												myAssemblyName.FullName, _callerUserAgent);
+			}
+		}
+
         public V1APIConnector(string url) {
             this.url = url;
             integratedAuth = true;
@@ -145,8 +155,7 @@ namespace VersionOne.SDK.APIClient {
             }
 
             request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-	        var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof (V1APIConnector)).GetName();
-			request.Headers.Add("User-Agent", String.Format("{0}/{1} ({2}) {3}", myAssemblyName.Name, myAssemblyName.Version.ToString(), myAssemblyName.FullName, _callerUserAgent));
+	        request.Headers["User-Agent"] = MyUserAgent
             
             foreach (var pair in customHttpHeaders) {
                 request.Headers.Add(pair.Key, pair.Value);

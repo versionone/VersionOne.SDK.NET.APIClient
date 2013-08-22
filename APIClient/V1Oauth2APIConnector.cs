@@ -71,6 +71,17 @@ namespace VersionOne.SDK.APIClient
 			request.Headers["Authorization"] =
 				new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _creds.AccessToken).ToString();
 		}
+
+		private string MyUserAgent
+		{
+			get
+			{
+				var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof(V1OAuth2APIConnector)).GetName();
+				return String.Format("{0}/{1} ({2}, client_id={3}) {4}", myAssemblyName.Name, myAssemblyName.Version,
+												myAssemblyName.FullName, _secrets.client_id, _callerUserAgent);
+			}
+		}
+
 		private HttpWebRequest CreateRequest(string path)
 		{
 			var request = (HttpWebRequest)WebRequest.Create(path);
@@ -81,10 +92,7 @@ namespace VersionOne.SDK.APIClient
 			}
 
 			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-			var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof(V1OAuth2APIConnector)).GetName();
-			var userAgentString = String.Format("{0}/{1} ({2}, client_id={3}) {4}", myAssemblyName.Name, myAssemblyName.Version,
-			                                    myAssemblyName.FullName, _secrets.client_id, _callerUserAgent);
-			request.Headers.Add("User-Agent", userAgentString);
+			request.Headers["User-Agent"] = MyUserAgent;
 			foreach (var pair in customHttpHeaders)
 			{
 				request.Headers.Add(pair.Key, pair.Value);
