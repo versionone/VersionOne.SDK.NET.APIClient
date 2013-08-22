@@ -157,7 +157,7 @@ namespace VersionOne.SDK.APIClient {
             }
 
             request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-	        request.Headers["User-Agent"] = MyUserAgent;
+			request.UserAgent = MyUserAgent;
             
             foreach (var pair in customHttpHeaders) {
                 request.Headers.Add(pair.Key, pair.Value);
