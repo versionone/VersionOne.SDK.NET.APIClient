@@ -14,6 +14,7 @@ namespace VersionOne.SDK.APIClient {
         private CookieContainer cookieContainer;
         private CredentialCache credentials;
 
+	    private string _callerUserAgent = "";
         private readonly ProxyProvider proxyProvider;
 
         private CredentialCache Credentials {
@@ -48,6 +49,11 @@ namespace VersionOne.SDK.APIClient {
         private CookieContainer CookieContainer {
             get { return cookieContainer ?? (cookieContainer = new CookieContainer()); }
         }
+
+		public void SetCallerUserAgent(string userAgent)
+		{
+			_callerUserAgent = userAgent;
+		}
 
         public V1APIConnector(string url) {
             this.url = url;
@@ -139,6 +145,8 @@ namespace VersionOne.SDK.APIClient {
             }
 
             request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
+	        var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof (V1APIConnector)).GetName();
+			request.Headers.Add("User-Agent", String.Format("{0}/{1} ({2}) {3}", myAssemblyName.Name, myAssemblyName.Version.ToString(), myAssemblyName.FullName, _callerUserAgent));
             
             foreach (var pair in customHttpHeaders) {
                 request.Headers.Add(pair.Key, pair.Value);

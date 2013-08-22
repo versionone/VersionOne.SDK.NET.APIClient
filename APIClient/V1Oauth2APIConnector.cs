@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using OAuth2Client;
 using OAuth2Client.Extensions;
 
@@ -17,6 +18,7 @@ namespace VersionOne.SDK.APIClient
 		private CookieContainer cookieContainer;
 		private OAuth2Client.Credentials _creds;
 		private OAuth2Client.Secrets _secrets;
+		private string _callerUserAgent = "";
 
 		private const string EndpointScope="apiv1";
  
@@ -26,6 +28,12 @@ namespace VersionOne.SDK.APIClient
 		{
 			get { return cookieContainer ?? (cookieContainer = new CookieContainer()); }
 		}
+
+		public void SetCallerUserAgent(string userAgent)
+		{
+			_callerUserAgent = userAgent;
+		}
+
 
 		public V1OAuth2APIConnector(string url)
 			: this(url, OAuth2Client.Storage.JsonFileStorage.Default)
@@ -58,6 +66,11 @@ namespace VersionOne.SDK.APIClient
 			_creds = _storage.GetCredentials();
 		}
 
+		private void AddBearer(HttpWebRequest request)
+		{
+			request.Headers["Authorization"] =
+				new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _creds.AccessToken).ToString();
+		}
 		private HttpWebRequest CreateRequest(string path)
 		{
 			var request = (HttpWebRequest)WebRequest.Create(path);
@@ -68,7 +81,10 @@ namespace VersionOne.SDK.APIClient
 			}
 
 			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-
+			var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof(V1OAuth2APIConnector)).GetName();
+			var userAgentString = String.Format("{0}/{1} ({2}, client_id={3}) {4}", myAssemblyName.Name, myAssemblyName.Version,
+			                                    myAssemblyName.FullName, _secrets.client_id, _callerUserAgent);
+			request.Headers.Add("User-Agent", userAgentString);
 			foreach (var pair in customHttpHeaders)
 			{
 				request.Headers.Add(pair.Key, pair.Value);
@@ -188,11 +204,6 @@ namespace VersionOne.SDK.APIClient
 		private readonly IDictionary<string, string> customHttpHeaders = new Dictionary<string, string>();
 		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
 
-		private void AddBearer(HttpWebRequest request)
-		{
-			request.Headers["Authorization"] =
-				new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _creds.AccessToken).ToString();
-		}
 
 		/// <summary>
 		/// Headers from this Dictionary will be added to all HTTP requests to VersionOne server.
