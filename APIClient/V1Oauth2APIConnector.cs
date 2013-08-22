@@ -72,13 +72,15 @@ namespace VersionOne.SDK.APIClient
 				new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _creds.AccessToken).ToString();
 		}
 
+		public static System.Reflection.AssemblyName MyAssemblyName =
+			System.Reflection.Assembly.GetAssembly(typeof(V1APIConnector)).GetName();
+
 		private string MyUserAgent
 		{
 			get
 			{
-				var myAssemblyName = System.Reflection.Assembly.GetAssembly(typeof(V1OAuth2APIConnector)).GetName();
-				return String.Format("{0}/{1} ({2}, client_id={3}) {4}", myAssemblyName.Name, myAssemblyName.Version,
-												myAssemblyName.FullName, _secrets.client_id, _callerUserAgent);
+				return String.Format("{0}/{1} ({2}, client_id={3}) {4}", MyAssemblyName.Name, MyAssemblyName.Version,
+												MyAssemblyName.FullName, _secrets.client_id, _callerUserAgent);
 			}
 		}
 
