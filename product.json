@@ -15,18 +15,28 @@
     "linksSection": [
         {
             "type": "download",
-            "title": "APIClient in the NuGet Gallery",
+            "title": "Stable library in the NuGet Gallery",
             "href": "http://nuget.org/packages/VersionOne.SDK.APIClient"
         },
         {
-            "type": "source",
-            "title": "Source Code on GithHub",
-            "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient"
+            "type": "documentation",
+            "title": "README",
+            "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/README.md"
         },
         {
             "type": "documentation",
-            "title": "Documentation",
+            "title": "Wiki",
             "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/wiki"
+        },
+        {
+            "type": "source",
+            "title": "GithHub Project for Source Code and Issues",
+            "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient"
+        },
+        {
+            "type": "license",
+            "title": "Modified BSD (3 clause) License",
+            "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/LICENSE.md"
         }
     ],
     "updatesSection": {
@@ -36,49 +46,49 @@
                 "description": "Summer 2013",
                 "version": "12.5.0.181",
                 "releaseNotes": "Fixed: Save Method allows new assets to be saved when OID is null and no attributes have changed",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2013-02-01T00:00:00.000Z",
                 "description": "Winter 2013",
                 "version": "12.4.0.153",
                 "releaseNotes": "Improved compliance with semantic versioning",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2013-01-17T00:00:00.000Z",
                 "description": "Winter 2013",
                 "version": "12.3.139.0",
                 "releaseNotes": "",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2013-01-15T00:00:00.000Z",
                 "description": "Winter 2013",
                 "version": "12.3.132.0",
                 "releaseNotes": "",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2013-01-15T00:00:00.000Z",
                 "description": "Winter 2013",
                 "version": "12.3.129.0",
                 "releaseNotes": "",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2012-11-01T00:00:00.000Z",
                 "description": "Fall 2012",
                 "version": "12.3.80.0",
                 "releaseNotes": "",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             },
             {
                 "date": "2012-10-30T06:06:11.000Z",
                 "description": "Fall 2012",
                 "version": "12.3.79.0",
                 "releaseNotes": "Moved to GitHub and NuGet",
-                "qualityBand": "mature",
+                "qualityBand": "mature"
             }
         ],
         "qualityBands": [
