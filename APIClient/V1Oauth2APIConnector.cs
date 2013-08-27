@@ -209,7 +209,7 @@ namespace VersionOne.SDK.APIClient
 		{
 			var inputstream = _pendingStreams[path];
 			var body = inputstream.ToArray();
-			return HttpPost(path, body, contentType: contentType);
+			return HttpPost(url + path, body, contentType: contentType);
 		}
 
 		private readonly IDictionary<string, HttpWebRequest> requests = new Dictionary<string, HttpWebRequest>();
