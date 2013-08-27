@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 
 namespace VersionOne.SDK.APIClient {
     public class V1APIConnector : IAPIConnector {
@@ -14,7 +15,6 @@ namespace VersionOne.SDK.APIClient {
         private CookieContainer cookieContainer;
         private CredentialCache credentials;
 
-	    private string _callerUserAgent = "";
         private readonly ProxyProvider proxyProvider;
 
         private CredentialCache Credentials {
@@ -50,20 +50,22 @@ namespace VersionOne.SDK.APIClient {
             get { return cookieContainer ?? (cookieContainer = new CookieContainer()); }
         }
 
+		private string _callerUserAgent = MakeUserAgent(RunningAssemblyName);
 		public void SetCallerUserAgent(string userAgent)
 		{
 			_callerUserAgent = userAgent;
 		}
-
-	    public static System.Reflection.AssemblyName MyAssemblyName =
-		    System.Reflection.Assembly.GetAssembly(typeof (V1APIConnector)).GetName();
-
+	    public static AssemblyName MyAssemblyName = Assembly.GetAssembly(typeof (V1APIConnector)).GetName();
+	    public static AssemblyName RunningAssemblyName = Assembly.GetExecutingAssembly().GetName();
+		private static string MakeUserAgent(AssemblyName n, string upstream="")
+		{
+			return String.Format("{0}/{1} ({2}) {3}", n.Name, n.Version, n.FullName, upstream);
+		}
 		private string MyUserAgent
 		{
 			get
 			{
-				return String.Format("{0}/{1} ({2}) {3}", MyAssemblyName.Name, MyAssemblyName.Version,
-												MyAssemblyName.FullName, _callerUserAgent);
+				return MakeUserAgent(MyAssemblyName,  _callerUserAgent);
 			}
 		}
 
