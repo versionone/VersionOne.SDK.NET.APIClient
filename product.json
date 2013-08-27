@@ -32,6 +32,13 @@
     "updatesSection": {
         "updates": [
             {
+                "date": "2013-08-06T00:00:00.000Z",
+                "description": "Summer 2013",
+                "version": "12.5.0.181",
+                "releaseNotes": "Fixed: Save Method allows new assets to be saved when OID is null and no attributes have changed",
+                "qualityBand": "mature",
+            },
+            {
                 "date": "2013-02-01T00:00:00.000Z",
                 "description": "Winter 2013",
                 "version": "12.4.0.153",
