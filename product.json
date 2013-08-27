@@ -19,6 +19,11 @@
             "href": "http://nuget.org/packages/VersionOne.SDK.APIClient"
         },
         {
+            "type": "download",
+            "title": "Continuous Integration library in the VersionOne MyGet Gallery",
+            "href": "https://www.myget.org/gallery/versionone"
+        },
+        {
             "type": "documentation",
             "title": "README",
             "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/README.md"
