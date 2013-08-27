@@ -135,7 +135,8 @@ namespace VersionOne.SDK.APIClient
 				var resp = (HttpWebResponse)ex.Response;
 				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
-					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
+					var proxy = proxyProvider != null ? proxyProvider.CreateWebProxy() : null;
+					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope, proxy);
 					_creds = authclient.refreshAuthCode(_creds);
 					_creds = _storage.StoreCredentials(_creds);
 					return HttpGet(path, refreshTokenIfNeeded: false);
@@ -172,7 +173,8 @@ namespace VersionOne.SDK.APIClient
 				var resp = (HttpWebResponse)ex.Response;
 				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
-					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope);
+					var proxy = proxyProvider != null ? proxyProvider.CreateWebProxy() : null;
+					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope, proxy);
 					_creds = authclient.refreshAuthCode(_creds);
 					_creds = _storage.StoreCredentials(_creds);
 					return HttpPost(path, body, refreshTokenIfNeeded: false);
