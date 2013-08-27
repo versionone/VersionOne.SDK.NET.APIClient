@@ -91,7 +91,7 @@
                 "qualityBand": "mature"
             }
         ],
-        "qualityBands": [
+        "qualityBands": {
             "seed": {
                 "shortDescription": "The initial idea of a product. May not be stable code.",
                 "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/CONTRIBUTING.md#seed"
@@ -104,6 +104,6 @@
                 "shortDescription": "The product is stable. The code will continue to evolve with minimum breaking changes.",
                 "href": "https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/master/CONTRIBUTING.md#mature"
             }
-        ]
+        }
     }
 }
