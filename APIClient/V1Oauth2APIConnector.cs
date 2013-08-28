@@ -13,20 +13,20 @@ namespace VersionOne.SDK.APIClient
 {
 	public class V1OAuth2APIConnector : IAPIConnector
 	{
-		private readonly string url;
-		private readonly OAuth2Client.IStorage _storage;
-		private CookieContainer cookieContainer;
+		private readonly string _urlPrefix;
+		private readonly IStorage _storage;
+		private CookieContainer _cookieContainer;
 		private OAuth2Client.Credentials _creds;
 		private OAuth2Client.Secrets _secrets;
 		private string _callerUserAgent = "";
 
 		private const string EndpointScope="apiv1";
  
-		private readonly ProxyProvider proxyProvider;
+		private readonly ProxyProvider _proxyProvider;
 
 		private CookieContainer CookieContainer
 		{
-			get { return cookieContainer ?? (cookieContainer = new CookieContainer()); }
+			get { return _cookieContainer ?? (_cookieContainer = new CookieContainer()); }
 		}
 
 		public void SetCallerUserAgent(string userAgent)
@@ -35,32 +35,15 @@ namespace VersionOne.SDK.APIClient
 		}
 
 
-		public V1OAuth2APIConnector(string url)
-			: this(url, OAuth2Client.Storage.JsonFileStorage.Default)
+		public V1OAuth2APIConnector(string urlPrefix, IStorage storage = null, ProxyProvider proxy = null)
 		{
+			_urlPrefix = urlPrefix;
+			_storage = storage ?? OAuth2Client.Storage.JsonFileStorage.Default;
+			_proxyProvider = proxy;
+			ReadSecretsAndCreds();
 		}
 
-		public V1OAuth2APIConnector(string url, IStorage storage)
-		{
-			this.url = url;
-			_storage = storage;
-			RefreshCreds();
-		}
-
-		public V1OAuth2APIConnector(string url, ProxyProvider proxyProvider = null)
-			: this(url)
-		{
-			this.proxyProvider = proxyProvider;
-		}
-
-
-		public V1OAuth2APIConnector(string url, IStorage storage, ProxyProvider proxyProvider=null)
-			: this(url, storage)
-		{
-			this.proxyProvider = proxyProvider;
-		}
-
-		private void RefreshCreds()
+		private void ReadSecretsAndCreds()
 		{
 			_secrets = _storage.GetSecrets();
 			_creds = _storage.GetCredentials();
@@ -84,18 +67,18 @@ namespace VersionOne.SDK.APIClient
 			}
 		}
 
-		private HttpWebRequest CreateRequest(string path)
+		private HttpWebRequest CreateRequest(string url)
 		{
-			var request = (HttpWebRequest)WebRequest.Create(path);
+			var request = (HttpWebRequest)WebRequest.Create(url);
 			AddBearer(request);
-			if (proxyProvider != null)
+			if (_proxyProvider != null)
 			{
-				request.Proxy = proxyProvider.CreateWebProxy();
+				request.Proxy = _proxyProvider.CreateWebProxy();
 			}
 
 			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
 			request.UserAgent = MyUserAgent;
-			foreach (var pair in customHttpHeaders)
+			foreach (var pair in _customHttpHeaders)
 			{
 				request.Headers.Add(pair.Key, pair.Value);
 			}
@@ -105,29 +88,27 @@ namespace VersionOne.SDK.APIClient
 			return request;
 		}
 
-		public Stream HttpGet(string path, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
+		public Stream HttpGet(string apipath, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
 		{
-			var req = CreateRequest(path);
+			var url = _urlPrefix + apipath;
+			var req = CreateRequest(url);
 			req.ContentType = contentType;
 			req.Method = "GET";
 			try
 			{
 				var resp = req.GetResponse();
-
 				if (Config.IsDebugMode)
 				{
 					Debug.WriteLine(string.Empty);
 					Debug.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
 					Debug.WriteLine("Get....");
-					Debug.WriteLine("URL: " + url + path);
+					Debug.WriteLine("URL: " + url);
 					Debug.WriteLine("Response from: " + resp.ResponseUri);
 					Debug.WriteLine(resp.Headers.ToString());
 					Debug.WriteLine(resp.ToString());
 					Debug.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 					Debug.WriteLine(string.Empty);
 				}
-
-
 				return resp.GetResponseStream();
 			}
 			catch (WebException ex)
@@ -135,19 +116,20 @@ namespace VersionOne.SDK.APIClient
 				var resp = (HttpWebResponse)ex.Response;
 				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
-					var proxy = proxyProvider != null ? proxyProvider.CreateWebProxy() : null;
+					var proxy = _proxyProvider != null ? _proxyProvider.CreateWebProxy() : null;
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope, proxy, null);
 					_creds = authclient.refreshAuthCode(_creds);
 					_creds = _storage.StoreCredentials(_creds);
-					return HttpGet(path, refreshTokenIfNeeded: false);
+					return HttpGet(apipath, refreshTokenIfNeeded: false);
 				}
 				throw;
 			}
 		}
 
-		public Stream HttpPost(string path, byte[] body, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
+		public Stream HttpPost(string apipath, byte[] body, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
 		{
-			var req = CreateRequest(path);
+			var url = _urlPrefix + apipath;
+			var req = CreateRequest(url);
 			req.Method = "POST";
 			req.ContentType = contentType;
 			if (Config.IsDebugMode)
@@ -155,7 +137,7 @@ namespace VersionOne.SDK.APIClient
 				Debug.WriteLine(string.Empty);
 				Debug.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
 				Debug.WriteLine("POST....");
-				Debug.WriteLine("URL: " + url + path);
+				Debug.WriteLine("URL: " + url);
 				Debug.WriteLine(req.Headers.ToString());
 				Debug.WriteLine(body);
 				Debug.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
@@ -173,11 +155,11 @@ namespace VersionOne.SDK.APIClient
 				var resp = (HttpWebResponse)ex.Response;
 				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
 				{
-					var proxy = proxyProvider != null ? proxyProvider.CreateWebProxy() : null;
+					var proxy = _proxyProvider != null ? _proxyProvider.CreateWebProxy() : null;
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope, proxy, null);
 					_creds = authclient.refreshAuthCode(_creds);
 					_creds = _storage.StoreCredentials(_creds);
-					return HttpPost(path, body, refreshTokenIfNeeded: false);
+					return HttpPost(apipath, body, refreshTokenIfNeeded: false);
 				}
 				throw;
 			}
@@ -188,32 +170,32 @@ namespace VersionOne.SDK.APIClient
 			return GetData(string.Empty);
 		}
 
-		public Stream GetData(string path)
+		public Stream GetData(string apipath)
 		{
-			return HttpGet(url + path);
+			return HttpGet(apipath);
 		}
 
-		public Stream SendData(string path, string data)
+		public Stream SendData(string apipath, string data)
 		{
-			return HttpPost(url + path, System.Text.Encoding.UTF8.GetBytes(data));
+			return HttpPost(apipath, System.Text.Encoding.UTF8.GetBytes(data));
 		}
 
-		public Stream BeginRequest(string path)
+		public Stream BeginRequest(string apipath)
 		{
 			var stream = new MemoryStream();
-			_pendingStreams[path] = stream;
+			_pendingStreams[apipath] = stream;
 			return stream;
 		}
 
-		public Stream EndRequest(string path, string contentType)
+		public Stream EndRequest(string apipath, string contentType)
 		{
-			var inputstream = _pendingStreams[path];
+			var inputstream = _pendingStreams[apipath];
+			_pendingStreams.Remove(apipath);
 			var body = inputstream.ToArray();
-			return HttpPost(url + path, body, contentType: contentType);
+			return HttpPost(apipath, body, contentType: contentType);
 		}
 
-		private readonly IDictionary<string, HttpWebRequest> requests = new Dictionary<string, HttpWebRequest>();
-		private readonly IDictionary<string, string> customHttpHeaders = new Dictionary<string, string>();
+		private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
 		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
 
 
@@ -222,7 +204,7 @@ namespace VersionOne.SDK.APIClient
 		/// </summary>
 		public IDictionary<string, string> CustomHttpHeaders
 		{
-			get { return customHttpHeaders; }
+			get { return _customHttpHeaders; }
 		}
 	}
 }
