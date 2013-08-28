@@ -8,46 +8,49 @@ using System.Reflection;
 
 namespace VersionOne.SDK.APIClient {
     public class V1APIConnector : IAPIConnector {
-        private readonly string url;
-        private readonly string username;
-        private readonly string password;
-        private readonly bool integratedAuth;
-        private CookieContainer cookieContainer;
-        private CredentialCache credentials;
+        private readonly string _urlPrefix;
+        private readonly string _username;
+        private readonly string _password;
+        private readonly bool _integratedAuth;
+        private CookieContainer _cookieContainer;
+        private CredentialCache _credentials;
 
-        private readonly ProxyProvider proxyProvider;
+        private readonly ProxyProvider _proxyProvider;
+
+		private readonly IDictionary<string, HttpWebRequest> _requests = new Dictionary<string, HttpWebRequest>();
+		private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
 
         private CredentialCache Credentials {
             get {
-                if (credentials == null) {
-                    credentials = new CredentialCache();
-                    var uri = new Uri(url);
+                if (_credentials == null) {
+                    _credentials = new CredentialCache();
+                    var uri = new Uri(_urlPrefix);
 
-                    if (!string.IsNullOrEmpty(username) || !string.IsNullOrEmpty(password)) {
-                        var credential = new NetworkCredential(username, password);
+                    if (!string.IsNullOrEmpty(_username) || !string.IsNullOrEmpty(_password)) {
+                        var credential = new NetworkCredential(_username, _password);
 
-                        if(integratedAuth) {
-                            credentials.Add(uri, "Negotiate", credential);
-                            credentials.Add(uri, "NTLM", credential);
+                        if(_integratedAuth) {
+                            _credentials.Add(uri, "Negotiate", credential);
+                            _credentials.Add(uri, "NTLM", credential);
                         } else {
-                            credentials.Add(uri, "Basic", credential);
+                            _credentials.Add(uri, "Basic", credential);
                         }
                     } else {
                         var credential = CredentialCache.DefaultCredentials as NetworkCredential;
                         
                         if (credential != null) {
-                            credentials.Add(uri, "Negotiate", credential);
-                            credentials.Add(uri, "NTLM", credential);
+                            _credentials.Add(uri, "Negotiate", credential);
+                            _credentials.Add(uri, "NTLM", credential);
                         }
                     }
                 }
 
-                return credentials;
+                return _credentials;
             }
         }
 
         private CookieContainer CookieContainer {
-            get { return cookieContainer ?? (cookieContainer = new CookieContainer()); }
+            get { return _cookieContainer ?? (_cookieContainer = new CookieContainer()); }
         }
 
 		private string _callerUserAgent = MakeUserAgent(RunningAssemblyName);
@@ -69,37 +72,36 @@ namespace VersionOne.SDK.APIClient {
 			}
 		}
 
-        public V1APIConnector(string url) {
-            this.url = url;
-            integratedAuth = true;
-        }
+		public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null,
+		                      ProxyProvider proxyProvider = null)
+		{
+			_urlPrefix = urlPrefix;
+			_proxyProvider = proxyProvider;
+			if(username == null && password == null && !integratedAuth.HasValue)
+			{
+				_integratedAuth = true;
+			}
+			else
+			{
+				_username = username;
+				_password = password;
+				_integratedAuth = integratedAuth.GetValueOrDefault();
+			}
 
-        public V1APIConnector(string url, string username, string password) : this(url, username, password, false) { }
-
-        public V1APIConnector(string url, string username, string password, bool integratedAuth) {
-            this.url = url;
-            this.username = username;
-            this.password = password;
-            this.integratedAuth = integratedAuth;
-        }
-
-        public V1APIConnector(string url, string username, string password, bool integratedAuth, ProxyProvider proxyProvider)
-            : this(url, username, password, integratedAuth) {
-            this.proxyProvider = proxyProvider;
-        }
+		}
 
         public Stream GetData() {
             return GetData(string.Empty);
         }
 
-        public Stream GetData(string path) {
-            var response = CreateRequest(url + path).GetResponse();
+        public Stream GetData(string apipath) {
+			var response = CreateRequest(_urlPrefix + apipath).GetResponse();
             
             if(Config.IsDebugMode) {
                 Debug.WriteLine(string.Empty);
                 Debug.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
                 Debug.WriteLine("Get....");
-                Debug.WriteLine("URL: " + url + path);
+				Debug.WriteLine("URL: " + _urlPrefix + apipath);
                 Debug.WriteLine("Response from: " + response.ResponseUri);
                 Debug.WriteLine(response.Headers.ToString());
                 Debug.WriteLine(response.ToString());
@@ -109,8 +111,9 @@ namespace VersionOne.SDK.APIClient {
             return response.GetResponseStream();
         }
 
-        public Stream SendData(string path, string data) {
-            HttpWebRequest request = CreateRequest(url + path);
+		public Stream SendData(string apipath, string data)
+		{
+			HttpWebRequest request = CreateRequest(_urlPrefix + apipath);
             request.ServicePoint.Expect100Continue = false;
 
             request.Method = "POST";
@@ -120,7 +123,7 @@ namespace VersionOne.SDK.APIClient {
                 Debug.WriteLine(string.Empty);
                 Debug.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
                 Debug.WriteLine("POST....");
-                Debug.WriteLine("URL: " + url + path);
+				Debug.WriteLine("URL: " + _urlPrefix + apipath);
                 Debug.WriteLine(request.Headers.ToString());
                 Debug.WriteLine(data);
                 Debug.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
@@ -134,34 +137,33 @@ namespace VersionOne.SDK.APIClient {
             return request.GetResponse().GetResponseStream();
         }
 
-        private readonly IDictionary<string, HttpWebRequest> requests = new Dictionary<string, HttpWebRequest>();
-        private readonly IDictionary<string, string> customHttpHeaders = new Dictionary<string, string>();
-
-        public Stream BeginRequest(string path) {
-            var req = CreateRequest(url + path);
-            requests[path] = req;
+		public Stream BeginRequest(string apipath)
+		{
+			var req = CreateRequest(_urlPrefix + apipath);
+			_requests[apipath] = req;
             req.Method = "POST";
             return req.GetRequestStream();
         }
 
-        public Stream EndRequest(string path, string contentType) {
-            var req = requests[path];
-            requests.Remove(path);
+		public Stream EndRequest(string apipath, string contentType)
+		{
+			var req = _requests[apipath];
+			_requests.Remove(apipath);
             req.ContentType = contentType;
             return req.GetResponse().GetResponseStream();
         }
 
-        private HttpWebRequest CreateRequest(string path) {
-            var request = (HttpWebRequest) WebRequest.Create(path);
+        private HttpWebRequest CreateRequest(string url) {
+			var request = (HttpWebRequest)WebRequest.Create(url);
 
-            if (proxyProvider != null) {
-                request.Proxy = proxyProvider.CreateWebProxy();
+            if (_proxyProvider != null) {
+                request.Proxy = _proxyProvider.CreateWebProxy();
             }
 
             request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
 			request.UserAgent = MyUserAgent;
             
-            foreach (var pair in customHttpHeaders) {
+            foreach (var pair in _customHttpHeaders) {
                 request.Headers.Add(pair.Key, pair.Value);
             }
             
@@ -175,7 +177,7 @@ namespace VersionOne.SDK.APIClient {
         /// Headers from this Dictionary will be added to all HTTP requests to VersionOne server.
         /// </summary>
         public IDictionary<string, string> CustomHttpHeaders {
-            get { return customHttpHeaders; }
+            get { return _customHttpHeaders; }
         }
     }
 }
