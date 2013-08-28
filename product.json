@@ -1,5 +1,5 @@
 {
-    "id": "VersionOne.SDK.NET.APICLient",
+    "id": "VersionOne.SDK.NET.APIClient",
     "titleSection": {
         "name": "VersionOne SDK.NET APIClient",
         "shortDescription": "A library for custom .NET development against the VersionOne Platform's REST-based API",
