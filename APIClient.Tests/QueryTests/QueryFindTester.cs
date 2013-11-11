@@ -18,18 +18,24 @@ namespace VersionOne.SDK.APIClient.Tests.QueryTests
         public void TestFixtureTearDown()
         {
             _context = null;
+
         }
 
         [Test]
         public void FindMemberTest()
         {
-            var assetType = _context.MetaModel.GetAssetType("Member");
-            var query = new Query(assetType);
-            var nameAttribute = assetType.GetAttributeDefinition("Username");
-            query.Selection.Add(nameAttribute);
-            query.Find = new QueryFind("admin", new AttributeSelection("Username", assetType));
-            QueryResult result = _context.Services.Retrieve(query);
-            Assert.AreEqual(1, result.TotalAvaliable);
+            var memberType = _context.MetaModel.GetAssetType("Member");
+            var memberQuery = new Query(memberType);
+            var userNameAttr = memberType.GetAttributeDefinition("Username");
+            memberQuery.Selection.Add(userNameAttr);
+            memberQuery.Find = new QueryFind("admin", new AttributeSelection("Username", memberType));
+            QueryResult result = _context.Services.Retrieve(memberQuery);
+            foreach (var member in result.Assets)
+            {
+                var name = member.GetAttribute(userNameAttr).Value as string;
+                Assert.IsNotNullOrEmpty(name);
+                if (name != null) Assert.That(name.IndexOf("admin") > -1);
+            }
         }
     }
 }
