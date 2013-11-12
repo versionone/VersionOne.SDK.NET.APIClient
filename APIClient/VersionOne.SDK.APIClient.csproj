@@ -128,9 +128,8 @@
     <Reference Include="FSharp.Data.DesignTime">
       <HintPath>..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.DesignTime.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth2Client, Version=1.4.13239.2513, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OAuth2Client.1.4.13239.2513\lib\net45\OAuth2Client.dll</HintPath>
+    <Reference Include="OAuth2Client">
+      <HintPath>..\packages\OAuth2Client.1.4.13309.2515\lib\net45\OAuth2Client.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
