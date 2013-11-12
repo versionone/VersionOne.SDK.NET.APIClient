@@ -69,20 +69,16 @@ if [ -z "$WORKSPACE" ]; then
   export WORKSPACE=`parentwith .git`;
 fi
 
-TOOLSDIRS=". $WORKSPACE/nuget_tools $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools"
+TOOLSDIRS=". $WORKSPACE/GetBuildTools $WORKSPACE/v1_build_tools $WORKSPACE/../v1_build_tools"
 #TOOLSDIRS="."
 for D in $TOOLSDIRS; do
   if [ -d "$D/bin" ]; then
     export BUILDTOOLS_PATH="$D/bin"
   fi
 done
-if [ ! $(which $BUILDTOOLS_PATH/NuGet.exe) ] && [ $(which $WORKSPACE/.nuget/NuGet.exe) ]; then
-  export BUILDTOOLS_PATH="$WORKSPACE/.nuget"
-fi
-echo "Using $BUILDTOOLS_PATH for NuGet"
 
 if [ -z "$DOTNET_PATH" ]; then
-  for D in `bashpath "$SYSTEMROOT\\Microsoft.NET\\Framework\\*"`; do
+  for D in `bashpath "$SYSTEMROOT\\Microsoft.NET\\Framework\\v*"`; do
     if [ -d $D ]; then
       export DOTNET_PATH="$D"
     fi
@@ -114,20 +110,7 @@ if [ -z "$BUILD_NUMBER" ]; then
   export BUILD_NUMBER=`date +%H%M`  # hour + minute
 fi
 
-function update_nuget_deps() {
-  install_nuget_deps
-  NuGet.exe update $SOLUTION_FILE -Verbose -Source $NUGET_FETCH_URL
-}
 
-function install_nuget_deps() {
-  PKGSDIRW=`winpath "$WORKSPACE/packages"`
-  for D in $WORKSPACE/*; do
-    if [ -d $D ] && [ -f $D/packages.config ]; then
-      PKGSCONFIGW=`winpath "$D/packages.config"`
-      NuGet.exe install "$PKGSCONFIGW" -o "$PKGSDIRW" -Source "$NUGET_FETCH_URL"
-    fi
-  done
-}
 
 # ---- Produce .NET Metadata --------------------------------------------------
 
@@ -161,12 +144,6 @@ done
 
 rm -rf $WORKSPACE/$MAIN_DIR/*.nupkg
 MSBuild.exe $SOLUTION_FILE -m -t:Clean
-
-
-
-# ---- Update NuGet Packages --------------------------------------------------
-
-update_nuget_deps
 
 
 
@@ -221,7 +198,7 @@ fi
 
 # ---- Produce NuGet .nupkg file ----------------------------------------------------------
 cd $WORKSPACE/$MAIN_DIR
-NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
+$WORKSPACE/.nuget/NuGet.exe pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
 cd $WORKSPACE
 
 

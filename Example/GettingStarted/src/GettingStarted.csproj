@@ -43,12 +43,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\OAuth2Client.Net\OAuth2Client\bin\Debug\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Data, Version=1.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FSharp.Data.1.1.9\lib\net40\FSharp.Data.dll</HintPath>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\..\..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data.DesignTime">
-      <HintPath>..\..\..\packages\FSharp.Data.1.1.9\lib\net40\FSharp.Data.DesignTime.dll</HintPath>
+      <HintPath>..\..\..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.DesignTime.dll</HintPath>
     </Reference>
     <Reference Include="MoreLinq">
       <HintPath>..\..\..\packages\morelinq.2.0.0-alpha01\lib\net35\MoreLinq.dll</HintPath>
