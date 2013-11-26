@@ -153,7 +153,7 @@ namespace VersionOne.SDK.APIClient
 			catch (WebException ex)
 			{
 				var resp = (HttpWebResponse)ex.Response;
-				if (refreshTokenIfNeeded && ex.Status == WebExceptionStatus.ProtocolError && resp.StatusCode == HttpStatusCode.Unauthorized)
+				if (refreshTokenIfNeeded && ShouldRefresh(ex))
 				{
 					var proxy = _proxyProvider != null ? _proxyProvider.CreateWebProxy() : null;
 					var authclient = new OAuth2Client.AuthClient(_secrets, EndpointScope, proxy, null);
@@ -163,6 +163,58 @@ namespace VersionOne.SDK.APIClient
 				}
 				throw;
 			}
+		}
+
+		private List<HttpStatusCode> CodesToRefresh = new List<HttpStatusCode>
+			{
+				HttpStatusCode.BadRequest,
+				HttpStatusCode.Forbidden,
+				HttpStatusCode.MethodNotAllowed,
+				HttpStatusCode.Unauthorized
+			};
+
+		private bool isV1WithBrokenBearer(HttpWebResponse response)
+		{
+			var v1 = response.Headers["VersionOne"];
+			if (string.IsNullOrEmpty(v1)) return false;
+			var re = new System.Text.RegularExpressions.Regex(@"(.*)/(\d+).(\d+).(\d+).(\d+); (.*)");
+			var match = re.Match(v1);
+			if (match.Success)
+			{
+				var edition = match.Groups[0].Value;
+				var major = Int32.Parse(match.Groups[1].Value);
+				var minor = Int32.Parse(match.Groups[2].Value);
+				var release = Int32.Parse(match.Groups[3].Value);
+				var patch = Int32.Parse(match.Groups[4].Value);
+				var lexicon = match.Groups[4].Value;
+				if (major < 13) return true;
+				if (major == 13 && minor <= 3) return true;
+			}
+			return false;
+		}
+
+		private bool ShouldRefresh(WebException ex)
+		{
+			var response = ex.Response as HttpWebResponse;
+			if (response != null)
+			{
+				if (isV1WithBrokenBearer(response))
+				{
+					if (CodesToRefresh.Contains(response.StatusCode))
+					{
+						return true;
+					}
+				}
+				else
+				{
+					if (CodesToRefresh.Contains(response.StatusCode))
+					{
+						var h = response.GetResponseHeader("WWW-Authenticate");
+						return h.Contains("Bearer") && h.Contains("invalid_token");
+					}
+				}
+			}
+			return false;
 		}
 
 		public Stream GetData()
