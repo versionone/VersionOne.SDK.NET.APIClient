@@ -8,18 +8,15 @@ using System.Reflection;
 using OAuth2Client;
 using OAuth2Client.Extensions;
 
-
 namespace VersionOne.SDK.APIClient
 {
 	public class V1OAuth2APIConnector : IAPIConnector
 	{
 		private readonly string _urlPrefix;
+		private string _callerUserAgent = "";
 		private CookieContainer _cookieContainer;
 		private readonly OAuth2Credentials _creds;
-		private string _callerUserAgent = "";
-
 		private const string EndpointScope="apiv1";
- 
 		private readonly ProxyProvider _proxyProvider;
 
 		private CookieContainer CookieContainer
@@ -32,24 +29,18 @@ namespace VersionOne.SDK.APIClient
 			_callerUserAgent = userAgent;
 		}
 
-
 		public V1OAuth2APIConnector(string urlPrefix, IStorage storage = null, ProxyProvider proxy = null)
 		{
 			_urlPrefix = urlPrefix;
 			_proxyProvider = proxy;
 			AuthenticationManager.Unregister("basic");
 			AuthenticationManager.Register(new OAuth2BearerModule());
-			var mystorage =
-				new Microsoft.FSharp.Core.FSharpOption<IStorage>(storage ?? OAuth2Client.Storage.JsonFileStorage.Default);
-			var myproxy = _proxyProvider != null
-				              ? new Microsoft.FSharp.Core.FSharpOption<IWebProxy>(_proxyProvider.CreateWebProxy())
-				              : Microsoft.FSharp.Core.FSharpOption<IWebProxy>.None;
-			_creds = new OAuth2Credentials(EndpointScope, mystorage, myproxy);
+			var myproxy = _proxyProvider != null ? _proxyProvider.CreateWebProxy() : null;
+			_creds = new OAuth2Credentials(EndpointScope, storage ?? OAuth2Client.Storage.JsonFileStorage.Default, myproxy);
 		}
 
 
-		public static System.Reflection.AssemblyName MyAssemblyName =
-			System.Reflection.Assembly.GetAssembly(typeof(V1APIConnector)).GetName();
+		public static AssemblyName MyAssemblyName = Assembly.GetAssembly(typeof(V1APIConnector)).GetName();
 
 		private string MyUserAgent
 		{

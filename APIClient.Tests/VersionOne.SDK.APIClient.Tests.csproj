@@ -135,7 +135,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Data">
+    <Reference Include="FSharp.Data, Version=1.1.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data.DesignTime">
@@ -144,9 +145,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth2Client, Version=1.5.0.2554, Culture=neutral, PublicKeyToken=e0f410c10d2e7630, processorArchitecture=MSIL">
+    <Reference Include="OAuth2Client, Version=1.5.0.2556, Culture=neutral, PublicKeyToken=e0f410c10d2e7630, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OAuth2Client.1.5.0.2554\lib\net45\OAuth2Client.dll</HintPath>
+      <HintPath>..\packages\OAuth2Client.1.5.0.2556\lib\net45\OAuth2Client.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
