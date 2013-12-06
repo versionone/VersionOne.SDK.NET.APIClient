@@ -145,9 +145,8 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth2Client, Version=1.5.0.2556, Culture=neutral, PublicKeyToken=e0f410c10d2e7630, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OAuth2Client.1.5.0.2556\lib\net45\OAuth2Client.dll</HintPath>
+    <Reference Include="OAuth2Client">
+      <HintPath>..\packages\OAuth2Client.1.5.0.2557\lib\net45\OAuth2Client.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
