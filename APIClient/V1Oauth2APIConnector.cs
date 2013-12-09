@@ -6,7 +6,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using OAuth2Client;
-using OAuth2Client.Extensions;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -33,17 +32,9 @@ namespace VersionOne.SDK.APIClient
 		{
 			_urlPrefix = urlPrefix;
 			_proxyProvider = proxy;
-			try
-			{
-				AuthenticationManager.Unregister("basic");
-			}
-			catch (Exception ex)
-			{
-				System.Console.Error.Write("Could not unregister basic module");
-				System.Console.Error.Write(ex.StackTrace);
-			}
+			AuthenticationManager.Unregister("Basic");
 			AuthenticationManager.Register(new OAuth2BearerModule());
-			var myproxy = _proxyProvider != null ? _proxyProvider.CreateWebProxy() : null;
+			var myproxy = _proxyProvider == null ? null : _proxyProvider.CreateWebProxy();
 			_creds = new OAuth2Credentials(EndpointScope, storage ?? OAuth2Client.Storage.JsonFileStorage.Default, myproxy);
 		}
 
