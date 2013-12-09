@@ -131,8 +131,9 @@
     </Reference>
     <Reference Include="OAuth2Client">
     <Reference Include="OAuth2Client, Version=1.5.0.2557, Culture=neutral, PublicKeyToken=e0f410c10d2e7630, processorArchitecture=MSIL">
+    <Reference Include="OAuth2Client, Version=1.5.0.2558, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OAuth2Client.1.5.0.2557\lib\net45\OAuth2Client.dll</HintPath>
+      <HintPath>..\packages\OAuth2Client.1.5.0.2558\lib\net45\OAuth2Client.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
