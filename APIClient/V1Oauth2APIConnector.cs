@@ -32,7 +32,7 @@ namespace VersionOne.SDK.APIClient
 		{
 			_urlPrefix = urlPrefix;
 			_proxyProvider = proxy;
-			AuthenticationManager.Unregister("Basic");
+			//AuthenticationManager.Unregister("Basic");
 			AuthenticationManager.Register(new OAuth2BearerModule());
 			var myproxy = _proxyProvider == null ? null : _proxyProvider.CreateWebProxy();
 			_creds = new OAuth2Credentials(EndpointScope, storage ?? OAuth2Client.Storage.JsonFileStorage.Default, myproxy);
