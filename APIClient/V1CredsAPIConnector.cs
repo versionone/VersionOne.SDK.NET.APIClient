@@ -31,6 +31,7 @@ namespace VersionOne.SDK.APIClient
 
         private static string FormatAssemblyUserAgent(Assembly a, string upstream = null)
         {
+            if (a == null) return null;
             var n = a.GetName();
             var s = String.Format("{0}/{1} ({2})", n.Name, n.Version, n.FullName);
             if (!String.IsNullOrEmpty(upstream))

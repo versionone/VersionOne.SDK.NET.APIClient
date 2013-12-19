@@ -11,15 +11,22 @@ namespace VersionOne.SDK.APIClient {
     public class V1APIConnector : V1CredsAPIConnector
     {
 		public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null, 
-		                      ProxyProvider proxyProvider = null, OAuth2Client.IStorage storage = null)
-            : base(urlPrefix, new CredentialCache(), proxyProvider)
+		                      ProxyProvider proxy = null, OAuth2Client.IStorage storage = null)
+            : base(urlPrefix, new CredentialCache(), proxy)
 		{
             var cache = _creds as CredentialCache;
             var uri = new Uri(urlPrefix);
 
             // Always attach the OAuth2 credential
             var oauth2storage = storage ?? OAuth2Client.Storage.JsonFileStorage.Default;
-            cache.Add(uri, "Bearer", new OAuth2Client.OAuth2Credential("apiv1", oauth2storage, proxyProvider.CreateWebProxy()));
+            cache.Add(uri,
+                "Bearer",
+                new OAuth2Client.OAuth2Credential(
+                    "apiv1",
+                    oauth2storage,
+                    proxy != null ? proxy.CreateWebProxy() : null
+                    )
+                );
 
 			if(username == null)
             {
