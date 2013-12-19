@@ -12,7 +12,7 @@
     <iconUrl>https://raw.github.com/versionone/VersionOne.SDK.NET.APIClient/master/package_icon_32px.png</iconUrl>
     <description>Provides coarse-grained access to VersionOne Asset objects via the REST-based HTTP API for building building custom applications against the VersionOne platform.</description>    
     <!--
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>14.1.1 Introduce new unified connector utilizing the System.Net.AuthenticationManager framework</releaseNotes>
 -->
     <copyright>Copyright 2012</copyright>
     <tags>V1 VersionOne API apiclient agile</tags>
