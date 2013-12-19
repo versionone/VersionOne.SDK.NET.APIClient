@@ -17,16 +17,36 @@ namespace VersionOne.SDK.APIClient {
             var cache = _creds as CredentialCache;
             var uri = new Uri(urlPrefix);
 
-            // Always attach the OAuth2 credential
-            var oauth2storage = storage ?? OAuth2Client.Storage.JsonFileStorage.Default;
-            cache.Add(uri,
-                "Bearer",
-                new OAuth2Client.OAuth2Credential(
-                    "apiv1",
-                    oauth2storage,
-                    proxy != null ? proxy.CreateWebProxy() : null
-                    )
-                );
+            // Try the OAuth2 credential
+            OAuth2Client.IStorage oauth2storage = null;
+            if (storage != null)
+            {
+                oauth2storage = storage;
+            }
+            else
+            {
+                try
+                {
+                    var s = OAuth2Client.Storage.JsonFileStorage.Default as OAuth2Client.IStorage;
+                    s.GetSecrets();
+                    oauth2storage = s;
+                }
+                catch (System.IO.FileNotFoundException ex)
+                {
+                    // swallowed - meaning no oauth2 secrets configured.
+                }
+            }
+            if (oauth2storage != null)
+            {
+                cache.Add(uri,
+                    "Bearer",
+                    new OAuth2Client.OAuth2Credential(
+                        "apiv1",
+                        oauth2storage,
+                        proxy != null ? proxy.CreateWebProxy() : null
+                        )
+                    );
+            }
 
 			if(username == null)
             {
