@@ -316,5 +316,4 @@
     </PreBuildEvent>
     <PostBuildEvent>rem copy $(ProjectDir)app.config $(TargetPath).config</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>
