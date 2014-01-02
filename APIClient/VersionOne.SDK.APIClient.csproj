@@ -155,6 +155,12 @@
     <Compile Include="Attachments.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeType.cs" />
+    <Compile Include="Authentication\ApiConnector.cs" />
+    <Compile Include="Authentication\BasicAuthentication.cs" />
+    <Compile Include="Authentication\IHandleAuthentication.cs" />
+    <Compile Include="Authentication\NTLMAuthentication.cs" />
+    <Compile Include="Authentication\Oauth2Authentication.cs" />
+    <Compile Include="Authentication\Oauth2SecretsNotConfiguredException.cs" />
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
