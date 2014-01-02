@@ -25,7 +25,7 @@ namespace VersionOne.SDK.APIClient.Authentication
 
         public void Handle(Uri uriPrefix, CredentialCache credentialCache)
         {
-            if (_userName == null)
+            if (_userName != null)
                 SetUserCredentials(uriPrefix, credentialCache);
             else
                 SetDefaultCredentials(uriPrefix, credentialCache);
