@@ -13,13 +13,12 @@ namespace VersionOne.SDK.APIClient
     {
         private readonly string _urlPrefix;
         protected readonly System.Net.ICredentials _creds;
-        private readonly ProxyProvider _proxyProvider;
+        protected readonly ProxyProvider _proxyProvider;
         public V1CredsAPIConnector(string urlPrefix, System.Net.ICredentials creds = null, ProxyProvider proxy = null)
         {
             _urlPrefix = urlPrefix;
             _proxyProvider = proxy;
             _creds = creds ?? CredentialCache.DefaultCredentials;
-            var myproxy = _proxyProvider == null ? null : _proxyProvider.CreateWebProxy();
         }
 
         private CookieContainer _cookieContainer;

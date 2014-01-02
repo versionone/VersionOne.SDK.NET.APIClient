@@ -3,13 +3,12 @@ using System.Net;
 
 namespace VersionOne.SDK.APIClient.Authentication
 {
-    public class BasicAuthentication : IHandleAuthentication
+    public class BasicCredentialProvider : ICredentialProvider
     {
         private readonly string _userName;
         private readonly string _password;
-        public ProxyProvider ProxyProvider { get; set; }
 
-        public BasicAuthentication(string userName, string password)
+        public BasicCredentialProvider(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new ArgumentNullException("userName");
@@ -21,7 +20,7 @@ namespace VersionOne.SDK.APIClient.Authentication
             _password = password;
         }
 
-        public void Handle(Uri uriPrefix, CredentialCache credentialCache)
+        public void Handle(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider)
         {
             var credentials = new NetworkCredential(_userName, _password);
             credentialCache.Add(uriPrefix, "Basic", credentials);

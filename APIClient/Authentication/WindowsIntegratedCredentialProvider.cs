@@ -3,15 +3,14 @@ using System.Net;
 
 namespace VersionOne.SDK.APIClient.Authentication
 {
-    public class NtlmAuthentication : IHandleAuthentication
+    public class WindowsIntegratedCredentialProvider : ICredentialProvider
     {
         private readonly string _userName;
         private readonly string _password;
-        public ProxyProvider ProxyProvider { get; set; }
 
-        public NtlmAuthentication() { }
+        public WindowsIntegratedCredentialProvider() { }
 
-        public NtlmAuthentication(string userName, string password)
+        public WindowsIntegratedCredentialProvider(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new ArgumentNullException("userName");
@@ -23,7 +22,7 @@ namespace VersionOne.SDK.APIClient.Authentication
             _password = password;
         }
 
-        public void Handle(Uri uriPrefix, CredentialCache credentialCache)
+        public void Handle(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider)
         {
             if (_userName != null)
                 SetUserCredentials(uriPrefix, credentialCache);
