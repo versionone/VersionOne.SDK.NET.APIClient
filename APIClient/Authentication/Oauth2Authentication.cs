@@ -9,6 +9,8 @@ namespace VersionOne.SDK.APIClient.Authentication
         private IStorage _storage;
         public ProxyProvider ProxyProvider { get; set; }
 
+        public Oauth2Authentication() { }
+
         public Oauth2Authentication(IStorage storage)
         {
             _storage = storage;

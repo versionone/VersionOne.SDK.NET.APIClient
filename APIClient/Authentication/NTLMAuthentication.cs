@@ -9,6 +9,8 @@ namespace VersionOne.SDK.APIClient.Authentication
         private readonly string _password;
         public ProxyProvider ProxyProvider { get; set; }
 
+        public NtlmAuthentication() { }
+
         public NtlmAuthentication(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))

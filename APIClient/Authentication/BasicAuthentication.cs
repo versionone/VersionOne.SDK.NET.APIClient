@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VersionOne.SDK.APIClient.Authentication
 {
@@ -12,10 +8,6 @@ namespace VersionOne.SDK.APIClient.Authentication
         private readonly string _userName;
         private readonly string _password;
         public ProxyProvider ProxyProvider { get; set; }
-
-        public BasicAuthentication()
-        {
-        }
 
         public BasicAuthentication(string userName, string password)
         {
