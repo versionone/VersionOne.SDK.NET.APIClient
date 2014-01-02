@@ -12,9 +12,9 @@ namespace VersionOne.SDK.APIClient {
     {
 		public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null, 
 		                      ProxyProvider proxy = null, OAuth2Client.IStorage storage = null)
-            : base(urlPrefix, new CredentialCache(), proxy)
+            : base(urlPrefix)
 		{
-            var cache = _creds as CredentialCache;
+            var cache = Credentials as CredentialCache;
             var uri = new Uri(urlPrefix);
 
             // Try the OAuth2 credential

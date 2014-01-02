@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Security.AccessControl;
 using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient
@@ -12,13 +13,13 @@ namespace VersionOne.SDK.APIClient
     public class V1CredsAPIConnector : IAPIConnector
     {
         private readonly string _urlPrefix;
-        protected readonly System.Net.ICredentials _creds;
-        protected readonly ProxyProvider _proxyProvider;
-        public V1CredsAPIConnector(string urlPrefix, System.Net.ICredentials creds = null, ProxyProvider proxy = null)
+        protected readonly System.Net.ICredentials Credentials;
+        protected readonly ProxyProvider ProxyProvider;
+        public V1CredsAPIConnector(string urlPrefix)
         {
             _urlPrefix = urlPrefix;
-            _proxyProvider = proxy;
-            _creds = creds ?? CredentialCache.DefaultCredentials;
+            ProxyProvider = GetProxyProvider();
+            Credentials = GetCredentialCache();
         }
 
         private CookieContainer _cookieContainer;
@@ -68,13 +69,13 @@ namespace VersionOne.SDK.APIClient
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.ContentType = contenttype;
-            request.Credentials = _creds;
+            request.Credentials = Credentials;
             request.PreAuthenticate = true;
             request.AllowAutoRedirect = true;
 
-            if (_proxyProvider != null)
+            if (ProxyProvider != null)
             {
-                request.Proxy = _proxyProvider.CreateWebProxy();
+                request.Proxy = ProxyProvider.CreateWebProxy();
             }
 
             request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
@@ -158,5 +159,17 @@ namespace VersionOne.SDK.APIClient
             var body = inputstream.ToArray();
             return HttpPost(apipath, body, contentType: contentType);
         }
+
+        // Override to provide your own instance of ProxyPrivder
+        protected virtual ProxyProvider GetProxyProvider()
+        {
+            return null;
+        }
+
+        protected virtual System.Net.ICredentials GetCredentialCache()
+        {
+            return new CredentialCache();
+        }
+
     }
 }
