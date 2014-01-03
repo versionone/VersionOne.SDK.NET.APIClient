@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace VersionOne.SDK.APIClient {
 
-    public class V1APIConnector : V1CredsAPIConnector
+    public class V1APIConnector : VersionOneAPIConnector
     {
 		public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null, 
 		                      ProxyProvider proxy = null, OAuth2Client.IStorage storage = null)

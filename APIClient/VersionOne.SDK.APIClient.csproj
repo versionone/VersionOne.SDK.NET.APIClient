@@ -155,17 +155,11 @@
     <Compile Include="Attachments.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeType.cs" />
-    <Compile Include="Authentication\ApiConnector.cs" />
-    <Compile Include="Authentication\BasicCredentialProvider.cs" />
-    <Compile Include="Authentication\ICredentialProvider.cs" />
-    <Compile Include="Authentication\WindowsIntegratedCredentialProvider.cs" />
-    <Compile Include="Authentication\Oauth2CredentialProvider.cs" />
-    <Compile Include="Authentication\Oauth2SecretsNotConfiguredException.cs" />
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Examples\GettingStarted.cs" />
-    <Compile Include="V1CredsAPIConnector.cs" />
+    <Compile Include="VersionOneAPIConnector.cs" />
     <Compile Include="V1ConfigurationManager.cs" />
     <Compile Include="Connectors.cs" />
     <Compile Include="Credentials.cs" />
