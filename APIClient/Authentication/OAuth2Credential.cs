@@ -4,23 +4,23 @@ using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient.Authentication
 {
-    public class Oauth2CredentialProvider : ICredentialProvider
+    public class OAuth2Credential : ICredentialProvider
     {
         private IStorage _storage;
 
-        public Oauth2CredentialProvider() { }
+        public OAuth2Credential() { }
 
-        public Oauth2CredentialProvider(IStorage storage)
+        public OAuth2Credential(IStorage storage)
         {
             _storage = storage;
         }
 
-        public void Handle(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider)
+        public void CacheCredential(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider)
         {
             if (_storage == null)
                 TrySetStorage();
 
-            var oAuth2Credential = new OAuth2Credential("apiv1", _storage, GetWebProxy(proxyProvider));
+            var oAuth2Credential = new OAuth2Client.OAuth2Credential("apiv1", _storage, GetWebProxy(proxyProvider));
             credentialCache.Add(uriPrefix, "Bearer", oAuth2Credential);
         }
 

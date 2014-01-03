@@ -5,6 +5,6 @@ namespace VersionOne.SDK.APIClient.Authentication
 {
     public interface ICredentialProvider
     {
-        void Handle(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider);
+        void CacheCredential(Uri uriPrefix, CredentialCache credentialCache, ProxyProvider proxyProvider);
     }
 }

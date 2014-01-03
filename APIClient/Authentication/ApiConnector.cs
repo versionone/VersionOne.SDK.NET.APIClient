@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using OAuth2Client;
 
 
 namespace VersionOne.SDK.APIClient.Authentication
@@ -11,8 +12,40 @@ namespace VersionOne.SDK.APIClient.Authentication
 		{
 			foreach (var credentialProvider in credentialProviders)
 			{
-				credentialProvider.Handle(new Uri(urlPrefix), Credentials as CredentialCache, GetProxyProvider());
+				credentialProvider.CacheCredential(new Uri(urlPrefix), Credentials as CredentialCache, GetProxyProvider());
 			}
+		}
+
+		public ApiConnector UseVersionOneUsernameAndPassword(string username, string password)
+		{
+			var provider = new VersionOneCredential(username, password);
+			CacheCredential(provider);
+
+			return this;
+		}
+
+		public ApiConnector UseWindowsIntegratedAuthentication()
+		{
+			var provider = new WindowsIntegratedCredential();
+			CacheCredential(provider);
+			return this;
+		}
+
+		public ApiConnector UseOAuth2()
+		{
+			var provider = new OAuth2Credential();
+			CacheCredential(provider);
+		}
+
+		public ApiConnector UseOAuth2(IStorage storage)
+		{
+			var provider = new OAuth2Credential(storage);
+			CacheCredential(provider);
+		}
+
+		private void CacheCredential(ICredentialProvider provider)
+		{
+			provider.CacheCredential(new Uri(UrlPrefix), Credentials as CredentialCache, GetProxyProvider());
 		}
 	}
 }
