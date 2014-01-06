@@ -42,12 +42,10 @@ namespace VersionOne.SDK.APIClient
 
 		public VersionOneAPIConnector WithOAuth2(IStorage storage)
 		{
-			var proxyProvider = GetProxyProvider();
-
 			var credential = new OAuth2Client.OAuth2Credential(
 				"apiv1",
 				storage,
-				proxyProvider != null ? proxyProvider.CreateWebProxy() : null
+				_proxyProvider != null ? _proxyProvider.CreateWebProxy() : null
 			);
 			CacheCredential(credential, "Bearer");
 			return this;
@@ -55,24 +53,22 @@ namespace VersionOne.SDK.APIClient
 
 		#endregion
 
-		private readonly string _urlPrefix;
-		
 		public string UrlPrefix
 		{
 			get { return _urlPrefix; }
 		}
 
+		private readonly string _urlPrefix;
+		private readonly ProxyProvider _proxyProvider;
 		private readonly CredentialCache _credentialCache;
-
+		private readonly bool _initializedWithCredentials;
+		// TODO: make it private after removing V1APIConnector?
 		protected readonly System.Net.ICredentials Credentials;
 
-		private readonly bool _initializedWithCredentials;
-
-		protected readonly ProxyProvider ProxyProvider;
-		public VersionOneAPIConnector(string urlPrefix, System.Net.ICredentials credentials = null)
+		public VersionOneAPIConnector(string urlPrefix, System.Net.ICredentials credentials = null, ProxyProvider proxyProvider = null)
 		{
 			_urlPrefix = urlPrefix;
-			ProxyProvider = GetProxyProvider();
+			_proxyProvider = proxyProvider;
 			if (credentials != null)
 			{
 				_initializedWithCredentials = true;
@@ -80,14 +76,14 @@ namespace VersionOne.SDK.APIClient
 			}
 			else
 			{
-				_credentialCache = CreateCredentialCache();
+				_credentialCache = new CredentialCache();
 				Credentials = _credentialCache;
 			}
 		}
 
 		public void CacheCredential(NetworkCredential credential, string authType)
 		{
-			if (credential == null) 
+			if (credential == null)
 				throw new ArgumentNullException("credential");
 
 			if (string.IsNullOrWhiteSpace(authType))
@@ -96,7 +92,7 @@ namespace VersionOne.SDK.APIClient
 			if (_initializedWithCredentials)
 				throw new InvalidOperationException(
 					"Cannot cache an additional credential when you have already constructed this connector with an ICredentials instance. If you supplied your own CredentialCache, then add the credential to that instance instead.");
-		
+
 			_credentialCache.Add(new Uri(_urlPrefix), authType, credential);
 		}
 
@@ -148,9 +144,9 @@ namespace VersionOne.SDK.APIClient
 			request.PreAuthenticate = true;
 			request.AllowAutoRedirect = true;
 
-			if (ProxyProvider != null)
+			if (_proxyProvider != null)
 			{
-				request.Proxy = ProxyProvider.CreateWebProxy();
+				request.Proxy = _proxyProvider.CreateWebProxy();
 			}
 
 			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
@@ -236,17 +232,6 @@ namespace VersionOne.SDK.APIClient
 			_pendingStreams.Remove(apipath);
 			var body = inputstream.ToArray();
 			return HttpPost(apipath, body, contentType: contentType);
-		}
-
-		// Override to provide your own instance of ProxyPrivder
-		protected virtual ProxyProvider GetProxyProvider()
-		{
-			return null;
-		}
-
-		protected virtual System.Net.CredentialCache CreateCredentialCache()
-		{
-			return new CredentialCache();
 		}
 	}
 }
