@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,106 +9,17 @@ using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient
 {
-	public class VersionOneAPIConnector : IAPIConnector
+	public class V1CredsAPIConnector : IAPIConnector
 	{
-		#region Credential helpers
-
-		public VersionOneAPIConnector WithVersionOneUsernameAndPassword(string username, string password)
-		{
-			if (string.IsNullOrWhiteSpace(username))
-				throw new ArgumentNullException("username");
-
-			if (string.IsNullOrWhiteSpace(password))
-				throw new ArgumentNullException("password");
-
-			var credential = new NetworkCredential(username, password);
-			CacheCredential(credential, "Basic");
-			return this;
-		}
-
-		public VersionOneAPIConnector WithWindowsIntegratedAuthentication()
-		{
-			CacheCredential(CredentialCache.DefaultNetworkCredentials, "NTLM");
-			CacheCredential(CredentialCache.DefaultNetworkCredentials, "Negotiate");
-			return this;
-		}
-
-		public VersionOneAPIConnector WithOAuth2()
-		{
-			return WithOAuth2(OAuth2Client.Storage.JsonFileStorage.Default);
-		}
-
-		public VersionOneAPIConnector WithOAuth2(string secretsFileName, string credsFieldName)
-		{
-			if (string.IsNullOrWhiteSpace(secretsFileName))
-				throw new ArgumentNullException("secretsFileName");
-
-			if (string.IsNullOrWhiteSpace(credsFieldName))
-				throw new ArgumentNullException("credsFieldName");
-
-			return WithOAuth2(new OAuth2Client.Storage.JsonFileStorage(
-					secretsFileName,
-					credsFieldName)
-			);
-		}
-
-		public VersionOneAPIConnector WithOAuth2(IStorage storage)
-		{
-			if (storage == null)
-				throw new ArgumentNullException("storage");
-
-			var credential = new OAuth2Client.OAuth2Credential(
-				"apiv1",
-				storage,
-				_proxyProvider != null ? _proxyProvider.CreateWebProxy() : null
-			);
-			CacheCredential(credential, "Bearer");
-			return this;
-		}
-
-		#endregion
-
-		public string UrlPrefix
-		{
-			get { return _urlPrefix; }
-		}
-
 		private readonly string _urlPrefix;
+		protected readonly System.Net.ICredentials _creds;
 		private readonly ProxyProvider _proxyProvider;
-		private readonly CredentialCache _credentialCache;
-		private readonly bool _initializedWithCredentials;
-		// TODO: make it private after removing V1APIConnector?
-		protected readonly System.Net.ICredentials Credentials;
-
-		public VersionOneAPIConnector(string urlPrefix, System.Net.ICredentials credentials = null, ProxyProvider proxyProvider = null)
+		public V1CredsAPIConnector(string urlPrefix, System.Net.ICredentials creds = null, ProxyProvider proxy = null)
 		{
 			_urlPrefix = urlPrefix;
-			_proxyProvider = proxyProvider;
-			if (credentials != null)
-			{
-				_initializedWithCredentials = true;
-				Credentials = credentials;
-			}
-			else
-			{
-				_credentialCache = new CredentialCache();
-				Credentials = _credentialCache;
-			}
-		}
-
-		public void CacheCredential(NetworkCredential credential, string authType)
-		{
-			if (credential == null)
-				throw new ArgumentNullException("credential");
-
-			if (string.IsNullOrWhiteSpace(authType))
-				throw new ArgumentNullException("authType");
-
-			if (_initializedWithCredentials)
-				throw new InvalidOperationException(
-					"Cannot cache an additional credential when you have already constructed this connector with an ICredentials instance. If you supplied your own CredentialCache, then add the credential to that instance instead.");
-
-			_credentialCache.Add(new Uri(_urlPrefix), authType, credential);
+			_proxyProvider = proxy;
+			_creds = creds ?? CredentialCache.DefaultCredentials;
+			var myproxy = _proxyProvider == null ? null : _proxyProvider.CreateWebProxy();
 		}
 
 		private CookieContainer _cookieContainer;
@@ -116,6 +27,7 @@ namespace VersionOne.SDK.APIClient
 		{
 			get { return _cookieContainer ?? (_cookieContainer = new CookieContainer()); }
 		}
+
 
 		private static string FormatAssemblyUserAgent(Assembly a, string upstream = null)
 		{
@@ -143,6 +55,7 @@ namespace VersionOne.SDK.APIClient
 			}
 		}
 
+
 		private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
 
 		public IDictionary<string, string> CustomHttpHeaders
@@ -150,12 +63,13 @@ namespace VersionOne.SDK.APIClient
 			get { return _customHttpHeaders; }
 		}
 
+
 		private HttpWebRequest CreateRequest(string url, string method = "GET", string contenttype = "text/xml")
 		{
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.Method = method;
 			request.ContentType = contenttype;
-			request.Credentials = Credentials;
+			request.Credentials = _creds;
 			request.PreAuthenticate = true;
 			request.AllowAutoRedirect = true;
 
@@ -175,7 +89,6 @@ namespace VersionOne.SDK.APIClient
 			request.UnsafeAuthenticatedConnectionSharing = true;
 			return request;
 		}
-
 		public void DebugReq(HttpWebRequest req, WebResponse resp)
 		{
 			if (Config.IsDebugMode)
@@ -188,9 +101,6 @@ namespace VersionOne.SDK.APIClient
 				Debug.WriteLine(req.Headers.ToString());
 				Debug.WriteLine(req.ToString());
 				Debug.WriteLine("Response from: " + resp.ResponseUri);
-				Debug.WriteLine("Status Code: " + Convert.ToInt32((resp as HttpWebResponse).StatusCode));
-				Debug.WriteLine("Status Name: " + (resp as HttpWebResponse).StatusCode);
-				Debug.WriteLine("Status Description: " + (resp as HttpWebResponse).StatusDescription);
 				Debug.WriteLine(resp.Headers.ToString());
 				Debug.WriteLine(resp.ToString());
 				Debug.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
