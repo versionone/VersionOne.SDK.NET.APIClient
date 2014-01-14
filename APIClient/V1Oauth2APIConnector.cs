@@ -9,9 +9,9 @@ using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient
 {
-    public class V1OAuth2APIConnector : V1APIConnector
+	public class V1OAuth2APIConnector : V1APIConnector
 	{
-        public V1OAuth2APIConnector(string urlPrefix, IStorage storage = null, ProxyProvider proxy = null)
-            : base(urlPrefix, storage: storage, proxy: proxy){ }
+		public V1OAuth2APIConnector(string urlPrefix, IStorage storage = null, ProxyProvider proxy = null)
+			: base(urlPrefix, storage: storage, proxy: proxy) { }
 	}
 }

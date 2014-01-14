@@ -162,6 +162,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectorsTests\VersionOneAPIConnectorTester.cs" />
     <Compile Include="ExamplesTests\GettingStartedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
