@@ -47,6 +47,13 @@
     "updatesSection": {
         "updates": [
             {
+                "date": "2013-11-11T00:00:00.000Z",
+                "description": "Winter 2014",
+                "version": "14.0.3.227",
+                "releaseNotes": "* Added: API Client sends HTTP User-Agent header to identify clients\n* Added: API Client can use OAuth2 Bearer Tokens for authentication\n* Changed: Now requires .NET 4.5",
+                "qualityBand": "mature"
+            },
+            {
                 "date": "2013-08-06T00:00:00.000Z",
                 "description": "Summer 2013",
                 "version": "12.5.0.181",
