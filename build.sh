@@ -121,10 +121,3 @@ else
 fi
 
 
-
-# ---- Produce NuGet .nupkg file ----------------------------------------------------------
-cd $WORKSPACE/$MAIN_DIR
-"$NUGET_EXE" pack $MAIN_CSPROJ -Symbols -prop Configuration=$Configuration
-cd $WORKSPACE
-
-
