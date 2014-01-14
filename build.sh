@@ -20,10 +20,7 @@ export WORKSPACE=`pwd`
 if [ -d $WORKSPACE/../build-tools ]; then
   ## When script directory already exists, just update when there are changes.
   cd $WORKSPACE/../build-tools
-  git fetch && git stash
-  if ! git log HEAD..origin/master --oneline --quiet; then
-    git pull
-  fi
+  git fetch && git stash && git pull
   cd $WORKSPACE
 else
   git clone https://github.com/versionone/openAgile-build-tools.git $WORKSPACE/../build-tools
