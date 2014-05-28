@@ -138,7 +138,7 @@ namespace VersionOne.SDK.APIClient
 		{
 			get
 			{
-				var myAssembly = Assembly.GetAssembly(typeof(V1APIConnector));
+				var myAssembly = Assembly.GetAssembly(typeof(VersionOneAPIConnector));
 				return FormatAssemblyUserAgent(myAssembly, _upstreamUserAgent);
 			}
 		}

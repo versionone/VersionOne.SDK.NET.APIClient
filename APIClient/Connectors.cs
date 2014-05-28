@@ -8,11 +8,11 @@ namespace VersionOne.SDK.APIClient
     public interface IConnectors
     {
         IAPIConnector MetaConnector { get; }
-		IAPIConnector MetaConnectorWithProxy { get; }
-		IAPIConnector DataConnector { get; }
-		IAPIConnector DataConnectorWithProxy { get; }
-		IAPIConnector ConfigurationConnector { get; }
-		IAPIConnector ConfigurationConnectorWithProxy { get; }
+        IAPIConnector MetaConnectorWithProxy { get; }
+        IAPIConnector DataConnector { get; }
+        IAPIConnector DataConnectorWithProxy { get; }
+        IAPIConnector ConfigurationConnector { get; }
+        IAPIConnector ConfigurationConnectorWithProxy { get; }
     }
 
     public sealed class Connectors : IConnectors
@@ -20,7 +20,7 @@ namespace VersionOne.SDK.APIClient
 
         private readonly IUrls _urls;
         private readonly ICredentials _credentials;
-	    private readonly OAuth2Client.IStorage _storage;
+        private readonly OAuth2Client.IStorage _storage;
         private bool _useWindowsIntegratedAuth;
 
         public Connectors()
@@ -39,14 +39,14 @@ namespace VersionOne.SDK.APIClient
             InitializeInternal();
         }
 
-		public Connectors(IUrls urls, OAuth2Client.IStorage storage)
-		{
-			if (urls == null) throw new ArgumentNullException("urls");
-			if (storage == null) throw new ArgumentNullException("storage");
-			_urls = urls;
-			_storage = storage;
-			InitializeInternal();
-		}
+        public Connectors(IUrls urls, OAuth2Client.IStorage storage)
+        {
+            if (urls == null) throw new ArgumentNullException("urls");
+            if (storage == null) throw new ArgumentNullException("storage");
+            _urls = urls;
+            _storage = storage;
+            InitializeInternal();
+        }
 
         private void InitializeInternal()
         {
@@ -59,19 +59,24 @@ namespace VersionOne.SDK.APIClient
             return new ProxyProvider(proxyUri, _credentials.ProxyUserName, _credentials.ProxyPassword);
         }
 
-		private IAPIConnector MakeConnector(string path, ProxyProvider proxy=null)
-		{
-			if (_storage == null)
-			{
-				return new V1APIConnector(path, _credentials.V1UserName,
-										  _credentials.V1Password, _useWindowsIntegratedAuth,
-										  proxy);
-			}
-			return new V1OAuth2APIConnector(path, _storage, proxy);
-		}
+        private IAPIConnector MakeConnector(string path, ProxyProvider proxy = null)
+        {
+            var connector = new VersionOneAPIConnector(path, proxyProvider: proxy);
 
-		private IAPIConnector _metaConnector;
-		public IAPIConnector MetaConnector
+            if (_storage != null)
+                return connector.WithOAuth2(_storage);
+
+            connector.WithVersionOneUsernameAndPassword(_credentials.V1UserName, _credentials.V1Password);
+            if (_useWindowsIntegratedAuth)
+                connector.WithWindowsIntegratedAuthentication();
+
+            return connector;
+        }
+
+
+
+        private IAPIConnector _metaConnector;
+        public IAPIConnector MetaConnector
         {
             get
             {
@@ -81,57 +86,57 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-		private IAPIConnector _metaConnectorWithProxy;
-		public IAPIConnector MetaConnectorWithProxy
+        private IAPIConnector _metaConnectorWithProxy;
+        public IAPIConnector MetaConnectorWithProxy
         {
             get
             {
                 if (_metaConnectorWithProxy != null) return _metaConnectorWithProxy;
-				_metaConnectorWithProxy = MakeConnector(_urls.MetaUrl, GetProxyProvider());
+                _metaConnectorWithProxy = MakeConnector(_urls.MetaUrl, GetProxyProvider());
                 return _metaConnectorWithProxy;
             }
         }
 
-		private IAPIConnector _dataConnector;
-		public IAPIConnector DataConnector
+        private IAPIConnector _dataConnector;
+        public IAPIConnector DataConnector
         {
             get
             {
                 if (_dataConnector != null) return _dataConnector;
-				_dataConnector = MakeConnector(_urls.DataUrl);
+                _dataConnector = MakeConnector(_urls.DataUrl);
                 return _dataConnector;
             }
         }
 
-		private IAPIConnector _dataConnectorWithProxy;
-		public IAPIConnector DataConnectorWithProxy
+        private IAPIConnector _dataConnectorWithProxy;
+        public IAPIConnector DataConnectorWithProxy
         {
             get
             {
                 if (_dataConnectorWithProxy != null) return _dataConnectorWithProxy;
-				_dataConnectorWithProxy = MakeConnector(_urls.DataUrl, GetProxyProvider());
+                _dataConnectorWithProxy = MakeConnector(_urls.DataUrl, GetProxyProvider());
                 return _dataConnectorWithProxy;
             }
         }
 
-		private IAPIConnector _configurationConnector;
-		public IAPIConnector ConfigurationConnector
+        private IAPIConnector _configurationConnector;
+        public IAPIConnector ConfigurationConnector
         {
             get
             {
                 if (_configurationConnector != null) return _configurationConnector;
-				_configurationConnector = MakeConnector(_urls.ConfigUrl);
+                _configurationConnector = MakeConnector(_urls.ConfigUrl);
                 return _configurationConnector;
             }
         }
 
-		private IAPIConnector _configurationConnectorWithProxy;
-		public IAPIConnector ConfigurationConnectorWithProxy
+        private IAPIConnector _configurationConnectorWithProxy;
+        public IAPIConnector ConfigurationConnectorWithProxy
         {
             get
             {
                 if (_configurationConnectorWithProxy != null) return _configurationConnectorWithProxy;
-				_configurationConnectorWithProxy = MakeConnector(_urls.ConfigUrl, GetProxyProvider());
+                _configurationConnectorWithProxy = MakeConnector(_urls.ConfigUrl, GetProxyProvider());
                 return _configurationConnectorWithProxy;
             }
         }
