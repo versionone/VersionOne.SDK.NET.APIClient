@@ -115,7 +115,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        private VersionOneAPIConnector PopulateHeaders(VersionOneAPIConnector connector)
+        private IAPIConnector PopulateHeaders(IAPIConnector connector)
         {
             IDictionary<string, string> dict = connector.CustomHttpHeaders;
             foreach (KeyValuePair<string, string> pair in _customHttpHeaders)
@@ -125,7 +125,7 @@ namespace VersionOne.SDK.APIClient
             return connector;
         }
 
-        private VersionOneAPIConnector PrepareConnector(string url)
+        private IAPIConnector PrepareConnector(string url)
         {
             var connector = new VersionOneAPIConnector(url, proxyProvider: _proxyProvider)
                 .WithVersionOneUsernameAndPassword(_username, _password);

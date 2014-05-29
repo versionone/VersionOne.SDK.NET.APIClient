@@ -74,7 +74,7 @@ namespace VersionOne.SDK.APIClient
             get { return _localizer ?? (_localizer = new Localizer(GetConnector("loc.v1/", true))); }
         }
 
-        private VersionOneAPIConnector GetConnector(string path, bool anonymous)
+        private IAPIConnector GetConnector(string path, bool anonymous)
         {
             var connector = new VersionOneAPIConnector(ApplicationUrl + path, proxyProvider: Proxy);
 
