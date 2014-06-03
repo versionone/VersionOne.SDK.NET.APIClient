@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using NUnit.Framework;
@@ -9,9 +10,9 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
     [Ignore("This test shows how to use the ApiConnector")]
     public class VersionOneAPIConnectorTester
     {
-        private const string Prefix = "http://localhost/VersionOne.Web/";
-        private const string Username = "admin";
-        private const string Password = "admin";
+        private readonly string _prefix = ConfigurationManager.AppSettings["V1Url"];
+        private readonly string _username = ConfigurationManager.AppSettings["V1UserName"];
+        private readonly string _password = ConfigurationManager.AppSettings["V1Password"];
         private const string Path = "rest-1.v1/Data/Member/20";
         private const string ProxyUserName = "";
         private const string ProxyPassword = "";
@@ -22,8 +23,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         {
             var uri = new Uri(Proxy);
             var proxyProvider = new ProxyProvider(uri, ProxyUserName, ProxyPassword);
-            var connector = new VersionOneAPIConnector(Prefix, proxyProvider: proxyProvider)
-                .WithVersionOneUsernameAndPassword(Username, Password);
+            var connector = new VersionOneAPIConnector(_prefix, proxyProvider: proxyProvider)
+                .WithVersionOneUsernameAndPassword(_username, _password);
 
             connector.GetData(Path);
         }
@@ -31,8 +32,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [Test]
         public void senddata_exercise()
         {
-            var connector = new VersionOneAPIConnector(Prefix)
-                .WithVersionOneUsernameAndPassword(Username, Password);
+            var connector = new VersionOneAPIConnector(_prefix)
+                .WithVersionOneUsernameAndPassword(_username, _password);
 
             connector.SendData(Path, string.Empty);
         }
@@ -40,8 +41,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [Test]
         public void getdata_parameterless_exercise()
         {
-            var connector = new VersionOneAPIConnector(Prefix)
-                .WithVersionOneUsernameAndPassword(Username, Password);
+            var connector = new VersionOneAPIConnector(_prefix)
+                .WithVersionOneUsernameAndPassword(_username, _password);
 
             connector.GetData();
         }
@@ -50,15 +51,15 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(InvalidOperationException))]
         public void cache_credential_when_init_with_credentials_exception()
         {
-            var connector = new VersionOneAPIConnector(Prefix, new NetworkCredential(Username, Password));
-            connector.CacheCredential(new NetworkCredential(Username, Password), "Basic");
+            var connector = new VersionOneAPIConnector(_prefix, new NetworkCredential(_username, _password));
+            connector.CacheCredential(new NetworkCredential(_username, _password), "Basic");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void cache_credential_with_null_credentials_exception()
         {
-            var connector = new VersionOneAPIConnector(Prefix);
+            var connector = new VersionOneAPIConnector(_prefix);
             connector.CacheCredential(null, "Basic");
         }
 
@@ -66,8 +67,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void cache_credential_with_null_authtype_exception()
         {
-            var connector = new VersionOneAPIConnector(Prefix);
-            connector.CacheCredential(new NetworkCredential(Username, Password), null);
+            var connector = new VersionOneAPIConnector(_prefix);
+            connector.CacheCredential(new NetworkCredential(_username, _password), null);
         }
 
         [Test]
@@ -76,7 +77,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         {
             var c1 = new NetworkCredential("user1", "pass2");
             var c2 = new NetworkCredential("user2", "pass2");
-            var connector = new VersionOneAPIConnector(Prefix);
+            var connector = new VersionOneAPIConnector(_prefix);
 
             connector.CacheCredential(c1, "Basic");
             connector.CacheCredential(c2, "Basic");
@@ -86,7 +87,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(WebException), ExpectedMessage = "The remote server returned an error: (401) Unauthorized.")]
         public void no_authentication_exception()
         {
-            var anonymousConnector = new VersionOneAPIConnector(Prefix);
+            var anonymousConnector = new VersionOneAPIConnector(_prefix);
             anonymousConnector.GetData(Path);
         }
 
@@ -94,8 +95,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(WebException), ExpectedMessage = "The remote server returned an error: (401) Unauthorized.")]
         public void basic_authentication_with_wrong_password_exception()
         {
-            var wrongCredentialsConnector = new VersionOneAPIConnector(Prefix).
-                WithVersionOneUsernameAndPassword(Username, "foo");
+            var wrongCredentialsConnector = new VersionOneAPIConnector(_prefix).
+                WithVersionOneUsernameAndPassword(_username, "foo");
 
             wrongCredentialsConnector.GetData(Path);
         }
@@ -104,23 +105,23 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void basic_authentication_with_null_username_exception()
         {
-            new VersionOneAPIConnector(Prefix)
-               .WithVersionOneUsernameAndPassword(null, Password);
+            new VersionOneAPIConnector(_prefix)
+               .WithVersionOneUsernameAndPassword(null, _password);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void basic_authentication_with_null_password_exception()
         {
-            new VersionOneAPIConnector(Prefix)
-               .WithVersionOneUsernameAndPassword(Username, null);
+            new VersionOneAPIConnector(_prefix)
+               .WithVersionOneUsernameAndPassword(_username, null);
         }
 
         [Test]
         public void basic_authentication_with_construtctor_supplied_credential()
         {
-            var simpleCred = new NetworkCredential(Username, Password);
-            var connector = new VersionOneAPIConnector(Prefix, simpleCred);
+            var simpleCred = new NetworkCredential(_username, _password);
+            var connector = new VersionOneAPIConnector(_prefix, simpleCred);
 
             connector.GetData(Path);
         }
@@ -129,7 +130,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(FileNotFoundException))]
         public void oauth_authentication_when_files_do_not_exist_exception()
         {
-            new VersionOneAPIConnector(Prefix)
+            new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(@"C:\foo.json", @"C:\foo.json");
         }
 
@@ -138,7 +139,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         public void oauth_authentication_with_null_secrets_exception()
         {
             const string credentialsPath = @"C:\foo.json";
-            new VersionOneAPIConnector(Prefix)
+            new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(null, credentialsPath);
         }
 
@@ -147,7 +148,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         public void oauth_authentication_with_null_credentials_exception()
         {
             const string secretsPath = @"C:\foo.json";
-            new VersionOneAPIConnector(Prefix)
+            new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(secretsPath, null);
         }
 
@@ -155,7 +156,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void oauth_authentication_with_null_storage_exception()
         {
-            new VersionOneAPIConnector(Prefix)
+            new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(null);
         }
 
@@ -165,7 +166,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
             const string secretsPath = @"C:\Temp\client_secrets.json";
             const string credentialsPath = @"C:\Temp\stored_credentials.json";
 
-            var connector = new VersionOneAPIConnector(Prefix)
+            var connector = new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(secretsPath, credentialsPath);
 
             connector.HttpGet(Path);
@@ -174,8 +175,8 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [Test]
         public void fluent_configuration_with_multiple_credentials()
         {
-            var connector = new VersionOneAPIConnector(Prefix)
-                .WithVersionOneUsernameAndPassword(Username, Password)
+            var connector = new VersionOneAPIConnector(_prefix)
+                .WithVersionOneUsernameAndPassword(_username, _password)
                 .WithWindowsIntegratedAuthentication()
                 .WithOAuth2();
 
@@ -188,7 +189,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
             const string secretsPath = @"C:\Temp\client_secrets.json";
             const string credentialsPath = @"C:\Temp\stored_credentials.json";
 
-            var simpleCred = new NetworkCredential(Username, Password);
+            var simpleCred = new NetworkCredential(_username, _password);
 
             var windowsIntegratedCredential = CredentialCache.DefaultNetworkCredentials;
 
@@ -201,13 +202,13 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
                 );
 
             var cache = new CredentialCache();
-            var uri = new Uri(Prefix);
+            var uri = new Uri(_prefix);
             cache.Add(uri, "Basic", simpleCred);
             cache.Add(uri, "Bearer", oAuth2Credential);
             // Suppose for some weird reason you just wanted to support NTLM:
             cache.Add(uri, "NTLM", windowsIntegratedCredential);
 
-            var connector = new VersionOneAPIConnector(Prefix, cache);
+            var connector = new VersionOneAPIConnector(_prefix, cache);
             connector.HttpGet(Path);
         }
     }

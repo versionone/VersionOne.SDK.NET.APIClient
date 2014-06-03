@@ -1,32 +1,27 @@
-﻿using NUnit.Framework;
+﻿using System.Configuration;
+using NUnit.Framework;
 
-namespace VersionOne.SDK.APIClient.Tests.QueryTests.QueryBuildersTesters
+namespace VersionOne.SDK.APIClient.Tests.QueryTests.QueryBuilderTests
 {
     [TestFixture]
     public class FindBuilderTester
     {
-        
         private FindBuilder _target;
-        private EnvironmentContext _context;
+        private IMetaModel _metaModel;
 
-        [SetUp]
-        public void Setup()
+        [TestFixtureSetUp]
+        public void TestFixtureSetup()
         {
             _target = new FindBuilder();
-            _context = new EnvironmentContext();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _target = null;
-            _context = null;
+            string metaUrl = ConfigurationManager.AppSettings["V1Url"] + "meta.v1/";
+            var metaConnector = new VersionOneAPIConnector(metaUrl);
+            _metaModel = new MetaModel(metaConnector);
         }
 
         [Test]
         public void BuildWithInvalidParametersTest()
         {
-            var assetType = _context.MetaModel.GetAssetType("Member");
+            var assetType = _metaModel.GetAssetType("Member");
             _target.Build(null, null);
             _target.Build(new Query(assetType), new BuildResult());
             var result = new BuildResult();
@@ -37,7 +32,7 @@ namespace VersionOne.SDK.APIClient.Tests.QueryTests.QueryBuildersTesters
         [Test]
         public void BuildWithValidParametersTest()
         {
-            var assetType = _context.MetaModel.GetAssetType("Member");
+            var assetType = _metaModel.GetAssetType("Member");
             var query = new Query(assetType);
             var nameAttribute = assetType.GetAttributeDefinition("Username");
             query.Selection.Add(nameAttribute);
@@ -51,7 +46,7 @@ namespace VersionOne.SDK.APIClient.Tests.QueryTests.QueryBuildersTesters
         [Test]
         public void QueryStringEscapeTest()
         {
-            var assetType = _context.MetaModel.GetAssetType("Member");
+            var assetType = _metaModel.GetAssetType("Member");
             var query = new Query(assetType);
             var nameAttribute = assetType.GetAttributeDefinition("Username");
             query.Selection.Add(nameAttribute);

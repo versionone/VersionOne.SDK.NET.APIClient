@@ -32,7 +32,7 @@ namespace VersionOne.SDK.APIClient
 					s.GetSecrets();
 					oauth2storage = s;
 				}
-				catch (System.IO.FileNotFoundException ex)
+				catch (System.IO.FileNotFoundException)
 				{
 					// swallowed - meaning no oauth2 secrets configured.
 				}

@@ -22,18 +22,6 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         }
 
         [Test]
-        public void GetV1ConfigurationTest()
-        {
-            Assert.IsNotNull(_examples.GetV1Configuration());
-        }
-
-        [Test]
-        public void StoryAndDefectTrackingLevelTest()
-        {
-            _examples.GetStoryAndDefectTrackingLevel();
-        }
-
-        [Test]
         public void AddNewAssetTest()
         {
             Assert.IsNotNull(_examples.AddNewAsset());
@@ -70,12 +58,6 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var asset = _examples.GetSingleAsset();
             Assert.IsNotNull(asset);
             Assert.IsFalse(string.IsNullOrEmpty(asset.Oid.Token));
-        }
-
-        [Test]
-        public void EffortTrackingTest()
-        {
-            Assert.IsTrue(_examples.EffortTrackingIsEnabled());
         }
 
         [Test]
