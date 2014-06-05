@@ -167,7 +167,6 @@
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="V1CredsAPIConnector.cs" />
     <Compile Include="VersionOneAPIConnector.cs" />
     <Compile Include="V1ConfigurationManager.cs" />
