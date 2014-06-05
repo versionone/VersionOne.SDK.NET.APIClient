@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using NUnit.Framework;
 using OAuth2Client;
 using System;
 using System.Configuration;
@@ -35,7 +36,8 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
                 .WithVersionOneUsernameAndPassword(_username, _password);
 
             // requesting some data that requires authentication
-            connector.GetData(Path);
+            using (var s = connector.GetData(Path)) { }
+
         }
 
         [Test]
@@ -44,7 +46,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var simpleCred = new NetworkCredential(_username, _password);
             var connector = new VersionOneAPIConnector(_prefix, simpleCred);
 
-            connector.GetData(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
 
@@ -58,7 +60,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(storage);
 
-            connector.GetData(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
         [Test]
@@ -70,7 +72,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithOAuth2(secretsPath, credentialsPath);
 
-            connector.HttpGet(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
         [Test]
@@ -80,7 +82,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithWindowsIntegratedAuthentication();
 
-            connector.HttpGet(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
         [Test]
@@ -91,9 +93,10 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
 
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithVersionOneUsernameAndPassword(_username, _password)
-                .WithOAuth2(secretsPath, credentialsPath);
+                .WithOAuth2(secretsPath, credentialsPath)
+                .WithWindowsIntegratedAuthentication();
 
-            connector.HttpGet(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
         [Test]
@@ -122,7 +125,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             cache.Add(uri, "NTLM", windowsIntegratedCredential);
 
             var connector = new VersionOneAPIConnector(_prefix, cache);
-            connector.HttpGet(Path);
+            using (var s = connector.GetData(Path)) { }
         }
 
         [Test]
