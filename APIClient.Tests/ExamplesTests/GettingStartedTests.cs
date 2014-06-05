@@ -13,14 +13,16 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         private string _password;
         private string _metaUrl;
         private string _dataUrl;
+        private string _prefix;
 
         [SetUp]
         public void Setup()
         {
             _username = ConfigurationManager.AppSettings["V1UserName"];
             _password = ConfigurationManager.AppSettings["V1Password"];
-            _metaUrl = ConfigurationManager.AppSettings["V1Url"] + "meta.v1/";
-            _dataUrl = ConfigurationManager.AppSettings["V1Url"] + "rest-1.v1/";
+            _prefix = ConfigurationManager.AppSettings["V1Url"];
+            _metaUrl = _prefix + "meta.v1/";
+            _dataUrl = _prefix + "rest-1.v1/";
         }
 
         #region Queries
