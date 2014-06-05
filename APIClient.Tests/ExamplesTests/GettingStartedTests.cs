@@ -24,6 +24,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         }
 
         #region Queries
+        // This section is a serie of examples, starting with simple queries and moving to more advanced queries.
 
         /// <summary>
         /// Retrieves the Member with ID 20 and list its name and email address
