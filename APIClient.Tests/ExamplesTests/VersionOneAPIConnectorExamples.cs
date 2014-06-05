@@ -91,8 +91,7 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
 
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithVersionOneUsernameAndPassword(_username, _password)
-                .WithOAuth2(secretsPath, credentialsPath)
-                .WithWindowsIntegratedAuthentication();
+                .WithOAuth2(secretsPath, credentialsPath);
 
             connector.HttpGet(Path);
         }
