@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using NUnit.Framework;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
 
         #region Queries
 
+        /// <summary>
+        /// Retrieves the Member with ID 20 and list its name and email address
+        /// </summary>
         [Test]
         public void GetSingleAssetTest()
         {
@@ -47,6 +51,9 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreEqual("versionone@mailinator.com", member.GetAttribute(emailAttribute).Value);
         }
 
+        /// <summary>
+        /// Gets a list of all Story assets
+        /// </summary>
         [Test]
         public void GetMultipleAssetsTest()
         {
@@ -67,7 +74,38 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.Greater(result.Assets.Count, 1);
         }
 
+        /// <summary>
+        /// Use the Filter property of the Query object to filter the results that are returned. 
+        /// This query will retrieve only Story assets with a "ToDo" of zero.
+        /// </summary>
+        public void FilterListOfAssetsTest()
+        {
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
+                metaModel,
+                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
+            var assetType = metaModel.GetAssetType("Task");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            var todoAttribute = assetType.GetAttributeDefinition("ToDo");
+
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(todoAttribute);
+
+            var toDoTerm = new FilterTerm(todoAttribute);
+            toDoTerm.Equal(0);
+            query.Filter = toDoTerm;
+            var result = services.Retrieve(query);
+
+            result.Assets.ForEach(asset =>
+                    Assert.AreEqual(0, asset.GetAttribute(todoAttribute).Value));
+        }
+
+        /// <summary>
+        /// Use the Find property of the Query object to search for text. 
+        /// This query will retrieve only assets with the word "high" in the name (case insensitive)
+        /// </summary>
         [Test]
         public void FindListOfAssetsTest()
         {
@@ -82,7 +120,6 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var priorityAttribute = assetType.GetAttributeDefinition("Priority");
             query.Selection.Add(nameAttribute);
             query.Selection.Add(priorityAttribute);
-            // This query will retrieve only assets with the word "high" in the name (case insensitive)
             query.Find = new QueryFind("High");
             var result = services.Retrieve(query);
 
@@ -96,7 +133,42 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.Greater(result.Assets.Count, 1);
         }
 
+        /// <summary>
+        /// Use the OrderBy property of the Query object to sort the results. 
+        /// This query will retrieve Story assets sorted by increasing estimate.
+        /// 
+        /// There are two methods you can call on the OrderBy class to sort your results: 
+        /// MinorSort and MajorSort. 
+        /// If you are sorting by only one field, it does not matter which one you use. 
+        /// If you want to sort by multiple fields, you need to call either MinorSort or MajorSort multiple times. 
+        /// The difference is that each time you call MinorSort, the parameter will be added to the end of the OrderBy
+        /// statement. Each time you call MajorSort, the parameter will be inserted at the beginning of the OrderBy 
+        /// statement.
+        /// </summary>
+        [Test]
+        public void SortListOfAssetsTest()
+        {
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
+                metaModel,
+                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
+            var assetType = metaModel.GetAssetType("Story");
+            var query = new Query(assetType);
+            var nameAttribute = assetType.GetAttributeDefinition("Name");
+            var estimateAttribute = assetType.GetAttributeDefinition("Estimate");
+
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(estimateAttribute);
+            query.OrderBy.MinorSort(estimateAttribute, OrderBy.Order.Ascending);
+
+            var result = services.Retrieve(query);
+        }
+
+        /// <summary>
+        /// Retrieve a "page" or portion of query results by using the Paging propery of the Query object. 
+        /// This query will retrieve the first 3 Story assets.
+        /// </summary>
         [Test]
         public void PageListOfAssetsTest()
         {
@@ -110,8 +182,14 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             var result = services.Retrieve(query);
 
             Assert.AreEqual(3, result.Assets.Count);
+            // The PageSize property shown asks for 3 items, and the Start property indicates to start at 0. 
+            // The next 3 items can be retrieved with PageSize=3, Start=3.
         }
 
+
+        /// <summary>
+        /// This query will retrieve the history of the Member asset with ID 20.
+        /// </summary>
         [Test]
         public void HistorySingleAssetTest()
         {
@@ -139,10 +217,12 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, result.Assets.Count);
         }
 
+        /// <summary>
+        /// This query will retrieve history for all Member assets.
+        /// </summary>
         [Test]
         public void HistoryListOfAssetsTest()
         {
-            // This example will retrieve history for all Member assets
             IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
             IServices services = new Services(
                 metaModel,
@@ -159,9 +239,11 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreNotEqual(0, result.TotalAvaliable);
         }
 
-        // How to query an asset "as of" a specific time
-        // Use the AsOf property of the Query object to retrieve data as it existed at some point in time. 
-        // This query finds the version of each Story asset as it existed seven days ago.
+        /// <summary>
+        /// How to query an asset "as of" a specific time
+        /// Use the AsOf property of the Query object to retrieve data as it existed at some point in time. 
+        /// This query finds the version of each Story asset as it existed seven days ago.
+        /// </summary>
         [Test]
         public void HistoryAsOfTimeTest()
         {
@@ -185,7 +267,110 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
 
         #endregion
 
-        #region Assets
+        #region Updates
+        // Updating assets through the APIClient involves calling the Save method on the IServices object.
+
+        /// <summary>
+        /// Updating a scalar attribute on an asset is accomplished by calling the SetAttribute method on an asset,
+        /// specifying the IAttributeDefinition of the attribute you wish to change and the new scalar value. 
+        /// This code will update the Name attribute on the Story with ID 1094.
+        /// </summary>
+        [Test]
+        public void UpdateScalarAttributeTest()
+        {
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
+                metaModel,
+                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
+
+            var storyId = Oid.FromToken("Story:1094", metaModel);
+            var query = new Query(storyId);
+            var storyType = metaModel.GetAssetType("Story");
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+
+            query.Selection.Add(nameAttribute);
+            var result = services.Retrieve(query);
+            var story = result.Assets[0];
+            var oldName = story.GetAttribute(nameAttribute).Value.ToString();
+            story.SetAttributeValue(nameAttribute, Guid.NewGuid().ToString());
+            services.Save(story);
+
+            Assert.AreNotEqual(oldName, story.GetAttribute(nameAttribute).Value.ToString());
+        }
+
+        /// <summary>
+        /// Updating a single-value relation is accomplished by calling the SetAttribute method on an asset, 
+        /// specifying the IAttributeDefinition of the attribute you wish to change and the ID for the new relation. 
+        /// This code will change the source of the Story with ID 1094.
+        /// </summary>
+        [Test]
+        public void UpdateSingleValueRelationTest()
+        {
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
+                metaModel,
+                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
+
+            var storyId = Oid.FromToken("Story:1094", metaModel);
+            var query = new Query(storyId);
+            var storyType = metaModel.GetAssetType("Story");
+            var sourceAttribute = storyType.GetAttributeDefinition("Source");
+            query.Selection.Add(sourceAttribute);
+            var result = services.Retrieve(query);
+            var story = result.Assets[0];
+            var oldSource = story.GetAttribute(sourceAttribute).Value.ToString();
+            story.SetAttributeValue(sourceAttribute, GetNextSourceId(oldSource));
+            services.Save(story);
+        }
+
+        private static string GetNextSourceId(string oldSource)
+        {
+            if (oldSource == "StorySource:148") return "StorySource:149";
+            if (oldSource == "StorySource:149") return "StorySource:150";
+            return "StorySource:148";
+        }
+
+        /// <summary>
+        /// Updating a multi-value relation is accomplished by calling either the RemoveAttributeValue 
+        /// or AddAttributeValue method on an asset, specifying the IAttributeDefinition of the attribute 
+        /// you wish to change and the ID of the relation you wish to add or remove. 
+        /// This code will add one Member and remove another Member from the Story with ID 1124.
+        /// </summary>
+        [Test]
+        public void UpdateMultiValueRelationTest()
+        {
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
+                metaModel,
+                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
+
+            var storyId = Oid.FromToken("Story:1124", metaModel);
+            var query = new Query(storyId);
+            var storyType = metaModel.GetAssetType("Story");
+            var ownersAttribute = storyType.GetAttributeDefinition("Owners");
+
+            query.Selection.Add(ownersAttribute);
+
+            var result = services.Retrieve(query);
+            var story = result.Assets[0];
+            var values = story.GetAttribute(ownersAttribute).Values;
+            var owners = values.Cast<object>().ToList();
+
+            if (owners.Count >= 1) story.RemoveAttributeValue(ownersAttribute, owners[0]);
+
+            services.Save(story);
+        }
+
+        #endregion
+
+        #region Assets operations
+        // When you create a new asset in the APIClient you need to specify the "context" of another asset 
+        // that will be the parent. For example, if you create a new Story asset you can specify which Scope 
+        // it should be created in.
+
+        /// <summary>
+        /// This code will create a Story asset in the context of Scope with ID 0:
+        /// </summary>
         [Test]
         public void AddNewAssetTest()
         {
@@ -204,6 +389,11 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.False(newStory.Oid.IsNull);
         }
 
+        /// <summary>
+        /// Get the Delete operation from the IMetaModel and use IServices to execute it against a story Oid.
+
+        /// **Important note** it's a standard operating procedure to inactivate or close an asset instead of deleting it.
+        /// </summary>
         [Test]
         public void DeleteAnAssetTest()
         {
@@ -226,8 +416,15 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             QueryResult result = services.Retrieve(query);
 
             Assert.AreEqual(0, result.TotalAvaliable);
+
+            // The delete operation returns the Oid with the new Moment of the deleted asset. 
+            // Future queries will automatically exclude deleted assets from results.
+            // Currently there is no support for undeleting a deleted asset.
         }
 
+        /// <summary>
+        /// Get the Inactivate operation from the IMetaModel and use IServices to execute it against a story Oid.
+        /// </summary>
         [Test]
         public void CloseAnAssetTest()
         {
@@ -259,6 +456,9 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Assert.AreEqual("Closed", closedStory.GetAttribute(assetState).Value.ToString());
         }
 
+        /// <summary>
+        /// Get the Reactivate operation from the IMetaModel and use IServices to execute it against a story Oid.
+        /// </summary>
         [Test]
         public void ReOpenAnAssetTest()
         {
@@ -290,84 +490,6 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             Asset activeStory = result.Assets[0];
 
             Assert.AreEqual("Active", activeStory.GetAttribute(assetState).Value.ToString());
-        }
-
-        #endregion
-
-        #region Updates
-        [Test]
-        public void UpdateScalarAttributeTest()
-        {
-            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Services(
-                metaModel,
-                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
-
-            var storyId = Oid.FromToken("Story:1094", metaModel);
-            var query = new Query(storyId);
-            var storyType = metaModel.GetAssetType("Story");
-            var nameAttribute = storyType.GetAttributeDefinition("Name");
-
-            query.Selection.Add(nameAttribute);
-            var result = services.Retrieve(query);
-            var story = result.Assets[0];
-            var oldName = story.GetAttribute(nameAttribute).Value.ToString();
-            story.SetAttributeValue(nameAttribute, Guid.NewGuid().ToString());
-            services.Save(story);
-
-            Assert.AreNotEqual(oldName, story.GetAttribute(nameAttribute).Value.ToString());
-        }
-
-        [Test]
-        public void UpdateSingleValueRelationTest()
-        {
-            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Services(
-                metaModel,
-                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
-
-            var storyId = Oid.FromToken("Story:1094", metaModel);
-            var query = new Query(storyId);
-            var storyType = metaModel.GetAssetType("Story");
-            var sourceAttribute = storyType.GetAttributeDefinition("Source");
-            query.Selection.Add(sourceAttribute);
-            var result = services.Retrieve(query);
-            var story = result.Assets[0];
-            var oldSource = story.GetAttribute(sourceAttribute).Value.ToString();
-            story.SetAttributeValue(sourceAttribute, GetNextSourceId(oldSource));
-            services.Save(story);
-        }
-
-        private static string GetNextSourceId(string oldSource)
-        {
-            if (oldSource == "StorySource:148") return "StorySource:149";
-            if (oldSource == "StorySource:149") return "StorySource:150";
-            return "StorySource:148";
-        }
-
-        [Test]
-        public void UpdateMultiValueRelationTest()
-        {
-            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Services(
-                metaModel,
-                new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
-
-            var storyId = Oid.FromToken("Story:1124", metaModel);
-            var query = new Query(storyId);
-            var storyType = metaModel.GetAssetType("Story");
-            var ownersAttribute = storyType.GetAttributeDefinition("Owners");
-
-            query.Selection.Add(ownersAttribute);
-
-            var result = services.Retrieve(query);
-            var story = result.Assets[0];
-            var values = story.GetAttribute(ownersAttribute).Values;
-            var owners = values.Cast<object>().ToList();
-
-            if (owners.Count >= 1) story.RemoveAttributeValue(ownersAttribute, owners[0]);
-
-            services.Save(story);
         }
 
         #endregion
