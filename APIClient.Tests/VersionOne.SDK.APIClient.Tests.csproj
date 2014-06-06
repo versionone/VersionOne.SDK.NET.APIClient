@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectorsTests\VersionOneAPIConnectorTester.cs" />
+    <Compile Include="ExamplesTests\EnvironmentContextTest.cs" />
     <Compile Include="ExamplesTests\GettingStartedTests.cs" />
     <Compile Include="ExamplesTests\VersionOneAPIConnectorExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
