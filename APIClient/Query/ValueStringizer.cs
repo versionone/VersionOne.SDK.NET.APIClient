@@ -10,8 +10,7 @@ namespace VersionOne.SDK.APIClient {
         }
 
         public string Stringize(object value) {
-            var valueString = value != null ? Format(value).Replace("'", "''") : null;
-            valueString = HttpUtility.UrlEncode(valueString);
+            string valueString = value == null ? null : HttpUtility.UrlEncode(value.ToString());
             return string.Format("{0}{1}{0}", valueWrapper, valueString);
         }
 
