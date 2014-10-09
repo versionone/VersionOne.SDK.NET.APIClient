@@ -39,6 +39,12 @@ namespace VersionOne.SDK.APIClient.Tests
 			}
 		}
 
+        private string _upstreamUserAgent = string.Empty;
+
+        public void SetUpstreamUserAgent(string userAgent)
+        {
+            _upstreamUserAgent = userAgent;
+        }
 		public Stream GetResource(string datafile)
 		{
 			Assembly assembly = Assembly.GetExecutingAssembly();

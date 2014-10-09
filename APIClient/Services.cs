@@ -37,6 +37,11 @@ namespace VersionOne.SDK.APIClient {
             this.connector = connector;
         }
 
+        public void SetUpstreamUserAgent(string userAgent)
+        {
+            connector.SetUpstreamUserAgent(userAgent);
+        }
+
         public QueryResult Retrieve(Query query) {
             var doc = new XmlDocument();
             

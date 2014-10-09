@@ -8,5 +8,6 @@ namespace VersionOne.SDK.APIClient {
         Asset New(IAssetType assetType, Oid context);
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);
+        void SetUpstreamUserAgent(string userAgent);
     }
 }
