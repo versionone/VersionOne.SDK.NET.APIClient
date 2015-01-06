@@ -146,7 +146,6 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
