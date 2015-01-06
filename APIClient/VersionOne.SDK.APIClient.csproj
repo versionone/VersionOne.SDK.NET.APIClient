@@ -137,9 +137,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="VersionOne.Parsers">
-      <HintPath>..\packages\VersionOne.Parsers.1.1.0.0\lib\net45\VersionOne.Parsers.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregate.cs" />
