@@ -20,7 +20,6 @@ namespace VersionOne.SDK.APIClient
 
         private readonly IUrls _urls;
         private readonly ICredentials _credentials;
-        private readonly OAuth2Client.IStorage _storage;
         private bool _useWindowsIntegratedAuth;
 
         public Connectors()
@@ -39,15 +38,6 @@ namespace VersionOne.SDK.APIClient
             InitializeInternal();
         }
 
-        public Connectors(IUrls urls, OAuth2Client.IStorage storage)
-        {
-            if (urls == null) throw new ArgumentNullException("urls");
-            if (storage == null) throw new ArgumentNullException("storage");
-            _urls = urls;
-            _storage = storage;
-            InitializeInternal();
-        }
-
         private void InitializeInternal()
         {
             _useWindowsIntegratedAuth = V1ConfigurationManager.GetValue(Settings.UseWindowsIntegratedAuth, false);
@@ -62,9 +52,6 @@ namespace VersionOne.SDK.APIClient
         private IAPIConnector MakeConnector(string path, ProxyProvider proxy = null)
         {
             var connector = new VersionOneAPIConnector(path, proxyProvider: proxy);
-
-            if (_storage != null)
-                return connector.WithOAuth2(_storage);
 
             connector.WithVersionOneUsernameAndPassword(_credentials.V1UserName, _credentials.V1Password);
             if (_useWindowsIntegratedAuth)

@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Net;
-using System.Reflection;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -12,42 +7,11 @@ namespace VersionOne.SDK.APIClient
 	public class V1APIConnector : V1CredsAPIConnector
 	{
 		public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null,
-							  ProxyProvider proxy = null, OAuth2Client.IStorage storage = null)
+							  ProxyProvider proxy = null)
 			: base(urlPrefix, new CredentialCache(), proxy)
 		{
 			var cache = _creds as CredentialCache;
 			var uri = new Uri(urlPrefix);
-
-			// Try the OAuth2 credential
-			OAuth2Client.IStorage oauth2storage = null;
-			if (storage != null)
-			{
-				oauth2storage = storage;
-			}
-			else
-			{
-				try
-				{
-					var s = OAuth2Client.Storage.JsonFileStorage.Default as OAuth2Client.IStorage;
-					s.GetSecrets();
-					oauth2storage = s;
-				}
-				catch (System.IO.FileNotFoundException)
-				{
-					// swallowed - meaning no oauth2 secrets configured.
-				}
-			}
-			if (oauth2storage != null)
-			{
-				cache.Add(uri,
-					"Bearer",
-					new OAuth2Client.OAuth2Credential(
-						"apiv1",
-						oauth2storage,
-						proxy != null ? proxy.CreateWebProxy() : null
-						)
-					);
-			}
 
 			if (username == null)
 			{
