@@ -1,6 +1,4 @@
-﻿using System.IO;
-using NUnit.Framework;
-using OAuth2Client;
+﻿using NUnit.Framework;
 using System;
 using System.Configuration;
 using System.Net;
@@ -48,32 +46,6 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
             using (connector.GetData(Path)) ;
         }
 
-
-        [Test]
-        public void oauth_authentication_with_storage()
-        {
-            var storage = new Storage.JsonFileStorage(
-                @"ExamplesTests\client_secrets.json",
-                @"ExamplesTests\stored_credentials.json");
-
-            var connector = new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(storage);
-
-            using (connector.GetData(Path)) ;
-        }
-
-        [Test]
-        public void oauth_authentication_with_file_parameters()
-        {
-            const string secretsPath = @"ExamplesTests\client_secrets.json";
-            const string credentialsPath = @"ExamplesTests\stored_credentials.json";
-
-            var connector = new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(secretsPath, credentialsPath);
-
-            using (connector.GetData(Path)) ;
-        }
-
         [Test]
         [Ignore]
         public void windows_integrated_authentication()
@@ -87,12 +59,8 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         [Test]
         public void fluent_configuration_with_multiple_credentials()
         {
-            const string secretsPath = @"ExamplesTests\client_secrets.json";
-            const string credentialsPath = @"ExamplesTests\stored_credentials.json";
-
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithVersionOneUsernameAndPassword(_username, _password)
-                .WithOAuth2(secretsPath, credentialsPath)
                 .WithWindowsIntegratedAuthentication();
 
             using (connector.GetData(Path)) ;
@@ -101,25 +69,13 @@ namespace VersionOne.SDK.APIClient.Tests.ExamplesTests
         [Test]
         public void multiple_credentials_via_user_supplied_credential_cache()
         {
-            const string secretsPath = @"ExamplesTests\client_secrets.json";
-            const string credentialsPath = @"ExamplesTests\stored_credentials.json";
-
             var simpleCred = new NetworkCredential(_username, _password);
 
             var windowsIntegratedCredential = CredentialCache.DefaultNetworkCredentials;
 
-            var oAuth2Credential = new OAuth2Credential(
-                "apiv1",
-                new Storage.JsonFileStorage(
-                    secretsPath,
-                    credentialsPath),
-                null
-                );
-
             var cache = new CredentialCache();
             var uri = new Uri(_prefix);
             cache.Add(uri, "Basic", simpleCred);
-            cache.Add(uri, "Bearer", oAuth2Credential);
             // Suppose for some weird reason you just wanted to support NTLM:
             cache.Add(uri, "NTLM", windowsIntegratedCredential);
 

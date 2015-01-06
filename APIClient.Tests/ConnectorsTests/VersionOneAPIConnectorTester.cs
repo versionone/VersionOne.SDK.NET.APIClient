@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Net;
 using NUnit.Framework;
 
@@ -127,58 +126,11 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void oauth_authentication_when_files_do_not_exist_exception()
-        {
-            new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(@"C:\foo.json", @"C:\foo.json");
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void oauth_authentication_with_null_secrets_exception()
-        {
-            const string credentialsPath = @"C:\foo.json";
-            new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(null, credentialsPath);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void oauth_authentication_with_null_credentials_exception()
-        {
-            const string secretsPath = @"C:\foo.json";
-            new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(secretsPath, null);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void oauth_authentication_with_null_storage_exception()
-        {
-            new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(null);
-        }
-
-        [Test]
-        public void oauth_authentication_with_file_path_parameters()
-        {
-            const string secretsPath = @"C:\Temp\client_secrets.json";
-            const string credentialsPath = @"C:\Temp\stored_credentials.json";
-
-            var connector = new VersionOneAPIConnector(_prefix)
-                .WithOAuth2(secretsPath, credentialsPath);
-
-            connector.HttpGet(Path);
-        }
-
-        [Test]
         public void fluent_configuration_with_multiple_credentials()
         {
             var connector = new VersionOneAPIConnector(_prefix)
                 .WithVersionOneUsernameAndPassword(_username, _password)
-                .WithWindowsIntegratedAuthentication()
-                .WithOAuth2();
+                .WithWindowsIntegratedAuthentication();
 
             connector.HttpGet(Path);
         }
@@ -186,25 +138,13 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorsTests
         [Test]
         public void multiple_credentials_via_user_supplied_credential_cache()
         {
-            const string secretsPath = @"C:\Temp\client_secrets.json";
-            const string credentialsPath = @"C:\Temp\stored_credentials.json";
-
             var simpleCred = new NetworkCredential(_username, _password);
 
             var windowsIntegratedCredential = CredentialCache.DefaultNetworkCredentials;
 
-            var oAuth2Credential = new OAuth2Client.OAuth2Credential(
-                "apiv1",
-                new OAuth2Client.Storage.JsonFileStorage(
-                    secretsPath,
-                    credentialsPath),
-                null
-                );
-
             var cache = new CredentialCache();
             var uri = new Uri(_prefix);
             cache.Add(uri, "Basic", simpleCred);
-            cache.Add(uri, "Bearer", oAuth2Credential);
             // Suppose for some weird reason you just wanted to support NTLM:
             cache.Add(uri, "NTLM", windowsIntegratedCredential);
 

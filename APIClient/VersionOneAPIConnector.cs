@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -30,39 +29,6 @@ namespace VersionOne.SDK.APIClient
 		{
 			CacheCredential(CredentialCache.DefaultNetworkCredentials, "NTLM");
 			CacheCredential(CredentialCache.DefaultNetworkCredentials, "Negotiate");
-			return this;
-		}
-
-		public VersionOneAPIConnector WithOAuth2()
-		{
-			return WithOAuth2(OAuth2Client.Storage.JsonFileStorage.Default);
-		}
-
-		public VersionOneAPIConnector WithOAuth2(string secretsFileName, string credsFieldName)
-		{
-			if (string.IsNullOrWhiteSpace(secretsFileName))
-				throw new ArgumentNullException("secretsFileName");
-
-			if (string.IsNullOrWhiteSpace(credsFieldName))
-				throw new ArgumentNullException("credsFieldName");
-
-			return WithOAuth2(new OAuth2Client.Storage.JsonFileStorage(
-					secretsFileName,
-					credsFieldName)
-			);
-		}
-
-		public VersionOneAPIConnector WithOAuth2(IStorage storage)
-		{
-			if (storage == null)
-				throw new ArgumentNullException("storage");
-
-			var credential = new OAuth2Client.OAuth2Credential(
-				"apiv1",
-				storage,
-				_proxyProvider != null ? _proxyProvider.CreateWebProxy() : null
-			);
-			CacheCredential(credential, "Bearer");
 			return this;
 		}
 

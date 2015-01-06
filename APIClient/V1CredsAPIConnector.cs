@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using OAuth2Client;
 
 namespace VersionOne.SDK.APIClient
 {
