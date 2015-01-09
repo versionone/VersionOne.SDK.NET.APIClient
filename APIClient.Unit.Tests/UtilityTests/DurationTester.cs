@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.MSTestExtensions;
 
 namespace VersionOne.SDK.APIClient.Unit.Tests.UtilityTests
 {

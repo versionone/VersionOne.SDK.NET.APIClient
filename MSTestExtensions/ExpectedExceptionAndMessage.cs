@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.Unit.Tests
+namespace VersionOne.SDK.MSTestExtensions
 {
     public sealed class ExpectedExceptionAndMessage : ExpectedExceptionBaseAttribute
     {

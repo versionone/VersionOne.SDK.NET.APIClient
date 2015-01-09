@@ -52,7 +52,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ExpectedExceptionAndMessage.cs" />
     <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
     <Compile Include="MetaTests\AttributeDefinitionTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
@@ -86,6 +85,10 @@
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
       <Project>{b5062999-adf0-4f51-a0d2-449c9a344804}</Project>
       <Name>VersionOne.SDK.APIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj">
+      <Project>{97c810f7-149b-4c9b-8d5a-87c050eb2f80}</Project>
+      <Name>VersionOne.SDK.MSTestExtensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
