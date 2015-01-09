@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -52,6 +53,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DBTests\BitTester.cs" />
+    <Compile Include="DBTests\DateTimeTester.cs" />
+    <Compile Include="DBTests\IntTester.cs" />
+    <Compile Include="DBTests\StrTester.cs" />
     <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
     <Compile Include="MetaTests\AttributeDefinitionTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
