@@ -5,19 +5,19 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VersionOne.SDK.MSTestExtensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("VersionOne SDK MSTest Extensions")]
+[assembly: AssemblyDescription("VersionOne SDK .NET MSTestExtensions Release Build")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VersionOne.SDK.MSTestExtensions")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("VersionOne, Inc.")]
+[assembly: AssemblyProduct("MSTestExtensions")]
+[assembly: AssemblyCopyright("Copyright 2008-2013, VersionOne, Inc., Licensed under modified BSD.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("8bc5f5ce-990b-4057-8b4a-dfb427f49879")]
