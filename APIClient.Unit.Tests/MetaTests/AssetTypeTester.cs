@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.MSTestExtensions;
 
 namespace VersionOne.SDK.APIClient.Unit.Tests.MetaTests
 {
