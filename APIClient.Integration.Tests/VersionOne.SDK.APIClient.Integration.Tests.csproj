@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,8 +52,38 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ConnectorTests\VersionOneAPIConnectorTester.cs" />
+    <Compile Include="ExamplesTests\EnvironmentContextTest.cs" />
+    <Compile Include="ExamplesTests\GettingStartedTests.cs" />
+    <Compile Include="ExamplesTests\VersionOneAPIConnectorExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyTester.cs" />
+    <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
+    <Compile Include="QueryTests\QueryFindTester.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
+      <Project>{b5062999-adf0-4f51-a0d2-449c9a344804}</Project>
+      <Name>VersionOne.SDK.APIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj">
+      <Project>{97C810F7-149B-4C9B-8D5A-87C050EB2F80}</Project>
+      <Name>VersionOne.SDK.MSTestExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\APIClient\App.config">
+      <Link>App.config</Link>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExamplesTests\client_secrets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ExamplesTests\stored_credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
