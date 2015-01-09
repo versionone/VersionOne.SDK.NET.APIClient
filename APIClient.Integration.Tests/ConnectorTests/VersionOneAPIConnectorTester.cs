@@ -18,6 +18,7 @@ namespace VersionOne.SDK.APIClient.Integration.Tests.ConnectorTests
         private const string Proxy = "http://ip:123";
 
         [TestMethod]
+        [Ignore]
         public void create_connector_with_proxy()
         {
             var uri = new Uri(Proxy);
