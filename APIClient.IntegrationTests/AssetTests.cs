@@ -12,34 +12,17 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         private static IAssetType _storyAssetType;
         private static Oid _projectId;
 
-        const string TestProjectName = ".Net.SDK Integration Tests";
-
-        [ClassInitialize]
-        public static void Setup(TestContext testContext)
+        [TestInitialize]
+        public void Setup()
         {
             var environment = new EnvironmentContext();
             _metaModel = environment.MetaModel;
             _services = environment.Services;
             _storyAssetType = _metaModel.GetAssetType("Story");
-
-            CreateTestProject();
+            _projectId = APIClientIntegrationTestSuiteIT.ProjectId;
         }
 
         #region Private Methods
-
-        /// <summary>
-        /// Creates a new V1 project for integration test assets.
-        /// </summary>
-        private static void CreateTestProject()
-        {
-            var assetType = _metaModel.GetAssetType("Scope");
-            var nameAttribute = assetType.GetAttributeDefinition("Name");
-            var projectId = Oid.FromToken("Scope:0", _metaModel);
-            var newAsset = _services.New(assetType, projectId);
-            newAsset.SetAttributeValue(nameAttribute, TestProjectName);
-            _services.Save(newAsset);
-            _projectId = newAsset.Oid.Momentless;
-        }
 
         /// <summary>
         /// Common method for creation of an asset.
@@ -84,15 +67,15 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         #endregion Private Methods
 
-        [TestMethod]
-        [ExpectedException(typeof(OidException))]
-        public void TestSetInvalidOidOnAsset()
-        {
-            var newStory = _services.New(_storyAssetType, _projectId);
-            newStory.Oid = Oid.FromToken("", _metaModel);
+        //[TestMethod]
+        //[ExpectedException(typeof(OidException))]
+        //public void TestSetInvalidOidOnAsset()
+        //{
+        //    var newStory = _services.New(_storyAssetType, _projectId);
+        //    newStory.Oid = Oid.FromToken("", _metaModel);
             
-            Assert.IsNull(newStory.Oid);
-        }
+        //    Assert.IsNull(newStory.Oid);
+        //}
 
         [TestMethod]
         public void TestSetValidOidOnAsset()
@@ -103,128 +86,126 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.IsNotNull(newStory.Oid);
         }
 
-        [TestMethod]
-        public void TestAddAnAsset()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Add a new asset");
-            var memberId = newStory.Oid;
-            var member = Query(memberId, null).Assets[0];
+        //[TestMethod]
+        //public void TestAddAnAsset()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Add a new asset");
+        //    var memberId = newStory.Oid;
+        //    var member = Query(memberId, null).Assets[0];
 
-            Assert.AreEqual(newStory.Oid, member.Oid);
-        }
+        //    Assert.AreEqual(newStory.Oid, member.Oid);
+        //}
 
-        [TestMethod]
-        public void TestDeleteAnAsset()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Delete an asset");
-            var deleteOperation = _metaModel.GetOperation("Story.Delete");
-            var deletedId = _services.ExecuteOperation(deleteOperation, newStory.Oid);
+        //[TestMethod]
+        //public void TestDeleteAnAsset()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Delete an asset");
+        //    var deleteOperation = _metaModel.GetOperation("Story.Delete");
+        //    var deletedId = _services.ExecuteOperation(deleteOperation, newStory.Oid);
 
-            Assert.AreEqual(0, Query(deletedId, null).TotalAvaliable);
-        }
+        //    Assert.AreEqual(0, Query(deletedId, null).TotalAvaliable);
+        //}
 
-        [TestMethod]
-        public void TestCloseAnAsset()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Close an asset");
-            var closeOperation = _metaModel.GetOperation("Story.Inactivate");
-            var closedId = _services.ExecuteOperation(closeOperation, newStory.Oid);
-            var assetState = _metaModel.GetAttributeDefinition("Story.AssetState");
-            var closedStory = Query(closedId.Momentless, assetState).Assets[0];
+        //[TestMethod]
+        //public void TestCloseAnAsset()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Close an asset");
+        //    var closeOperation = _metaModel.GetOperation("Story.Inactivate");
+        //    var closedId = _services.ExecuteOperation(closeOperation, newStory.Oid);
+        //    var assetState = _metaModel.GetAttributeDefinition("Story.AssetState");
+        //    var closedStory = Query(closedId.Momentless, assetState).Assets[0];
 
-            Assert.AreEqual(AssetState.Closed.ToString(), closedStory.GetAttribute(assetState).Value.ToString());
-        }
+        //    Assert.AreEqual(AssetState.Closed.ToString(), closedStory.GetAttribute(assetState).Value.ToString());
+        //}
 
-        [TestMethod]
-        public void TestReopenAnAsset()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Reopen an asset");
-            var closeOperation = _metaModel.GetOperation("Story.Inactivate");
-            var closedId = _services.ExecuteOperation(closeOperation, newStory.Oid);
-            var assetState = _metaModel.GetAttributeDefinition("Story.AssetState");
-            var closedStory = Query(closedId.Momentless, assetState).Assets[0];
+        //[TestMethod]
+        //public void TestReopenAnAsset()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Reopen an asset");
+        //    var closeOperation = _metaModel.GetOperation("Story.Inactivate");
+        //    var closedId = _services.ExecuteOperation(closeOperation, newStory.Oid);
+        //    var assetState = _metaModel.GetAttributeDefinition("Story.AssetState");
+        //    var closedStory = Query(closedId.Momentless, assetState).Assets[0];
            
-            var reopenOperation = _metaModel.GetOperation("Story.Reactivate");
-            var reopenedId = _services.ExecuteOperation(reopenOperation, closedStory.Oid);
-            var reopenedStory = Query(reopenedId.Momentless, assetState).Assets[0];
+        //    var reopenOperation = _metaModel.GetOperation("Story.Reactivate");
+        //    var reopenedId = _services.ExecuteOperation(reopenOperation, closedStory.Oid);
+        //    var reopenedStory = Query(reopenedId.Momentless, assetState).Assets[0];
 
-            Assert.AreEqual(AssetState.Active.ToString(), reopenedStory.GetAttribute(assetState).Value.ToString());
-        }
+        //    Assert.AreEqual(AssetState.Active.ToString(), reopenedStory.GetAttribute(assetState).Value.ToString());
+        //}
 
-        [TestMethod]
-        public void TestUpdateScalarAttribute()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Update an scalar attribute");
-            var nameAttribute = _storyAssetType.GetAttributeDefinition("Name");
+        //[TestMethod]
+        //public void TestUpdateScalarAttribute()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Update an scalar attribute");
+        //    var nameAttribute = _storyAssetType.GetAttributeDefinition("Name");
             
-            var story = Query(newStory.Oid, nameAttribute).Assets[0];
-            var oldName = story.GetAttribute(nameAttribute).Value.ToString();
-            story.SetAttributeValue(nameAttribute, "AssetTests: Update an scalar attribute - Name updated");
-            _services.Save(story);
+        //    var story = Query(newStory.Oid, nameAttribute).Assets[0];
+        //    var oldName = story.GetAttribute(nameAttribute).Value.ToString();
+        //    story.SetAttributeValue(nameAttribute, "AssetTests: Update an scalar attribute - Name updated");
+        //    _services.Save(story);
 
-            Assert.AreNotSame(oldName, story.GetAttribute(nameAttribute).Value.ToString());
-        }
+        //    Assert.AreNotSame(oldName, story.GetAttribute(nameAttribute).Value.ToString());
+        //}
 
-        [TestMethod]
-        public void TestUpdateSingleValueRelation()
-        {
-            var newStory = CreatesAnAsset("AssetTests: Update single value relation");
-            var sourceAttribute = _storyAssetType.GetAttributeDefinition("Source");
-            newStory.SetAttributeValue(sourceAttribute, "StorySource:156");
-            _services.Save(newStory);
+        //[TestMethod]
+        //public void TestUpdateSingleValueRelation()
+        //{
+        //    var newStory = CreatesAnAsset("AssetTests: Update single value relation");
+        //    var sourceAttribute = _storyAssetType.GetAttributeDefinition("Source");
+        //    newStory.SetAttributeValue(sourceAttribute, "StorySource:156");
+        //    _services.Save(newStory);
 
-            var story = Query(newStory.Oid, sourceAttribute).Assets[0];
+        //    var story = Query(newStory.Oid, sourceAttribute).Assets[0];
 
-            Assert.IsNotNull(story.GetAttribute(sourceAttribute).Value.ToString());
-        }
+        //    Assert.IsNotNull(story.GetAttribute(sourceAttribute).Value.ToString());
+        //}
 
-        [TestMethod]
-        public void TestAddMultipleValueRelation()
-        {
-            var parentStory = CreatesAnAsset("AssetTests: Add multiple value relation - Parent story");
-            var child1Story = CreatesAnAsset("AssetTests: Add multiple value relation - Child1 story");
-            var child2Story = CreatesAnAsset("AssetTests: Add multiple value relation - Child2 story");
+        //[TestMethod]
+        //public void TestAddMultipleValueRelation()
+        //{
+        //    var parentStory = CreatesAnAsset("AssetTests: Add multiple value relation - Parent story");
+        //    var child1Story = CreatesAnAsset("AssetTests: Add multiple value relation - Child1 story");
+        //    var child2Story = CreatesAnAsset("AssetTests: Add multiple value relation - Child2 story");
 
-            var dependantsAttribute = _storyAssetType.GetAttributeDefinition("Dependants");
-            parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
-            _services.Save(parentStory);
+        //    var dependantsAttribute = _storyAssetType.GetAttributeDefinition("Dependants");
+        //    parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
+        //    _services.Save(parentStory);
 
-            var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+        //    var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
 
-            Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+        //    Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
 
-            parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
-            _services.Save(parentStory);
+        //    parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
+        //    _services.Save(parentStory);
 
-            story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+        //    story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
 
-            Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
-        }
+        //    Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+        //}
 
-        [TestMethod]
-        public void TestRemoveMultipleValueRelation()
-        {
-            var parentStory = CreatesAnAsset("AssetTests: Remove multiple value relation - Parent story");
-            var child1Story = CreatesAnAsset("AssetTests: Remove multiple value relation - Child1 story");
-            var child2Story = CreatesAnAsset("AssetTests: Remove multiple value relation - Child2 story");
+        //[TestMethod]
+        //public void TestRemoveMultipleValueRelation()
+        //{
+        //    var parentStory = CreatesAnAsset("AssetTests: Remove multiple value relation - Parent story");
+        //    var child1Story = CreatesAnAsset("AssetTests: Remove multiple value relation - Child1 story");
+        //    var child2Story = CreatesAnAsset("AssetTests: Remove multiple value relation - Child2 story");
 
-            var dependantsAttribute = _storyAssetType.GetAttributeDefinition("Dependants");
-            parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
-            parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
-            _services.Save(parentStory);
+        //    var dependantsAttribute = _storyAssetType.GetAttributeDefinition("Dependants");
+        //    parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
+        //    parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
+        //    _services.Save(parentStory);
 
-            var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+        //    var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
 
-            Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+        //    Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
 
-            parentStory.RemoveAttributeValue(dependantsAttribute, child1Story.Oid);
-            _services.Save(parentStory);
+        //    parentStory.RemoveAttributeValue(dependantsAttribute, child1Story.Oid);
+        //    _services.Save(parentStory);
 
-            story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+        //    story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
 
-            Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
-        }
-
-
+        //    Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+        //}
     }
 }
