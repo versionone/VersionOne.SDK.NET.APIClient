@@ -3,6 +3,7 @@
 namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
 {
     [TestClass]
+    [Ignore]
     public class EnvironmentContextTest
     {
         /// <summary>

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
 {
     [TestClass]
+    [Ignore]
     public class GettingStartedTests
     {
         private string _username;
