@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="APIClientIntegrationTestSuiteIT.cs" />
     <Compile Include="ConnectorTests\VersionOneAPIConnectorTester.cs" />
     <Compile Include="ExamplesTests\EnvironmentContextTest.cs" />
     <Compile Include="ExamplesTests\GettingStartedTests.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="ProxyTester.cs" />
     <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
     <Compile Include="QueryTests\QueryFindTester.cs" />
+    <Compile Include="AssetTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
