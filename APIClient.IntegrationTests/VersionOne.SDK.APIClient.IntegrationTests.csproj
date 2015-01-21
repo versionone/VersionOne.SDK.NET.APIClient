@@ -60,6 +60,7 @@
     <Compile Include="ProxyTester.cs" />
     <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
     <Compile Include="QueryTests\QueryFindTester.cs" />
+    <Compile Include="AssetTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
