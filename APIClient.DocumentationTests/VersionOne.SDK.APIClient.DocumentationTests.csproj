@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{089CB065-942E-4408-A02A-6F24449ED080}</ProjectGuid>
+    <ProjectGuid>{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VersionOne.SDK.APIClient.IntegrationTests</RootNamespace>
-    <AssemblyName>VersionOne.SDK.APIClient.IntegrationTests</AssemblyName>
+    <RootNamespace>VersionOne.SDK.APIClient.DocumentationTests</RootNamespace>
+    <AssemblyName>VersionOne.SDK.APIClient.DocumentationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,31 +52,26 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="APIClientIntegrationTestSuiteIT.cs" />
-    <Compile Include="ConnectorTests\VersionOneAPIConnectorTester.cs" />
+    <Compile Include="EnvironmentContextTest.cs" />
+    <Compile Include="GettingStartedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyTester.cs" />
-    <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
-    <Compile Include="QueryTests\QueryFindTester.cs" />
-    <Compile Include="AssetTests.cs" />
+    <Compile Include="VersionOneAPIConnectorExamples.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="client_secrets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="stored_credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
       <Project>{b5062999-adf0-4f51-a0d2-449c9a344804}</Project>
       <Name>VersionOne.SDK.APIClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj">
-      <Project>{97C810F7-149B-4C9B-8D5A-87C050EB2F80}</Project>
-      <Name>VersionOne.SDK.MSTestExtensions</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\APIClient\App.config">
-      <Link>App.config</Link>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

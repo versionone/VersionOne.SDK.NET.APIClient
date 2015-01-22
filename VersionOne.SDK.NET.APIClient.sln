@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient", "APIClient\VersionOne.SDK.APIClient.csproj", "{B5062999-ADF0-4F51-A0D2-449C9A344804}"
 EndProject
@@ -12,11 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FA7DD6
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Unit.Tests", "ApiClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{8BAF9EC6-BBE9-4AF6-BA7E-D51A271DD76E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Tests", "ApiClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{8BAF9EC6-BBE9-4AF6-BA7E-D51A271DD76E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Integration.Tests", "APIClient.IntegrationTests\VersionOne.SDK.APIClient.IntegrationTests.csproj", "{089CB065-942E-4408-A02A-6F24449ED080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.IntegrationTests", "APIClient.IntegrationTests\VersionOne.SDK.APIClient.IntegrationTests.csproj", "{089CB065-942E-4408-A02A-6F24449ED080}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.MSTestExtensions", "MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj", "{97C810F7-149B-4C9B-8D5A-87C050EB2F80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.DocumentationTests", "APIClient.DocumentationTests\VersionOne.SDK.APIClient.DocumentationTests.csproj", "{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,21 @@ Global
 		{97C810F7-149B-4C9B-8D5A-87C050EB2F80}.ReleaseWithDebug|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{97C810F7-149B-4C9B-8D5A-87C050EB2F80}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
 		{97C810F7-149B-4C9B-8D5A-87C050EB2F80}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.ReleaseWithDebug|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.ReleaseWithDebug|Any CPU.Build.0 = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.ReleaseWithDebug|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
