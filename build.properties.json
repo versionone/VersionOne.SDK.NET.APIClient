@@ -1,8 +1,7 @@
 {
-    "solution": "VersionOne.SDK.NET.APIClient.sln",    
+    "solution": "VersionOne.SDK.NET.APIClient.sln",
     "nugetSources": "http://packages.nuget.org/api/v2/;http://www.myget.org/F/versionone/api/v2/",
     "configuration": "Release",
-    "platform": "Any CPU",    
-    "major": "1",
-    "minor": "3"
+    "platform": "Any CPU",
+    "version": "14.1.1.274"
 }
