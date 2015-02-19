@@ -35,7 +35,7 @@ namespace VersionOne.SDK.APIClient
             if (config["ProxySettings"] != null)
             {
                 _proxyDisabled = IsProxyDisabled(config["ProxySettings"].GetAttribute("disabled"));
-                _proxyUri = new Uri(SafeGetInnerText(config["ProxySettings"], "Uri"));
+                _proxyUrl = new Uri(SafeGetInnerText(config["ProxySettings"], "Url"));
                 _proxyUserName = SafeGetInnerText(config["ProxySettings"], "UserName");
                 _proxyPassword = SafeGetInnerText(config["ProxySettings"], "Password");
                 _proxyDomain = SafeGetInnerText(config["ProxySettings"], "Domain");
@@ -93,7 +93,7 @@ namespace VersionOne.SDK.APIClient
         {
             get
             {
-                return _proxyDisabled ? null : new ProxyProvider(_proxyUri, _proxyUserName, _proxyPassword, _proxyDomain);
+                return _proxyDisabled ? null : new ProxyProvider(_proxyUrl, _proxyUserName, _proxyPassword, _proxyDomain);
             }
         }
 
@@ -103,7 +103,7 @@ namespace VersionOne.SDK.APIClient
         private readonly string _username = "admin";
         private readonly string _password = "admin";
         private readonly bool _proxyDisabled = true;
-        private readonly Uri _proxyUri = new Uri("http://proxy:123");
+        private readonly Uri _proxyUrl = new Uri("http://proxy:123");
         private readonly string _proxyUserName = "user";
         private readonly string _proxyPassword = "password";
         private readonly string _proxyDomain = "DOMAIN";
