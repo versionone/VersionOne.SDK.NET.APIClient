@@ -3,6 +3,7 @@ using System.Data.SqlTypes;
 using System.Globalization;
 
 namespace VersionOne.SDK.APIClient {
+    [Obsolete("This class is not in use")]
     public static class DB {
         public static readonly object Null = null;
 
