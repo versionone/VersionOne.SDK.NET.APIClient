@@ -142,7 +142,7 @@ namespace VersionOne.SDK.APIClient {
             }
         }
 
-        public Asset New(IAssetType assetType, Oid context) {
+        public Asset New(IAssetType assetType, Oid context = null) {
             var doc = new XmlDocument();
 
             var path = "New/" + assetType.Token;

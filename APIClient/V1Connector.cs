@@ -10,7 +10,14 @@ namespace VersionOne.SDK.APIClient
 {
     public class V1Connector : IAPIConnector
     {
-        private string _urlPrefix;
+        private const string MetaApiEndpoint = "meta.v1/";
+        private const string DataApiEndpoint = "rest-1.v1/Data/";
+        private const string NewApiEndpoint = "rest-1.v1/New/";
+        private const string HistoryApiEndpoint = "rest-1.v1/Hist/";
+        private const string QueryApiEndpoint = "query.v1/";
+        
+        private readonly string _urlPrefix;
+        private string _endpoint;
         private CookieContainer _cookieContainer;
         private string _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
         private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
@@ -26,6 +33,11 @@ namespace VersionOne.SDK.APIClient
 		{
 			get { return _urlPrefix; }
 		}
+
+        public string Endpoint
+        {
+            get { return _endpoint; }
+        }
 
         private CookieContainer CookieContainer
         {
@@ -64,7 +76,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public V1Connector(string urlPrefix, string accessToken, ProxyProvider proxy = null)
+        public V1Connector(string urlPrefix, string endpoint, string accessToken, ProxyProvider proxy = null)
             : this(urlPrefix, new CredentialCache(), proxy)
         {
             _accessToken = accessToken;
@@ -74,7 +86,8 @@ namespace VersionOne.SDK.APIClient
 
         #region Fluent Helpers
 
-        public V1Connector WithVersionOneUsernameAndPassword(string username, string password)
+        // Authentication
+        public V1Connector WithUsernameAndPassword(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username))
                 throw new ArgumentNullException("username");
@@ -84,14 +97,6 @@ namespace VersionOne.SDK.APIClient
 
             var credential = new NetworkCredential(username, password);
             CacheCredential(credential, "Basic");
-
-            return this;
-        }
-        
-        public V1Connector WithWindowsIntegratedAuthentication()
-        {
-            CacheCredential(CredentialCache.DefaultNetworkCredentials, "NTLM");
-            CacheCredential(CredentialCache.DefaultNetworkCredentials, "Negotiate");
 
             return this;
         }
@@ -116,46 +121,42 @@ namespace VersionOne.SDK.APIClient
             return this;
         }
 
+        // Endpoints
         public V1Connector UseMetaAPI()
         {
-            if (string.IsNullOrEmpty(_urlPrefix))
-                throw new InvalidOperationException("Url prefix not set.");
-
-            _urlPrefix += "meta.v1/";
+            _endpoint = MetaApiEndpoint;
 
             return this;
         }
 
         public V1Connector UseDataAPI()
         {
-            if (string.IsNullOrEmpty(_urlPrefix))
-                throw new InvalidOperationException("Url prefix not set.");
+            _endpoint = DataApiEndpoint;
 
-            _urlPrefix += "rest-1.v1/Data/";
+            return this;
+        }
+
+        public V1Connector UseNewAPI()
+        {
+            _endpoint = NewApiEndpoint;
 
             return this;
         }
 
         public V1Connector UseHistoryAPI()
         {
-            if (string.IsNullOrEmpty(_urlPrefix))
-                throw new InvalidOperationException("Url prefix not set.");
-
-            _urlPrefix += "rest-1.v1/Hist/";
+            _endpoint = HistoryApiEndpoint;
 
             return this;
         }
 
         public V1Connector UseQueryAPI()
         {
-            if (string.IsNullOrEmpty(_urlPrefix))
-                throw new InvalidOperationException("Url prefix not set.");
-
-            _urlPrefix += "query.v1/";
+            _endpoint = QueryApiEndpoint;
 
             return this;
         }
-
+        
         #endregion Fluent Helpers
 
         public void CacheCredential(NetworkCredential credential, string authType)
@@ -170,7 +171,7 @@ namespace VersionOne.SDK.APIClient
 				throw new InvalidOperationException(
 					"Cannot cache an additional credential when you have already constructed this connector with an ICredentials instance. If you supplied your own CredentialCache, then add the credential to that instance instead.");
 
-			_credentialCache.Add(new Uri(_urlPrefix), authType, credential);
+			_credentialCache.Add(new Uri(GetApiUrl()), authType, credential);
 		}
 
         public void SetUpstreamUserAgent(string userAgent)
@@ -211,7 +212,7 @@ namespace VersionOne.SDK.APIClient
 
         public Stream HttpGet(string apipath, bool refreshTokenIfNeeded = true, string contentType = "text/xml")
         {
-            var url = _urlPrefix + apipath;
+            var url = GetApiUrl() + apipath;
             var req = CreateRequest(url, "GET", contentType);
             var resp = req.GetResponse();
             DebugReq(req, resp);
@@ -220,7 +221,7 @@ namespace VersionOne.SDK.APIClient
 
         public Stream HttpPost(string apipath, byte[] body, string contentType = "text/xml")
         {
-            var url = _urlPrefix + apipath;
+            var url = GetApiUrl() + apipath;
             var req = CreateRequest(url, "POST", contentType);
             req.ContentLength = body.Length;
             req.GetRequestStream().Write(body, 0, body.Length);
@@ -237,6 +238,11 @@ namespace VersionOne.SDK.APIClient
         public Stream GetData(string apipath)
         {
             return HttpGet(apipath);
+        }
+
+        public Stream SendData(string data)
+        {
+            return HttpPost(string.Empty, System.Text.Encoding.UTF8.GetBytes(data));
         }
 
         public Stream SendData(string apipath, string data)
@@ -294,5 +300,16 @@ namespace VersionOne.SDK.APIClient
 			request.UnsafeAuthenticatedConnectionSharing = true;
 			return request;
 		}
-	}
+
+        private string GetApiUrl()
+        {
+            if (string.IsNullOrEmpty(_urlPrefix))
+                throw new InvalidOperationException("Url prefix not set.");
+
+            if (string.IsNullOrEmpty(_endpoint))
+                throw new InvalidProgramException("Api endpoint not set.");
+
+            return _urlPrefix + _endpoint;
+        }
+    }
 }
