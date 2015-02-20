@@ -5,7 +5,7 @@ namespace VersionOne.SDK.APIClient {
         void Save(Asset asset, string comment);
         void Save(AssetList assetList);
         Oid LoggedIn { get; }
-        Asset New(IAssetType assetType, Oid context);
+        Asset New(IAssetType assetType, Oid context = null);
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);
         void SetUpstreamUserAgent(string userAgent);
