@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Net;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using VersionOne.SDK.MSTestExtensions;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
 {
@@ -11,8 +15,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
         private readonly string _prefix = ConfigurationManager.AppSettings["V1Url"];
         private readonly string _username = ConfigurationManager.AppSettings["V1UserName"];
         private readonly string _password = ConfigurationManager.AppSettings["V1Password"];
-        private const string Member20 = "Member/20";
-        private const string TestMemberName = "V1Connector Test Member";
+        private const string Member20Path = "Member/20";
+        private const string TestStoryName = "V1Connector Test Story";
         private const string ProxyUserName = "";
         private const string ProxyPassword = "";
         private const string Proxy = "http://ip:123";
@@ -27,7 +31,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
                 .UseDataAPI()
                 .WithUsernameAndPassword(_username, _password);
 
-            using (var s = connector.GetData(Member20))
+            using (var s = connector.GetData(Member20Path))
             {
                 Assert.IsNotNull(s);
             }
@@ -44,7 +48,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
                 .WithUsernameAndPassword(_username, _password)
                 .WithProxy(proxyProvider);
 
-            using (var s = connector.GetData(Member20))
+            using (var s = connector.GetData(Member20Path))
             {
                 Assert.IsNotNull(s);
             }
@@ -57,6 +61,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
             var assetType = metaModel.GetAssetType("Story");
 
             Assert.IsNotNull(assetType);
+            Assert.IsTrue(assetType.Token.Equals("Story"));
         }
 
         [TestMethod]
@@ -66,181 +71,144 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
                 .UseDataAPI()
                 .WithUsernameAndPassword(_username, _password);
 
-            using (var s = connector.GetData(Member20))
+            using (var s = connector.GetData(Member20Path))
             {
                 Assert.IsNotNull(s);
             }
         }
 
         [TestMethod]
-        public void QueryApi()
+        public void QueryApiWithUsernameAndPassword()
         {
-            var testMemeber = CreateMember();
-
             var connector = new V1Connector(_prefix)
-                .UseQueryAPI()
                 .WithUsernameAndPassword(_username, _password);
 
-            const string queryBody =
-                "{\"from\": \"Member\", \"select\": [\"Name\"], \"where\": {\"Name\": \"" + TestMemberName + "\"} }";
+            // create a new test story
+            var testStoryOid = CreateStory(connector);
 
-            using (var s = connector.SendData(queryBody))
+            // get the test story using query api
+            connector.UseQueryAPI();
+            // json for the post's body
+            var data =
+                "{\"from\": \"Story\", \"select\": [\"Name\"], \"where\": {\"ID\": \"" + testStoryOid + "\"} }";
+
+            dynamic dynJson;
+            using (var s = connector.SendData(data))
             using (var reader = new StreamReader(s))
             {
-                var json = reader.ReadToEnd();
-                
-                Assert.IsFalse(string.IsNullOrEmpty(json));
-                Assert.IsTrue(json.Trim().Equals("\"Name\": \"" + TestMemberName + "\""));
+                dynJson = JsonConvert.DeserializeObject(reader.ReadToEnd());
             }
+
+            // delete the test story
+            DeleteStory(connector, testStoryOid);
+
+            Assert.IsNotNull(dynJson[0][0]);
+            // the story should have the same name and oid
+            Assert.IsTrue(dynJson[0][0].Name.Value.Equals(TestStoryName));
+            Assert.IsTrue(dynJson[0][0]._oid.ToString().Equals(testStoryOid.Momentless.ToString()));
         }
 
-        private Asset CreateMember()
+        [TestMethod]
+        public void HistoryApiWithUsernameAndPassword()
+        {
+            var connector = new V1Connector(_prefix)
+                .WithUsernameAndPassword(_username, _password);
+            // create a new test story
+            var testStoryOid = CreateStory(connector);
+            var storyPath = "Story/" + testStoryOid.Key;
+
+            const int numberOfUpdates = 3;
+            // update the story name many times
+            for (int i = 1; i <= numberOfUpdates; i++)
+            {
+                var data = "<Asset><Attribute name=\"Name\" act=\"set\">" + Guid.NewGuid() + "</Attribute> </Asset>";
+                var stream = connector.UseDataAPI().SendData(storyPath, data);
+                stream.Dispose();
+            }
+
+            // get the test story using history api
+            connector.UseHistoryAPI();
+
+            var doc = new XmlDocument();
+            using (var s = connector.GetData(storyPath))
+            using (var reader = new StreamReader(s))
+            {
+                doc.Load(s);
+            }
+
+            Assert.IsNotNull(doc);
+            Assert.IsNotNull(doc.DocumentElement);
+            // the value of "total" should be equal to the number of updates plus one
+            Assert.IsTrue(doc.DocumentElement.Attributes.GetNamedItem("total").Value.Equals((numberOfUpdates + 1).ToString()));
+
+            // delete the test story
+            DeleteStory(connector, testStoryOid);
+        }
+
+        /// <summary>
+        /// Creates a test story in V1.
+        /// </summary>
+        /// <param name="connector"></param>
+        /// <returns></returns>
+        private Oid CreateStory(V1Connector connector)
         {
             IMetaModel metaModel = new MetaModel(new V1Connector(_prefix).UseMetaAPI());
-            IServices services = new Services(metaModel,
-                new V1Connector(_prefix).UseNewAPI().WithUsernameAndPassword(_username, _password));
+            var data = "<Asset><Relation name=\"Scope\" act=\"set\"><Asset idref=\"Scope:0\" /></Relation>" +
+                          "<Attribute name=\"Name\" act=\"set\">" + TestStoryName + "</Attribute></Asset>";
+            var doc = new XmlDocument();
+            using (var stream = connector.UseDataAPI().SendData("Story", data))
+            {
+                doc.Load(stream);
+            }
 
-            var assetType = metaModel.GetAssetType("Member");
-            var newMember = services.New(assetType);
-            var nameAttribute = assetType.GetAttributeDefinition("Name");
-            newMember.SetAttributeValue(nameAttribute, TestMemberName);
-            services.Save(newMember);
 
-            return newMember;
+            return Oid.FromToken(doc.DocumentElement.GetAttribute("id"), metaModel);
         }
 
-        private void DeleteMember(Asset member)
+        /// <summary>
+        /// Deletes a story from V1.
+        /// </summary>
+        /// <param name="connector"></param>
+        /// <param name="storyOid"></param>
+        private void DeleteStory(V1Connector connector, Oid storyOid)
         {
             IMetaModel metaModel = new MetaModel(new V1Connector(_prefix).UseMetaAPI());
-            IServices services = new Services(metaModel,
-                new V1Connector(_prefix).WithUsernameAndPassword(_username, _password));
+            var deleteOperation = metaModel.GetOperation("Story.Delete");
+            connector.UseDataAPI();
+            var path = storyOid.AssetType.Token + "/" + storyOid.Key + "?op=" + deleteOperation.Name;
 
-            var deleteOperation = metaModel.GetOperation("Member.Delete");
-            services.ExecuteOperation(deleteOperation, member.Oid);
+            var stream = connector.SendData(path, string.Empty);
+            stream.Dispose();
         }
 
-        //[TestMethod]
-        //public void senddata_exercise()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix)
-        //        .WithVersionOneUsernameAndPassword(_username, _password);
-        //    var content = "<Asset><Attribute name=\"Phone\" act=\"set\">555-555-1212</Attribute></Asset>";
-        //    using (var s = connector.SendData(Path, content)) { };
-        //}
+        [TestMethod]
+        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
+        public void NoAuthenticationException()
+        {
+            var anonymousConnector = new V1Connector(_prefix);
+            var stream = anonymousConnector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
 
-        //[TestMethod]
-        //public void getdata_parameterless_exercise()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix)
-        //        .WithVersionOneUsernameAndPassword(_username, _password);
+        [TestMethod]
+        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
+        public void BasicAuthenticationWithWrongPasswordException()
+        {
+            var wrongCredentialsConnector = new V1Connector(_prefix)
+                .WithUsernameAndPassword(_username, "foo");
 
-        //    using (var s = connector.GetData(Path)) { }
-        //}
+            var stream = wrongCredentialsConnector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
 
-        //[TestMethod]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        //public void cache_credential_when_init_with_credentials_exception()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix, new NetworkCredential(_username, _password));
-        //    connector.CacheCredential(new NetworkCredential(_username, _password), "Basic");
-        //}
+        [TestMethod]
+        public void BasicAuthenticationWithConstrutctorSuppliedCredential()
+        {
+            var simpleCred = new NetworkCredential(_username, _password);
+            var connector = new V1Connector(_prefix, simpleCred);
 
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void cache_credential_with_null_credentials_exception()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix);
-        //    connector.CacheCredential(null, "Basic");
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void cache_credential_with_null_authtype_exception()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix);
-        //    connector.CacheCredential(new NetworkCredential(_username, _password), null);
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentException))]
-        //public void cache_same_auth_type_twice_exception()
-        //{
-        //    var c1 = new NetworkCredential("user1", "pass2");
-        //    var c2 = new NetworkCredential("user2", "pass2");
-        //    var connector = new VersionOneAPIConnector(_prefix);
-
-        //    connector.CacheCredential(c1, "Basic");
-        //    connector.CacheCredential(c2, "Basic");
-        //}
-
-        //[TestMethod]
-        //[ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        //public void no_authentication_exception()
-        //{
-        //    var anonymousConnector = new VersionOneAPIConnector(_prefix);
-        //    using (var s = anonymousConnector.GetData(Path)) { }
-        //}
-
-        //[TestMethod]
-        //[ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        //public void basic_authentication_with_wrong_password_exception()
-        //{
-        //    var wrongCredentialsConnector = new VersionOneAPIConnector(_prefix).
-        //        WithVersionOneUsernameAndPassword(_username, "foo");
-
-        //    using (var s = wrongCredentialsConnector.GetData(Path)) { }
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void basic_authentication_with_null_username_exception()
-        //{
-        //    new VersionOneAPIConnector(_prefix)
-        //       .WithVersionOneUsernameAndPassword(null, _password);
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void basic_authentication_with_null_password_exception()
-        //{
-        //    new VersionOneAPIConnector(_prefix)
-        //       .WithVersionOneUsernameAndPassword(_username, null);
-        //}
-
-        //[TestMethod]
-        //public void basic_authentication_with_construtctor_supplied_credential()
-        //{
-        //    var simpleCred = new NetworkCredential(_username, _password);
-        //    var connector = new VersionOneAPIConnector(_prefix, simpleCred);
-
-        //    using (var s = connector.GetData(Path)) { }
-        //}
-
-        //[TestMethod]
-        //public void fluent_configuration_with_multiple_credentials()
-        //{
-        //    var connector = new VersionOneAPIConnector(_prefix)
-        //        .WithVersionOneUsernameAndPassword(_username, _password)
-        //        .WithWindowsIntegratedAuthentication();
-
-        //    using (var s = connector.HttpGet(Path)) { };
-        //}
-
-        //[TestMethod]
-        //public void multiple_credentials_via_user_supplied_credential_cache()
-        //{
-        //    var simpleCred = new NetworkCredential(_username, _password);
-
-        //    var windowsIntegratedCredential = CredentialCache.DefaultNetworkCredentials;
-
-        //    var cache = new CredentialCache();
-        //    var uri = new Uri(_prefix);
-        //    cache.Add(uri, "Basic", simpleCred);
-        //    // Suppose for some weird reason you just wanted to support NTLM:
-        //    cache.Add(uri, "NTLM", windowsIntegratedCredential);
-
-        //    var connector = new VersionOneAPIConnector(_prefix, cache);
-        //    using (var s = connector.HttpGet(Path)) { };
-        //}
+            var stream = connector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
     }
 }

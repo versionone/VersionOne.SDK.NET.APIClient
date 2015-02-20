@@ -7,6 +7,8 @@ using System.Net;
 using System.Xml;
 
 namespace VersionOne.SDK.APIClient {
+
+    [Obsolete("Use V1Services instead.")]
     public class Services : IServices {
         private readonly IMetaModel metaModel;
         private readonly IAPIConnector connector;

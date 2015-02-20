@@ -17,7 +17,7 @@ namespace VersionOne.SDK.APIClient
         private const string QueryApiEndpoint = "query.v1/";
         
         private readonly string _urlPrefix;
-        private string _endpoint;
+        private string _endpoint = string.Empty;
         private CookieContainer _cookieContainer;
         private string _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
         private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
@@ -303,12 +303,6 @@ namespace VersionOne.SDK.APIClient
 
         private string GetApiUrl()
         {
-            if (string.IsNullOrEmpty(_urlPrefix))
-                throw new InvalidOperationException("Url prefix not set.");
-
-            if (string.IsNullOrEmpty(_endpoint))
-                throw new InvalidProgramException("Api endpoint not set.");
-
             return _urlPrefix + _endpoint;
         }
     }

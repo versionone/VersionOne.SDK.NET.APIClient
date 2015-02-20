@@ -143,13 +143,16 @@
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Query\Builders\V1HierarchicalPartBuilder.cs" />
+    <Compile Include="Query\Builders\V1QueryUrlBuilder.cs" />
     <Compile Include="V1Connector.cs" />
-    <Compile Include="V1CredsAPIConnector.cs" />
-    <Compile Include="VersionOneAPIConnector.cs" />
+    <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
+    <Compile Include="V1Services.cs" />
+    <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
     <Compile Include="V1ConfigurationManager.cs" />
     <Compile Include="Connectors.cs" />
     <Compile Include="Credentials.cs" />
-    <Compile Include="EnvironmentContext.cs" />
+    <Compile Include="Obsolete\EnvironmentContext.cs" />
     <Compile Include="ModelsAndServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -178,7 +181,7 @@
     <Compile Include="AttributeSelection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DB.cs">
+    <Compile Include="Obsolete\DB.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Duration.cs">
@@ -225,11 +228,11 @@
     <Compile Include="Query\Builders\BuildResult.cs" />
     <Compile Include="Query\Builders\CompositeBuilder.cs" />
     <Compile Include="Query\Builders\FindBuilder.cs" />
-    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Obsolete\HierarchicalPartBuilder.cs" />
     <Compile Include="Query\Builders\IQueryBuilder.cs" />
     <Compile Include="Query\Builders\PagingBuilder.cs" />
     <Compile Include="Query\Builders\QueryBuilder.cs" />
-    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
+    <Compile Include="Obsolete\QueryURLBuilder.cs" />
     <Compile Include="Query\AndFilterTerm.cs" />
     <Compile Include="Query\Builders\SelectionBuilder.cs" />
     <Compile Include="Query\Builders\SortBuilder.cs" />
@@ -251,7 +254,7 @@
     <Compile Include="Query\TokenTerm.cs" />
     <Compile Include="Rank.cs" />
     <Compile Include="RequiredFieldValidator.cs" />
-    <Compile Include="Services.cs">
+    <Compile Include="Obsolete\Services.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TextBuilder.cs">
@@ -260,7 +263,7 @@
     <Compile Include="Pair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1APIConnector.cs">
+    <Compile Include="Obsolete\V1APIConnector.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="V1Central.cs">
@@ -270,6 +273,7 @@
     <Compile Include="V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XmlElementToAsset.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
     <None Include="VersionOne.SDK.APIClient.nuspec" />
