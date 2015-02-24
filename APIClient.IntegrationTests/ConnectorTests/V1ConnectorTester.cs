@@ -145,6 +145,47 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
             DeleteStory(connector, testStoryOid);
         }
 
+        [TestMethod]
+        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
+        public void NoAuthenticationException()
+        {
+            var anonymousConnector = new V1Connector(_prefix);
+            var stream = anonymousConnector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
+
+        [TestMethod]
+        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
+        public void BasicAuthenticationWithWrongPasswordException()
+        {
+            var wrongCredentialsConnector = new V1Connector(_prefix)
+                .WithUsernameAndPassword(_username, "foo");
+
+            var stream = wrongCredentialsConnector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
+
+        [TestMethod]
+        public void BasicAuthenticationWithConstrutctorSuppliedCredential()
+        {
+            var simpleCred = new NetworkCredential(_username, _password);
+            var connector = new V1Connector(_prefix, simpleCred);
+
+            var stream = connector.UseDataAPI().GetData(Member20Path);
+            stream.Dispose();
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void AccessToken()
+        {
+            var connector = new V1Connector(_prefix).WithAccessToken("1.hJcIPWcXJGWwprchTmVn2KTPxb8=");
+            var stream = connector.UseDataAPI().GetData(Member20Path);
+            var x = new XmlDocument();
+            x.Load(stream);
+            stream.Dispose();
+        }
+
         /// <summary>
         /// Creates a test story in V1.
         /// </summary>
@@ -178,36 +219,6 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
             var path = storyOid.AssetType.Token + "/" + storyOid.Key + "?op=" + deleteOperation.Name;
 
             var stream = connector.SendData(path, string.Empty);
-            stream.Dispose();
-        }
-
-        [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        public void NoAuthenticationException()
-        {
-            var anonymousConnector = new V1Connector(_prefix);
-            var stream = anonymousConnector.UseDataAPI().GetData(Member20Path);
-            stream.Dispose();
-        }
-
-        [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        public void BasicAuthenticationWithWrongPasswordException()
-        {
-            var wrongCredentialsConnector = new V1Connector(_prefix)
-                .WithUsernameAndPassword(_username, "foo");
-
-            var stream = wrongCredentialsConnector.UseDataAPI().GetData(Member20Path);
-            stream.Dispose();
-        }
-
-        [TestMethod]
-        public void BasicAuthenticationWithConstrutctorSuppliedCredential()
-        {
-            var simpleCred = new NetworkCredential(_username, _password);
-            var connector = new V1Connector(_prefix, simpleCred);
-
-            var stream = connector.UseDataAPI().GetData(Member20Path);
             stream.Dispose();
         }
     }
