@@ -2,6 +2,7 @@
 
 namespace VersionOne.SDK.APIClient
 {
+    [Obsolete]
     public sealed class EnvironmentContext
     {
 

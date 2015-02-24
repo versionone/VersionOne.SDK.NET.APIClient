@@ -7,6 +7,8 @@ using System.Net;
 using System.Xml;
 
 namespace VersionOne.SDK.APIClient {
+
+    [Obsolete("Use V1Services instead.")]
     public class Services : IServices {
         private readonly IMetaModel metaModel;
         private readonly IAPIConnector connector;
@@ -142,7 +144,7 @@ namespace VersionOne.SDK.APIClient {
             }
         }
 
-        public Asset New(IAssetType assetType, Oid context) {
+        public Asset New(IAssetType assetType, Oid context = null) {
             var doc = new XmlDocument();
 
             var path = "New/" + assetType.Token;
