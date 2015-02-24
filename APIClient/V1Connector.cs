@@ -289,8 +289,12 @@ namespace VersionOne.SDK.APIClient
 				request.Proxy = _proxyProvider.CreateWebProxy();
 			}
 
-			request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-			request.UserAgent = MyUserAgent;
+            request.Headers.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
+            
+            if (!string.IsNullOrEmpty(_accessToken))
+                request.Headers.Add("Authorization", "Bearer " + _accessToken);
+			
+            request.UserAgent = MyUserAgent;
 			foreach (var pair in _customHttpHeaders)
 			{
 				request.Headers.Add(pair.Key, pair.Value);
