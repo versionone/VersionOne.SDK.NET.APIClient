@@ -23,22 +23,6 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
 
         [TestMethod]
         [Ignore]
-        public void DataApiWithProxyConstructor()
-        {
-            var uri = new Uri(Proxy);
-            var proxyProvider = new ProxyProvider(uri, ProxyUserName, ProxyPassword);
-            var connector = new V1Connector(_prefix, proxyProvider: proxyProvider)
-                .UseDataAPI()
-                .WithUsernameAndPassword(_username, _password);
-
-            using (var s = connector.GetData(Member20Path))
-            {
-                Assert.IsNotNull(s);
-            }
-        }
-
-        [TestMethod]
-        [Ignore]
         public void DataApiWithProxyFluent()
         {
             var uri = new Uri(Proxy);
@@ -162,16 +146,6 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
                 .WithUsernameAndPassword(_username, "foo");
 
             var stream = wrongCredentialsConnector.UseDataAPI().GetData(Member20Path);
-            stream.Dispose();
-        }
-
-        [TestMethod]
-        public void BasicAuthenticationWithConstrutctorSuppliedCredential()
-        {
-            var simpleCred = new NetworkCredential(_username, _password);
-            var connector = new V1Connector(_prefix, simpleCred);
-
-            var stream = connector.UseDataAPI().GetData(Member20Path);
             stream.Dispose();
         }
 

@@ -3,6 +3,7 @@ using System;
 
 namespace VersionOne.SDK.APIClient
 {
+    [Obsolete]
     public interface ICentral
     {
         IServices Services { get; }
@@ -10,6 +11,7 @@ namespace VersionOne.SDK.APIClient
         ILocalizer Loc { get; }
     }
 
+    [Obsolete]
     public class V1Central : ICentral
     {
         public V1Central(XmlNode config)
