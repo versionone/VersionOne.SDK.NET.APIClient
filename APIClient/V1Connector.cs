@@ -18,7 +18,6 @@ namespace VersionOne.SDK.APIClient
         
         private readonly string _urlPrefix;
         private string _endpoint = string.Empty;
-        private CookieContainer _cookieContainer;
         private string _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
         private readonly IDictionary<string, string> _customHttpHeaders = new Dictionary<string, string>();
         private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
@@ -39,11 +38,6 @@ namespace VersionOne.SDK.APIClient
             get { return _endpoint; }
         }
 
-        private CookieContainer CookieContainer
-        {
-            get { return _cookieContainer ?? (_cookieContainer = new CookieContainer()); }
-        }
-
         private string MyUserAgent
 		{
 			get
@@ -60,28 +54,13 @@ namespace VersionOne.SDK.APIClient
 
         #region Constructors
 
-        public V1Connector(string urlPrefix, System.Net.ICredentials credentials = null, ProxyProvider proxyProvider = null)
+        public V1Connector(string urlPrefix)
         {
             _urlPrefix = urlPrefix;
-            _proxyProvider = proxyProvider;
-            if (credentials != null)
-            {
-                _initializedWithCredentials = true;
-                _credentials = credentials;
-            }
-            else
-            {
-                _credentialCache = new CredentialCache();
-                _credentials = _credentialCache;
-            }
+            _credentialCache = new CredentialCache();
+            _credentials = _credentialCache;
         }
-
-        public V1Connector(string urlPrefix, string endpoint, string accessToken, ProxyProvider proxy = null)
-            : this(urlPrefix, new CredentialCache(), proxy)
-        {
-            _accessToken = accessToken;
-        }
-
+        
         #endregion Constructors
 
         #region Fluent Helpers
@@ -300,7 +279,6 @@ namespace VersionOne.SDK.APIClient
 				request.Headers.Add(pair.Key, pair.Value);
 			}
 
-			request.CookieContainer = CookieContainer;
 			request.UnsafeAuthenticatedConnectionSharing = true;
 			return request;
 		}

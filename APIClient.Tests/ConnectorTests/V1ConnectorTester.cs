@@ -30,14 +30,6 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void CacheCredentialWhenInitWithCredentialsException()
-        {
-            var connector = new V1Connector(_prefix, new NetworkCredential(_username, _password));
-            connector.CacheCredential(new NetworkCredential(_username, _password), "Basic");
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CacheCredentialWithNullCredentialsException()
         {

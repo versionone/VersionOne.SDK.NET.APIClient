@@ -266,7 +266,7 @@
     <Compile Include="Obsolete\V1APIConnector.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1Central.cs">
+    <Compile Include="Obsolete\V1Central.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="V1Configuration.cs" />
