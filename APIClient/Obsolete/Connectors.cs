@@ -5,6 +5,7 @@ namespace VersionOne.SDK.APIClient
     /// <summary>
     /// Provides connectors for a VersionOne instance.
     /// </summary>
+    [Obsolete]
     public interface IConnectors
     {
         IAPIConnector MetaConnector { get; }
