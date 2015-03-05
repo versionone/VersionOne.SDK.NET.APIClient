@@ -2,7 +2,7 @@
 
 namespace VersionOne.SDK.APIClient
 {
-
+    [Obsolete]
     public interface IModelsAndServices
     {
         IMetaModel MetaModel { get; }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace VersionOne.SDK.APIClient {
+    [Obsolete]
     public interface IAPIConnector {
         Stream GetData();
         Stream GetData(string path);

@@ -54,7 +54,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ConnectorTests\V1ConnectorTester.cs" />
     <Compile Include="DBTests\BitTester.cs" />
     <Compile Include="DBTests\DateTimeTester.cs" />
     <Compile Include="DBTests\IntTester.cs" />

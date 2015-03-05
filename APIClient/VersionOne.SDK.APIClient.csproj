@@ -122,6 +122,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -129,6 +132,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
@@ -143,17 +147,21 @@
     <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Connector\Interfaces\ICanAddHeaderOrMakeRequest.cs" />
+    <Compile Include="Connector\Interfaces\ICanMakeRequest.cs" />
+    <Compile Include="Connector\Interfaces\ICanSetApi.cs" />
+    <Compile Include="Connector\Interfaces\ICanSetAuthMethod.cs" />
+    <Compile Include="Connector\Interfaces\ICanSetProxyOrApi.cs" />
     <Compile Include="Query\Builders\V1HierarchicalPartBuilder.cs" />
     <Compile Include="Query\Builders\V1QueryUrlBuilder.cs" />
-    <Compile Include="V1Connector.cs" />
+    <Compile Include="Connector\V1Connector.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
-    <Compile Include="V1Services.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
     <Compile Include="V1ConfigurationManager.cs" />
-    <Compile Include="Connectors.cs" />
+    <Compile Include="Obsolete\Connectors.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Obsolete\EnvironmentContext.cs" />
-    <Compile Include="ModelsAndServices.cs" />
+    <Compile Include="Obsolete\ModelsAndServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -193,7 +201,7 @@
     <Compile Include="HashCode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IAPIConnector.cs" />
+    <Compile Include="Obsolete\IAPIConnector.cs" />
     <Compile Include="IAssetType.cs" />
     <Compile Include="IAttachments.cs" />
     <Compile Include="IAttributeDefinition.cs" />
@@ -202,7 +210,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IOperation.cs" />
-    <Compile Include="IServices.cs" />
+    <Compile Include="Obsolete\IServices.cs" />
     <Compile Include="IV1Configuration.cs" />
     <Compile Include="Localizer.cs">
       <SubType>Code</SubType>
@@ -276,6 +284,7 @@
     <Compile Include="XmlElementToAsset.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
+    <None Include="packages.config" />
     <None Include="VersionOne.SDK.APIClient.nuspec" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +304,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

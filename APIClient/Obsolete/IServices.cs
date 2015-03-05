@@ -1,4 +1,7 @@
+using System;
+
 namespace VersionOne.SDK.APIClient {
+    [Obsolete]
     public interface IServices {
         QueryResult Retrieve(Query query);
         void Save(Asset asset);
