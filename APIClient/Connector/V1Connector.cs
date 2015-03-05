@@ -55,9 +55,9 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanSetApi WithProxy(WebProxy webProxy)
+        public ICanSetApi WithProxy(ProxyProvider proxyProvider)
         {
-            _handler.Proxy = webProxy;
+            _handler.Proxy = proxyProvider.CreateWebProxy();
 
             return this;
         }
