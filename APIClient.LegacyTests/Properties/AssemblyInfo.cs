@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VersionOne SDK API Client")]
-[assembly: AssemblyDescription("VersionOne SDK .NET APIClient.IntegrationTests Release Build")]
+[assembly: AssemblyDescription("VersionOne SDK .NET APIClient.LegacyTests Release Build")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VersionOne, Inc.")]
-[assembly: AssemblyProduct("APIClient.IntegrationTests")]
+[assembly: AssemblyProduct("APIClient.LegacyTests")]
 [assembly: AssemblyCopyright("Copyright 2008-2013, VersionOne, Inc., Licensed under modified BSD.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FA7DD6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Tests", "ApiClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{8BAF9EC6-BBE9-4AF6-BA7E-D51A271DD76E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.IntegrationTests", "APIClient.IntegrationTests\VersionOne.SDK.APIClient.IntegrationTests.csproj", "{089CB065-942E-4408-A02A-6F24449ED080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.LegacyTests", "APIClient.LegacyTests\VersionOne.SDK.APIClient.LegacyTests.csproj", "{089CB065-942E-4408-A02A-6F24449ED080}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.MSTestExtensions", "MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj", "{97C810F7-149B-4C9B-8D5A-87C050EB2F80}"
 EndProject
