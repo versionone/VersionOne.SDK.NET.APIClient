@@ -1,5 +1,9 @@
 ﻿using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Model.Asset;
+using VersionOne.SDK.APIClient.Model.Interfaces;
+using VersionOne.SDK.APIClient.Queries;
 
 namespace VersionOne.SDK.APIClient.Tests.ServicesTests
 {
@@ -14,7 +18,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
         [TestMethod]
         public void MultiValueAttribute()
         {
-            Services subject = new Services(Meta, DataConnector);
+            Obsolete.Services subject = new Obsolete.Services(Meta, DataConnector);
             Query queryStories = new Query(Oid.FromToken("Story:1063", Meta));
             IAttributeDefinition ownersDef = Meta.GetAttributeDefinition("Story.Owners");
             queryStories.Selection.Add(ownersDef);

@@ -1,4 +1,6 @@
-﻿namespace VersionOne.SDK.APIClient.Tests
+﻿using VersionOne.SDK.APIClient.Obsolete;
+
+namespace VersionOne.SDK.APIClient.Tests
 {
     public class LocalizerTesterBase
     {

@@ -1,6 +1,8 @@
 ﻿using System;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient
+namespace VersionOne.SDK.APIClient.Obsolete
 {
     [Obsolete]
     public interface IModelsAndServices
@@ -13,6 +15,7 @@ namespace VersionOne.SDK.APIClient
         IV1Configuration V1ConfigurationWithProxy { get; }
     }
 
+    [Obsolete]
     public sealed class ModelsAndServices : IModelsAndServices
     {
 

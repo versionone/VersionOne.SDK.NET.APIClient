@@ -1,6 +1,6 @@
 ﻿namespace VersionOne.SDK.APIClient.Connector.Interfaces
 {
-    public interface ICanSetAuthMethod
+    public interface ICanSetAuthMethodOrApi : ICanSetApi
     {
         ICanSetProxyOrApi WithUsernameAndPassword(string username, string password);
 

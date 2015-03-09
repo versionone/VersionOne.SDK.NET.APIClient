@@ -139,12 +139,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Aggregate.cs" />
-    <Compile Include="AssetStateManager.cs" />
+    <Compile Include="Meta\MetaModel.cs" />
+    <Compile Include="Model\Aggregate.cs" />
+    <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
-    <Compile Include="Attribute.cs" />
-    <Compile Include="AttributeType.cs" />
-    <Compile Include="Config.cs">
+    <Compile Include="Model\Asset\Attribute\Attribute.cs" />
+    <Compile Include="Model\Asset\Attribute\AttributeType.cs" />
+    <Compile Include="Obsolete\Config.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Connector\Interfaces\ICanAddHeaderOrMakeRequest.cs" />
@@ -152,123 +153,120 @@
     <Compile Include="Connector\Interfaces\ICanSetApi.cs" />
     <Compile Include="Connector\Interfaces\ICanSetAuthMethod.cs" />
     <Compile Include="Connector\Interfaces\ICanSetProxyOrApi.cs" />
-    <Compile Include="Query\Builders\V1HierarchicalPartBuilder.cs" />
-    <Compile Include="Query\Builders\V1QueryUrlBuilder.cs" />
     <Compile Include="Connector\V1Connector.cs" />
+    <Compile Include="Obsolete\HierarchicalPartBuilder.cs" />
+    <Compile Include="Obsolete\Services.cs" />
+    <Compile Include="Obsolete\QueryURLBuilder.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
-    <Compile Include="V1ConfigurationManager.cs" />
+    <Compile Include="Queries\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Queries\Builders\QueryURLBuilder.cs" />
+    <Compile Include="Services\IServices.cs" />
+    <Compile Include="Services\Services.cs" />
+    <Compile Include="Utils\DB.cs" />
+    <Compile Include="Obsolete\V1ConfigurationManager.cs" />
     <Compile Include="Obsolete\Connectors.cs" />
-    <Compile Include="Credentials.cs" />
+    <Compile Include="Obsolete\Credentials.cs" />
     <Compile Include="Obsolete\EnvironmentContext.cs" />
     <Compile Include="Obsolete\ModelsAndServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Asset.cs">
+    <Compile Include="Model\Asset\Asset.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssetList.cs">
+    <Compile Include="Model\Asset\AssetList.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssetType.cs">
+    <Compile Include="Model\Asset\AssetType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MultiValueAttribute.cs" />
-    <Compile Include="Query\IValueProvider.cs" />
-    <Compile Include="Query\ValueProvider.cs" />
-    <Compile Include="Query\ValueStringizer.cs" />
-    <Compile Include="SingleValueAttribute.cs" />
-    <Compile Include="Urls.cs" />
-    <Compile Include="XmlApiWriter.cs">
+    <Compile Include="Model\Asset\Attribute\MultiValueAttribute.cs" />
+    <Compile Include="Queries\IValueProvider.cs" />
+    <Compile Include="Queries\ValueProvider.cs" />
+    <Compile Include="Queries\ValueStringizer.cs" />
+    <Compile Include="Model\Asset\Attribute\SingleValueAttribute.cs" />
+    <Compile Include="Obsolete\Urls.cs" />
+    <Compile Include="Services\XmlApiWriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttributeDefinition.cs">
+    <Compile Include="Model\Asset\Attribute\AttributeDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttributeSelection.cs">
+    <Compile Include="Queries\AttributeSelection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Obsolete\DB.cs">
+    <Compile Include="Model\Asset\Attribute\Duration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Duration.cs">
+    <Compile Include="Model\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Exceptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HashCode.cs">
+    <Compile Include="Utils\HashCode.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Obsolete\IAPIConnector.cs" />
-    <Compile Include="IAssetType.cs" />
+    <Compile Include="Model\Interfaces\IAssetType.cs" />
     <Compile Include="IAttachments.cs" />
-    <Compile Include="IAttributeDefinition.cs" />
-    <Compile Include="IMetaModel.cs" />
-    <Compile Include="ILocalizer.cs">
+    <Compile Include="Model\Interfaces\IAttributeDefinition.cs" />
+    <Compile Include="Meta\IMetaModel.cs" />
+    <Compile Include="Obsolete\ILocalizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IOperation.cs" />
-    <Compile Include="Obsolete\IServices.cs" />
-    <Compile Include="IV1Configuration.cs" />
-    <Compile Include="Localizer.cs">
+    <Compile Include="Model\Interfaces\IOperation.cs" />
+    <Compile Include="Obsolete\IV1Configuration.cs" />
+    <Compile Include="Obsolete\Localizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaModel.cs">
+    <Compile Include="Obsolete\MetaModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MimeType.cs" />
-    <Compile Include="Oid.cs">
+    <Compile Include="Model\Oid.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operation.cs">
+    <Compile Include="Model\Asset\Operation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OrderBy.cs">
+    <Compile Include="Queries\OrderBy.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Paging.cs">
+    <Compile Include="Queries\Paging.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProxyProvider.cs" />
-    <Compile Include="Query\Builders\AsOfBuilder.cs" />
-    <Compile Include="Query\Builders\BuildResult.cs" />
-    <Compile Include="Query\Builders\CompositeBuilder.cs" />
-    <Compile Include="Query\Builders\FindBuilder.cs" />
-    <Compile Include="Obsolete\HierarchicalPartBuilder.cs" />
-    <Compile Include="Query\Builders\IQueryBuilder.cs" />
-    <Compile Include="Query\Builders\PagingBuilder.cs" />
-    <Compile Include="Query\Builders\QueryBuilder.cs" />
-    <Compile Include="Obsolete\QueryURLBuilder.cs" />
-    <Compile Include="Query\AndFilterTerm.cs" />
-    <Compile Include="Query\Builders\SelectionBuilder.cs" />
-    <Compile Include="Query\Builders\SortBuilder.cs" />
-    <Compile Include="Query\Builders\WhereBuilder.cs" />
-    <Compile Include="Query\Builders\WithVariablesBuilder.cs" />
-    <Compile Include="Query\FilterTerm.cs" />
-    <Compile Include="Query\GroupFilterTerm.cs" />
-    <Compile Include="Query\IFilterTerm.cs" />
-    <Compile Include="Query\NoOpTerm.cs" />
-    <Compile Include="Query\OrFilterTerm.cs" />
-    <Compile Include="Query\Query.cs">
+    <Compile Include="Connector\ProxyProvider.cs" />
+    <Compile Include="Queries\Builders\AsOfBuilder.cs" />
+    <Compile Include="Queries\Builders\BuildResult.cs" />
+    <Compile Include="Queries\Builders\CompositeBuilder.cs" />
+    <Compile Include="Queries\Builders\FindBuilder.cs" />
+    <Compile Include="Queries\Builders\IQueryBuilder.cs" />
+    <Compile Include="Queries\Builders\PagingBuilder.cs" />
+    <Compile Include="Queries\Builders\QueryBuilder.cs" />
+    <Compile Include="Queries\AndFilterTerm.cs" />
+    <Compile Include="Queries\Builders\SelectionBuilder.cs" />
+    <Compile Include="Queries\Builders\SortBuilder.cs" />
+    <Compile Include="Queries\Builders\WhereBuilder.cs" />
+    <Compile Include="Queries\Builders\WithVariablesBuilder.cs" />
+    <Compile Include="Queries\FilterTerm.cs" />
+    <Compile Include="Queries\GroupFilterTerm.cs" />
+    <Compile Include="Queries\IFilterTerm.cs" />
+    <Compile Include="Queries\NoOpTerm.cs" />
+    <Compile Include="Queries\OrFilterTerm.cs" />
+    <Compile Include="Queries\Query.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Query\QueryFind.cs" />
-    <Compile Include="Query\QueryResult.cs">
+    <Compile Include="Queries\QueryFind.cs" />
+    <Compile Include="Queries\QueryResult.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Query\QueryVariable.cs" />
-    <Compile Include="Query\TokenTerm.cs" />
-    <Compile Include="Rank.cs" />
+    <Compile Include="Queries\QueryVariable.cs" />
+    <Compile Include="Queries\TokenTerm.cs" />
+    <Compile Include="Model\Asset\Attribute\Rank.cs" />
     <Compile Include="RequiredFieldValidator.cs" />
-    <Compile Include="Obsolete\Services.cs">
+    <Compile Include="Utils\TextBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TextBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pair.cs">
+    <Compile Include="Model\Pair.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Obsolete\V1APIConnector.cs">
@@ -277,11 +275,11 @@
     <Compile Include="Obsolete\V1Central.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1Configuration.cs" />
-    <Compile Include="V1ConnectionValidator.cs">
+    <Compile Include="Obsolete\V1Configuration.cs" />
+    <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="XmlElementToAsset.cs" />
+    <Compile Include="Connector\XmlElementToAsset.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
     <None Include="packages.config" />

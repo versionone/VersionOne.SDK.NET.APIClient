@@ -1,5 +1,7 @@
 using System.IO;
 using System.Net;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Obsolete;
 
 namespace VersionOne.SDK.APIClient {
     public class Attachments : IAttachments {

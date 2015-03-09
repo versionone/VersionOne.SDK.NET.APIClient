@@ -1,8 +1,16 @@
-namespace VersionOne.SDK.APIClient {
-    public class QueryURLBuilder : CompositeBuilder {
+﻿using System;
+using VersionOne.SDK.APIClient.Queries;
+using VersionOne.SDK.APIClient.Queries.Builders;
+
+namespace VersionOne.SDK.APIClient.Obsolete
+{
+    [Obsolete]
+    public class QueryURLBuilder : CompositeBuilder
+    {
         private readonly Query query;
 
-        public QueryURLBuilder(Query query) {
+        public QueryURLBuilder(Query query)
+        {
             this.query = query;
 
             Builders.Add(new HierarchicalPartBuilder());
@@ -15,7 +23,8 @@ namespace VersionOne.SDK.APIClient {
             Builders.Add(new WithVariablesBuilder());
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Build(query, new BuildResult()).ToUrl();
         }
     }

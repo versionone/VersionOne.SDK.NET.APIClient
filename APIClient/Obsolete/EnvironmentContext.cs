@@ -1,6 +1,8 @@
 ﻿using System;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient
+namespace VersionOne.SDK.APIClient.Obsolete
 {
     [Obsolete]
     public sealed class EnvironmentContext

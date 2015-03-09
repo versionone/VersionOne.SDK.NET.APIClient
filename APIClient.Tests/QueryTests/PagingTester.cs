@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Queries;
 
 namespace VersionOne.SDK.APIClient.Tests.QueryTests
 {

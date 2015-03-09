@@ -6,18 +6,20 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using log4net;
 using VersionOne.SDK.APIClient.Connector.Interfaces;
 
 namespace VersionOne.SDK.APIClient.Connector
 {
-    public class V1Connector : ICanSetAuthMethod, ICanSetProxyOrApi, ICanAddHeaderOrMakeRequest
+    public class V1Connector : ICanSetAuthMethodOrApi, ICanSetProxyOrApi, ICanAddHeaderOrMakeRequest
     {
         private HttpClient _client;
         private HttpClientHandler _handler;
         private string _endpoint;
         private string _upstreamUserAgent;
         private ILog _log = LogManager.GetLogger(typeof (V1Connector));
+        private bool _isRequestConfigured = false;
 
         private V1Connector(string versionOneInstanceUrl)
         {
@@ -28,7 +30,7 @@ namespace VersionOne.SDK.APIClient.Connector
             _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
         }
 
-        public static ICanSetAuthMethod CreateConnector(string versionOneInstanceUrl)
+        public static ICanSetAuthMethodOrApi CreateConnector(string versionOneInstanceUrl)
         {
             return new V1Connector(versionOneInstanceUrl);
         }
@@ -113,8 +115,10 @@ namespace VersionOne.SDK.APIClient.Connector
 
         public Stream GetData(string resource = null)
         {
-            ConfigureRequest();
-            var response = _client.GetAsync(GetResourceUrl(resource)).Result;
+            ConfigureRequestIfNeeded();
+            var resourceUrl = GetResourceUrl(resource);
+            var response = _client.GetAsync(resourceUrl).Result;
+            ThrowWebExceptionIfNeeded(response);
             var result = response.Content.ReadAsStreamAsync().Result;
             LogResponse(response, result.ToString());
 
@@ -123,7 +127,7 @@ namespace VersionOne.SDK.APIClient.Connector
 
         public Stream SendData(object data, string resource = null, RequestFormat requestFormat = RequestFormat.Xml)
         {
-            ConfigureRequest();
+            ConfigureRequestIfNeeded();
             switch (requestFormat)
             {
                 case RequestFormat.Json:
@@ -134,7 +138,9 @@ namespace VersionOne.SDK.APIClient.Connector
                     break;
             }
             var content = new StringContent(data.ToString(), Encoding.UTF8);
-            var response = _client.PostAsync(GetResourceUrl(resource), content).Result;
+            var resourceUrl = GetResourceUrl(resource);
+            var response = _client.PostAsync(resourceUrl, content).Result;
+            ThrowWebExceptionIfNeeded(response);
             var result = response.Content.ReadAsStreamAsync().Result;
             LogResponse(response, result.ToString(), data.ToString());
 
@@ -151,6 +157,17 @@ namespace VersionOne.SDK.APIClient.Connector
             return _endpoint + ValidateResource(resource);
         }
 
+        private void ThrowWebExceptionIfNeeded(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                var statusCode = Convert.ToInt32(response.StatusCode);
+                var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode,
+                    HttpWorkerRequest.GetStatusDescription(statusCode));
+                throw new WebException(message);
+            }
+        }
+
         private string ValidateResource(string resource)
         {
             var result = string.Empty;
@@ -162,12 +179,16 @@ namespace VersionOne.SDK.APIClient.Connector
             return result;
         }
 
-        private void ConfigureRequest()
+        private void ConfigureRequestIfNeeded()
         {
-            _handler.PreAuthenticate = true;
-            _handler.AllowAutoRedirect = true;
-            _client.DefaultRequestHeaders.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-            _client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+            if (!_isRequestConfigured)
+            {
+                _handler.PreAuthenticate = true;
+                _handler.AllowAutoRedirect = true;
+                _client.DefaultRequestHeaders.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
+                _client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+                _isRequestConfigured = true;
+            }
         }
 
         private string UserAgent

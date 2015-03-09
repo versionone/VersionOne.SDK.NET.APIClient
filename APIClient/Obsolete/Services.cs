@@ -1,31 +1,45 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Model.Asset;
+using VersionOne.SDK.APIClient.Model.Interfaces;
+using VersionOne.SDK.APIClient.Queries;
+using VersionOne.SDK.APIClient.Queries.Builders;
+using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient {
-
+namespace VersionOne.SDK.APIClient.Obsolete
+{
     [Obsolete]
-    public class Services : IServices {
+    public class Services : IServices
+    {
         private readonly IMetaModel metaModel;
         private readonly IAPIConnector connector;
         private Oid loggedIn;
 
-        public Oid LoggedIn {
-            get {
-                if (loggedIn == null) {
+        public Oid LoggedIn
+        {
+            get
+            {
+                if (loggedIn == null)
+                {
                     var q = new Query(metaModel.GetAssetType("Member"));
                     var term = new FilterTerm(metaModel.GetAttributeDefinition("Member.IsSelf"));
                     term.Equal(true);
                     q.Filter = term;
                     var list = Retrieve(q).Assets;
 
-                    if(list.Count != 1) {
+                    if (list.Count != 1)
+                    {
                         loggedIn = Oid.Null;
-                    } else {
+                    }
+                    else
+                    {
                         loggedIn = list[0].Oid;
                     }
                 }
@@ -34,7 +48,8 @@ namespace VersionOne.SDK.APIClient {
             }
         }
 
-        public Services(IMetaModel metaModel, IAPIConnector connector) {
+        public Services(IMetaModel metaModel, IAPIConnector connector)
+        {
             this.metaModel = metaModel;
             this.connector = connector;
         }
@@ -44,16 +59,22 @@ namespace VersionOne.SDK.APIClient {
             connector.SetUpstreamUserAgent(userAgent);
         }
 
-        public QueryResult Retrieve(Query query) {
+        public QueryResult Retrieve(Query query)
+        {
             var doc = new XmlDocument();
-            
-            try {
-                using(var stream = connector.GetData(new QueryURLBuilder(query).ToString())) {
+
+            try
+            {
+                using (var stream = connector.GetData(new QueryURLBuilder(query).ToString()))
+                {
                     doc.Load(stream);
                 }
-            } catch (WebException ex) {
+            }
+            catch (WebException ex)
+            {
                 //if we get a 404, return an empty query result otherwise throw the exception
-                if(ex.Response is HttpWebResponse && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound) {
+                if (ex.Response is HttpWebResponse && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
+                {
                     return GetEmptyQueryResult(query);
                 }
 
@@ -63,41 +84,53 @@ namespace VersionOne.SDK.APIClient {
             return ParseQueryResult(doc.DocumentElement, query);
         }
 
-        public Oid GetOid(string token) {
+        public Oid GetOid(string token)
+        {
             return Oid.FromToken(token, metaModel);
         }
 
-        public Oid ExecuteOperation(IOperation op, Oid oid) {
+        public Oid ExecuteOperation(IOperation op, Oid oid)
+        {
             var doc = new XmlDocument();
-            
-            try {
+
+            try
+            {
                 var path = "Data/" + oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
 
-                using(var stream = connector.SendData(path, string.Empty)) {
+                using (var stream = connector.SendData(path, string.Empty))
+                {
                     doc.Load(stream);
                 }
 
                 var asset = ParseAssetNode(doc.DocumentElement);
 
                 return asset.Oid;
-            } catch (WebException ex) {
-                using(var stream = ex.Response.GetResponseStream()) {
+            }
+            catch (WebException ex)
+            {
+                using (var stream = ex.Response.GetResponseStream())
+                {
                     doc.Load(stream);
                 }
 
                 var message = doc.DocumentElement.SelectSingleNode("Message").InnerText;
                 throw new APIException(message, oid.Token, ex);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new APIException("Failed to execute", oid.Token, ex);
             }
         }
 
-        public void Save(Asset asset) {
+        public void Save(Asset asset)
+        {
             Save(asset, string.Empty);
         }
 
-        public void Save(Asset asset, string comment) {
-            if (asset.HasChanged || asset.Oid.IsNull) {
+        public void Save(Asset asset, string comment)
+        {
+            if (asset.HasChanged || asset.Oid.IsNull)
+            {
                 var doc = new XmlDocument();
 
                 var s = new StringWriter();
@@ -107,65 +140,85 @@ namespace VersionOne.SDK.APIClient {
 
                 var path = "Data/" + asset.AssetType.Token;
 
-                if(!asset.Oid.IsNull) {
+                if (!asset.Oid.IsNull)
+                {
                     path += "/" + asset.Oid.Key;
                 }
 
-                if (comment != null & comment != string.Empty) {
+                if (comment != null & comment != string.Empty)
+                {
                     path += string.Format("?Comment='{0}'", System.Web.HttpUtility.UrlEncode(comment));
                 }
 
-                try {
-                    using(var stream = connector.SendData(path, data)) {
+                try
+                {
+                    using (var stream = connector.SendData(path, data))
+                    {
                         doc.Load(stream);
                     }
 
                     ParseSaveAssetNode(doc.DocumentElement, asset);
-                } catch (WebException ex) {
-                    if(ex.Response == null) {
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Response == null)
+                    {
                         throw new ConnectionException("Error writing to output stream", ex);
                     }
 
-                    using(var stream = ex.Response.GetResponseStream()) {
+                    using (var stream = ex.Response.GetResponseStream())
+                    {
                         doc.Load(stream);
                     }
 
                     var message = doc.DocumentElement.SelectSingleNode("Message").InnerText;
                     throw new APIException(message, asset.Oid.Token, ex);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     throw new APIException("Failed to save", asset.Oid.Token, ex);
                 }
             }
         }
 
-        public void Save(AssetList assetList) {
-            foreach(var asset in assetList) {
+        public void Save(AssetList assetList)
+        {
+            foreach (var asset in assetList)
+            {
                 Save(asset);
             }
         }
 
-        public Asset New(IAssetType assetType, Oid context = null) {
+        public Asset New(IAssetType assetType, Oid context)
+        {
             var doc = new XmlDocument();
 
             var path = "New/" + assetType.Token;
 
-            if(context != null && !context.IsNull) {
+            if (context != null && !context.IsNull)
+            {
                 path += "?ctx=" + context.Token;
             }
 
-            try {
-                using(var stream = connector.GetData(path)) {
+            try
+            {
+                using (var stream = connector.GetData(path))
+                {
                     doc.Load(stream);
                 }
 
                 return ParseNewAssetNode(doc.DocumentElement, assetType);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new APIException("Failed to get new asset!", assetType.Token, ex);
             }
         }
 
-        private QueryResult ParseQueryResult(XmlElement element, Query query) {
-            switch (element.LocalName) {
+        private QueryResult ParseQueryResult(XmlElement element, Query query)
+        {
+            switch (element.LocalName)
+            {
                 case "History":
                     return ParseHistoryQueryResult(element, query);
                 case "Assets":
@@ -181,23 +234,28 @@ namespace VersionOne.SDK.APIClient {
             }
         }
 
-        private static QueryResult GetEmptyQueryResult(Query query) {
+        private static QueryResult GetEmptyQueryResult(Query query)
+        {
             return new QueryResult(new AssetList(), 0, query);
         }
 
-        private QueryResult ParseHistoryQueryResult(XmlElement element, Query query) {
-            if (!element.HasChildNodes) {
+        private QueryResult ParseHistoryQueryResult(XmlElement element, Query query)
+        {
+            if (!element.HasChildNodes)
+            {
                 return new QueryResult(new AssetList(), 0, query);
             }
 
-            if (element.FirstChild.Name == "Asset") {
+            if (element.FirstChild.Name == "Asset")
+            {
                 return ParseAssetListQueryResult(element, query);
             }
-            
+
             throw new NotImplementedException();
         }
 
-        private QueryResult ParseAssetListQueryResult(XmlElement element, Query query) {
+        private QueryResult ParseAssetListQueryResult(XmlElement element, Query query)
+        {
             var list = new AssetList();
             var total = int.Parse(element.GetAttribute("total"));
 
@@ -205,24 +263,28 @@ namespace VersionOne.SDK.APIClient {
 
             list.AddRange(from XmlElement assetnode in assetnodes select ParseAssetNode(assetnode));
 
-            if(query.ParentRelation != null) {
+            if (query.ParentRelation != null)
+            {
                 list = TreeAssetListByAttribute(list, query.ParentRelation);
             }
 
             return new QueryResult(list, total, query);
         }
 
-        private static AssetList TreeAssetListByAttribute(IEnumerable<Asset> input, IAttributeDefinition def) {
+        private static AssetList TreeAssetListByAttribute(IEnumerable<Asset> input, IAttributeDefinition def)
+        {
             var h = new Hashtable();
 
-            foreach(var asset in input) {
+            foreach (var asset in input)
+            {
                 h.Add(asset.Oid.Token, asset);
             }
 
             var r = new AssetList();
-            
-            foreach (var asset in input) {
-                var parent = (Asset) h[((Oid) asset.GetAttribute(def).Value).Token];
+
+            foreach (var asset in input)
+            {
+                var parent = (Asset)h[((Oid)asset.GetAttribute(def).Value).Token];
                 var t = parent != null ? parent.Children : r;
                 t.Add(asset);
             }
@@ -230,13 +292,15 @@ namespace VersionOne.SDK.APIClient {
             return r;
         }
 
-        private QueryResult ParseAssetQueryResult(XmlElement element, Query query) {
+        private QueryResult ParseAssetQueryResult(XmlElement element, Query query)
+        {
             var list = new AssetList();
             list.Add(ParseAssetNode(element));
             return new QueryResult(list, 1, query);
         }
 
-        private QueryResult ParseAttributeQueryResult(XmlElement element, Query query) {
+        private QueryResult ParseAttributeQueryResult(XmlElement element, Query query)
+        {
             var list = new AssetList();
 
             var asset = new Asset(query.Oid);
@@ -249,87 +313,118 @@ namespace VersionOne.SDK.APIClient {
             return new QueryResult(list, 1, query);
         }
 
-        private Asset ParseAssetNode(XmlElement element) {
+        private Asset ParseAssetNode(XmlElement element)
+        {
             var asset = new Asset(GetOid(element.GetAttribute("id")));
 
-            foreach(XmlElement child in element.ChildNodes) {
+            foreach (XmlElement child in element.ChildNodes)
+            {
                 ParseAttributeNode(asset, asset.AssetType.GetAttributeDefinition(child.GetAttribute("name")), child);
             }
 
             return asset;
         }
 
-        private static Asset ParseNewAssetNode(XmlNode element, IAssetType assetType) {
+        private static Asset ParseNewAssetNode(XmlNode element, IAssetType assetType)
+        {
             var asset = new Asset(assetType);
 
-            foreach(XmlElement child in element.ChildNodes) {
+            foreach (XmlElement child in element.ChildNodes)
+            {
                 ParseAttributeNode(asset, asset.AssetType.GetAttributeDefinition(child.GetAttribute("name")), child);
             }
 
             return asset;
         }
 
-        private void ParseSaveAssetNode(XmlElement element, Asset asset) {
+        private void ParseSaveAssetNode(XmlElement element, Asset asset)
+        {
             asset.Oid = GetOid(element.GetAttribute("id"));
             asset.AcceptChanges();
         }
 
-        private static void ParseAttributeNode(Asset asset, IAttributeDefinition attribdef, XmlElement element) {
+        private static void ParseAttributeNode(Asset asset, IAttributeDefinition attribdef, XmlElement element)
+        {
             var type = element.LocalName;
 
             asset.EnsureAttribute(attribdef);
 
-            if (type == "Relation") {
-                if (attribdef.IsMultiValue) {
-                    foreach (XmlElement child in element.ChildNodes) {
+            if (type == "Relation")
+            {
+                if (attribdef.IsMultiValue)
+                {
+                    foreach (XmlElement child in element.ChildNodes)
+                    {
                         var add = child.HasAttribute("act") && child.GetAttribute("act") == "add";
 
                         var token = child.GetAttribute("idref");
 
-                        if(add) {
+                        if (add)
+                        {
                             asset.AddAttributeValue(attribdef, token);
-                        } else {
+                        }
+                        else
+                        {
                             asset.LoadAttributeValue(attribdef, token);
                         }
                     }
-                } else {
+                }
+                else
+                {
                     var token = Oid.Null.Token;
 
-                    if(element.HasChildNodes) {
-                        token = ((XmlElement) element.ChildNodes.Item(0)).GetAttribute("idref");
+                    if (element.HasChildNodes)
+                    {
+                        token = ((XmlElement)element.ChildNodes.Item(0)).GetAttribute("idref");
                     }
 
                     var force = element.HasAttribute("act") && element.GetAttribute("act") == "set";
 
-                    if(force) {
+                    if (force)
+                    {
                         asset.ForceAttributeValue(attribdef, token);
-                    } else {
+                    }
+                    else
+                    {
                         asset.LoadAttributeValue(attribdef, token);
                     }
                 }
-            } else {
-                if (attribdef.IsMultiValue) {
-                    foreach (XmlElement child in element.ChildNodes) {
+            }
+            else
+            {
+                if (attribdef.IsMultiValue)
+                {
+                    foreach (XmlElement child in element.ChildNodes)
+                    {
                         var add = child.HasAttribute("act") && child.GetAttribute("act") == "add";
 
-                        if(add) {
+                        if (add)
+                        {
                             asset.AddAttributeValue(attribdef, child.InnerText);
-                        } else {
+                        }
+                        else
+                        {
                             asset.LoadAttributeValue(attribdef, child.InnerText);
                         }
                     }
-                } else {
+                }
+                else
+                {
                     object v = null;
 
-                    if(!string.IsNullOrEmpty(element.InnerText)) {
+                    if (!string.IsNullOrEmpty(element.InnerText))
+                    {
                         v = element.InnerText;
                     }
 
                     var force = element.HasAttribute("act") && element.GetAttribute("act") == "set";
 
-                    if(force) {
+                    if (force)
+                    {
                         asset.ForceAttributeValue(attribdef, v);
-                    } else {
+                    }
+                    else
+                    {
                         asset.LoadAttributeValue(attribdef, v);
                     }
                 }

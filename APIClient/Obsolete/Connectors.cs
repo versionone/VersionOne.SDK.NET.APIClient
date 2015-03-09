@@ -1,6 +1,7 @@
 ﻿using System;
+using VersionOne.SDK.APIClient.Connector;
 
-namespace VersionOne.SDK.APIClient
+namespace VersionOne.SDK.APIClient.Obsolete
 {
     /// <summary>
     /// Provides connectors for a VersionOne instance.

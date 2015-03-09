@@ -1,4 +1,7 @@
-﻿namespace VersionOne.SDK.APIClient.Tests.ServicesTests
+﻿using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Model.Interfaces;
+
+namespace VersionOne.SDK.APIClient.Tests.ServicesTests
 {
     public abstract class ServicesTesterBase
     {
@@ -26,7 +29,7 @@
             {
                 if (meta == null)
                 {
-                    meta = new MetaModel(new XmlResponseConnector("TestData.xml", "meta.v1/", ServicesTestKeys), Preload);
+                    meta = new Obsolete.MetaModel(new XmlResponseConnector("TestData.xml", "meta.v1/", ServicesTestKeys), Preload);
                 }
 
                 return meta;

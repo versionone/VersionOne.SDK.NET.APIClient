@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Model.Interfaces;
 
 namespace VersionOne.SDK.APIClient.Tests.MetaTests
 {
@@ -12,7 +13,7 @@ namespace VersionOne.SDK.APIClient.Tests.MetaTests
         [TestMethod]
         public void VersionCheck()
         {
-            Assert.AreEqual(new Version("1.2.3.4"), ((MetaModel)Meta).Version);
+            Assert.AreEqual(new Version("1.2.3.4"), ((Obsolete.MetaModel)Meta).Version);
         }
 
         [TestMethod]
