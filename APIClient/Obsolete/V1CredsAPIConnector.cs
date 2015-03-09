@@ -1,12 +1,13 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using VersionOne.SDK.APIClient.Connector;
 
-namespace VersionOne.SDK.APIClient
+namespace VersionOne.SDK.APIClient.Obsolete
 {
     [Obsolete("Use VersionOneAPIConnector instead.")]
 	public class V1CredsAPIConnector : IAPIConnector

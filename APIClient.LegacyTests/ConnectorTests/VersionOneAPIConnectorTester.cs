@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Connector;
+using VersionOne.SDK.APIClient.Obsolete;
 using VersionOne.SDK.MSTestExtensions;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests

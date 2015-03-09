@@ -1,4 +1,9 @@
-﻿namespace VersionOne.SDK.APIClient.IntegrationTests
+﻿using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Obsolete;
+using VersionOne.SDK.APIClient.Services;
+
+namespace VersionOne.SDK.APIClient.IntegrationTests
 {
     public class APIClientIntegrationTestSuiteIT
     {

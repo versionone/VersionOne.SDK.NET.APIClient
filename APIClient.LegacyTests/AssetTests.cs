@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Model.Asset;
+using VersionOne.SDK.APIClient.Model.Interfaces;
+using VersionOne.SDK.APIClient.Obsolete;
+using VersionOne.SDK.APIClient.Queries;
+using VersionOne.SDK.APIClient.Services;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests
 {

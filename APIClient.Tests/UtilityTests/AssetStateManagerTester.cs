@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Model.Asset;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {

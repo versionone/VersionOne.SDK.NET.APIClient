@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace VersionOne.SDK.APIClient.Connector.Interfaces
+﻿namespace VersionOne.SDK.APIClient.Connector.Interfaces
 {
     public interface ICanSetProxyOrApi : ICanSetApi
     {

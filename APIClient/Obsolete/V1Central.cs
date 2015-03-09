@@ -1,7 +1,11 @@
-using System.Xml;
 using System;
+using System.Xml;
+using VersionOne.SDK.APIClient.Connector;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Model;
+using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient
+namespace VersionOne.SDK.APIClient.Obsolete
 {
     [Obsolete]
     public interface ICentral

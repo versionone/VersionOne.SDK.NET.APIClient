@@ -1,5 +1,10 @@
 ﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.APIClient.Meta;
+using VersionOne.SDK.APIClient.Obsolete;
+using VersionOne.SDK.APIClient.Queries;
+using VersionOne.SDK.APIClient.Services;
+using MetaModel = VersionOne.SDK.APIClient.Obsolete.MetaModel;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests
 {
@@ -22,7 +27,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests
                 .WithVersionOneUsernameAndPassword(username, password);
 
             _metaModel = new MetaModel(metaConnector);
-            _services = new Services(_metaModel, dataConnector);
+            _services = new Obsolete.Services(_metaModel, dataConnector);
         }
 
         [TestMethod]
