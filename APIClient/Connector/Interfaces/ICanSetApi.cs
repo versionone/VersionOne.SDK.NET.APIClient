@@ -3,37 +3,37 @@
     public interface ICanSetApi
     {
         /// <summary>
-        /// Sets the Meta endpoint.
+        /// For connecting to meta.v1 endpoint.
         /// </summary>
         /// <returns></returns>
         ICanAddHeaderOrMakeRequest UseMetaApi();
 
         /// <summary>
-        /// Sets the Data endpoint.
+        /// For connecting to rest-1.v1/Data endpoint.
         /// </summary>
         /// <returns></returns>
         ICanAddHeaderOrMakeRequest UseDataApi();
 
         /// <summary>
-        /// Sets the History endpoint.
+        /// For connecting to rest-1.v1/Hist endpoint.
         /// </summary>
         /// <returns></returns>
         ICanAddHeaderOrMakeRequest UseHistoryApi();
 
         /// <summary>
-        /// Sets the New endpoint.
+        /// For connecting to rest-1.v1/New endpoint.
         /// </summary>
         /// <returns></returns>
         ICanAddHeaderOrMakeRequest UseNewApi();
 
         /// <summary>
-        /// Sets the Query endpoint.
+        /// For connecting to query.v1 endpoint
         /// </summary>
         /// <returns></returns>
         ICanAddHeaderOrMakeRequest UseQueryApi();
 
         /// <summary>
-        /// Sets a custom endpoint.
+        /// For connecting to a user specified endpoint.
         /// </summary>
         /// <param name="endpoint"></param>
         /// <returns></returns>

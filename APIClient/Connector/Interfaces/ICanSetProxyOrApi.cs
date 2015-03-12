@@ -3,7 +3,7 @@
     public interface ICanSetProxyOrApi : ICanSetApi
     {
         /// <summary>
-        /// Sets a proxy.
+        /// For setting the proxy credentials.
         /// </summary>
         /// <param name="proxyProvider"></param>
         /// <returns></returns>

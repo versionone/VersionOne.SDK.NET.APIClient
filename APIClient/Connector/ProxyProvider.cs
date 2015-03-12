@@ -12,13 +12,12 @@ namespace VersionOne.SDK.APIClient.Connector
 
         private IWebProxy proxy;
 
-        public ProxyProvider(Uri path, string username, string password) : this(path, username, password, null) { }
-
-        public ProxyProvider(Uri path, string username, string password, string domain) 
+        public ProxyProvider(Uri path, string username, string password, string domain = null) 
         {
             Path = path;
             Username = username;
             Password = password;
+            Domain = domain;
         }
 
         private NetworkCredential GetCredential() 
