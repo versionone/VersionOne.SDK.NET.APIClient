@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{089CB065-942E-4408-A02A-6F24449ED080}</ProjectGuid>
+    <ProjectGuid>{8BAF9EC6-BBE9-4AF6-BA7E-D51A271DD76E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VersionOne.SDK.APIClient.LegacyTests</RootNamespace>
@@ -36,12 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -57,13 +54,38 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="APIClientIntegrationTestSuiteIT.cs" />
-    <Compile Include="ConnectorTests\VersionOneAPIConnectorTester.cs" />
+    <Compile Include="DBTests\BitTester.cs" />
+    <Compile Include="DBTests\DateTimeTester.cs" />
+    <Compile Include="DBTests\IntTester.cs" />
+    <Compile Include="DBTests\StrTester.cs" />
+    <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
+    <Compile Include="MetaTests\AttributeDefinitionTester.cs" />
+    <Compile Include="UtilityTests\ConnectorsTester.cs" />
+    <Compile Include="UtilityTests\CredentialsTester.cs" />
+    <Compile Include="UtilityTests\DurationTester.cs" />
+    <Compile Include="UtilityTests\EnvironmentContextTester.cs" />
+    <Compile Include="LocalizerTesterBase.cs" />
+    <Compile Include="MetaTests\MetaModelTester.cs" />
+    <Compile Include="MetaTesterBase.cs" />
+    <Compile Include="UtilityTests\MimeTypeTester.cs" />
+    <Compile Include="UtilityTests\ModelsAndServicesTester.cs" />
+    <Compile Include="ServicesTests\MultiValueAttributeTester.cs" />
+    <Compile Include="UtilityTests\OidTester.cs" />
+    <Compile Include="MetaTests\OperationTester.cs" />
+    <Compile Include="QueryTests\PagingTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyTester.cs" />
-    <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
-    <Compile Include="QueryTests\QueryFindTester.cs" />
-    <Compile Include="AssetTests.cs" />
+    <Compile Include="QueryTests\QueryFilter2Tester.cs" />
+    <Compile Include="UtilityTests\RankTester.cs" />
+    <Compile Include="ServicesTests\RequiredFieldValidatorTester.cs" />
+    <Compile Include="ResponseConnector.cs" />
+    <Compile Include="LocalizerTests\LocalizerTester.cs" />
+    <Compile Include="MetaTests\AssetTypeTester.cs" />
+    <Compile Include="ServicesTests\ServicesTester.cs" />
+    <Compile Include="ServicesTests\ServicesTesterBase.cs" />
+    <Compile Include="UtilityTests\TextBuildTester.cs" />
+    <Compile Include="UtilityTests\UrlsTester.cs" />
+    <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
+    <Compile Include="UtilityTests\V1ConfigurationTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
@@ -71,9 +93,12 @@
       <Name>VersionOne.SDK.APIClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\MSTestExtensions\VersionOne.SDK.MSTestExtensions.csproj">
-      <Project>{97C810F7-149B-4C9B-8D5A-87C050EB2F80}</Project>
+      <Project>{97c810f7-149b-4c9b-8d5a-87c050eb2f80}</Project>
       <Name>VersionOne.SDK.MSTestExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\APIClient\App.config">

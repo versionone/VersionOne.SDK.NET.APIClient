@@ -9,27 +9,51 @@ using System.Text;
 using System.Web;
 using log4net;
 using VersionOne.SDK.APIClient.Connector.Interfaces;
+using VersionOne.SDK.APIClient.Model;
 
 namespace VersionOne.SDK.APIClient.Connector
 {
     public class V1Connector : ICanSetAuthMethodOrApi, ICanSetProxyOrApi, ICanAddHeaderOrMakeRequest
     {
-        private HttpClient _client;
-        private HttpClientHandler _handler;
+        private const string MetaApiEndpoint = "meta.v1/";
+        private const string DataApiEndpoint = "rest-1.v1/Data/";
+        private const string HistoryApiEndpoint = "rest-1.v1/Hist/";
+        private const string NewApiEndpoint = "rest-1.v1/New";
+        private const string QueryApiEndpoint = "query.v1/";
+
+        private readonly HttpClient _client;
+        private readonly HttpClientHandler _handler;
+        private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
         private string _endpoint;
         private string _upstreamUserAgent;
-        private ILog _log = LogManager.GetLogger(typeof (V1Connector));
+        
         private bool _isRequestConfigured = false;
 
-        private V1Connector(string versionOneInstanceUrl)
+        private V1Connector(string instanceUrl)
         {
-            if (string.IsNullOrWhiteSpace(versionOneInstanceUrl))
-                throw new ArgumentNullException("versionOneInstanceUrl");
-            _handler = new HttpClientHandler();
-            _client = new HttpClient(_handler) {BaseAddress = new Uri(versionOneInstanceUrl)};
-            _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
+            if (string.IsNullOrWhiteSpace(instanceUrl))
+                throw new ArgumentNullException("instanceUrl");
+            if (!instanceUrl.EndsWith("/"))
+                instanceUrl += "/";
+
+            Uri baseAddress;
+            if (Uri.TryCreate(instanceUrl, UriKind.RelativeOrAbsolute, out baseAddress))
+            {
+                _handler = new HttpClientHandler();
+                _client = new HttpClient(_handler) {BaseAddress = baseAddress};
+                _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
+            }
+            else
+            {
+                throw new V1Exception("Instance url is not valid.");
+            }
         }
 
+        /// <summary>
+        /// Primary constructor for the class, takes the URL of the V1 instance.
+        /// </summary>
+        /// <param name="versionOneInstanceUrl"></param>
+        /// <returns></returns>
         public static ICanSetAuthMethodOrApi CreateConnector(string versionOneInstanceUrl)
         {
             return new V1Connector(versionOneInstanceUrl);
@@ -57,8 +81,35 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
+        public ICanSetProxyOrApi WithWindowsIntegrated()
+        {
+            var credentialCache = new CredentialCache
+            {
+                {_client.BaseAddress, "NTLM", CredentialCache.DefaultNetworkCredentials},
+                {_client.BaseAddress, "Negotiate", CredentialCache.DefaultNetworkCredentials}
+            };
+            _handler.Credentials = credentialCache;
+
+            return this;
+        }
+
+        public ICanSetProxyOrApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
+        {
+            if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
+                throw new ArgumentNullException("fullyQualifiedDomainUsername");
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentNullException("password");
+
+            _handler.Credentials = new NetworkCredential(fullyQualifiedDomainUsername, password);
+
+            return this;
+        }
+
         public ICanSetApi WithProxy(ProxyProvider proxyProvider)
         {
+            if (proxyProvider == null)
+                throw new ArgumentNullException("proxyProvider");
+
             _handler.Proxy = proxyProvider.CreateWebProxy();
 
             return this;
@@ -66,48 +117,56 @@ namespace VersionOne.SDK.APIClient.Connector
 
         public ICanAddHeaderOrMakeRequest UseMetaApi()
         {
-            _endpoint = "meta.v1/";
+            _endpoint = MetaApiEndpoint;
 
             return this;
         }
 
         public ICanAddHeaderOrMakeRequest UseDataApi()
         {
-            _endpoint = "rest-1.v1/Data/";
+            _endpoint = DataApiEndpoint;
 
             return this;
         }
 
         public ICanAddHeaderOrMakeRequest UseHistoryApi()
         {
-            _endpoint = "rest-1.v1/Hist/";
+            _endpoint = HistoryApiEndpoint;
 
             return this;
         }
 
         public ICanAddHeaderOrMakeRequest UseNewApi()
         {
-            _endpoint = "rest-1.v1/";
+            _endpoint = NewApiEndpoint;
 
             return this;
         }
 
         public ICanAddHeaderOrMakeRequest UseQueryApi()
         {
-            _endpoint = "query.v1/";
+            _endpoint = QueryApiEndpoint;
 
             return this;
         }
 
         public ICanAddHeaderOrMakeRequest UseEndpoint(string endpoint)
         {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                throw new ArgumentNullException("endpoint");
+
             _endpoint = endpoint;
 
             return this;
         }
 
-        public ICanMakeRequest WithUserAgentHeader(string name, string version)
+        public ICanMakeRequest SetUserAgentHeader(string name, string version)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name");
+            if (string.IsNullOrWhiteSpace(version))
+                throw new ArgumentNullException("version");
+
             _client.DefaultRequestHeaders.Add(name, version);
 
             return this;
