@@ -139,6 +139,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connector\Interfaces\ICanSetProxyOrGetConnector.cs" />
     <Compile Include="Meta\MetaModel.cs" />
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
@@ -148,11 +149,10 @@
     <Compile Include="Obsolete\Config.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Connector\Interfaces\ICanAddHeaderOrMakeRequest.cs" />
-    <Compile Include="Connector\Interfaces\ICanMakeRequest.cs" />
+    <Compile Include="Connector\Interfaces\ICanAddHeader.cs" />
+    <Compile Include="Connector\Interfaces\ICanGetConnector.cs" />
     <Compile Include="Connector\Interfaces\ICanSetApi.cs" />
     <Compile Include="Connector\Interfaces\ICanSetAuthMethod.cs" />
-    <Compile Include="Connector\Interfaces\ICanSetProxyOrApi.cs" />
     <Compile Include="Connector\V1Connector.cs" />
     <Compile Include="Obsolete\HierarchicalPartBuilder.cs" />
     <Compile Include="Obsolete\Services.cs" />
