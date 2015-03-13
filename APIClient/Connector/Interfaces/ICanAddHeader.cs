@@ -1,6 +1,6 @@
 ﻿namespace VersionOne.SDK.APIClient.Connector.Interfaces
 {
-    public interface ICanAddHeaderOrMakeRequest : ICanMakeRequest
+    public interface ICanAddHeaderOrGetConnector : ICanGetConnector
     {
         /// <summary>
         /// Sets the stream user agent.
@@ -13,6 +13,6 @@
         /// </summary>
         /// <param name="name"></param>
         /// <param name="version"></param>
-        ICanMakeRequest SetUserAgentHeader(string name, string version);
+        ICanSetProxyOrGetConnector SetUserAgentHeader(string name, string version);
     }
 }

@@ -13,7 +13,7 @@ using VersionOne.SDK.APIClient.Model;
 
 namespace VersionOne.SDK.APIClient.Connector
 {
-    public class V1Connector : ICanSetAuthMethodOrApi, ICanSetProxyOrApi, ICanAddHeaderOrMakeRequest
+    public class V1Connector : ICanSetAuthMethodOrApi, ICanAddHeaderOrGetConnector, ICanSetProxyOrGetConnector
     {
         private const string MetaApiEndpoint = "meta.v1/";
         private const string DataApiEndpoint = "rest-1.v1/Data/";
@@ -54,12 +54,12 @@ namespace VersionOne.SDK.APIClient.Connector
         /// </summary>
         /// <param name="versionOneInstanceUrl"></param>
         /// <returns></returns>
-        public static ICanSetAuthMethodOrApi CreateConnector(string versionOneInstanceUrl)
+        public static ICanSetAuthMethodOrApi WithInstanceUrl(string versionOneInstanceUrl)
         {
             return new V1Connector(versionOneInstanceUrl);
         }
 
-        public ICanSetProxyOrApi WithUsernameAndPassword(string username, string password)
+        public ICanSetApi WithUsernameAndPassword(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username))
                 throw new ArgumentNullException("username");
@@ -71,7 +71,7 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanSetProxyOrApi WithAccessToken(string accessToken)
+        public ICanSetApi WithAccessToken(string accessToken)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
                 throw new ArgumentNullException("accessToken");
@@ -81,7 +81,7 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanSetProxyOrApi WithWindowsIntegrated()
+        public ICanSetApi WithWindowsIntegrated()
         {
             var credentialCache = new CredentialCache
             {
@@ -93,7 +93,7 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanSetProxyOrApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
+        public ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
         {
             if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
                 throw new ArgumentNullException("fullyQualifiedDomainUsername");
@@ -105,7 +105,7 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanSetApi WithProxy(ProxyProvider proxyProvider)
+        public ICanGetConnector WithProxy(ProxyProvider proxyProvider)
         {
             if (proxyProvider == null)
                 throw new ArgumentNullException("proxyProvider");
@@ -115,42 +115,42 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseMetaApi()
+        public ICanAddHeaderOrGetConnector UseMetaApi()
         {
             _endpoint = MetaApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseDataApi()
+        public ICanAddHeaderOrGetConnector UseDataApi()
         {
             _endpoint = DataApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseHistoryApi()
+        public ICanAddHeaderOrGetConnector UseHistoryApi()
         {
             _endpoint = HistoryApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseNewApi()
+        public ICanAddHeaderOrGetConnector UseNewApi()
         {
             _endpoint = NewApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseQueryApi()
+        public ICanAddHeaderOrGetConnector UseQueryApi()
         {
             _endpoint = QueryApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrMakeRequest UseEndpoint(string endpoint)
+        public ICanAddHeaderOrGetConnector UseEndpoint(string endpoint)
         {
             if (string.IsNullOrWhiteSpace(endpoint))
                 throw new ArgumentNullException("endpoint");
@@ -160,7 +160,7 @@ namespace VersionOne.SDK.APIClient.Connector
             return this;
         }
 
-        public ICanMakeRequest SetUserAgentHeader(string name, string version)
+        public ICanSetProxyOrGetConnector SetUserAgentHeader(string name, string version)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name");
@@ -213,6 +213,9 @@ namespace VersionOne.SDK.APIClient.Connector
 
         private string GetResourceUrl(string resource)
         {
+            if (string.IsNullOrWhiteSpace(_endpoint))
+                throw new V1Exception("V1Connector is not properly configured. No API or endpoint selected.");
+
             return _endpoint + ValidateResource(resource);
         }
 
@@ -302,6 +305,11 @@ namespace VersionOne.SDK.APIClient.Connector
             stringBuilder.AppendLine("\t\t" + responseBody);
 
             _log.Info(stringBuilder.ToString());
+        }
+
+        public V1Connector GetConnector()
+        {
+            return this;
         }
     }
 
