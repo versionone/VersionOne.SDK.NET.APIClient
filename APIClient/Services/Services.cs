@@ -89,7 +89,7 @@ namespace VersionOne.SDK.APIClient.Evolved
 
             try
             {
-                var path = "Data/" + oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
+                var path = oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
                 connector.UseDataApi();
                 using (var stream = connector.SendData(path, string.Empty))
                 {
@@ -132,7 +132,7 @@ namespace VersionOne.SDK.APIClient.Evolved
                 writer.WriteAsset(asset);
                 var data = s.ToString();
 
-                var path = "Data/" + asset.AssetType.Token;
+                var path = asset.AssetType.Token;
 
                 if (!asset.Oid.IsNull)
                 {
@@ -188,7 +188,7 @@ namespace VersionOne.SDK.APIClient.Evolved
         {
             var doc = new XmlDocument();
 
-            var path = "New/" + assetType.Token;
+            var path = assetType.Token;
 
             if (context != null && !context.IsNull)
             {

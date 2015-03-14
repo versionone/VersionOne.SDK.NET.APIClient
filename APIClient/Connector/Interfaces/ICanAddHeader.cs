@@ -1,6 +1,6 @@
 ﻿namespace VersionOne.SDK.APIClient
 {
-    public interface ICanAddHeaderOrGetConnector : ICanGetConnector
+    public interface ICanAddHeaderOrSetProxyOrGetConnector : ICanSetProxyOrGetConnector
     {
         /// <summary>
         /// Sets the stream user agent.
