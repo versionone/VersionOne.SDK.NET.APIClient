@@ -182,7 +182,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public Stream SendData(object data, string resource = null, RequestFormat requestFormat = RequestFormat.Xml)
+        public Stream SendData(string resource = null, object data = null, RequestFormat requestFormat = RequestFormat.Xml)
         {
             ConfigureRequestIfNeeded();
             switch (requestFormat)
@@ -194,12 +194,13 @@ namespace VersionOne.SDK.APIClient
                     _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml")); 
                     break;
             }
-            var content = new StringContent(data.ToString(), Encoding.UTF8);
+            var stringData = data != null ? data.ToString() : string.Empty;
+            var content = new StringContent(stringData, Encoding.UTF8);
             var resourceUrl = GetResourceUrl(resource);
             var response = _client.PostAsync(resourceUrl, content).Result;
             ThrowWebExceptionIfNeeded(response);
             var result = response.Content.ReadAsStreamAsync().Result;
-            LogResponse(response, result.ToString(), data.ToString());
+            LogResponse(response, result.ToString(), stringData);
 
             return result;
         }
