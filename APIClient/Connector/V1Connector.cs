@@ -11,7 +11,7 @@ using log4net;
 
 namespace VersionOne.SDK.APIClient
 {
-    public class V1Connector : ICanSetAuthMethodOrApi, ICanAddHeaderOrGetConnector, ICanSetProxyOrGetConnector
+    public class V1Connector : ICanSetAuthMethodOrApi, ICanAddHeaderOrSetProxyOrGetConnector, ICanSetProxyOrGetConnector
     {
         private const string MetaApiEndpoint = "meta.v1/";
         private const string DataApiEndpoint = "rest-1.v1/Data/";
@@ -113,42 +113,42 @@ namespace VersionOne.SDK.APIClient
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseMetaApi()
+        public ICanAddHeaderOrSetProxyOrGetConnector UseMetaApi()
         {
             _endpoint = MetaApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseDataApi()
+        public ICanAddHeaderOrSetProxyOrGetConnector UseDataApi()
         {
             _endpoint = DataApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseHistoryApi()
+        public ICanAddHeaderOrSetProxyOrGetConnector UseHistoryApi()
         {
             _endpoint = HistoryApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseNewApi()
+        public ICanAddHeaderOrSetProxyOrGetConnector UseNewApi()
         {
             _endpoint = NewApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseQueryApi()
+        public ICanAddHeaderOrSetProxyOrGetConnector UseQueryApi()
         {
             _endpoint = QueryApiEndpoint;
 
             return this;
         }
 
-        public ICanAddHeaderOrGetConnector UseEndpoint(string endpoint)
+        public ICanAddHeaderOrSetProxyOrGetConnector UseEndpoint(string endpoint)
         {
             if (string.IsNullOrWhiteSpace(endpoint))
                 throw new ArgumentNullException("endpoint");
@@ -212,7 +212,7 @@ namespace VersionOne.SDK.APIClient
         private string GetResourceUrl(string resource)
         {
             if (string.IsNullOrWhiteSpace(_endpoint))
-                throw new V1Exception("V1Connector is not properly configured. No API or endpoint selected.");
+                throw new V1Exception("V1Connector is not properly configured. There is no API or endpoint selected.");
 
             return _endpoint + ValidateResource(resource);
         }

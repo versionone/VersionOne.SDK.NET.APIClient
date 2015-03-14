@@ -6,37 +6,37 @@
         /// For connecting to meta.v1 endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseMetaApi();
+        ICanAddHeaderOrSetProxyOrGetConnector UseMetaApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Data endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseDataApi();
+        ICanAddHeaderOrSetProxyOrGetConnector UseDataApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Hist endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseHistoryApi();
+        ICanAddHeaderOrSetProxyOrGetConnector UseHistoryApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/New endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseNewApi();
+        ICanAddHeaderOrSetProxyOrGetConnector UseNewApi();
 
         /// <summary>
         /// For connecting to query.v1 endpoint
         /// </summary>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseQueryApi();
+        ICanAddHeaderOrSetProxyOrGetConnector UseQueryApi();
 
         /// <summary>
         /// For connecting to a user specified endpoint.
         /// </summary>
         /// <param name="endpoint"></param>
         /// <returns></returns>
-        ICanAddHeaderOrGetConnector UseEndpoint(string endpoint);
+        ICanAddHeaderOrSetProxyOrGetConnector UseEndpoint(string endpoint);
     }
 }
