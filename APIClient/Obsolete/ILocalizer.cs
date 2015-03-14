@@ -1,6 +1,6 @@
 using System;
 
-namespace VersionOne.SDK.APIClient.Obsolete {
+namespace VersionOne.SDK.APIClient {
     [Obsolete]
     public interface ILocalizer {
         string Resolve(string key);

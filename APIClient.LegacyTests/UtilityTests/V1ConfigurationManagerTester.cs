@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Obsolete;
 
-namespace VersionOne.SDK.APIClient.Tests.UtilityTests
+namespace VersionOne.SDK.APIClient.LegacyTests.UtilityTests
 {
     [TestClass]
     public class V1ConfigurationManagerTester

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System;
 
 
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete]
     internal class Config

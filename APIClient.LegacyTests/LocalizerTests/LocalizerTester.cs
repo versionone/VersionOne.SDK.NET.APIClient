@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.Tests.LocalizerTests
+namespace VersionOne.SDK.APIClient.LegacyTests.LocalizerTests
 {
     [TestClass]
     public class LocalizerTester : LocalizerTesterBase

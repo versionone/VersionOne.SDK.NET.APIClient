@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Interfaces;
 using VersionOne.SDK.MSTestExtensions;
 
-namespace VersionOne.SDK.APIClient.Tests.MetaTests
+namespace VersionOne.SDK.APIClient.LegacyTests.MetaTests
 {
     [TestClass]
     public class OperationTester : MetaTesterBase

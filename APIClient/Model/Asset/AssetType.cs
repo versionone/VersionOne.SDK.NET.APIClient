@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Xml;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model.Interfaces;
 
-namespace VersionOne.SDK.APIClient.Model.Asset {
-    internal class AssetType : IAssetType {
+namespace VersionOne.SDK.APIClient
+{
+    internal class AssetType : IAssetType
+    {
         private readonly IMetaModel meta;
         private readonly IDictionary map;
         private readonly string displayName;
@@ -23,7 +23,8 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
         private IAttributeDefinition descriptionAttribute = null;
         private readonly string descriptionToken = null;
 
-        public AssetType(IMetaModel meta, XmlElement element, IDictionary map) {
+        public AssetType(IMetaModel meta, XmlElement element, IDictionary map)
+        {
             this.meta = meta;
             this.map = map;
             displayName = element.GetAttribute("displayname");
@@ -31,7 +32,8 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
 
             var baseelement = element.SelectSingleNode("Base") as XmlElement;
 
-            if(baseelement != null) {
+            if (baseelement != null)
+            {
                 baseToken = baseelement.GetAttribute("nameref");
             }
 
@@ -41,19 +43,24 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
             descriptionToken = ReadAttribute(element, "Description");
         }
 
-        private static string ReadAttribute(XmlNode element, string nodeName) {
+        private static string ReadAttribute(XmlNode element, string nodeName)
+        {
             var subNode = element.SelectSingleNode(nodeName) as XmlElement;
 
-            if(subNode != null) {
+            if (subNode != null)
+            {
                 return subNode.GetAttribute("tokenref");
             }
 
             return null;
         }
 
-        public bool Is(IAssetType targettype) {
-            for(IAssetType thistype = this; thistype != null; thistype = thistype.Base) {
-                if (thistype == targettype) {
+        public bool Is(IAssetType targettype)
+        {
+            for (IAssetType thistype = this; thistype != null; thistype = thistype.Base)
+            {
+                if (thistype == targettype)
+                {
                     return true;
                 }
             }
@@ -61,13 +68,17 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
             return false;
         }
 
-        public string Token {
+        public string Token
+        {
             get { return token; }
         }
 
-        public IAssetType Base {
-            get {
-                if(@base == null && baseToken != null) {
+        public IAssetType Base
+        {
+            get
+            {
+                if (@base == null && baseToken != null)
+                {
                     @base = meta.GetAssetType(baseToken);
                 }
 
@@ -75,70 +86,85 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
             }
         }
 
-        public string DisplayName {
+        public string DisplayName
+        {
             get { return displayName; }
         }
 
-        private IAttributeDefinition ResolveAttribute(string token, IAttributeDefinition result) {
-            if(result == null && token != null) {
+        private IAttributeDefinition ResolveAttribute(string token, IAttributeDefinition result)
+        {
+            if (result == null && token != null)
+            {
                 result = meta.GetAttributeDefinition(token);
             }
 
             return result;
         }
 
-        public IAttributeDefinition DefaultOrderBy {
+        public IAttributeDefinition DefaultOrderBy
+        {
             get { return orderBy = ResolveAttribute(orderByToken, orderBy); }
         }
 
-        public IAttributeDefinition ShortNameAttribute {
+        public IAttributeDefinition ShortNameAttribute
+        {
             get { return shortNameAttribute = ResolveAttribute(shortNameToken, shortNameAttribute); }
         }
 
-        public IAttributeDefinition NameAttribute {
+        public IAttributeDefinition NameAttribute
+        {
             get { return nameAttribute = ResolveAttribute(nameToken, nameAttribute); }
         }
 
-        public IAttributeDefinition DescriptionAttribute {
+        public IAttributeDefinition DescriptionAttribute
+        {
             get { return descriptionAttribute = ResolveAttribute(descriptionToken, descriptionAttribute); }
         }
 
-        public bool TryGetAttributeDefinition(string name, out IAttributeDefinition def) {
+        public bool TryGetAttributeDefinition(string name, out IAttributeDefinition def)
+        {
             def = LookupAttributeDefinition(name);
             return def != null || meta.TryGetAttributeDefinition(Token + "." + name, out def);
         }
 
-        public IAttributeDefinition GetAttributeDefinition(string name) {
+        public IAttributeDefinition GetAttributeDefinition(string name)
+        {
             var attribdef = LookupAttributeDefinition(name);
             return attribdef ?? meta.GetAttributeDefinition(Token + "." + name);
         }
 
-        private IAttributeDefinition LookupAttributeDefinition(string name) {
+        private IAttributeDefinition LookupAttributeDefinition(string name)
+        {
             var key = new Pair<IAssetType, string>(this, name);
             return map[key] as IAttributeDefinition;
         }
 
-        internal void SaveAttributeDefinition(IAttributeDefinition attribdef) {
+        internal void SaveAttributeDefinition(IAttributeDefinition attribdef)
+        {
             var key = new Pair<IAssetType, string>(this, attribdef.Name);
             map[key] = attribdef;
         }
 
-        public bool TryGetOperation(string name, out IOperation op) {
+        public bool TryGetOperation(string name, out IOperation op)
+        {
             op = LookupOperation(name);
             return op != null || meta.TryGetOperation(Token + "." + name, out op);
         }
 
-        public IOperation GetOperation(string name) {
+        public IOperation GetOperation(string name)
+        {
             var op = LookupOperation(name);
             return op ?? meta.GetOperation(Token + "." + name);
         }
 
-        private IOperation LookupOperation(string name) {
+        private IOperation LookupOperation(string name)
+        {
             var key = new Pair<IAssetType, string>(this, name);
             return map[key] as IOperation;
         }
 
-        internal void SaveOperation(IOperation op) {
+        internal void SaveOperation(IOperation op)
+        {
             var key = new Pair<IAssetType, string>(this, op.Name);
             map[key] = op;
         }

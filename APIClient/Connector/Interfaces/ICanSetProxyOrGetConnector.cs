@@ -1,4 +1,4 @@
-﻿namespace VersionOne.SDK.APIClient.Connector.Interfaces
+﻿namespace VersionOne.SDK.APIClient
 {
     public interface ICanSetProxyOrGetConnector : ICanGetConnector
     {

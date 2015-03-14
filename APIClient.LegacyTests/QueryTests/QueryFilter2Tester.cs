@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Queries;
 
-namespace VersionOne.SDK.APIClient.Tests.QueryTests
+namespace VersionOne.SDK.APIClient.LegacyTests.QueryTests
 {
     [TestClass]
     public class QueryFilter2Tester : MetaTesterBase

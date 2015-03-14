@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Services;
-using Attribute = VersionOne.SDK.APIClient.Model.Asset.Attribute.Attribute;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -63,8 +56,8 @@ namespace VersionOne.SDK.APIClient
             {
                 asset.EnsureAttribute(attributeDefinition);
                 Attribute attribute = asset.GetAttribute(attributeDefinition);
-                
-                if(attribute == null || !Validate(asset, attributeDefinition)) 
+
+                if (attribute == null || !Validate(asset, attributeDefinition))
                 {
                     results.Add(attributeDefinition);
                 }

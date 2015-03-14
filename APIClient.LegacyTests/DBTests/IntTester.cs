@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Utils;
 
-namespace VersionOne.SDK.APIClient.Tests.DBTests
+namespace VersionOne.SDK.APIClient.LegacyTests.DBTests
 {
     [TestClass]
     public class IntTester

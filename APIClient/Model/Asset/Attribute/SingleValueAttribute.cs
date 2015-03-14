@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
-using VersionOne.SDK.APIClient.Model.Interfaces;
 
-namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
-    internal class SingleValueAttribute : Attribute {
+namespace VersionOne.SDK.APIClient
+{
+    internal class SingleValueAttribute : Attribute
+    {
         /// <summary>
         /// Holds original value (incl. null). Also holds null if value isn't been read.
         /// </summary>
@@ -30,14 +31,16 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
         /// <summary>
         /// Return the value before any modificaions.
         /// </summary>
-        public override object OriginalValue {
+        public override object OriginalValue
+        {
             get { return value; }
         }
 
         /// <summary>
         /// Return the modified value or null if it's not been modified.
         /// </summary>
-        public override object NewValue {
+        public override object NewValue
+        {
             get { return HasChanged ? newValue : null; }
         }
 
@@ -45,7 +48,8 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
         /// Return an array of 1 containing the value before any modification
         /// or null if it's not been set.
         /// </summary>
-        public override IEnumerable OriginalValues {
+        public override IEnumerable OriginalValues
+        {
             get { return Wrap(OriginalValue); }
         }
 
@@ -53,29 +57,36 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
         /// Return an array of 1 containing the modified value
         /// or null if it's not been set.
         /// </summary>
-        public override IEnumerable NewValues {
+        public override IEnumerable NewValues
+        {
             get { return Wrap(NewValue); }
         }
 
-        private static IEnumerable Wrap(object value) {
-            return value == null ? null : new[] {value};
+        private static IEnumerable Wrap(object value)
+        {
+            return value == null ? null : new[] { value };
         }
 
-        public override IEnumerable AddedValues {
+        public override IEnumerable AddedValues
+        {
             get { return NewValues; }
         }
 
-        public override IEnumerable RemovedValues {
-            get {
+        public override IEnumerable RemovedValues
+        {
+            get
+            {
                 return HasChanged ? OriginalValues : null;
             }
         }
 
-        public override bool HasChanged {
+        public override bool HasChanged
+        {
             get { return (hasChanged); }
         }
 
-        internal override void SetValue(object value) {
+        internal override void SetValue(object value)
+        {
             CheckReadOnly();
             value = Definition.Coerce(value);
             CheckNull(value);
@@ -83,36 +94,44 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             hasChanged = true;
         }
 
-        internal override void ForceValue(object value) {
+        internal override void ForceValue(object value)
+        {
             value = Definition.Coerce(value);
             CheckNull(value);
             newValue = value;
             hasChanged = true;
         }
 
-        internal override void AddValue(object value) {
+        internal override void AddValue(object value)
+        {
             throw new ApplicationException("Cannot assign multiple values to a single-value attribute: " + Definition.Token);
         }
 
-        internal override void RemoveValue(object value) {
+        internal override void RemoveValue(object value)
+        {
             throw new ApplicationException("Cannot remove values from a single-value attribute: " + Definition.Token);
         }
 
-        public override void AcceptChanges() {
-            if (HasChanged) {
+        public override void AcceptChanges()
+        {
+            if (HasChanged)
+            {
                 value = newValue;
                 newValue = null;
                 hasChanged = false;
             }
         }
 
-        public override void RejectChanges() {
+        public override void RejectChanges()
+        {
             newValue = null;
             hasChanged = false;
         }
 
-        internal override void LoadValue(object value) {
-            if(this.value != null) {
+        internal override void LoadValue(object value)
+        {
+            if (this.value != null)
+            {
                 throw new ApplicationException("Cannot load multiple values into a single-value attribute: " + Definition.Token);
             }
 

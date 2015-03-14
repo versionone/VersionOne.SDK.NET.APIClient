@@ -5,21 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
-using VersionOne.SDK.APIClient.Connector.Interfaces;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Queries.Builders;
 
-namespace VersionOne.SDK.APIClient.Services
+namespace VersionOne.SDK.APIClient.Evolved
 {
 
     public class Services : IServices
     {
         private readonly IMetaModel metaModel;
-        private readonly ICanSetApi connector;
+        private readonly V1Connector connector;
         private Oid loggedIn;
 
         public Oid LoggedIn
@@ -48,7 +41,7 @@ namespace VersionOne.SDK.APIClient.Services
             }
         }
 
-        public Services(IMetaModel metaModel, ICanSetApi connector)
+        public Services(IMetaModel metaModel, V1Connector connector)
         {
             this.metaModel = metaModel;
             this.connector = connector;
@@ -65,7 +58,8 @@ namespace VersionOne.SDK.APIClient.Services
 
             try
             {
-                using (var stream = connector.UseDataApi().GetData(new QueryURLBuilder(query).ToString()))
+                connector.UseDataApi();
+                using (var stream = connector.GetData(new QueryURLBuilder(query).ToString()))
                 {
                     doc.Load(stream);
                 }
@@ -96,8 +90,8 @@ namespace VersionOne.SDK.APIClient.Services
             try
             {
                 var path = "Data/" + oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
-
-                using (var stream = connector.UseDataApi().SendData(path, string.Empty))
+                connector.UseDataApi();
+                using (var stream = connector.SendData(path, string.Empty))
                 {
                     doc.Load(stream);
                 }
@@ -152,7 +146,8 @@ namespace VersionOne.SDK.APIClient.Services
 
                 try
                 {
-                    using (var stream = connector.UseDataApi().SendData(path, data))
+                    connector.UseDataApi();
+                    using (var stream = connector.SendData(path, data))
                     {
                         doc.Load(stream);
                     }
@@ -202,7 +197,8 @@ namespace VersionOne.SDK.APIClient.Services
 
             try
             {
-                using (var stream = connector.UseDataApi().GetData(path))
+                connector.UseNewApi();
+                using (var stream = connector.GetData(path))
                 {
                     doc.Load(stream);
                 }

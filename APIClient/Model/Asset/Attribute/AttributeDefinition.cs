@@ -1,12 +1,10 @@
 using System;
 using System.Xml;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Utils;
 
-namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
-    internal class AttributeDefinition : IAttributeDefinition {
+namespace VersionOne.SDK.APIClient
+{
+    internal class AttributeDefinition : IAttributeDefinition
+    {
         private readonly IMetaModel metaModel;
         private IAssetType assetType;
         private readonly string assetTypeToken;
@@ -22,7 +20,8 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
         private readonly string relatedAssetToken = null;
         private readonly string displayName;
 
-        public AttributeDefinition(IMetaModel metaModel, XmlElement element) {
+        public AttributeDefinition(IMetaModel metaModel, XmlElement element)
+        {
             this.metaModel = metaModel;
 
             token = element.GetAttribute("token");
@@ -30,7 +29,7 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             TextBuilder.SplitPrefix(token, '.', out assetTypeToken, out name);
 
             displayName = element.GetAttribute("displayname");
-            attributeType = (AttributeType) Enum.Parse(typeof (AttributeType), element.GetAttribute("attributetype"));
+            attributeType = (AttributeType)Enum.Parse(typeof(AttributeType), element.GetAttribute("attributetype"));
 
             isReadonly = bool.Parse(element.GetAttribute("isreadonly"));
             isRequired = bool.Parse(element.GetAttribute("isrequired"));
@@ -38,39 +37,48 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
 
             var baseelement = element.SelectSingleNode("Base") as XmlElement;
 
-            if(baseelement != null) {
+            if (baseelement != null)
+            {
                 baseToken = baseelement.GetAttribute("tokenref");
             }
 
             var relatedelement = element.SelectSingleNode("RelatedAsset") as XmlElement;
 
-            if(relatedelement != null) {
+            if (relatedelement != null)
+            {
                 relatedAssetToken = relatedelement.GetAttribute("nameref");
             }
 
-            ((AssetType) AssetType).SaveAttributeDefinition(this);
+            ((AssetType)AssetType).SaveAttributeDefinition(this);
         }
 
 
-        public IAssetType AssetType {
+        public IAssetType AssetType
+        {
             get { return assetType ?? (assetType = metaModel.GetAssetType(assetTypeToken)); }
         }
 
-        public string Name {
+        public string Name
+        {
             get { return name; }
         }
 
-        public string Token {
+        public string Token
+        {
             get { return token; }
         }
 
-        public AttributeType AttributeType {
+        public AttributeType AttributeType
+        {
             get { return attributeType; }
         }
 
-        public IAttributeDefinition Base {
-            get {
-                if(@base == null && baseToken != null) {
+        public IAttributeDefinition Base
+        {
+            get
+            {
+                if (@base == null && baseToken != null)
+                {
                     @base = metaModel.GetAttributeDefinition(baseToken);
                 }
 
@@ -78,21 +86,27 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             }
         }
 
-        public bool IsReadOnly {
+        public bool IsReadOnly
+        {
             get { return isReadonly; }
         }
 
-        public bool IsRequired {
+        public bool IsRequired
+        {
             get { return isRequired; }
         }
 
-        public bool IsMultiValue {
+        public bool IsMultiValue
+        {
             get { return isMultivalue; }
         }
 
-        public IAssetType RelatedAsset {
-            get {
-                if(relatedAsset == null && relatedAssetToken != null) {
+        public IAssetType RelatedAsset
+        {
+            get
+            {
+                if (relatedAsset == null && relatedAssetToken != null)
+                {
                     relatedAsset = metaModel.GetAssetType(relatedAssetToken);
                 }
 
@@ -100,12 +114,15 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             }
         }
 
-        public string DisplayName {
+        public string DisplayName
+        {
             get { return displayName; }
         }
 
-        public object Coerce(object value) {
-            switch (AttributeType) {
+        public object Coerce(object value)
+        {
+            switch (AttributeType)
+            {
                 case AttributeType.Boolean:
                     return DB.Bit(value);
                 case AttributeType.Numeric:
@@ -113,19 +130,22 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
                 case AttributeType.Date:
                     return DB.DateTime(value);
                 case AttributeType.Duration:
-                    if(value == null || value is Duration) {
+                    if (value == null || value is Duration)
+                    {
                         return value;
                     }
 
-                    if(value is int) {
-                        return new Duration((int) value, Duration.Unit.Days);
+                    if (value is int)
+                    {
+                        return new Duration((int)value, Duration.Unit.Days);
                     }
 
-                    if(value is TimeSpan) {
-                        return new Duration((TimeSpan) value);
+                    if (value is TimeSpan)
+                    {
+                        return new Duration((TimeSpan)value);
                     }
 
-                    return Duration.Parse((string) value);
+                    return Duration.Parse((string)value);
                 case AttributeType.Text:
                 case AttributeType.LongText:
                 case AttributeType.LocalizerTag:
@@ -134,7 +154,8 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
                 case AttributeType.Relation:
                     var oid = CoerceOid(value);
 
-                    if(RelatedAsset != null && !oid.IsNull && !(oid.AssetType).Is(RelatedAsset)) {
+                    if (RelatedAsset != null && !oid.IsNull && !(oid.AssetType).Is(RelatedAsset))
+                    {
                         throw new OidException("Wrong OID AssetType", oid.Token);
                     }
 
@@ -156,25 +177,31 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             }
         }
 
-        private static object CoerceState(object value) {
-            if (value == null) {
+        private static object CoerceState(object value)
+        {
+            if (value == null)
+            {
                 return null;
             }
 
-            if(value is AssetState) {
-                return (AssetState) value;
+            if (value is AssetState)
+            {
+                return (AssetState)value;
             }
 
-            if(value is Enum) {
-                return (byte) value;
+            if (value is Enum)
+            {
+                return (byte)value;
             }
 
-            var statetype = typeof (AssetState);
-            
-            if (value is byte) {
-                var byteval = (byte) value;
+            var statetype = typeof(AssetState);
 
-                if(Enum.IsDefined(statetype, byteval)) {
+            if (value is byte)
+            {
+                var byteval = (byte)value;
+
+                if (Enum.IsDefined(statetype, byteval))
+                {
                     return Enum.ToObject(statetype, byteval);
                 }
 
@@ -183,52 +210,66 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
 
             var stringval = value.ToString();
 
-            try {
+            try
+            {
                 return Enum.Parse(statetype, stringval, true);
-            } catch { }
+            }
+            catch { }
 
             return byte.Parse(stringval);
         }
 
-        private Oid CoerceOid(object value) {
-            if(value is Oid) {
-                return (Oid) value;
+        private Oid CoerceOid(object value)
+        {
+            if (value is Oid)
+            {
+                return (Oid)value;
             }
 
-            if(value == null) {
+            if (value == null)
+            {
                 return Oid.Null;
             }
 
-            if(value is string) {
-                return Oid.FromToken((string) value, metaModel);
+            if (value is string)
+            {
+                return Oid.FromToken((string)value, metaModel);
             }
 
-            if(value is int) {
-                return new Oid(RelatedAsset, (int) value, null);
+            if (value is int)
+            {
+                return new Oid(RelatedAsset, (int)value, null);
             }
 
             throw new OidException("Object is not convertible to an OID", value.ToString());
         }
 
-        private IAssetType CoerceAssetType(object value) {
-            if (value == null) {
+        private IAssetType CoerceAssetType(object value)
+        {
+            if (value == null)
+            {
                 return null;
             }
 
-            if(value is IAssetType) {
-                return (IAssetType) value;
+            if (value is IAssetType)
+            {
+                return (IAssetType)value;
             }
 
-            if(value is string) {
-                return metaModel.GetAssetType((string) value);
+            if (value is string)
+            {
+                return metaModel.GetAssetType((string)value);
             }
 
             throw new MetaException("Object is not convertible to an AssetType", value.ToString());
         }
 
-        public IAttributeDefinition Downcast(IAssetType assetType) {
-            if (AttributeType == AttributeType.Relation) {
-                if(assetType.Is(RelatedAsset)) {
+        public IAttributeDefinition Downcast(IAssetType assetType)
+        {
+            if (AttributeType == AttributeType.Relation)
+            {
+                if (assetType.Is(RelatedAsset))
+                {
                     return metaModel.GetAttributeDefinition(Token + ":" + assetType.Token);
                 }
 
@@ -238,17 +279,22 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             throw new MetaException("Cannot downcast non-relation attributes");
         }
 
-        public IAttributeDefinition Filter(IFilterTerm filter) {
-            if(AttributeType == AttributeType.Relation) {
+        public IAttributeDefinition Filter(IFilterTerm filter)
+        {
+            if (AttributeType == AttributeType.Relation)
+            {
                 return metaModel.GetAttributeDefinition(Token + "[" + filter.ShortToken + "]");
             }
 
             throw new MetaException("Cannot filter non-relation attributes");
         }
 
-        public IAttributeDefinition Join(IAttributeDefinition joined) {
-            if (AttributeType == AttributeType.Relation) {
-                if(RelatedAsset.Is(joined.AssetType)) {
+        public IAttributeDefinition Join(IAttributeDefinition joined)
+        {
+            if (AttributeType == AttributeType.Relation)
+            {
+                if (RelatedAsset.Is(joined.AssetType))
+                {
                     return metaModel.GetAttributeDefinition(Token + "." + joined.Name);
                 }
 
@@ -258,11 +304,15 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
             throw new MetaException("Cannot join non-relation attributes");
         }
 
-        public IAttributeDefinition Aggregate(Aggregate aggregate) {
-            if (IsMultiValue) {
-                switch (aggregate) {
-                    case Model.Aggregate.Min:
-                        switch (AttributeType) {
+        public IAttributeDefinition Aggregate(Aggregate aggregate)
+        {
+            if (IsMultiValue)
+            {
+                switch (aggregate)
+                {
+                    case APIClient.Aggregate.Min:
+                        switch (AttributeType)
+                        {
                             case AttributeType.Numeric:
                                 return metaModel.GetAttributeDefinition(Token + ".@Min");
                             case AttributeType.Date:
@@ -270,8 +320,9 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
                         }
 
                         throw new MetaException("Must aggregate MIN of numerics and dates");
-                    case Model.Aggregate.Max:
-                        switch (AttributeType) {
+                    case APIClient.Aggregate.Max:
+                        switch (AttributeType)
+                        {
                             case AttributeType.Numeric:
                                 return metaModel.GetAttributeDefinition(Token + ".@Max");
                             case AttributeType.Date:
@@ -279,26 +330,30 @@ namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
                         }
 
                         throw new MetaException("Must aggregate MAX of numerics and dates");
-                    case Model.Aggregate.Count:
-                        if(AttributeType == AttributeType.Relation) {
+                    case APIClient.Aggregate.Count:
+                        if (AttributeType == AttributeType.Relation)
+                        {
                             return metaModel.GetAttributeDefinition(Token + ".@Count");
                         }
 
                         throw new MetaException("Must aggregate COUNT of relations");
-                    case Model.Aggregate.Sum:
-                        if(AttributeType == AttributeType.Numeric) {
+                    case APIClient.Aggregate.Sum:
+                        if (AttributeType == AttributeType.Numeric)
+                        {
                             return metaModel.GetAttributeDefinition(Token + ".@Sum");
                         }
 
                         throw new MetaException("Must aggregate SUM of numerics");
-                    case Model.Aggregate.And:
-                        if(AttributeType == AttributeType.Boolean) {
+                    case APIClient.Aggregate.And:
+                        if (AttributeType == AttributeType.Boolean)
+                        {
                             return metaModel.GetAttributeDefinition(Token + ".@And");
                         }
 
                         throw new MetaException("Must aggregate AND of booleans");
-                    case Model.Aggregate.Or:
-                        if(AttributeType == AttributeType.Boolean) {
+                    case APIClient.Aggregate.Or:
+                        if (AttributeType == AttributeType.Boolean)
+                        {
                             return metaModel.GetAttributeDefinition(Token + ".@Or");
                         }
 

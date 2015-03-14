@@ -1,10 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Queries;
 
-namespace VersionOne.SDK.APIClient.Tests.ServicesTests
+namespace VersionOne.SDK.APIClient.LegacyTests.ServicesTests
 {
     [TestClass]
     public class ServicesTester : ServicesTesterBase
@@ -21,7 +18,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
             var myAsset = new Asset(AssetType("Story"));
             var storyNameDef = myAsset.AssetType.GetAttributeDefinition("Name");
             myAsset.SetAttributeValue(storyNameDef, "Fred");
-            var subject = new Obsolete.Services(Meta, DataConnector);
+            var subject = new Services(Meta, DataConnector);
 
             const string changeComment = "Expected Change Comment";
             const string expectedChangeComment = "Expected+Change+Comment";
@@ -39,7 +36,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
         [TestMethod]
         public void OidQueryMultiValueAttribute()
         {
-            var subject = new Obsolete.Services(Meta, DataConnector);
+            var subject = new Services(Meta, DataConnector);
             var q = new Query(Oid.FromToken("Story:1036", Meta));
             var def = Meta.GetAttributeDefinition("Story.Owners");
             q.Selection.Add(def);
@@ -55,7 +52,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
         [TestMethod]
         public void NewMultiValueRelationLoads()
         {
-            var subject = new Obsolete.Services(Meta, DataConnector);
+            var subject = new Services(Meta, DataConnector);
             var storyType = Meta.GetAssetType("Story");
             var storyRequests = storyType.GetAttributeDefinition("Requests");
             var contextOid = Oid.FromToken("Request:6075", Meta);

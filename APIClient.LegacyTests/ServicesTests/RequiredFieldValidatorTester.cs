@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient.Tests.ServicesTests
+namespace VersionOne.SDK.APIClient.LegacyTests.ServicesTests
 {
     [TestClass]
     public class RequiredFieldValidatorTester : ServicesTesterBase
@@ -24,7 +20,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
         [TestInitialize]
         public void SetUp()
         {
-            IServices services = new Obsolete.Services(Meta, DataConnector);
+            IServices services = new Services(Meta, DataConnector);
             validator = new RequiredFieldValidator(Meta, services);
         }
 

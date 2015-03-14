@@ -5,9 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using VersionOne.SDK.APIClient.Connector;
 
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete("Use V1Connector instead.")]
 	public class VersionOneAPIConnector : IAPIConnector

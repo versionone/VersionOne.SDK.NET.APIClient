@@ -8,10 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using log4net;
-using VersionOne.SDK.APIClient.Connector.Interfaces;
-using VersionOne.SDK.APIClient.Model;
 
-namespace VersionOne.SDK.APIClient.Connector
+namespace VersionOne.SDK.APIClient
 {
     public class V1Connector : ICanSetAuthMethodOrApi, ICanAddHeaderOrGetConnector, ICanSetProxyOrGetConnector
     {

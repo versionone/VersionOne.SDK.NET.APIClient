@@ -1,5 +1,7 @@
-namespace VersionOne.SDK.APIClient.Model.Asset.Attribute {
-    public enum AttributeType {
+namespace VersionOne.SDK.APIClient
+{
+    public enum AttributeType
+    {
         Boolean,
         Numeric,
         Date,

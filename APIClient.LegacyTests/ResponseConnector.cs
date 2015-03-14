@@ -5,9 +5,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using VersionOne.SDK.APIClient.Obsolete;
 
-namespace VersionOne.SDK.APIClient.Tests
+namespace VersionOne.SDK.APIClient.LegacyTests
 {
     internal delegate string ResolveDelegate(XmlNode node);
 

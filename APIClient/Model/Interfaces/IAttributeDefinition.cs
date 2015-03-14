@@ -1,8 +1,7 @@
-using VersionOne.SDK.APIClient.Model.Asset.Attribute;
-using VersionOne.SDK.APIClient.Queries;
-
-namespace VersionOne.SDK.APIClient.Model.Interfaces {
-    public interface IAttributeDefinition {
+namespace VersionOne.SDK.APIClient
+{
+    public interface IAttributeDefinition
+    {
         IAssetType AssetType { get; }
         string Name { get; }
         string Token { get; }

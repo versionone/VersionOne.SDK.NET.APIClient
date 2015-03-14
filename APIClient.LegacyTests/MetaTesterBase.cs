@@ -1,9 +1,4 @@
-﻿using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using MetaModel = VersionOne.SDK.APIClient.Obsolete.MetaModel;
-
-namespace VersionOne.SDK.APIClient.Tests
+﻿namespace VersionOne.SDK.APIClient.LegacyTests
 {
     public class MetaTesterBase
     {
