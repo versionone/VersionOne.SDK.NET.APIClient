@@ -1,9 +1,4 @@
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Queries;
-
-namespace VersionOne.SDK.APIClient.Services
+namespace VersionOne.SDK.APIClient
 {
     public interface IServices
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace VersionOne.SDK.APIClient.Connector 
+namespace VersionOne.SDK.APIClient 
 {
     public class ProxyProvider
     {

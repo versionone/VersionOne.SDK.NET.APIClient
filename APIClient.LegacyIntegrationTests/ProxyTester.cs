@@ -1,13 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Connector;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Services;
-using MetaModel = VersionOne.SDK.APIClient.Obsolete.MetaModel;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests
+namespace VersionOne.SDK.APIClient.LegacyIntegrationTests
 {
     [TestClass]
     [Ignore]
@@ -32,7 +26,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             IAPIConnector dataConnector = new VersionOneAPIConnector(V1Path + "rest-1.v1/", proxyProvider: proxyProvider)
             .WithVersionOneUsernameAndPassword(V1Username, V1Password);
-            IServices services = new Obsolete.Services(metaModel, dataConnector);
+            IServices services = new Services(metaModel, dataConnector);
 
             var projectType = metaModel.GetAssetType("Scope");
             var scopeQuery = new Query(projectType);

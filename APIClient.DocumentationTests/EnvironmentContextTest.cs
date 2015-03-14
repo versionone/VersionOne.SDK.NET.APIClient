@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Queries;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
+namespace VersionOne.SDK.APIClient.DocumentationTests
 {
     [TestClass]
     [Ignore]

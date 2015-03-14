@@ -2,13 +2,8 @@
 using System.Configuration;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
+namespace VersionOne.SDK.APIClient.DocumentationTests
 {
     [TestClass]
     [Ignore]
@@ -97,8 +92,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
                 .WithVersionOneUsernameAndPassword(_username, _password);
             var metaConnector = new VersionOneAPIConnector(_prefix + "meta.v1/");
 
-            IMetaModel metaModel = new Obsolete.MetaModel(metaConnector);
-            IServices services = new Obsolete.Services(metaModel, dataConnector);
+            IMetaModel metaModel = new MetaModel(metaConnector);
+            IServices services = new Services(metaModel, dataConnector);
 
             var memberId = Oid.FromToken("Member:20", metaModel);
             var query = new Query(memberId);

@@ -1,8 +1,5 @@
 ﻿using System;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Queries.Builders;
-
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete]
     public class HierarchicalPartBuilder : QueryBuilder

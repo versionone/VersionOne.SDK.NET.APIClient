@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using VersionOne.SDK.APIClient.Connector;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete]
     public class V1ConnectionValidator
@@ -101,7 +98,7 @@ namespace VersionOne.SDK.APIClient.Obsolete
 
         public void CheckAuthentication()
         {
-            IServices services = new VersionOne.SDK.APIClient.Obsolete.Services(CreateMetaModel(), PrepareConnector(_connectionUrl + "rest-1.v1/"));
+            IServices services = new Services(CreateMetaModel(), PrepareConnector(_connectionUrl + "rest-1.v1/"));
             Oid loggedin;
 
             try

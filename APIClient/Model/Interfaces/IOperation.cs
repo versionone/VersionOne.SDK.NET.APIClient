@@ -1,5 +1,7 @@
-namespace VersionOne.SDK.APIClient.Model.Interfaces {
-    public interface IOperation {
+namespace VersionOne.SDK.APIClient
+{
+    public interface IOperation
+    {
         string Token { get; }
         string Name { get; }
         IAssetType AssetType { get; }

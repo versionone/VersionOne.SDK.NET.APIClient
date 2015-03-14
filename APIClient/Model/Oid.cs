@@ -1,10 +1,9 @@
 using System;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Utils;
 
-namespace VersionOne.SDK.APIClient.Model {
-    public class Oid {
+namespace VersionOne.SDK.APIClient
+{
+    public class Oid
+    {
         protected static readonly string NullOidToken = "NULL";
         public static readonly Oid Null = new Oid();
 
@@ -12,10 +11,12 @@ namespace VersionOne.SDK.APIClient.Model {
         private readonly int id;
         private readonly int? moment;
 
-        private Oid() {}
+        private Oid() { }
 
-        public Oid(IAssetType assetType, int id, int? moment) {
-            if(assetType == null) {
+        public Oid(IAssetType assetType, int id, int? moment)
+        {
+            if (assetType == null)
+            {
                 throw new ArgumentNullException("assetType");
             }
 
@@ -24,29 +25,37 @@ namespace VersionOne.SDK.APIClient.Model {
             this.moment = moment;
         }
 
-        public IAssetType AssetType {
+        public IAssetType AssetType
+        {
             get { return type; }
         }
 
-        public virtual object Key {
+        public virtual object Key
+        {
             get { return id; }
         }
 
-        public object Moment {
+        public object Moment
+        {
             get { return moment.Value; }
         }
 
-        public bool IsNull {
+        public bool IsNull
+        {
             get { return ReferenceEquals(this, Null); }
         }
 
-        public string Token {
-            get {
-                if (IsNull) {
+        public string Token
+        {
+            get
+            {
+                if (IsNull)
+                {
                     return NullOidToken;
                 }
 
-                if(moment == null) {
+                if (moment == null)
+                {
                     return type.Token + ':' + id;
                 }
 
@@ -54,74 +63,92 @@ namespace VersionOne.SDK.APIClient.Model {
             }
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Token;
         }
 
-        public static Oid FromToken(string oidtoken, IMetaModel meta) {
-            try {
-                if(oidtoken == NullOidToken) {
+        public static Oid FromToken(string oidtoken, IMetaModel meta)
+        {
+            try
+            {
+                if (oidtoken == NullOidToken)
+                {
                     return Null;
                 }
 
                 var parts = oidtoken.Split(':');
                 var type = meta.GetAssetType(parts[0]);
-                var id = (int) DB.Int(parts[1]);
+                var id = (int)DB.Int(parts[1]);
                 int? moment = null;
 
-                if(parts.Length > 2) {
+                if (parts.Length > 2)
+                {
                     moment = DB.Int(parts[2]);
                 }
 
                 return new Oid(type, id, moment);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw new OidException("Invalid OID token", oidtoken, e);
             }
         }
 
-        public virtual Oid Momentless {
+        public virtual Oid Momentless
+        {
             get { return moment == null ? this : new Oid(type, id, null); }
         }
 
-        public virtual bool HasMoment {
+        public virtual bool HasMoment
+        {
             get { return moment != null; }
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             var other = obj as Oid;
 
-            if(other == null) {
+            if (other == null)
+            {
                 return false;
             }
 
-            if(ReferenceEquals(this, other)) {
+            if (ReferenceEquals(this, other))
+            {
                 return true;
             }
 
-            if(IsNull || other.IsNull) {
+            if (IsNull || other.IsNull)
+            {
                 return false;
             }
 
             return type.Token == other.type.Token && id == other.id && moment == other.moment;
         }
 
-        public override int GetHashCode() {
-            if(IsNull) {
+        public override int GetHashCode()
+        {
+            if (IsNull)
+            {
                 return 0;
             }
 
             return moment == null ? HashCode.Hash(type.Token.GetHashCode(), id) : HashCode.Hash(type.Token.GetHashCode(), id, moment);
         }
 
-        public static bool operator ==(Oid a, Oid b) {
-            if(ReferenceEquals(a, null) || ReferenceEquals(b, null)) {
+        public static bool operator ==(Oid a, Oid b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
                 return ReferenceEquals(a, b);
             }
 
             return a.Equals(b);
         }
 
-        public static bool operator !=(Oid a, Oid b) {
+        public static bool operator !=(Oid a, Oid b)
+        {
             return !(a == b);
         }
     }

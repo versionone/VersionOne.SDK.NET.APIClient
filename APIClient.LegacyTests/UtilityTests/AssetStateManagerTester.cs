@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model.Asset;
 
-namespace VersionOne.SDK.APIClient.Tests.UtilityTests
+namespace VersionOne.SDK.APIClient.LegacyTests.UtilityTests
 {
     [TestClass]
     public class AssetStateManagerTester

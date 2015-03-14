@@ -1,6 +1,7 @@
 using System;
 
-namespace VersionOne.SDK.APIClient.Model.Asset {
+namespace VersionOne.SDK.APIClient
+{
 
     public enum AssetState : byte
     {
@@ -19,7 +20,7 @@ namespace VersionOne.SDK.APIClient.Model.Asset {
             if (string.IsNullOrEmpty(assetState)) throw new ArgumentNullException("assetState");
             byte assetStateRaw;
             byte.TryParse(assetState, out assetStateRaw);
-            return (AssetState) assetStateRaw;
+            return (AssetState)assetStateRaw;
         }
 
     }

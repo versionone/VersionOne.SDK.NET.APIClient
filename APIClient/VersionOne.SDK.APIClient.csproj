@@ -140,7 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connector\Interfaces\ICanSetProxyOrGetConnector.cs" />
-    <Compile Include="Meta\MetaModel.cs" />
+    <Compile Include="MetaModel\MetaModel.cs" />
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
@@ -159,8 +159,8 @@
     <Compile Include="Obsolete\QueryURLBuilder.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
-    <Compile Include="Queries\Builders\HierarchicalPartBuilder.cs" />
-    <Compile Include="Queries\Builders\QueryURLBuilder.cs" />
+    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Services\IServices.cs" />
     <Compile Include="Services\Services.cs" />
     <Compile Include="Utils\DB.cs" />
@@ -182,9 +182,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Asset\Attribute\MultiValueAttribute.cs" />
-    <Compile Include="Queries\IValueProvider.cs" />
-    <Compile Include="Queries\ValueProvider.cs" />
-    <Compile Include="Queries\ValueStringizer.cs" />
+    <Compile Include="Query\IValueProvider.cs" />
+    <Compile Include="Query\ValueProvider.cs" />
+    <Compile Include="Query\ValueStringizer.cs" />
     <Compile Include="Model\Asset\Attribute\SingleValueAttribute.cs" />
     <Compile Include="Obsolete\Urls.cs" />
     <Compile Include="Services\XmlApiWriter.cs">
@@ -193,13 +193,13 @@
     <Compile Include="Model\Asset\Attribute\AttributeDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\AttributeSelection.cs">
+    <Compile Include="Query\AttributeSelection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Asset\Attribute\Duration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Exceptions.cs">
+    <Compile Include="Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\HashCode.cs">
@@ -209,7 +209,7 @@
     <Compile Include="Model\Interfaces\IAssetType.cs" />
     <Compile Include="IAttachments.cs" />
     <Compile Include="Model\Interfaces\IAttributeDefinition.cs" />
-    <Compile Include="Meta\IMetaModel.cs" />
+    <Compile Include="MetaModel\IMetaModel.cs" />
     <Compile Include="Obsolete\ILocalizer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -228,39 +228,39 @@
     <Compile Include="Model\Asset\Operation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\OrderBy.cs">
+    <Compile Include="Query\OrderBy.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\Paging.cs">
+    <Compile Include="Query\Paging.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Connector\ProxyProvider.cs" />
-    <Compile Include="Queries\Builders\AsOfBuilder.cs" />
-    <Compile Include="Queries\Builders\BuildResult.cs" />
-    <Compile Include="Queries\Builders\CompositeBuilder.cs" />
-    <Compile Include="Queries\Builders\FindBuilder.cs" />
-    <Compile Include="Queries\Builders\IQueryBuilder.cs" />
-    <Compile Include="Queries\Builders\PagingBuilder.cs" />
-    <Compile Include="Queries\Builders\QueryBuilder.cs" />
-    <Compile Include="Queries\AndFilterTerm.cs" />
-    <Compile Include="Queries\Builders\SelectionBuilder.cs" />
-    <Compile Include="Queries\Builders\SortBuilder.cs" />
-    <Compile Include="Queries\Builders\WhereBuilder.cs" />
-    <Compile Include="Queries\Builders\WithVariablesBuilder.cs" />
-    <Compile Include="Queries\FilterTerm.cs" />
-    <Compile Include="Queries\GroupFilterTerm.cs" />
-    <Compile Include="Queries\IFilterTerm.cs" />
-    <Compile Include="Queries\NoOpTerm.cs" />
-    <Compile Include="Queries\OrFilterTerm.cs" />
-    <Compile Include="Queries\Query.cs">
+    <Compile Include="Query\Builders\AsOfBuilder.cs" />
+    <Compile Include="Query\Builders\BuildResult.cs" />
+    <Compile Include="Query\Builders\CompositeBuilder.cs" />
+    <Compile Include="Query\Builders\FindBuilder.cs" />
+    <Compile Include="Query\Builders\IQueryBuilder.cs" />
+    <Compile Include="Query\Builders\PagingBuilder.cs" />
+    <Compile Include="Query\Builders\QueryBuilder.cs" />
+    <Compile Include="Query\AndFilterTerm.cs" />
+    <Compile Include="Query\Builders\SelectionBuilder.cs" />
+    <Compile Include="Query\Builders\SortBuilder.cs" />
+    <Compile Include="Query\Builders\WhereBuilder.cs" />
+    <Compile Include="Query\Builders\WithVariablesBuilder.cs" />
+    <Compile Include="Query\FilterTerm.cs" />
+    <Compile Include="Query\GroupFilterTerm.cs" />
+    <Compile Include="Query\IFilterTerm.cs" />
+    <Compile Include="Query\NoOpTerm.cs" />
+    <Compile Include="Query\OrFilterTerm.cs" />
+    <Compile Include="Query\Query.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\QueryFind.cs" />
-    <Compile Include="Queries\QueryResult.cs">
+    <Compile Include="Query\QueryFind.cs" />
+    <Compile Include="Query\QueryResult.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\QueryVariable.cs" />
-    <Compile Include="Queries\TokenTerm.cs" />
+    <Compile Include="Query\QueryVariable.cs" />
+    <Compile Include="Query\TokenTerm.cs" />
     <Compile Include="Model\Asset\Attribute\Rank.cs" />
     <Compile Include="RequiredFieldValidator.cs" />
     <Compile Include="Utils\TextBuilder.cs">
@@ -279,7 +279,6 @@
     <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Connector\XmlElementToAsset.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
     <None Include="packages.config" />

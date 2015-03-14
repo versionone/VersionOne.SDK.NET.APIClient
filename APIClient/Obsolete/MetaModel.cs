@@ -2,14 +2,8 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Xml;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Asset.Attribute;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Utils;
 
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete]
 	public class MetaModel : IMetaModel

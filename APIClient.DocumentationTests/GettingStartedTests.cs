@@ -2,15 +2,8 @@
 using System.Configuration;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Services;
-using MetaModel = VersionOne.SDK.APIClient.Meta.MetaModel;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
+namespace VersionOne.SDK.APIClient.DocumentationTests
 {
     [TestClass]
     [Ignore]
@@ -41,8 +34,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void GetSingleAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -67,8 +60,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void GetMultipleAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -90,8 +83,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         /// </summary>
         public void FilterListOfAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -119,8 +112,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void FindListOfAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -158,8 +151,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void SortListOfAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -182,8 +175,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void PageListOfAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -203,8 +196,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void HistorySingleAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -233,8 +226,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void HistoryListOfAssetsTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -257,8 +250,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void HistoryAsOfTimeTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -288,8 +281,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void UpdateScalarAttributeTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -316,8 +309,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void UpdateSingleValueRelationTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -349,8 +342,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void UpdateMultiValueRelationTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -384,8 +377,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void AddNewAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -407,8 +400,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void DeleteAnAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -438,8 +431,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void CloseAnAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 
@@ -472,8 +465,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.ExamplesTests
         [TestMethod]
         public void ReOpenAnAssetTest()
         {
-            IMetaModel metaModel = new Obsolete.MetaModel(new VersionOneAPIConnector(_metaUrl));
-            IServices services = new Obsolete.Services(
+            IMetaModel metaModel = new MetaModel(new VersionOneAPIConnector(_metaUrl));
+            IServices services = new Services(
                 metaModel,
                 new VersionOneAPIConnector(_dataUrl).WithVersionOneUsernameAndPassword(_username, _password));
 

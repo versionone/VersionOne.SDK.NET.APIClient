@@ -1,9 +1,4 @@
-﻿using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Services;
-
-namespace VersionOne.SDK.APIClient.IntegrationTests
+﻿namespace VersionOne.SDK.APIClient.LegacyIntegrationTests
 {
     public class APIClientIntegrationTestSuiteIT
     {
@@ -48,7 +43,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             CreateTestProject();
         }
-        
+
         /// <summary>
         /// Creates a new V1 project for integration test assets.
         /// </summary>

@@ -1,12 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Obsolete;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Queries.Builders;
-using MetaModel = VersionOne.SDK.APIClient.Meta.MetaModel;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests.QueryBuilderTests
+namespace VersionOne.SDK.APIClient.LegacyIntegrationTests.QueryTests.QueryBuilderTests
 {
     [TestClass]
     public class FindBuilderTester
@@ -20,7 +15,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests.QueryBuilderTests
             _target = new FindBuilder();
             string metaUrl = ConfigurationManager.AppSettings["V1Url"] + "meta.v1/";
             var metaConnector = new VersionOneAPIConnector(metaUrl);
-            _metaModel = new Obsolete.MetaModel(metaConnector);
+            _metaModel = new MetaModel(metaConnector);
         }
 
         [TestMethod]

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VersionOne.SDK.APIClient.Model.Asset.Attribute;
 using VersionOne.SDK.MSTestExtensions;
 
-namespace VersionOne.SDK.APIClient.Tests.UtilityTests
+namespace VersionOne.SDK.APIClient.LegacyTests.UtilityTests
 {
     [TestClass]
     public class DurationTester

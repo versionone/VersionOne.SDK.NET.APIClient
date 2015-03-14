@@ -5,15 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
-using VersionOne.SDK.APIClient.Meta;
-using VersionOne.SDK.APIClient.Model;
-using VersionOne.SDK.APIClient.Model.Asset;
-using VersionOne.SDK.APIClient.Model.Interfaces;
-using VersionOne.SDK.APIClient.Queries;
-using VersionOne.SDK.APIClient.Queries.Builders;
-using VersionOne.SDK.APIClient.Services;
 
-namespace VersionOne.SDK.APIClient.Obsolete
+namespace VersionOne.SDK.APIClient
 {
     [Obsolete]
     public class Services : IServices

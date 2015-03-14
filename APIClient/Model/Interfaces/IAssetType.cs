@@ -1,5 +1,7 @@
-namespace VersionOne.SDK.APIClient.Model.Interfaces {
-    public interface IAssetType {
+namespace VersionOne.SDK.APIClient
+{
+    public interface IAssetType
+    {
         string Token { get; }
         IAssetType Base { get; }
         string DisplayName { get; }
