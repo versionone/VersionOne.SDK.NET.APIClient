@@ -131,5 +131,126 @@ namespace VersionOne.SDK.APIClient.Tests
                 .UseMetaApi()
                 .Build();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullWindowsIntegratedFQDNException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithWindowsIntegrated(null, "password")
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullWindowsIntegratedPasswordException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithWindowsIntegrated("fqdn", null)
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyWindowsIntegratedFQDNException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword("  ", "password")
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyWindowsIntegratedPasswordException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword("fqdn", "")
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullAccessTokenException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithAccessToken(null)
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyAccessTokenException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithAccessToken("   ")
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyOAuth2TokenException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithOAuth2Token("")
+                .UseMetaApi()
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullEndpointException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword("username", "password")
+                .UseEndpoint(null)
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyEndpointException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword("username", "password")
+                .UseEndpoint("  ")
+                .Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullProxyException()
+        {
+            V1Connector connector = V1Connector
+                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword("username", "password")
+                .UseDataApi()
+                .WithProxy(null)
+                .Build();
+        }
     }
 }
