@@ -22,12 +22,23 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void CreateGetAndDeleteSingleAsset()
         {
             IMetaModel metaModel =
-                new Evolved.MetaModel(V1Connector.WithInstanceUrl(_v1InstanceUrl).UseMetaApi().GetConnector());
+                new Evolved.MetaModel(V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader("MyApp", "1.0")
+                    .UseMetaApi()
+                    .Build());
             IServices services = new Evolved.Services(metaModel,
-                V1Connector.WithInstanceUrl(_v1InstanceUrl)
+                V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader("MyApp", "1.0")
                     .WithUsernameAndPassword(_v1Username, _v1Password)
                     .UseDataApi()
-                    .GetConnector());
+                    .Build(),
+                V1Connector.WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader("MyApp", "1.0")
+                    .WithUsernameAndPassword(_v1Username, _v1Password)
+                    .UseNewApi()
+                    .Build());
 
             // create a new story
             var contextId = Oid.FromToken("Scope:0", metaModel);

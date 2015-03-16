@@ -11,45 +11,48 @@ namespace VersionOne.SDK.APIClient.Evolved
 
     public class Services : IServices
     {
-        private readonly IMetaModel metaModel;
-        private readonly V1Connector connector;
-        private Oid loggedIn;
+        private readonly IMetaModel _metaModel;
+        private readonly V1Connector _dataConnector;
+        private readonly V1Connector _newConnector;
+        private Oid _loggedIn;
 
         public Oid LoggedIn
         {
             get
             {
-                if (loggedIn == null)
+                if (_loggedIn == null)
                 {
-                    var q = new Query(metaModel.GetAssetType("Member"));
-                    var term = new FilterTerm(metaModel.GetAttributeDefinition("Member.IsSelf"));
+                    var q = new Query(_metaModel.GetAssetType("Member"));
+                    var term = new FilterTerm(_metaModel.GetAttributeDefinition("Member.IsSelf"));
                     term.Equal(true);
                     q.Filter = term;
                     var list = Retrieve(q).Assets;
 
                     if (list.Count != 1)
                     {
-                        loggedIn = Oid.Null;
+                        _loggedIn = Oid.Null;
                     }
                     else
                     {
-                        loggedIn = list[0].Oid;
+                        _loggedIn = list[0].Oid;
                     }
                 }
 
-                return loggedIn;
+                return _loggedIn;
             }
         }
 
-        public Services(IMetaModel metaModel, V1Connector connector)
+        public Services(IMetaModel metaModel, V1Connector dataConnector, V1Connector newConnector)
         {
-            this.metaModel = metaModel;
-            this.connector = connector;
+            _metaModel = metaModel;
+            _dataConnector = dataConnector;
+            _newConnector = newConnector;
         }
 
         public void SetUpstreamUserAgent(string userAgent)
         {
-            connector.UseDataApi().SetUpstreamUserAgent(userAgent);
+            _dataConnector.SetUpstreamUserAgent(userAgent);
+            _newConnector.SetUpstreamUserAgent(userAgent);
         }
 
         public QueryResult Retrieve(Query query)
@@ -58,8 +61,7 @@ namespace VersionOne.SDK.APIClient.Evolved
 
             try
             {
-                connector.UseDataApi();
-                using (var stream = connector.GetData(new QueryURLBuilder(query).ToString()))
+                using (var stream = _dataConnector.GetData(new QueryURLBuilder(query).ToString()))
                 {
                     doc.Load(stream);
                 }
@@ -80,7 +82,7 @@ namespace VersionOne.SDK.APIClient.Evolved
 
         public Oid GetOid(string token)
         {
-            return Oid.FromToken(token, metaModel);
+            return Oid.FromToken(token, _metaModel);
         }
 
         public Oid ExecuteOperation(IOperation op, Oid oid)
@@ -90,8 +92,7 @@ namespace VersionOne.SDK.APIClient.Evolved
             try
             {
                 var path = oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
-                connector.UseDataApi();
-                using (var stream = connector.SendData(path, string.Empty))
+                using (var stream = _dataConnector.SendData(path, string.Empty))
                 {
                     doc.Load(stream);
                 }
@@ -146,8 +147,7 @@ namespace VersionOne.SDK.APIClient.Evolved
 
                 try
                 {
-                    connector.UseDataApi();
-                    using (var stream = connector.SendData(path, data))
+                    using (var stream = _dataConnector.SendData(path, data))
                     {
                         doc.Load(stream);
                     }
@@ -197,8 +197,7 @@ namespace VersionOne.SDK.APIClient.Evolved
 
             try
             {
-                connector.UseNewApi();
-                using (var stream = connector.GetData(path))
+                using (var stream = _newConnector.GetData(path))
                 {
                     doc.Load(stream);
                 }
@@ -302,7 +301,7 @@ namespace VersionOne.SDK.APIClient.Evolved
             var asset = new Asset(query.Oid);
             list.Add(asset);
 
-            var attribdef = metaModel.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
+            var attribdef = _metaModel.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
 
             ParseAttributeNode(asset, attribdef, element);
 
