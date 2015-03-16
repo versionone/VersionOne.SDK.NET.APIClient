@@ -151,7 +151,6 @@ namespace VersionOne.SDK.APIClient.Evolved
         private IAssetType HookupAssetType(string token)
         {
             XmlDocument doc = new XmlDocument();
-            _connector.UseMetaApi();
             using (Stream stream = _connector.GetData(token))
                 doc.Load(stream);
 
@@ -174,7 +173,6 @@ namespace VersionOne.SDK.APIClient.Evolved
         private IAttributeDefinition HookupAttributeDefinition(string assettypetoken, string name)
         {
             XmlDocument doc = new XmlDocument();
-            _connector.UseMetaApi();
             using (Stream stream = _connector.GetData(assettypetoken + "/" + name))
                 doc.Load(stream);
 
@@ -189,7 +187,6 @@ namespace VersionOne.SDK.APIClient.Evolved
         private IOperation HookupOperation(string assettypetoken, string name)
         {
             XmlDocument doc = new XmlDocument();
-            _connector.UseMetaApi();
             using (Stream stream = _connector.GetData(assettypetoken + "/" + name))
                 doc.Load(stream);
 
@@ -204,7 +201,6 @@ namespace VersionOne.SDK.APIClient.Evolved
         private void Hookup()
         {
             XmlDocument doc = new XmlDocument();
-            _connector.UseMetaApi();
             using (Stream stream = _connector.GetData())
                 doc.Load(stream);
 

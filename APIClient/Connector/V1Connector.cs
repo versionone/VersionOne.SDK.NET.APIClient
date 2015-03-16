@@ -11,14 +11,8 @@ using log4net;
 
 namespace VersionOne.SDK.APIClient
 {
-    public class V1Connector : ICanSetAuthMethodOrApi, ICanAddHeaderOrSetProxyOrGetConnector, ICanSetProxyOrGetConnector
+    public class V1Connector
     {
-        private const string MetaApiEndpoint = "meta.v1/";
-        private const string DataApiEndpoint = "rest-1.v1/Data/";
-        private const string HistoryApiEndpoint = "rest-1.v1/Hist/";
-        private const string NewApiEndpoint = "rest-1.v1/New";
-        private const string QueryApiEndpoint = "query.v1/";
-
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
         private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
@@ -48,128 +42,15 @@ namespace VersionOne.SDK.APIClient
         }
 
         /// <summary>
-        /// Primary constructor for the class, takes the URL of the V1 instance.
+        /// Required method for setting the URL of the V1 instance.
         /// </summary>
         /// <param name="versionOneInstanceUrl"></param>
         /// <returns></returns>
-        public static ICanSetAuthMethodOrApi WithInstanceUrl(string versionOneInstanceUrl)
+        public static ICanSetUserAgentHeader WithInstanceUrl(string versionOneInstanceUrl)
         {
-            return new V1Connector(versionOneInstanceUrl);
+            return new Builder(versionOneInstanceUrl);
         }
-
-        public ICanSetApi WithUsernameAndPassword(string username, string password)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentNullException("username");
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentNullException("password");
-
-            _handler.Credentials = new NetworkCredential(username, password);
-
-            return this;
-        }
-
-        public ICanSetApi WithAccessToken(string accessToken)
-        {
-            if (string.IsNullOrWhiteSpace(accessToken))
-                throw new ArgumentNullException("accessToken");
-
-            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
-
-            return this;
-        }
-
-        public ICanSetApi WithWindowsIntegrated()
-        {
-            var credentialCache = new CredentialCache
-            {
-                {_client.BaseAddress, "NTLM", CredentialCache.DefaultNetworkCredentials},
-                {_client.BaseAddress, "Negotiate", CredentialCache.DefaultNetworkCredentials}
-            };
-            _handler.Credentials = credentialCache;
-
-            return this;
-        }
-
-        public ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
-        {
-            if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
-                throw new ArgumentNullException("fullyQualifiedDomainUsername");
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentNullException("password");
-
-            _handler.Credentials = new NetworkCredential(fullyQualifiedDomainUsername, password);
-
-            return this;
-        }
-
-        public ICanGetConnector WithProxy(ProxyProvider proxyProvider)
-        {
-            if (proxyProvider == null)
-                throw new ArgumentNullException("proxyProvider");
-
-            _handler.Proxy = proxyProvider.CreateWebProxy();
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseMetaApi()
-        {
-            _endpoint = MetaApiEndpoint;
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseDataApi()
-        {
-            _endpoint = DataApiEndpoint;
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseHistoryApi()
-        {
-            _endpoint = HistoryApiEndpoint;
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseNewApi()
-        {
-            _endpoint = NewApiEndpoint;
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseQueryApi()
-        {
-            _endpoint = QueryApiEndpoint;
-
-            return this;
-        }
-
-        public ICanAddHeaderOrSetProxyOrGetConnector UseEndpoint(string endpoint)
-        {
-            if (string.IsNullOrWhiteSpace(endpoint))
-                throw new ArgumentNullException("endpoint");
-
-            _endpoint = endpoint;
-
-            return this;
-        }
-
-        public ICanSetProxyOrGetConnector SetUserAgentHeader(string name, string version)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(version))
-                throw new ArgumentNullException("version");
-
-            _client.DefaultRequestHeaders.Add(name, version);
-
-            return this;
-        }
-
+        
         public Stream GetData(string resource = null)
         {
             ConfigureRequestIfNeeded();
@@ -306,14 +187,265 @@ namespace VersionOne.SDK.APIClient
             _log.Info(stringBuilder.ToString());
         }
 
-        public V1Connector GetConnector()
+        #region Fluent Builder
+
+        private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethodOrApi, ICanSetProxyOrGetConnector
         {
-            return this;
+            private const string MetaApiEndpoint = "meta.v1/";
+            private const string DataApiEndpoint = "rest-1.v1/Data/";
+            private const string HistoryApiEndpoint = "rest-1.v1/Hist/";
+            private const string NewApiEndpoint = "rest-1.v1/New";
+            private const string QueryApiEndpoint = "query.v1/";
+            private readonly V1Connector _instance;
+
+            public Builder(string versionOneInstanceUrl)
+            {
+                _instance = new V1Connector(versionOneInstanceUrl);
+            }
+
+            public ICanSetAuthMethodOrApi WithUserAgentHeader(string name, string version)
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                    throw new ArgumentNullException("name");
+                if (string.IsNullOrWhiteSpace(version))
+                    throw new ArgumentNullException("version");
+
+                _instance._client.DefaultRequestHeaders.Add(name, version);
+
+                return this;
+            }
+
+            public ICanSetApi WithUsernameAndPassword(string username, string password)
+            {
+                if (string.IsNullOrWhiteSpace(username))
+                    throw new ArgumentNullException("username");
+                if (string.IsNullOrWhiteSpace(password))
+                    throw new ArgumentNullException("password");
+
+                _instance._handler.Credentials = new NetworkCredential(username, password);
+
+                return this;
+            }
+
+            public ICanSetApi WithWindowsIntegrated()
+            {
+                var credentialCache = new CredentialCache
+                {
+                    {_instance._client.BaseAddress, "NTLM", CredentialCache.DefaultNetworkCredentials},
+                    {_instance._client.BaseAddress, "Negotiate", CredentialCache.DefaultNetworkCredentials}
+                };
+                _instance._handler.Credentials = credentialCache;
+
+                return this;
+            }
+
+            public ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
+            {
+                if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
+                    throw new ArgumentNullException("fullyQualifiedDomainUsername");
+                if (string.IsNullOrWhiteSpace(password))
+                    throw new ArgumentNullException("password");
+
+                _instance._handler.Credentials = new NetworkCredential(fullyQualifiedDomainUsername, password);
+
+                return this;
+            }
+
+            public ICanSetApi WithAccessToken(string accessToken)
+            {
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    throw new ArgumentNullException("accessToken");
+
+                _instance._client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+                return this;
+            }
+
+            public ICanSetApi WithOAuth2Token(string accessToken)
+            {
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    throw new ArgumentNullException("accessToken");
+
+                //TODO: add logic to authenticate with OAuth2
+
+                return this;
+            }
+            
+            public ICanSetProxyOrGetConnector UseMetaApi()
+            {
+                _instance._endpoint = MetaApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector UseDataApi()
+            {
+                _instance._endpoint = DataApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector UseHistoryApi()
+            {
+                _instance._endpoint = HistoryApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector UseNewApi()
+            {
+                _instance._endpoint = NewApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector UseQueryApi()
+            {
+                _instance._endpoint = QueryApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector UseEndpoint(string endpoint)
+            {
+                if (string.IsNullOrWhiteSpace(endpoint))
+                    throw new ArgumentNullException("endpoint");
+
+                _instance._endpoint = endpoint;
+
+                return this;
+            }
+
+            public ICanGetConnector WithProxy(ProxyProvider proxyProvider)
+            {
+                if (proxyProvider == null)
+                    throw new ArgumentNullException("proxyProvider");
+
+                _instance._handler.Proxy = proxyProvider.CreateWebProxy();
+
+                return this;
+            }
+
+            public V1Connector Build()
+            {
+                return _instance;
+            }
         }
+
+        #endregion
     }
 
     public enum RequestFormat
     {
         Xml = 0, Json = 1
     }
+
+    #region Interfaces
+
+    public interface ICanSetUserAgentHeader
+    {
+        ICanSetAuthMethodOrApi WithUserAgentHeader(string name, string version);
+    }
+
+    public interface ICanSetApi
+    {
+        /// <summary>
+        /// For connecting to meta.v1 endpoint.
+        /// </summary>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseMetaApi();
+
+        /// <summary>
+        /// For connecting to rest-1.v1/Data endpoint.
+        /// </summary>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseDataApi();
+
+        /// <summary>
+        /// For connecting to rest-1.v1/Hist endpoint.
+        /// </summary>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseHistoryApi();
+
+        /// <summary>
+        /// For connecting to rest-1.v1/New endpoint.
+        /// </summary>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseNewApi();
+
+        /// <summary>
+        /// For connecting to query.v1 endpoint
+        /// </summary>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseQueryApi();
+
+        /// <summary>
+        /// For connecting to a user specified endpoint.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
+        ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
+    }
+
+    public interface ICanSetAuthMethodOrApi : ICanSetApi
+    {
+        /// <summary>
+        /// Optional method for setting the username and password for authentication.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        ICanSetApi WithUsernameAndPassword(string username, string password);
+
+        /// <summary>
+        /// Optional method for setting the Windows Integrated Authentication credentials.
+        /// The currently logged in users credentials are used.
+        /// </summary>
+        /// <returns></returns>
+        ICanSetApi WithWindowsIntegrated();
+
+        /// <summary>
+        /// Optional method for setting the Windows Integrated Authentication credentials.
+        /// The fully qualified domain name will be in form "DOMAIN\username".
+        /// </summary>
+        /// <param name="fullyQualifiedDomainUsername"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
+
+        /// <summary>
+        /// Optional method for setting the access token for authentication.
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        ICanSetApi WithAccessToken(string accessToken);
+
+        /// <summary>
+        /// Optional method for setting the OAuth2 access token for authentication.
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        ICanSetApi WithOAuth2Token(string accessToken);
+    }
+
+    public interface ICanGetConnector
+    {
+        /// <summary>
+        /// Required terminating method that returns the V1Connector object.
+        /// </summary>
+        /// <returns></returns>
+        V1Connector Build();
+    }
+
+    public interface ICanSetProxyOrGetConnector : ICanGetConnector
+    {
+        /// <summary>
+        /// Optional method for setting the proxy credentials.
+        /// </summary>
+        /// <param name="proxyProvider"></param>
+        /// <returns></returns>
+        ICanGetConnector WithProxy(ProxyProvider proxyProvider);
+    }
+
+    #endregion
 }

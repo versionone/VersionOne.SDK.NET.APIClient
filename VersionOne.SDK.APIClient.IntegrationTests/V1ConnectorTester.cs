@@ -28,8 +28,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseMetaApi()
-                .GetConnector();
+                .Build();
 
             var doc = new XmlDocument();
             using (var stream = connector.GetData("Story/Delete"))
@@ -49,9 +50,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseMetaApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             var doc = new XmlDocument();
             using (var stream = connector.GetData("Story/Delete"))
@@ -80,9 +82,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -94,10 +97,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -109,10 +113,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -124,10 +129,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -139,10 +145,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -154,10 +161,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -169,10 +177,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -184,10 +193,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -199,9 +209,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
 
@@ -212,10 +223,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -227,10 +239,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -242,10 +255,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -257,10 +271,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -272,10 +287,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -287,10 +303,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -302,10 +319,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -318,8 +336,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -330,9 +349,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -343,9 +363,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -356,9 +377,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -369,9 +391,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -382,9 +405,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -395,9 +419,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -408,9 +433,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
@@ -421,8 +447,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
 
@@ -432,9 +459,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
             
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -445,9 +473,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -458,9 +487,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -471,9 +501,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -484,9 +515,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -497,9 +529,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -510,9 +543,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
@@ -526,10 +560,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, _v1Password)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -540,10 +575,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken(_v1AccessToken)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -554,10 +590,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated()
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -568,10 +605,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .UseDataApi()
                 .WithProxy(GetProxyProvider())
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -582,9 +620,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(_v1Username, _v1Password)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -594,9 +633,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken(_v1AccessToken)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -607,9 +647,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated()
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
@@ -620,9 +661,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .UseDataApi()
-                .GetConnector();
+                .Build();
 
             SendAndGetDataTest(connector);
         }
