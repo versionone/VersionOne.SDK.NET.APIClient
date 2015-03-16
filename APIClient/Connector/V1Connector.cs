@@ -29,7 +29,7 @@ namespace VersionOne.SDK.APIClient
                 instanceUrl += "/";
 
             Uri baseAddress;
-            if (Uri.TryCreate(instanceUrl, UriKind.RelativeOrAbsolute, out baseAddress))
+            if (Uri.TryCreate(instanceUrl, UriKind.Absolute, out baseAddress))
             {
                 _handler = new HttpClientHandler();
                 _client = new HttpClient(_handler) {BaseAddress = baseAddress};
