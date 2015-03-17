@@ -189,7 +189,7 @@ namespace VersionOne.SDK.APIClient
 
         #region Fluent Builder
 
-        private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethodOrApi, ICanSetProxyOrGetConnector
+        private class Builder : ICanSetUserAgentHeader, ICanSetApi, ICanSetAuthMethod, ICanSetProxyOrGetConnector
         {
             private const string MetaApiEndpoint = "meta.v1/";
             private const string DataApiEndpoint = "rest-1.v1/Data/";
@@ -203,7 +203,7 @@ namespace VersionOne.SDK.APIClient
                 _instance = new V1Connector(versionOneInstanceUrl);
             }
 
-            public ICanSetAuthMethodOrApi WithUserAgentHeader(string name, string version)
+            public ICanSetApi WithUserAgentHeader(string name, string version)
             {
                 if (string.IsNullOrWhiteSpace(name))
                     throw new ArgumentNullException("name");
@@ -215,7 +215,52 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetApi WithUsernameAndPassword(string username, string password)
+            public ICanSetProxyOrGetConnector UseMetaApi()
+            {
+                _instance._endpoint = MetaApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetAuthMethod UseDataApi()
+            {
+                _instance._endpoint = DataApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetAuthMethod UseHistoryApi()
+            {
+                _instance._endpoint = HistoryApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetAuthMethod UseNewApi()
+            {
+                _instance._endpoint = NewApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetAuthMethod UseQueryApi()
+            {
+                _instance._endpoint = QueryApiEndpoint;
+
+                return this;
+            }
+
+            public ICanSetAuthMethod UseEndpoint(string endpoint)
+            {
+                if (string.IsNullOrWhiteSpace(endpoint))
+                    throw new ArgumentNullException("endpoint");
+
+                _instance._endpoint = endpoint;
+
+                return this;
+            }
+
+            public ICanSetProxyOrGetConnector WithUsernameAndPassword(string username, string password)
             {
                 if (string.IsNullOrWhiteSpace(username))
                     throw new ArgumentNullException("username");
@@ -227,7 +272,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetApi WithWindowsIntegrated()
+            public ICanSetProxyOrGetConnector WithWindowsIntegrated()
             {
                 var credentialCache = new CredentialCache
                 {
@@ -239,7 +284,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
+            public ICanSetProxyOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
             {
                 if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
                     throw new ArgumentNullException("fullyQualifiedDomainUsername");
@@ -251,7 +296,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetApi WithAccessToken(string accessToken)
+            public ICanSetProxyOrGetConnector WithAccessToken(string accessToken)
             {
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
@@ -261,57 +306,12 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetApi WithOAuth2Token(string accessToken)
+            public ICanSetProxyOrGetConnector WithOAuth2Token(string accessToken)
             {
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
 
                 //TODO: add logic to authenticate with OAuth2
-
-                return this;
-            }
-            
-            public ICanSetProxyOrGetConnector UseMetaApi()
-            {
-                _instance._endpoint = MetaApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetProxyOrGetConnector UseDataApi()
-            {
-                _instance._endpoint = DataApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetProxyOrGetConnector UseHistoryApi()
-            {
-                _instance._endpoint = HistoryApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetProxyOrGetConnector UseNewApi()
-            {
-                _instance._endpoint = NewApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetProxyOrGetConnector UseQueryApi()
-            {
-                _instance._endpoint = QueryApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetProxyOrGetConnector UseEndpoint(string endpoint)
-            {
-                if (string.IsNullOrWhiteSpace(endpoint))
-                    throw new ArgumentNullException("endpoint");
-
-                _instance._endpoint = endpoint;
 
                 return this;
             }
@@ -344,7 +344,13 @@ namespace VersionOne.SDK.APIClient
 
     public interface ICanSetUserAgentHeader
     {
-        ICanSetAuthMethodOrApi WithUserAgentHeader(string name, string version);
+        /// <summary>
+        /// Required method for setting a custom user agent header.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        ICanSetApi WithUserAgentHeader(string name, string version);
     }
 
     public interface ICanSetApi
@@ -359,35 +365,35 @@ namespace VersionOne.SDK.APIClient
         /// For connecting to rest-1.v1/Data endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseDataApi();
+        ICanSetAuthMethod UseDataApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Hist endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseHistoryApi();
+        ICanSetAuthMethod UseHistoryApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/New endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseNewApi();
+        ICanSetAuthMethod UseNewApi();
 
         /// <summary>
         /// For connecting to query.v1 endpoint
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseQueryApi();
+        ICanSetAuthMethod UseQueryApi();
 
         /// <summary>
         /// For connecting to a user specified endpoint.
         /// </summary>
         /// <param name="endpoint"></param>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
+        ICanSetAuthMethod UseEndpoint(string endpoint);
     }
 
-    public interface ICanSetAuthMethodOrApi : ICanSetApi
+    public interface ICanSetAuthMethod
     {
         /// <summary>
         /// Optional method for setting the username and password for authentication.
@@ -395,14 +401,14 @@ namespace VersionOne.SDK.APIClient
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        ICanSetApi WithUsernameAndPassword(string username, string password);
+        ICanSetProxyOrGetConnector WithUsernameAndPassword(string username, string password);
 
         /// <summary>
         /// Optional method for setting the Windows Integrated Authentication credentials.
         /// The currently logged in users credentials are used.
         /// </summary>
         /// <returns></returns>
-        ICanSetApi WithWindowsIntegrated();
+        ICanSetProxyOrGetConnector WithWindowsIntegrated();
 
         /// <summary>
         /// Optional method for setting the Windows Integrated Authentication credentials.
@@ -411,21 +417,21 @@ namespace VersionOne.SDK.APIClient
         /// <param name="fullyQualifiedDomainUsername"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        ICanSetApi WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
+        ICanSetProxyOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
 
         /// <summary>
         /// Optional method for setting the access token for authentication.
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        ICanSetApi WithAccessToken(string accessToken);
+        ICanSetProxyOrGetConnector WithAccessToken(string accessToken);
 
         /// <summary>
         /// Optional method for setting the OAuth2 access token for authentication.
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        ICanSetApi WithOAuth2Token(string accessToken);
+        ICanSetProxyOrGetConnector WithOAuth2Token(string accessToken);
     }
 
     public interface ICanGetConnector

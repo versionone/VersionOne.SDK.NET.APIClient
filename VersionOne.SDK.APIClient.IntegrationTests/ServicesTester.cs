@@ -31,13 +31,13 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
                     .UseDataApi()
+                    .WithUsernameAndPassword(_v1Username, _v1Password)
                     .Build(),
                 V1Connector.WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
                     .UseNewApi()
+                    .WithUsernameAndPassword(_v1Username, _v1Password)
                     .Build());
 
             // create a new story

@@ -84,6 +84,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
                 .UseDataApi()
+                .WithAccessToken("")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -98,8 +99,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -114,8 +115,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -130,8 +131,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -146,8 +147,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
+                .WithAccessToken("wrongaccesstoken")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -162,8 +163,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -178,8 +179,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -194,26 +195,12 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
-        }
-
-        [Ignore]
-        [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        public void SendDataWithoutCredentialsThroughProxy()
-        {
-            V1Connector connector = V1Connector
-                .WithInstanceUrl(_v1InstanceUrl)
-                .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
-                .WithProxy(GetProxyProvider())
-                .Build();
-            using (var stream = connector.SendData("Story", GetNewStoryData())) { }
         }
 
         [Ignore]
@@ -224,8 +211,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -240,8 +227,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -256,8 +243,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -272,8 +259,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
+                .WithAccessToken("wrongaccesstoken")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -288,8 +275,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -304,8 +291,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -320,8 +307,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -332,26 +319,13 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         [TestMethod]
         [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        public void GetDataWithoutCredentials()
-        {
-            V1Connector connector = V1Connector
-                .WithInstanceUrl(_v1InstanceUrl)
-                .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
-                .Build();
-
-            using (var stream = connector.GetData("Member/20")) { }
-        }
-
-        [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
         public void GetDataWithWrongV1UsernameAndPassword()
         {
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -364,8 +338,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -378,8 +352,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -392,8 +366,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
+                .WithAccessToken("wrongaccesstoken")
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -406,8 +380,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -420,8 +394,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
@@ -434,25 +408,13 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .Build();
 
             using (var stream = connector.GetData("Member/20")) { }
         }
-
-        [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
-        public void SendDataWithoutCredentials()
-        {
-            V1Connector connector = V1Connector
-                .WithInstanceUrl(_v1InstanceUrl)
-                .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
-                .Build();
-            using (var stream = connector.SendData("Story", GetNewStoryData())) { }
-        }
-
+        
         [TestMethod]
         [ExpectedExceptionAndMessage(typeof(WebException), "The remote server returned an error: (401) Unauthorized.")]
         public void SendDataWithWrongV1UsernameAndPassword()
@@ -460,8 +422,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", "wrongpassword")
                 .Build();
             
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -474,8 +436,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword("wrongusername", _v1Password)
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -488,8 +450,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, "wrongpassword")
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -502,8 +464,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken("wrongaccesstoken")
                 .UseDataApi()
+                .WithAccessToken("wrongaccesstoken")
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -516,8 +478,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", "wrongwindowspassword")
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -530,8 +492,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated("wrongwindowsusername", _windowsPassword)
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -544,8 +506,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, "wrongwindowspassword")
                 .Build();
 
             using (var stream = connector.SendData("Story", GetNewStoryData())) { }
@@ -561,8 +523,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, _v1Password)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -576,8 +538,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken(_v1AccessToken)
                 .UseDataApi()
+                .WithAccessToken(_v1AccessToken)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -591,8 +553,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated()
                 .UseDataApi()
+                .WithWindowsIntegrated()
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -606,8 +568,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .WithProxy(GetProxyProvider())
                 .Build();
 
@@ -621,8 +583,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithUsernameAndPassword(_v1Username, _v1Password)
                 .UseDataApi()
+                .WithUsernameAndPassword(_v1Username, _v1Password)
                 .Build();
 
             SendAndGetDataTest(connector);
@@ -634,8 +596,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithAccessToken(_v1AccessToken)
                 .UseDataApi()
+                .WithAccessToken(_v1AccessToken)
                 .Build();
 
             SendAndGetDataTest(connector);
@@ -648,8 +610,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated()
                 .UseDataApi()
+                .WithWindowsIntegrated()
                 .Build();
 
             SendAndGetDataTest(connector);
@@ -662,8 +624,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .UseDataApi()
+                .WithWindowsIntegrated(_windowsUsername, _windowsPassword)
                 .Build();
 
             SendAndGetDataTest(connector);
