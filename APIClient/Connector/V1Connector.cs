@@ -18,8 +18,12 @@ namespace VersionOne.SDK.APIClient
         private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
         private string _endpoint;
         private string _upstreamUserAgent;
-        
         private bool _isRequestConfigured = false;
+
+        public string Endpoint
+        {
+            get { return _endpoint; }
+        }
 
         private V1Connector(string instanceUrl)
         {
@@ -191,11 +195,6 @@ namespace VersionOne.SDK.APIClient
 
         private class Builder : ICanSetUserAgentHeader, ICanSetApi, ICanSetAuthMethod, ICanSetProxyOrGetConnector
         {
-            private const string MetaApiEndpoint = "meta.v1/";
-            private const string DataApiEndpoint = "rest-1.v1/Data/";
-            private const string HistoryApiEndpoint = "rest-1.v1/Hist/";
-            private const string NewApiEndpoint = "rest-1.v1/New";
-            private const string QueryApiEndpoint = "query.v1/";
             private readonly V1Connector _instance;
 
             public Builder(string versionOneInstanceUrl)
@@ -333,6 +332,12 @@ namespace VersionOne.SDK.APIClient
         }
 
         #endregion
+
+        public const string MetaApiEndpoint = "meta.v1/";
+        public const string DataApiEndpoint = "rest-1.v1/Data/";
+        public const string HistoryApiEndpoint = "rest-1.v1/Hist/";
+        public const string NewApiEndpoint = "rest-1.v1/New";
+        public const string QueryApiEndpoint = "query.v1/";
     }
 
     public enum RequestFormat

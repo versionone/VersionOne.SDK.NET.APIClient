@@ -139,7 +139,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MetaModel\MetaModel.cs" />
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
@@ -149,15 +148,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Connector\V1Connector.cs" />
-    <Compile Include="Obsolete\HierarchicalPartBuilder.cs" />
-    <Compile Include="Obsolete\Services.cs" />
-    <Compile Include="Obsolete\QueryURLBuilder.cs" />
+    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Services\Services.cs" />
+    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
-    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
-    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Services\IServices.cs" />
-    <Compile Include="Services\Services.cs" />
     <Compile Include="Utils\DB.cs" />
     <Compile Include="Obsolete\V1ConfigurationManager.cs" />
     <Compile Include="Obsolete\Connectors.cs" />
@@ -213,7 +209,7 @@
     <Compile Include="Obsolete\Localizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Obsolete\MetaModel.cs">
+    <Compile Include="MetaModel\MetaModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MimeType.cs" />

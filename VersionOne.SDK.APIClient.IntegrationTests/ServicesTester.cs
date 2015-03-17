@@ -22,12 +22,12 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void CreateGetAndDeleteSingleAsset()
         {
             IMetaModel metaModel =
-                new Evolved.MetaModel(V1Connector
+                new MetaModel(V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
                     .UseMetaApi()
                     .Build());
-            IServices services = new Evolved.Services(metaModel,
+            IServices services = new Services(metaModel,
                 V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
@@ -37,6 +37,11 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 V1Connector.WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
                     .UseNewApi()
+                    .WithUsernameAndPassword(_v1Username, _v1Password)
+                    .Build(),
+                V1Connector.WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader("MyApp", "1.0")
+                    .UseHistoryApi()
                     .WithUsernameAndPassword(_v1Username, _v1Password)
                     .Build());
 

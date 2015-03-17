@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,14 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Xml;
 
-namespace VersionOne.SDK.APIClient.Evolved
+namespace VersionOne.SDK.APIClient
 {
-
     public class Services : IServices
     {
         private readonly IMetaModel _metaModel;
-        private readonly V1Connector _dataConnector;
-        private readonly V1Connector _newConnector;
+        private readonly IAPIConnector _connector;
+        private readonly V1Connector _dataApiConnector;
+        private readonly V1Connector _newApiConnector;
+        private readonly V1Connector _historyApiConnector;
         private Oid _loggedIn;
 
         public Oid LoggedIn
@@ -42,17 +43,51 @@ namespace VersionOne.SDK.APIClient.Evolved
             }
         }
 
-        public Services(IMetaModel metaModel, V1Connector dataConnector, V1Connector newConnector)
+        public Services(IMetaModel metaModel, IAPIConnector connector)
         {
+            if (metaModel == null)
+                throw new ArgumentNullException("metaModel");
+            if (connector == null)
+                throw new ArgumentNullException("connector");
+
             _metaModel = metaModel;
-            _dataConnector = dataConnector;
-            _newConnector = newConnector;
+            _connector = connector;
+        }
+
+        public Services(IMetaModel metaModel, V1Connector dataApiConnector, V1Connector newApiConnector, V1Connector historyApiConnector)
+        {
+            if (metaModel == null)
+                throw new ArgumentNullException("metaModel");
+            if (dataApiConnector == null)
+                throw new ArgumentNullException("dataApiConnector");
+            if (historyApiConnector == null)
+                throw new ArgumentNullException("historyApiConnector");
+            if (newApiConnector == null)
+                throw new ArgumentNullException("newApiConnector");
+            if (dataApiConnector.Endpoint != V1Connector.DataApiEndpoint)
+                throw new V1Exception("Wrong endpoint set on dataConnector.");
+            if (newApiConnector.Endpoint != V1Connector.NewApiEndpoint)
+                throw new V1Exception("Wrong endpoint set on newConnector.");
+            if (historyApiConnector.Endpoint != V1Connector.HistoryApiEndpoint)
+                throw new V1Exception("Wrong endpoint set on historyApiConnector.");
+
+            _metaModel = metaModel;
+            _dataApiConnector = dataApiConnector;
+            _newApiConnector = newApiConnector;
+            _historyApiConnector = historyApiConnector;
         }
 
         public void SetUpstreamUserAgent(string userAgent)
         {
-            _dataConnector.SetUpstreamUserAgent(userAgent);
-            _newConnector.SetUpstreamUserAgent(userAgent);
+            if (_connector != null)
+            {
+                _connector.SetUpstreamUserAgent(userAgent);
+            } else 
+            {
+                _dataApiConnector.SetUpstreamUserAgent(userAgent);
+                _newApiConnector.SetUpstreamUserAgent(userAgent);    
+                _historyApiConnector.SetUpstreamUserAgent(userAgent);
+            }
         }
 
         public QueryResult Retrieve(Query query)
@@ -61,10 +96,24 @@ namespace VersionOne.SDK.APIClient.Evolved
 
             try
             {
-                using (var stream = _dataConnector.GetData(new QueryURLBuilder(query).ToString()))
+                Stream stream;
+                if (_connector != null)
                 {
-                    doc.Load(stream);
+                    stream = _connector.GetData(new QueryURLBuilder(query).ToString());
                 }
+                else
+                {
+                    if (query.IsHistorical)
+                    {
+                        stream = _historyApiConnector.GetData(new QueryURLBuilder(query, true).ToString());
+                    }
+                    else
+                    {
+                        stream = _dataApiConnector.GetData(new QueryURLBuilder(query, true).ToString());
+                    }
+                }
+                doc.Load(stream);
+                stream.Dispose();
             }
             catch (WebException ex)
             {
@@ -92,11 +141,19 @@ namespace VersionOne.SDK.APIClient.Evolved
             try
             {
                 var path = oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
-                using (var stream = _dataConnector.SendData(path, string.Empty))
+                Stream stream;
+                if (_connector != null)
                 {
-                    doc.Load(stream);
+                    path = "Data/" + path;
+                    stream = _connector.SendData(path, string.Empty);
                 }
-
+                else
+                {
+                    stream = _dataApiConnector.SendData(path);
+                }
+                doc.Load(stream);
+                stream.Dispose();
+                
                 var asset = ParseAssetNode(doc.DocumentElement);
 
                 return asset.Oid;
@@ -147,10 +204,18 @@ namespace VersionOne.SDK.APIClient.Evolved
 
                 try
                 {
-                    using (var stream = _dataConnector.SendData(path, data))
+                    Stream stream;
+                    if (_connector != null)
                     {
-                        doc.Load(stream);
+                        path = "Data/" + path;
+                        stream = _connector.SendData(path, data);
                     }
+                    else
+                    {
+                        stream = _dataApiConnector.SendData(path, data);
+                    }
+                    doc.Load(stream);
+                    stream.Dispose();
 
                     ParseSaveAssetNode(doc.DocumentElement, asset);
                 }
@@ -184,7 +249,7 @@ namespace VersionOne.SDK.APIClient.Evolved
             }
         }
 
-        public Asset New(IAssetType assetType, Oid context = null)
+        public Asset New(IAssetType assetType, Oid context)
         {
             var doc = new XmlDocument();
 
@@ -197,10 +262,18 @@ namespace VersionOne.SDK.APIClient.Evolved
 
             try
             {
-                using (var stream = _newConnector.GetData(path))
+                Stream stream;
+                if (_connector != null)
                 {
-                    doc.Load(stream);
+                    path = "New/" + path;
+                    stream = _connector.GetData(path);
                 }
+                else
+                {
+                    stream = _newApiConnector.GetData(path);
+                }
+                doc.Load(stream);
+                stream.Dispose();
 
                 return ParseNewAssetNode(doc.DocumentElement, assetType);
             }
