@@ -8,7 +8,6 @@ using System.Xml;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
     public class Services : IServices
     {
         private readonly IMetaModel metaModel;
