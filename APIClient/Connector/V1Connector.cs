@@ -115,6 +115,14 @@ namespace VersionOne.SDK.APIClient
             _endpoint = QueryApiEndpoint;
         }
 
+        public void UseEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                throw new ArgumentNullException("endpoint");
+
+            _endpoint = endpoint;
+        }
+
         public void SetUpstreamUserAgent(string userAgent)
         {
             _upstreamUserAgent = userAgent;
@@ -238,24 +246,7 @@ namespace VersionOne.SDK.APIClient
 
                 return this;
             }
-
-            public ICanSetProxyOrGetConnector UseMetaApi()
-            {
-                _instance._endpoint = MetaApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetAuthMethod UseEndpoint(string endpoint)
-            {
-                if (string.IsNullOrWhiteSpace(endpoint))
-                    throw new ArgumentNullException("endpoint");
-
-                _instance._endpoint = endpoint;
-
-                return this;
-            }
-
+            
             public ICanSetProxyOrGetConnector WithUsernameAndPassword(string username, string password)
             {
                 if (string.IsNullOrWhiteSpace(username))
