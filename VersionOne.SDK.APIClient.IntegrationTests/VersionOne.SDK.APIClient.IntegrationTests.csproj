@@ -54,7 +54,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ServicesTester.cs" />
-    <Compile Include="V1ConnectorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

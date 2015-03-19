@@ -8,7 +8,7 @@ namespace VersionOne.SDK.APIClient
 	public class MetaModel : IMetaModel
 	{
 		private readonly IAPIConnector _connector;
-        private readonly V1Connector _metaApiConnector;
+        private readonly V1Connector _v1Connector;
 		private readonly IDictionary _map = new Hashtable();
 		private Version _version;
 		private string _versionString = null;
@@ -21,9 +21,9 @@ namespace VersionOne.SDK.APIClient
 		        Hookup();
 		}
 
-        public MetaModel(V1Connector metaApiConnector, bool hookup = false)
+        public MetaModel(V1Connector v1Connector, bool hookup = false)
         {
-            _metaApiConnector = metaApiConnector;
+            _v1Connector = v1Connector;
 
             if (hookup)
                 Hookup();
@@ -238,9 +238,10 @@ namespace VersionOne.SDK.APIClient
             {
                 result = _connector.GetData(path);
             }
-            if (_metaApiConnector != null)
+            if (_v1Connector != null)
             {
-                result = _metaApiConnector.GetData(path);
+                _v1Connector.UseMetaApi();
+                result = _v1Connector.GetData(path);
             }
 
             return result;

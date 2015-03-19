@@ -90,6 +90,31 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
+        public void UseDataApi()
+        {
+            _endpoint = DataApiEndpoint;
+        }
+
+        public void UseHistoryApi()
+        {
+            _endpoint = HistoryApiEndpoint;
+        }
+
+        public void UseNewApi()
+        {
+            _endpoint = NewApiEndpoint;
+        }
+
+        public void UseMetaApi()
+        {
+            _endpoint = MetaApiEndpoint;
+        }
+
+        public void UseQueryApi()
+        {
+            _endpoint = QueryApiEndpoint;
+        }
+
         public void SetUpstreamUserAgent(string userAgent)
         {
             _upstreamUserAgent = userAgent;
@@ -193,7 +218,7 @@ namespace VersionOne.SDK.APIClient
 
         #region Fluent Builder
 
-        private class Builder : ICanSetUserAgentHeader, ICanSetApi, ICanSetAuthMethod, ICanSetProxyOrGetConnector
+        private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethod, ICanSetProxyOrGetConnector
         {
             private readonly V1Connector _instance;
 
@@ -202,7 +227,7 @@ namespace VersionOne.SDK.APIClient
                 _instance = new V1Connector(versionOneInstanceUrl);
             }
 
-            public ICanSetApi WithUserAgentHeader(string name, string version)
+            public ICanSetAuthMethod WithUserAgentHeader(string name, string version)
             {
                 if (string.IsNullOrWhiteSpace(name))
                     throw new ArgumentNullException("name");
@@ -217,34 +242,6 @@ namespace VersionOne.SDK.APIClient
             public ICanSetProxyOrGetConnector UseMetaApi()
             {
                 _instance._endpoint = MetaApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetAuthMethod UseDataApi()
-            {
-                _instance._endpoint = DataApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetAuthMethod UseHistoryApi()
-            {
-                _instance._endpoint = HistoryApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetAuthMethod UseNewApi()
-            {
-                _instance._endpoint = NewApiEndpoint;
-
-                return this;
-            }
-
-            public ICanSetAuthMethod UseQueryApi()
-            {
-                _instance._endpoint = QueryApiEndpoint;
 
                 return this;
             }
@@ -355,7 +352,7 @@ namespace VersionOne.SDK.APIClient
         /// <param name="name"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        ICanSetApi WithUserAgentHeader(string name, string version);
+        ICanSetAuthMethod WithUserAgentHeader(string name, string version);
     }
 
     public interface ICanSetApi

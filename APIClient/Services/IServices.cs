@@ -7,6 +7,7 @@ namespace VersionOne.SDK.APIClient
         void Save(Asset asset, string comment);
         void Save(AssetList assetList);
         Oid LoggedIn { get; }
+        IMetaModel MetaModel { get; }
         Asset New(IAssetType assetType, Oid context = null);
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);

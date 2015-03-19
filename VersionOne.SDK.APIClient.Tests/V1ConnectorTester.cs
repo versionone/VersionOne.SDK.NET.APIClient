@@ -14,7 +14,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl(null)
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -25,7 +25,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("   ")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -36,7 +36,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("InvalidUrl")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -47,7 +47,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader(null, "1.0")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -58,7 +58,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", null)
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -69,7 +69,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("", "1.0")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -80,7 +80,7 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "   ")
-                .UseMetaApi()
+                .WithAccessToken("accesstoken")
                 .Build();
         }
 
@@ -91,7 +91,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword(null, "password")
                 .Build();
         }
@@ -103,7 +102,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("username", null)
                 .Build();
         }
@@ -115,7 +113,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("    ", "password")
                 .Build();
         }
@@ -127,7 +124,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("username", "")
                 .Build();
         }
@@ -139,7 +135,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithWindowsIntegrated(null, "password")
                 .Build();
         }
@@ -151,7 +146,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithWindowsIntegrated("fqdn", null)
                 .Build();
         }
@@ -163,7 +157,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("  ", "password")
                 .Build();
         }
@@ -175,7 +168,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("fqdn", "")
                 .Build();
         }
@@ -187,7 +179,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithAccessToken(null)
                 .Build();
         }
@@ -199,7 +190,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithAccessToken("   ")
                 .Build();
         }
@@ -211,35 +201,10 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithOAuth2Token("")
                 .Build();
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullEndpointException()
-        {
-            V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
-                .WithUserAgentHeader("MyApp", "1.0")
-                .UseEndpoint(null)
-                .WithUsernameAndPassword("username", "password")
-                .Build();
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EmptyEndpointException()
-        {
-            V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
-                .WithUserAgentHeader("MyApp", "1.0")
-                .UseEndpoint("  ")
-                .WithUsernameAndPassword("username", "password")
-                .Build();
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullProxyException()
@@ -247,7 +212,6 @@ namespace VersionOne.SDK.APIClient.Tests
             V1Connector connector = V1Connector
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
-                .UseDataApi()
                 .WithUsernameAndPassword("username", "password")
                 .WithProxy(null)
                 .Build();
