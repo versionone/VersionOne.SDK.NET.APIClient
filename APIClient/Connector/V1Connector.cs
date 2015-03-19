@@ -11,6 +11,12 @@ using log4net;
 
 namespace VersionOne.SDK.APIClient
 {
+    /// <summary>
+    /// Used to establish a connection to VersionOne.
+    /// </summary>
+    /// <remarks>
+    /// More text here.
+    /// </remarks>
     public class V1Connector
     {
         const string MetaApiEndpoint = "meta.v1/";
@@ -47,9 +53,9 @@ namespace VersionOne.SDK.APIClient
         }
 
         /// <summary>
-        /// Required method for setting the URL of the V1 instance.
+        /// Required method for setting the URL of the VersionOne instance.
         /// </summary>
-        /// <param name="versionOneInstanceUrl"></param>
+        /// <param name="versionOneInstanceUrl">The URL to the VersionOne instance. Format is "http(s)://server/instance".</param>
         /// <returns></returns>
         public static ICanSetUserAgentHeader WithInstanceUrl(string versionOneInstanceUrl)
         {
@@ -355,10 +361,10 @@ namespace VersionOne.SDK.APIClient
     public interface ICanSetUserAgentHeader
     {
         /// <summary>
-        /// Required method for setting a custom user agent header.
+        /// Required method for setting a custom user agent header for all HTTP requests made to the VersionOne API.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="version"></param>
+        /// <param name="name">The name of the application.</param>
+        /// <param name="version">The version number of the application.</param>
         /// <returns></returns>
         ICanSetAuthMethod WithUserAgentHeader(string name, string version);
     }
