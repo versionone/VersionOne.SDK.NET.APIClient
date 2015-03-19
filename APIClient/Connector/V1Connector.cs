@@ -56,7 +56,7 @@ namespace VersionOne.SDK.APIClient
             return new Builder(versionOneInstanceUrl);
         }
         
-        public Stream GetData(string resource = null)
+        internal Stream GetData(string resource = null)
         {
             ConfigureRequestIfNeeded();
             var resourceUrl = GetResourceUrl(resource);
@@ -68,7 +68,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public Stream SendData(string resource = null, object data = null, RequestFormat requestFormat = RequestFormat.Xml)
+        internal Stream SendData(string resource = null, object data = null, RequestFormat requestFormat = RequestFormat.Xml)
         {
             ConfigureRequestIfNeeded();
             switch (requestFormat)
@@ -91,40 +91,32 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public void UseDataApi()
+        internal void UseDataApi()
         {
             _endpoint = DataApiEndpoint;
         }
 
-        public void UseHistoryApi()
+        internal void UseHistoryApi()
         {
             _endpoint = HistoryApiEndpoint;
         }
 
-        public void UseNewApi()
+        internal void UseNewApi()
         {
             _endpoint = NewApiEndpoint;
         }
 
-        public void UseMetaApi()
+        internal void UseMetaApi()
         {
             _endpoint = MetaApiEndpoint;
         }
 
-        public void UseQueryApi()
+        internal void UseQueryApi()
         {
             _endpoint = QueryApiEndpoint;
         }
 
-        public void UseEndpoint(string endpoint)
-        {
-            if (string.IsNullOrWhiteSpace(endpoint))
-                throw new ArgumentNullException("endpoint");
-
-            _endpoint = endpoint;
-        }
-
-        public void SetUpstreamUserAgent(string userAgent)
+        internal void SetUpstreamUserAgent(string userAgent)
         {
             _upstreamUserAgent = userAgent;
         }
@@ -227,7 +219,7 @@ namespace VersionOne.SDK.APIClient
 
         #region Fluent Builder
 
-        private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethod, ICanSetProxyOrGetConnector
+        private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethod, ICanSetProxyOrEndpointOrGetConnector, ICanSetEndpointOrGetConnector, ICanSetProxyOrGetConnector
         {
             private readonly V1Connector _instance;
 
@@ -248,7 +240,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
             
-            public ICanSetProxyOrGetConnector WithUsernameAndPassword(string username, string password)
+            public ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password)
             {
                 if (string.IsNullOrWhiteSpace(username))
                     throw new ArgumentNullException("username");
@@ -260,7 +252,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetProxyOrGetConnector WithWindowsIntegrated()
+            public ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated()
             {
                 var credentialCache = new CredentialCache
                 {
@@ -272,7 +264,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetProxyOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
+            public ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password)
             {
                 if (string.IsNullOrWhiteSpace(fullyQualifiedDomainUsername))
                     throw new ArgumentNullException("fullyQualifiedDomainUsername");
@@ -284,7 +276,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetProxyOrGetConnector WithAccessToken(string accessToken)
+            public ICanSetProxyOrEndpointOrGetConnector WithAccessToken(string accessToken)
             {
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
@@ -294,7 +286,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanSetProxyOrGetConnector WithOAuth2Token(string accessToken)
+            public ICanSetProxyOrEndpointOrGetConnector WithOAuth2Token(string accessToken)
             {
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
@@ -304,7 +296,17 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public ICanGetConnector WithProxy(ProxyProvider proxyProvider)
+            public ICanSetProxyOrGetConnector UseEndpoint(string endpoint)
+            {
+                if (string.IsNullOrWhiteSpace(endpoint))
+                    throw new ArgumentNullException("endpoint");
+
+                _instance._endpoint = endpoint;
+
+                return this;
+            }
+
+            public ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider)
             {
                 if (proxyProvider == null)
                     throw new ArgumentNullException("proxyProvider");
@@ -317,6 +319,26 @@ namespace VersionOne.SDK.APIClient
             public V1Connector Build()
             {
                 return _instance;
+            }
+
+            ICanGetConnector ICanSetProxyOrGetConnector.WithProxy(ProxyProvider proxyProvider)
+            {
+                if (proxyProvider == null)
+                    throw new ArgumentNullException("proxyProvider");
+
+                _instance._handler.Proxy = proxyProvider.CreateWebProxy();
+
+                return this;
+            }
+
+            ICanGetConnector ICanSetEndpointOrGetConnector.UseEndpoint(string endpoint)
+            {
+                if (string.IsNullOrWhiteSpace(endpoint))
+                    throw new ArgumentNullException("endpoint");
+
+                _instance._endpoint = endpoint;
+
+                return this;
             }
         }
 
@@ -347,7 +369,7 @@ namespace VersionOne.SDK.APIClient
         /// For connecting to meta.v1 endpoint.
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector UseMetaApi();
+        ICanSetProxyOrEndpointOrGetConnector UseMetaApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Data endpoint.
@@ -389,14 +411,14 @@ namespace VersionOne.SDK.APIClient
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector WithUsernameAndPassword(string username, string password);
+        ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password);
 
         /// <summary>
         /// Optional method for setting the Windows Integrated Authentication credentials.
         /// The currently logged in users credentials are used.
         /// </summary>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector WithWindowsIntegrated();
+        ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated();
 
         /// <summary>
         /// Optional method for setting the Windows Integrated Authentication credentials.
@@ -405,21 +427,21 @@ namespace VersionOne.SDK.APIClient
         /// <param name="fullyQualifiedDomainUsername"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
+        ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
 
         /// <summary>
         /// Optional method for setting the access token for authentication.
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector WithAccessToken(string accessToken);
+        ICanSetProxyOrEndpointOrGetConnector WithAccessToken(string accessToken);
 
         /// <summary>
         /// Optional method for setting the OAuth2 access token for authentication.
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        ICanSetProxyOrGetConnector WithOAuth2Token(string accessToken);
+        ICanSetProxyOrEndpointOrGetConnector WithOAuth2Token(string accessToken);
     }
 
     public interface ICanGetConnector
@@ -431,6 +453,21 @@ namespace VersionOne.SDK.APIClient
         V1Connector Build();
     }
 
+    public interface ICanSetProxyOrEndpointOrGetConnector : ICanSetEndpoint, ICanGetConnector
+    {
+        /// <summary>
+        /// Optional method for setting the proxy credentials.
+        /// </summary>
+        /// <param name="proxyProvider"></param>
+        /// <returns></returns>
+        ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
+    }
+
+    public interface ICanSetEndpointOrGetConnector : ICanGetConnector
+    {
+        ICanGetConnector UseEndpoint(string endpoint);
+    }
+
     public interface ICanSetProxyOrGetConnector : ICanGetConnector
     {
         /// <summary>
@@ -439,6 +476,11 @@ namespace VersionOne.SDK.APIClient
         /// <param name="proxyProvider"></param>
         /// <returns></returns>
         ICanGetConnector WithProxy(ProxyProvider proxyProvider);
+    }
+
+    public interface ICanSetEndpoint
+    {
+        ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
     }
 
     #endregion
