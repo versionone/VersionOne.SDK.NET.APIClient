@@ -21,33 +21,16 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateGetAndDeleteSingleAsset()
         {
-            IMetaModel metaModel =
-                new MetaModel(V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader("MyApp", "1.0")
-                    .UseMetaApi()
-                    .Build());
-            IServices services = new Services(metaModel,
+            IServices services = new Services(
                 V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
-                    .UseDataApi()
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
-                    .Build(),
-                V1Connector.WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader("MyApp", "1.0")
-                    .UseNewApi()
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
-                    .Build(),
-                V1Connector.WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader("MyApp", "1.0")
-                    .UseHistoryApi()
                     .WithUsernameAndPassword(_v1Username, _v1Password)
                     .Build());
 
             // create a new story
-            var contextId = Oid.FromToken("Scope:0", metaModel);
-            var storyType = metaModel.GetAssetType("Story");
+            var contextId = Oid.FromToken("Scope:0", services.MetaModel);
+            var storyType = services.MetaModel.GetAssetType("Story");
             var firstStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             firstStory.SetAttributeValue(nameAttribute, "Services Test Story");
@@ -68,7 +51,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.IsTrue(firstStory.GetAttribute(nameAttribute).Value.Equals(secondStory.GetAttribute(nameAttribute).Value));
 
             // delete the story
-            services.ExecuteOperation(metaModel.GetOperation("Story.Delete"), firstStory.Oid);
+            services.ExecuteOperation(services.MetaModel.GetOperation("Story.Delete"), firstStory.Oid);
         }
     }
 }

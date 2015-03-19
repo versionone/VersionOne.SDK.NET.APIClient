@@ -12,9 +12,7 @@ namespace VersionOne.SDK.APIClient
     {
         private readonly IMetaModel _metaModel;
         private readonly IAPIConnector _connector;
-        private readonly V1Connector _dataApiConnector;
-        private readonly V1Connector _newApiConnector;
-        private readonly V1Connector _historyApiConnector;
+        private readonly V1Connector _v1Connector;
         private Oid _loggedIn;
 
         public Oid LoggedIn
@@ -54,27 +52,18 @@ namespace VersionOne.SDK.APIClient
             _connector = connector;
         }
 
-        public Services(IMetaModel metaModel, V1Connector dataApiConnector, V1Connector newApiConnector, V1Connector historyApiConnector)
+        public Services(V1Connector v1Connector)
         {
-            if (metaModel == null)
-                throw new ArgumentNullException("metaModel");
-            if (dataApiConnector == null)
-                throw new ArgumentNullException("dataApiConnector");
-            if (historyApiConnector == null)
-                throw new ArgumentNullException("historyApiConnector");
-            if (newApiConnector == null)
-                throw new ArgumentNullException("newApiConnector");
-            if (dataApiConnector.Endpoint != V1Connector.DataApiEndpoint)
-                throw new V1Exception("Wrong endpoint set on dataConnector.");
-            if (newApiConnector.Endpoint != V1Connector.NewApiEndpoint)
-                throw new V1Exception("Wrong endpoint set on newConnector.");
-            if (historyApiConnector.Endpoint != V1Connector.HistoryApiEndpoint)
-                throw new V1Exception("Wrong endpoint set on historyApiConnector.");
+            if (v1Connector == null)
+                throw new ArgumentNullException("v1Connector");
 
-            _metaModel = metaModel;
-            _dataApiConnector = dataApiConnector;
-            _newApiConnector = newApiConnector;
-            _historyApiConnector = historyApiConnector;
+            _v1Connector = v1Connector;
+            _metaModel = new MetaModel(_v1Connector);
+        }
+
+        public IMetaModel MetaModel
+        {
+            get { return _metaModel; }
         }
 
         public void SetUpstreamUserAgent(string userAgent)
@@ -84,9 +73,7 @@ namespace VersionOne.SDK.APIClient
                 _connector.SetUpstreamUserAgent(userAgent);
             } else 
             {
-                _dataApiConnector.SetUpstreamUserAgent(userAgent);
-                _newApiConnector.SetUpstreamUserAgent(userAgent);    
-                _historyApiConnector.SetUpstreamUserAgent(userAgent);
+                _v1Connector.SetUpstreamUserAgent(userAgent);
             }
         }
 
@@ -105,12 +92,13 @@ namespace VersionOne.SDK.APIClient
                 {
                     if (query.IsHistorical)
                     {
-                        stream = _historyApiConnector.GetData(new QueryURLBuilder(query, true).ToString());
+                        _v1Connector.UseHistoryApi();
                     }
                     else
                     {
-                        stream = _dataApiConnector.GetData(new QueryURLBuilder(query, true).ToString());
+                        _v1Connector.UseDataApi();
                     }
+                    stream = _v1Connector.GetData(new QueryURLBuilder(query, true).ToString());
                 }
                 doc.Load(stream);
                 stream.Dispose();
@@ -149,7 +137,8 @@ namespace VersionOne.SDK.APIClient
                 }
                 else
                 {
-                    stream = _dataApiConnector.SendData(path);
+                    _v1Connector.UseDataApi();
+                    stream = _v1Connector.SendData(path);
                 }
                 doc.Load(stream);
                 stream.Dispose();
@@ -212,7 +201,8 @@ namespace VersionOne.SDK.APIClient
                     }
                     else
                     {
-                        stream = _dataApiConnector.SendData(path, data);
+                        _v1Connector.UseDataApi();
+                        stream = _v1Connector.SendData(path, data);
                     }
                     doc.Load(stream);
                     stream.Dispose();
@@ -270,7 +260,8 @@ namespace VersionOne.SDK.APIClient
                 }
                 else
                 {
-                    stream = _newApiConnector.GetData(path);
+                    _v1Connector.UseNewApi();
+                    stream = _v1Connector.GetData(path);
                 }
                 doc.Load(stream);
                 stream.Dispose();
