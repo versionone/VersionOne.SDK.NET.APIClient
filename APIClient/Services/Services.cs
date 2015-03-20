@@ -10,71 +10,45 @@ namespace VersionOne.SDK.APIClient
 {
     public class Services : IServices
     {
-        private readonly IMetaModel _metaModel;
-        private readonly IAPIConnector _connector;
-        private readonly V1Connector _v1Connector;
-        private Oid _loggedIn;
+        private readonly IMetaModel metaModel;
+        private readonly IAPIConnector connector;
+        private Oid loggedIn;
 
         public Oid LoggedIn
         {
             get
             {
-                if (_loggedIn == null)
+                if (loggedIn == null)
                 {
-                    var q = new Query(_metaModel.GetAssetType("Member"));
-                    var term = new FilterTerm(_metaModel.GetAttributeDefinition("Member.IsSelf"));
+                    var q = new Query(metaModel.GetAssetType("Member"));
+                    var term = new FilterTerm(metaModel.GetAttributeDefinition("Member.IsSelf"));
                     term.Equal(true);
                     q.Filter = term;
                     var list = Retrieve(q).Assets;
 
                     if (list.Count != 1)
                     {
-                        _loggedIn = Oid.Null;
+                        loggedIn = Oid.Null;
                     }
                     else
                     {
-                        _loggedIn = list[0].Oid;
+                        loggedIn = list[0].Oid;
                     }
                 }
 
-                return _loggedIn;
+                return loggedIn;
             }
         }
 
         public Services(IMetaModel metaModel, IAPIConnector connector)
         {
-            if (metaModel == null)
-                throw new ArgumentNullException("metaModel");
-            if (connector == null)
-                throw new ArgumentNullException("connector");
-
-            _metaModel = metaModel;
-            _connector = connector;
-        }
-
-        public Services(V1Connector v1Connector)
-        {
-            if (v1Connector == null)
-                throw new ArgumentNullException("v1Connector");
-
-            _v1Connector = v1Connector;
-            _metaModel = new MetaModel(_v1Connector);
-        }
-
-        public IMetaModel MetaModel
-        {
-            get { return _metaModel; }
+            this.metaModel = metaModel;
+            this.connector = connector;
         }
 
         public void SetUpstreamUserAgent(string userAgent)
         {
-            if (_connector != null)
-            {
-                _connector.SetUpstreamUserAgent(userAgent);
-            } else 
-            {
-                _v1Connector.SetUpstreamUserAgent(userAgent);
-            }
+            connector.SetUpstreamUserAgent(userAgent);
         }
 
         public QueryResult Retrieve(Query query)
@@ -83,43 +57,28 @@ namespace VersionOne.SDK.APIClient
 
             try
             {
-                Stream stream;
-                if (_connector != null)
+                using (var stream = connector.GetData(new QueryURLBuilder(query).ToString()))
                 {
-                    stream = _connector.GetData(new QueryURLBuilder(query).ToString());
+                    doc.Load(stream);
                 }
-                else
-                {
-                    if (query.IsHistorical)
-                    {
-                        _v1Connector.UseHistoryApi();
-                    }
-                    else
-                    {
-                        _v1Connector.UseDataApi();
-                    }
-                    stream = _v1Connector.GetData(new QueryURLBuilder(query, true).ToString());
-                }
-                doc.Load(stream);
-                stream.Dispose();
             }
             catch (WebException ex)
             {
                 //if we get a 404, return an empty query result otherwise throw the exception
                 if (ex.Response is HttpWebResponse && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
                 {
-                    return GetEmptyQueryResult(query);
+                    return ParsingServices.GetEmptyQueryResult(query);
                 }
 
                 throw;
             }
 
-            return ParseQueryResult(doc.DocumentElement, query);
+            return ParsingServices.ParseQueryResult(doc.DocumentElement, query, metaModel);
         }
 
         public Oid GetOid(string token)
         {
-            return Oid.FromToken(token, _metaModel);
+            return Oid.FromToken(token, metaModel);
         }
 
         public Oid ExecuteOperation(IOperation op, Oid oid)
@@ -128,22 +87,14 @@ namespace VersionOne.SDK.APIClient
 
             try
             {
-                var path = oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
-                Stream stream;
-                if (_connector != null)
+                var path = "Data/" + oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
+
+                using (var stream = connector.SendData(path, string.Empty))
                 {
-                    path = "Data/" + path;
-                    stream = _connector.SendData(path, string.Empty);
+                    doc.Load(stream);
                 }
-                else
-                {
-                    _v1Connector.UseDataApi();
-                    stream = _v1Connector.SendData(path);
-                }
-                doc.Load(stream);
-                stream.Dispose();
-                
-                var asset = ParseAssetNode(doc.DocumentElement);
+
+                var asset = ParsingServices.ParseAssetNode(doc.DocumentElement, metaModel);
 
                 return asset.Oid;
             }
@@ -179,7 +130,7 @@ namespace VersionOne.SDK.APIClient
                 writer.WriteAsset(asset);
                 var data = s.ToString();
 
-                var path = asset.AssetType.Token;
+                var path = "Data/" + asset.AssetType.Token;
 
                 if (!asset.Oid.IsNull)
                 {
@@ -193,21 +144,12 @@ namespace VersionOne.SDK.APIClient
 
                 try
                 {
-                    Stream stream;
-                    if (_connector != null)
+                    using (var stream = connector.SendData(path, data))
                     {
-                        path = "Data/" + path;
-                        stream = _connector.SendData(path, data);
+                        doc.Load(stream);
                     }
-                    else
-                    {
-                        _v1Connector.UseDataApi();
-                        stream = _v1Connector.SendData(path, data);
-                    }
-                    doc.Load(stream);
-                    stream.Dispose();
 
-                    ParseSaveAssetNode(doc.DocumentElement, asset);
+                    ParsingServices.ParseSaveAssetNode(doc.DocumentElement, asset, metaModel);
                 }
                 catch (WebException ex)
                 {
@@ -243,7 +185,7 @@ namespace VersionOne.SDK.APIClient
         {
             var doc = new XmlDocument();
 
-            var path = assetType.Token;
+            var path = "New/" + assetType.Token;
 
             if (context != null && !context.IsNull)
             {
@@ -252,241 +194,16 @@ namespace VersionOne.SDK.APIClient
 
             try
             {
-                Stream stream;
-                if (_connector != null)
+                using (var stream = connector.GetData(path))
                 {
-                    path = "New/" + path;
-                    stream = _connector.GetData(path);
+                    doc.Load(stream);
                 }
-                else
-                {
-                    _v1Connector.UseNewApi();
-                    stream = _v1Connector.GetData(path);
-                }
-                doc.Load(stream);
-                stream.Dispose();
 
-                return ParseNewAssetNode(doc.DocumentElement, assetType);
+                return ParsingServices.ParseNewAssetNode(doc.DocumentElement, assetType);
             }
             catch (Exception ex)
             {
                 throw new APIException("Failed to get new asset!", assetType.Token, ex);
-            }
-        }
-
-        private QueryResult ParseQueryResult(XmlElement element, Query query)
-        {
-            switch (element.LocalName)
-            {
-                case "History":
-                    return ParseHistoryQueryResult(element, query);
-                case "Assets":
-                    return ParseAssetListQueryResult(element, query);
-                case "Asset":
-                    return ParseAssetQueryResult(element, query);
-                case "Attribute":
-                    return ParseAttributeQueryResult(element, query);
-                case "Relation":
-                    return ParseAttributeQueryResult(element, query);
-                default:
-                    return GetEmptyQueryResult(query);
-            }
-        }
-
-        private static QueryResult GetEmptyQueryResult(Query query)
-        {
-            return new QueryResult(new AssetList(), 0, query);
-        }
-
-        private QueryResult ParseHistoryQueryResult(XmlElement element, Query query)
-        {
-            if (!element.HasChildNodes)
-            {
-                return new QueryResult(new AssetList(), 0, query);
-            }
-
-            if (element.FirstChild.Name == "Asset")
-            {
-                return ParseAssetListQueryResult(element, query);
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private QueryResult ParseAssetListQueryResult(XmlElement element, Query query)
-        {
-            var list = new AssetList();
-            var total = int.Parse(element.GetAttribute("total"));
-
-            var assetnodes = element.SelectNodes("Asset");
-
-            list.AddRange(from XmlElement assetnode in assetnodes select ParseAssetNode(assetnode));
-
-            if (query.ParentRelation != null)
-            {
-                list = TreeAssetListByAttribute(list, query.ParentRelation);
-            }
-
-            return new QueryResult(list, total, query);
-        }
-
-        private static AssetList TreeAssetListByAttribute(IEnumerable<Asset> input, IAttributeDefinition def)
-        {
-            var h = new Hashtable();
-
-            foreach (var asset in input)
-            {
-                h.Add(asset.Oid.Token, asset);
-            }
-
-            var r = new AssetList();
-
-            foreach (var asset in input)
-            {
-                var parent = (Asset)h[((Oid)asset.GetAttribute(def).Value).Token];
-                var t = parent != null ? parent.Children : r;
-                t.Add(asset);
-            }
-
-            return r;
-        }
-
-        private QueryResult ParseAssetQueryResult(XmlElement element, Query query)
-        {
-            var list = new AssetList();
-            list.Add(ParseAssetNode(element));
-            return new QueryResult(list, 1, query);
-        }
-
-        private QueryResult ParseAttributeQueryResult(XmlElement element, Query query)
-        {
-            var list = new AssetList();
-
-            var asset = new Asset(query.Oid);
-            list.Add(asset);
-
-            var attribdef = _metaModel.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
-
-            ParseAttributeNode(asset, attribdef, element);
-
-            return new QueryResult(list, 1, query);
-        }
-
-        private Asset ParseAssetNode(XmlElement element)
-        {
-            var asset = new Asset(GetOid(element.GetAttribute("id")));
-
-            foreach (XmlElement child in element.ChildNodes)
-            {
-                ParseAttributeNode(asset, asset.AssetType.GetAttributeDefinition(child.GetAttribute("name")), child);
-            }
-
-            return asset;
-        }
-
-        private static Asset ParseNewAssetNode(XmlNode element, IAssetType assetType)
-        {
-            var asset = new Asset(assetType);
-
-            foreach (XmlElement child in element.ChildNodes)
-            {
-                ParseAttributeNode(asset, asset.AssetType.GetAttributeDefinition(child.GetAttribute("name")), child);
-            }
-
-            return asset;
-        }
-
-        private void ParseSaveAssetNode(XmlElement element, Asset asset)
-        {
-            asset.Oid = GetOid(element.GetAttribute("id"));
-            asset.AcceptChanges();
-        }
-
-        private static void ParseAttributeNode(Asset asset, IAttributeDefinition attribdef, XmlElement element)
-        {
-            var type = element.LocalName;
-
-            asset.EnsureAttribute(attribdef);
-
-            if (type == "Relation")
-            {
-                if (attribdef.IsMultiValue)
-                {
-                    foreach (XmlElement child in element.ChildNodes)
-                    {
-                        var add = child.HasAttribute("act") && child.GetAttribute("act") == "add";
-
-                        var token = child.GetAttribute("idref");
-
-                        if (add)
-                        {
-                            asset.AddAttributeValue(attribdef, token);
-                        }
-                        else
-                        {
-                            asset.LoadAttributeValue(attribdef, token);
-                        }
-                    }
-                }
-                else
-                {
-                    var token = Oid.Null.Token;
-
-                    if (element.HasChildNodes)
-                    {
-                        token = ((XmlElement)element.ChildNodes.Item(0)).GetAttribute("idref");
-                    }
-
-                    var force = element.HasAttribute("act") && element.GetAttribute("act") == "set";
-
-                    if (force)
-                    {
-                        asset.ForceAttributeValue(attribdef, token);
-                    }
-                    else
-                    {
-                        asset.LoadAttributeValue(attribdef, token);
-                    }
-                }
-            }
-            else
-            {
-                if (attribdef.IsMultiValue)
-                {
-                    foreach (XmlElement child in element.ChildNodes)
-                    {
-                        var add = child.HasAttribute("act") && child.GetAttribute("act") == "add";
-
-                        if (add)
-                        {
-                            asset.AddAttributeValue(attribdef, child.InnerText);
-                        }
-                        else
-                        {
-                            asset.LoadAttributeValue(attribdef, child.InnerText);
-                        }
-                    }
-                }
-                else
-                {
-                    object v = null;
-
-                    if (!string.IsNullOrEmpty(element.InnerText))
-                    {
-                        v = element.InnerText;
-                    }
-
-                    var force = element.HasAttribute("act") && element.GetAttribute("act") == "set";
-
-                    if (force)
-                    {
-                        asset.ForceAttributeValue(attribdef, v);
-                    }
-                    else
-                    {
-                        asset.LoadAttributeValue(attribdef, v);
-                    }
-                }
             }
         }
     }

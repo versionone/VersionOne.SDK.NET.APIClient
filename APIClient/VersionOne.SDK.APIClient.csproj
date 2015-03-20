@@ -138,6 +138,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connector\BuilderInterfaces\ICanGetConnector.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetApi.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetAuthMethod.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetEndpoint.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetEndpointOrGetConnector.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetProxyOrEndpointOrGetConnector.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetProxyOrGetConnector.cs" />
+    <Compile Include="Connector\BuilderInterfaces\ICanSetUserAgentHeader.cs" />
+    <Compile Include="Connector\RequestFormat.cs" />
+    <Compile Include="Connector\V1ConnectorExtensions.cs" />
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
@@ -148,6 +158,7 @@
     </Compile>
     <Compile Include="Connector\V1Connector.cs" />
     <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Services\ParsingServices.cs" />
     <Compile Include="Services\Services.cs" />
     <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />

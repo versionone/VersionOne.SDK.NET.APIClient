@@ -21,37 +21,38 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateGetAndDeleteSingleAsset()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader("MyApp", "1.0")
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
-                    .Build());
+            var connector = V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader("MyApp", "1.0")
+                .WithUsernameAndPassword(_v1Username, _v1Password)
+                .Build();
 
             // create a new story
-            var contextId = Oid.FromToken("Scope:0", services.MetaModel);
-            var storyType = services.MetaModel.GetAssetType("Story");
-            var firstStory = services.New(storyType, contextId);
+            var contextId = connector.GetOid("Scope:0");
+            var storyType = connector.MetaModel.GetAssetType("Story");
+            var firstStory = connector.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             firstStory.SetAttributeValue(nameAttribute, "Services Test Story");
-            services.Save(firstStory);
+            connector.Save(firstStory);
 
             Assert.IsNotNull(firstStory.Oid);
 
             // get the story
             Query query = new Query(firstStory.Oid);
             query.Selection.Add(nameAttribute);
-            var queryResult = services.Retrieve(query);
+            var queryResult = connector.Retrieve(query);
 
             Assert.IsNotNull(queryResult);
             Assert.IsNotNull(queryResult.Assets);
+            
             var secondStory = queryResult.Assets[0];
+            
             Assert.IsNotNull(secondStory);
             Assert.IsTrue(firstStory.Oid.Equals(secondStory.Oid));
             Assert.IsTrue(firstStory.GetAttribute(nameAttribute).Value.Equals(secondStory.GetAttribute(nameAttribute).Value));
 
             // delete the story
-            services.ExecuteOperation(services.MetaModel.GetOperation("Story.Delete"), firstStory.Oid);
+            connector.ExecuteOperation("Story.Delete", firstStory.Oid);
         }
     }
 }

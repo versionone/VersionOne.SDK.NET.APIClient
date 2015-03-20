@@ -28,6 +28,7 @@ namespace VersionOne.SDK.APIClient
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
         private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
+        private IMetaModel _metaModel;
         private string _endpoint;
         private string _upstreamUserAgent;
         private bool _isRequestConfigured = false;
@@ -61,7 +62,11 @@ namespace VersionOne.SDK.APIClient
         {
             return new Builder(versionOneInstanceUrl);
         }
-        
+
+        #region Internal Methods
+
+        public IMetaModel MetaModel { get { return _metaModel; } }
+
         internal Stream GetData(string resource = null)
         {
             ConfigureRequestIfNeeded();
@@ -126,6 +131,8 @@ namespace VersionOne.SDK.APIClient
         {
             _upstreamUserAgent = userAgent;
         }
+
+        #endregion
 
         private string GetResourceUrl(string resource)
         {
@@ -324,6 +331,7 @@ namespace VersionOne.SDK.APIClient
 
             public V1Connector Build()
             {
+                _instance._metaModel = new MetaModel(_instance);
                 return _instance;
             }
 
@@ -350,144 +358,4 @@ namespace VersionOne.SDK.APIClient
 
         #endregion
     }
-
-    public enum RequestFormat
-    {
-        Xml = 0, Json = 1
-    }
-
-    #region Interfaces
-
-    public interface ICanSetUserAgentHeader
-    {
-        /// <summary>
-        /// Required method for setting a custom user agent header for all HTTP requests made to the VersionOne API.
-        /// </summary>
-        /// <param name="name">The name of the application.</param>
-        /// <param name="version">The version number of the application.</param>
-        /// <returns></returns>
-        ICanSetAuthMethod WithUserAgentHeader(string name, string version);
-    }
-
-    public interface ICanSetApi
-    {
-        /// <summary>
-        /// For connecting to meta.v1 endpoint.
-        /// </summary>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector UseMetaApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/Data endpoint.
-        /// </summary>
-        /// <returns></returns>
-        ICanSetAuthMethod UseDataApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/Hist endpoint.
-        /// </summary>
-        /// <returns></returns>
-        ICanSetAuthMethod UseHistoryApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/New endpoint.
-        /// </summary>
-        /// <returns></returns>
-        ICanSetAuthMethod UseNewApi();
-
-        /// <summary>
-        /// For connecting to query.v1 endpoint
-        /// </summary>
-        /// <returns></returns>
-        ICanSetAuthMethod UseQueryApi();
-
-        /// <summary>
-        /// For connecting to a user specified endpoint.
-        /// </summary>
-        /// <param name="endpoint"></param>
-        /// <returns></returns>
-        ICanSetAuthMethod UseEndpoint(string endpoint);
-    }
-
-    public interface ICanSetAuthMethod
-    {
-        /// <summary>
-        /// Optional method for setting the username and password for authentication.
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password);
-
-        /// <summary>
-        /// Optional method for setting the Windows Integrated Authentication credentials.
-        /// The currently logged in users credentials are used.
-        /// </summary>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated();
-
-        /// <summary>
-        /// Optional method for setting the Windows Integrated Authentication credentials.
-        /// The fully qualified domain name will be in form "DOMAIN\username".
-        /// </summary>
-        /// <param name="fullyQualifiedDomainUsername"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
-
-        /// <summary>
-        /// Optional method for setting the access token for authentication.
-        /// </summary>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector WithAccessToken(string accessToken);
-
-        /// <summary>
-        /// Optional method for setting the OAuth2 access token for authentication.
-        /// </summary>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
-        ICanSetProxyOrEndpointOrGetConnector WithOAuth2Token(string accessToken);
-    }
-
-    public interface ICanGetConnector
-    {
-        /// <summary>
-        /// Required terminating method that returns the V1Connector object.
-        /// </summary>
-        /// <returns></returns>
-        V1Connector Build();
-    }
-
-    public interface ICanSetProxyOrEndpointOrGetConnector : ICanSetEndpoint, ICanGetConnector
-    {
-        /// <summary>
-        /// Optional method for setting the proxy credentials.
-        /// </summary>
-        /// <param name="proxyProvider"></param>
-        /// <returns></returns>
-        ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
-    }
-
-    public interface ICanSetEndpointOrGetConnector : ICanGetConnector
-    {
-        ICanGetConnector UseEndpoint(string endpoint);
-    }
-
-    public interface ICanSetProxyOrGetConnector : ICanGetConnector
-    {
-        /// <summary>
-        /// Optional method for setting the proxy credentials.
-        /// </summary>
-        /// <param name="proxyProvider"></param>
-        /// <returns></returns>
-        ICanGetConnector WithProxy(ProxyProvider proxyProvider);
-    }
-
-    public interface ICanSetEndpoint
-    {
-        ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
-    }
-
-    #endregion
 }
