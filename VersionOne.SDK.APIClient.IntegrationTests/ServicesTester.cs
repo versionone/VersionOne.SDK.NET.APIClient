@@ -26,7 +26,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader("MyApp", "1.0")
                     .WithUsernameAndPassword(_v1Username, _v1Password)
-                    .Build());
+                    .Connect());
 
             // create a new story
             var contextId = Oid.FromToken("Scope:0", services.MetaModel);

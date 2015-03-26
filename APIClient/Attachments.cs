@@ -5,31 +5,53 @@ namespace VersionOne.SDK.APIClient
 {
     public class Attachments : IAttachments
     {
-        private readonly IAPIConnector connector;
+        private readonly IAPIConnector _connector;
+        private readonly V1Connector _v1Connector;
 
         public Attachments(IAPIConnector connector)
         {
-            this.connector = connector;
+            _connector = connector;
+        }
+
+        public Attachments(V1Connector v1Connector)
+        {
+            _v1Connector = v1Connector;
         }
 
         public Stream GetReadStream(string key)
         {
+            Stream result = null;
             if (!string.IsNullOrEmpty(key))
             {
-                return connector.GetData(key.Substring(key.LastIndexOf('/') + 1));
+                if (_connector != null)
+                {
+                    result = _connector.GetData(key.Substring(key.LastIndexOf('/') + 1));
+                }
+                else if (_v1Connector != null)
+                {
+                    result = _v1Connector.GetData(key.Substring(key.LastIndexOf('/') + 1));
+                }
             }
 
-            return null;
+            return result;
         }
 
         public Stream GetWriteStream(string key)
         {
+            Stream result = null;
             if (!string.IsNullOrEmpty(key))
             {
-                return connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1));
+                if (_connector != null)
+                {
+                    result = _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1));
+                }
+                else if (_v1Connector != null)
+                {
+                    result = _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1));
+                }
             }
 
-            return null;
+            return result;
         }
 
         public void SetWriteStream(string key, string contentType)
@@ -38,7 +60,14 @@ namespace VersionOne.SDK.APIClient
             {
                 if (!string.IsNullOrEmpty(key))
                 {
-                    connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), contentType);
+                    if (_connector != null)
+                    {
+                        _connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), contentType);
+                    }
+                    else if (_v1Connector != null)
+                    {
+                        _v1Connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), contentType);
+                    }
                 }
             }
             catch (WebException ex)

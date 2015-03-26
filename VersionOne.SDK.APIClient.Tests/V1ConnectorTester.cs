@@ -15,7 +15,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl(null)
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("   ")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("InvalidUrl")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader(null, "1.0")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", null)
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("", "1.0")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "   ")
                 .WithAccessToken("accesstoken")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(null, "password")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", null)
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("    ", "password")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(null, "password")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("fqdn", null)
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("  ", "password")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -169,7 +169,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("fqdn", "")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -180,7 +180,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken(null)
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -191,7 +191,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("   ")
-                .Build();
+                .Connect();
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithOAuth2Token("")
-                .Build();
+                .Connect();
         }
         
         [TestMethod]
@@ -214,7 +214,7 @@ namespace VersionOne.SDK.APIClient.Tests
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "password")
                 .WithProxy(null)
-                .Build();
+                .Connect();
         }
     }
 }

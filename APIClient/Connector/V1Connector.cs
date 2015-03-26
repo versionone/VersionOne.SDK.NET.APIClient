@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -27,6 +28,7 @@ namespace VersionOne.SDK.APIClient
 
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
+        private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
         private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
         private string _endpoint;
         private string _upstreamUserAgent;
@@ -61,7 +63,24 @@ namespace VersionOne.SDK.APIClient
         {
             return new Builder(versionOneInstanceUrl);
         }
-        
+
+        internal Stream BeginRequest(string apipath)
+        {
+            var stream = new MemoryStream();
+            _pendingStreams[apipath] = stream;
+            
+            return stream;
+        }
+
+        internal Stream EndRequest(string apipath, string contentType)
+        {
+            var inputstream = _pendingStreams[apipath];
+            _pendingStreams.Remove(apipath);
+            var body = inputstream.ToArray();
+            
+            return SendData(apipath, body, contentType);
+        }
+
         internal Stream GetData(string resource = null)
         {
             ConfigureRequestIfNeeded();
@@ -74,18 +93,10 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        internal Stream SendData(string resource = null, object data = null, RequestFormat requestFormat = RequestFormat.Xml)
+        internal Stream SendData(string resource = null, object data = null, string contentType = "application/xml")
         {
             ConfigureRequestIfNeeded();
-            switch (requestFormat)
-            {
-                case RequestFormat.Json:
-                    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json")); 
-                    break;
-                default:
-                    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml")); 
-                    break;
-            }
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType)); 
             var stringData = data != null ? data.ToString() : string.Empty;
             var content = new StringContent(stringData, Encoding.UTF8);
             var resourceUrl = GetResourceUrl(resource);
@@ -322,7 +333,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public V1Connector Build()
+            public V1Connector Connect()
             {
                 return _instance;
             }
@@ -349,11 +360,6 @@ namespace VersionOne.SDK.APIClient
         }
 
         #endregion
-    }
-
-    public enum RequestFormat
-    {
-        Xml = 0, Json = 1
     }
 
     #region Interfaces
@@ -456,7 +462,7 @@ namespace VersionOne.SDK.APIClient
         /// Required terminating method that returns the V1Connector object.
         /// </summary>
         /// <returns></returns>
-        V1Connector Build();
+        V1Connector Connect();
     }
 
     public interface ICanSetProxyOrEndpointOrGetConnector : ICanSetEndpoint, ICanGetConnector
