@@ -20,11 +20,11 @@ namespace VersionOne.SDK.APIClient
     /// </remarks>
     public class V1Connector
     {
-        const string MetaApiEndpoint = "meta.v1/";
-        const string DataApiEndpoint = "rest-1.v1/Data/";
-        const string HistoryApiEndpoint = "rest-1.v1/Hist/";
-        const string NewApiEndpoint = "rest-1.v1/New";
-        const string QueryApiEndpoint = "query.v1/";
+        const string META_API = "meta.v1/";
+        const string DATA_API = "rest-1.v1/Data/";
+        const string HISTORY_API = "rest-1.v1/Hist/";
+        const string NEW_API = "rest-1.v1/New";
+        const string QUERY_API = "query.v1/";
 
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
@@ -110,27 +110,27 @@ namespace VersionOne.SDK.APIClient
 
         internal void UseDataApi()
         {
-            _endpoint = DataApiEndpoint;
+            _endpoint = DATA_API;
         }
 
         internal void UseHistoryApi()
         {
-            _endpoint = HistoryApiEndpoint;
+            _endpoint = HISTORY_API;
         }
 
         internal void UseNewApi()
         {
-            _endpoint = NewApiEndpoint;
+            _endpoint = NEW_API;
         }
 
         internal void UseMetaApi()
         {
-            _endpoint = MetaApiEndpoint;
+            _endpoint = META_API;
         }
 
         internal void UseQueryApi()
         {
-            _endpoint = QueryApiEndpoint;
+            _endpoint = QUERY_API;
         }
 
         internal void SetUpstreamUserAgent(string userAgent)
