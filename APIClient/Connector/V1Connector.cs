@@ -13,11 +13,8 @@ using log4net;
 namespace VersionOne.SDK.APIClient
 {
     /// <summary>
-    /// Used to establish a connection to VersionOne.
+    /// Used to establish a connection to a VersionOne instance.
     /// </summary>
-    /// <remarks>
-    /// More text here.
-    /// </remarks>
     public class V1Connector
     {
         const string META_API = "meta.v1/";
@@ -58,7 +55,7 @@ namespace VersionOne.SDK.APIClient
         /// Required method for setting the URL of the VersionOne instance.
         /// </summary>
         /// <param name="versionOneInstanceUrl">The URL to the VersionOne instance. Format is "http(s)://server/instance".</param>
-        /// <returns></returns>
+        /// <returns>ICanSetUserAgentHeader</returns>
         public static ICanSetUserAgentHeader WithInstanceUrl(string versionOneInstanceUrl)
         {
             return new Builder(versionOneInstanceUrl);
@@ -380,38 +377,38 @@ namespace VersionOne.SDK.APIClient
         /// <summary>
         /// For connecting to meta.v1 endpoint.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector UseMetaApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Data endpoint.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetAuthMethod</returns>
         ICanSetAuthMethod UseDataApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/Hist endpoint.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetAuthMethod</returns>
         ICanSetAuthMethod UseHistoryApi();
 
         /// <summary>
         /// For connecting to rest-1.v1/New endpoint.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetAuthMethod</returns>
         ICanSetAuthMethod UseNewApi();
 
         /// <summary>
         /// For connecting to query.v1 endpoint
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetAuthMethod</returns>
         ICanSetAuthMethod UseQueryApi();
 
         /// <summary>
-        /// For connecting to a user specified endpoint.
+        /// For connecting to a user specified API endpoint.
         /// </summary>
-        /// <param name="endpoint"></param>
-        /// <returns></returns>
+        /// <param name="endpoint">The API endpoint to make HTTP requests to.</param>
+        /// <returns>ICanSetAuthMethod</returns>
         ICanSetAuthMethod UseEndpoint(string endpoint);
     }
 
@@ -420,39 +417,37 @@ namespace VersionOne.SDK.APIClient
         /// <summary>
         /// Optional method for setting the username and password for authentication.
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
+        /// <param name="username">The username of a valid VersionOne member account.</param>
+        /// <param name="password">The password of a valid VersionOne member account.</param>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password);
 
         /// <summary>
-        /// Optional method for setting the Windows Integrated Authentication credentials.
-        /// The currently logged in users credentials are used.
+        /// Optional method for setting the Windows Integrated Authentication credentials for authentication based on the currently logged in user.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated();
 
         /// <summary>
-        /// Optional method for setting the Windows Integrated Authentication credentials.
-        /// The fully qualified domain name will be in form "DOMAIN\username".
+        /// Optional method for setting the Windows Integrated Authentication credentials for authentication based on specified user credentials.
         /// </summary>
-        /// <param name="fullyQualifiedDomainUsername"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
+        /// <param name="fullyQualifiedDomainUsername">The fully qualified domain name in form "DOMAIN\username".</param>
+        /// <param name="password">The password of a valid VersionOne member account.</param>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated(string fullyQualifiedDomainUsername, string password);
 
         /// <summary>
         /// Optional method for setting the access token for authentication.
         /// </summary>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
+        /// <param name="accessToken">The access token.</param>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector WithAccessToken(string accessToken);
 
         /// <summary>
         /// Optional method for setting the OAuth2 access token for authentication.
         /// </summary>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
+        /// <param name="accessToken">The OAuth2 access token.</param>
+        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
         ICanSetProxyOrEndpointOrGetConnector WithOAuth2Token(string accessToken);
     }
 
@@ -461,7 +456,7 @@ namespace VersionOne.SDK.APIClient
         /// <summary>
         /// Required terminating method that returns the V1Connector object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>V1Connector</returns>
         V1Connector Connect();
     }
 
@@ -470,13 +465,18 @@ namespace VersionOne.SDK.APIClient
         /// <summary>
         /// Optional method for setting the proxy credentials.
         /// </summary>
-        /// <param name="proxyProvider"></param>
-        /// <returns></returns>
+        /// <param name="proxyProvider">The ProxyProvider containing the proxy URI, username, and password.</param>
+        /// <returns>ICanSetEndpointOrGetConnector</returns>
         ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
     }
 
     public interface ICanSetEndpointOrGetConnector : ICanGetConnector
     {
+        /// <summary>
+        /// Optional method for specifying an API endpoint to connect to.
+        /// </summary>
+        /// <param name="endpoint">The API endpoint.</param>
+        /// <returns>ICanGetConnector</returns>
         ICanGetConnector UseEndpoint(string endpoint);
     }
 
@@ -485,13 +485,18 @@ namespace VersionOne.SDK.APIClient
         /// <summary>
         /// Optional method for setting the proxy credentials.
         /// </summary>
-        /// <param name="proxyProvider"></param>
-        /// <returns></returns>
+        /// <param name="proxyProvider">The ProxyProvider containing the proxy URI, username, and password.</param>
+        /// <returns>ICanGetConnector</returns>
         ICanGetConnector WithProxy(ProxyProvider proxyProvider);
     }
 
     public interface ICanSetEndpoint
     {
+        /// <summary>
+        /// Optional method for specifying an API endpoint to connect to.
+        /// </summary>
+        /// <param name="endpoint">The API endpoint.</param>
+        /// <returns>ICanSetProxyOrGetConnector</returns>
         ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
     }
 
