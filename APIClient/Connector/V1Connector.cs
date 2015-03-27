@@ -305,7 +305,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
 
-                //TODO: add logic to authenticate with OAuth2
+                _instance._client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
                 return this;
             }
