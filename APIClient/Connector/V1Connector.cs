@@ -47,7 +47,7 @@ namespace VersionOne.SDK.APIClient
             }
             else
             {
-                throw new V1Exception("Instance url is not valid.");
+                throw new ConnectionException("Instance url is not valid.");
             }
         }
 
@@ -138,7 +138,7 @@ namespace VersionOne.SDK.APIClient
         private string GetResourceUrl(string resource)
         {
             if (string.IsNullOrWhiteSpace(_endpoint))
-                throw new V1Exception("V1Connector is not properly configured. There is no API or endpoint selected.");
+                throw new ConnectionException("V1Connector is not properly configured. The API endpoint was not specified.");
 
             return _endpoint + ValidateResource(resource);
         }
@@ -148,8 +148,7 @@ namespace VersionOne.SDK.APIClient
             if (!response.IsSuccessStatusCode)
             {
                 var statusCode = Convert.ToInt32(response.StatusCode);
-                var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode,
-                    HttpWorkerRequest.GetStatusDescription(statusCode));
+                var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode, HttpWorkerRequest.GetStatusDescription(statusCode));
                 throw new WebException(message);
             }
         }
