@@ -30,7 +30,7 @@ namespace VersionOne.SDK.APIClient.Tests
         }
 
         [TestMethod]
-        [ExpectedExceptionAndMessage(typeof(V1Exception), "Instance url is not valid.")]
+        [ExpectedExceptionAndMessage(typeof(ConnectionException), "Instance url is not valid.")]
         public void InvalidUrlException()
         {
             V1Connector connector = V1Connector

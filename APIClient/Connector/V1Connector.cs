@@ -371,46 +371,6 @@ namespace VersionOne.SDK.APIClient
         ICanSetAuthMethod WithUserAgentHeader(string name, string version);
     }
 
-    public interface ICanSetApi
-    {
-        /// <summary>
-        /// For connecting to meta.v1 endpoint.
-        /// </summary>
-        /// <returns>ICanSetProxyOrEndpointOrGetConnector</returns>
-        ICanSetProxyOrEndpointOrGetConnector UseMetaApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/Data endpoint.
-        /// </summary>
-        /// <returns>ICanSetAuthMethod</returns>
-        ICanSetAuthMethod UseDataApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/Hist endpoint.
-        /// </summary>
-        /// <returns>ICanSetAuthMethod</returns>
-        ICanSetAuthMethod UseHistoryApi();
-
-        /// <summary>
-        /// For connecting to rest-1.v1/New endpoint.
-        /// </summary>
-        /// <returns>ICanSetAuthMethod</returns>
-        ICanSetAuthMethod UseNewApi();
-
-        /// <summary>
-        /// For connecting to query.v1 endpoint
-        /// </summary>
-        /// <returns>ICanSetAuthMethod</returns>
-        ICanSetAuthMethod UseQueryApi();
-
-        /// <summary>
-        /// For connecting to a user specified API endpoint.
-        /// </summary>
-        /// <param name="endpoint">The API endpoint to make HTTP requests to.</param>
-        /// <returns>ICanSetAuthMethod</returns>
-        ICanSetAuthMethod UseEndpoint(string endpoint);
-    }
-
     public interface ICanSetAuthMethod
     {
         /// <summary>
