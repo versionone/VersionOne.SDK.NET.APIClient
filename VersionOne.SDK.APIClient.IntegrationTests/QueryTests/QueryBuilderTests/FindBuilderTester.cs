@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.LegacyIntegrationTests.QueryTests.QueryBuilderTests
+namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests.QueryBuilderTests
 {
     [TestClass]
     public class FindBuilderTester

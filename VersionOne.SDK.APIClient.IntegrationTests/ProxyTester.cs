@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.LegacyIntegrationTests
+namespace VersionOne.SDK.APIClient.IntegrationTests
 {
     [TestClass]
     [Ignore]

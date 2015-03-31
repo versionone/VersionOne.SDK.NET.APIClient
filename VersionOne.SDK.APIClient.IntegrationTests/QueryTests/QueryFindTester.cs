@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.LegacyIntegrationTests.QueryTests
+namespace VersionOne.SDK.APIClient.IntegrationTests.QueryTests
 {
     [TestClass]
     public class QueryFindTester

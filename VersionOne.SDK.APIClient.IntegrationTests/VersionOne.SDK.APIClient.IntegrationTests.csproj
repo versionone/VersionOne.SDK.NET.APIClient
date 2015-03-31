@@ -53,7 +53,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ServicesTester.cs" />
+    <Compile Include="APIClientIntegrationTestSuiteIT.cs" />
+    <Compile Include="AssetTests.cs" />
+    <Compile Include="ConnectorTests\VersionOneAPIConnectorTester.cs" />
+    <Compile Include="ProxyTester.cs" />
+    <Compile Include="QueryTests\QueryBuilderTests\FindBuilderTester.cs" />
+    <Compile Include="QueryTests\QueryFindTester.cs" />
+    <Compile Include="ServicesTests\ServicesTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

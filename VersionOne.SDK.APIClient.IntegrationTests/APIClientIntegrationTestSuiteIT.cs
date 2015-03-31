@@ -1,4 +1,4 @@
-﻿namespace VersionOne.SDK.APIClient.LegacyIntegrationTests
+﻿namespace VersionOne.SDK.APIClient.IntegrationTests
 {
     public class APIClientIntegrationTestSuiteIT
     {

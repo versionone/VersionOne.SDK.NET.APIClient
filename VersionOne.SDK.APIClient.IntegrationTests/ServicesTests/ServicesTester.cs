@@ -1,22 +1,14 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VersionOne.SDK.APIClient.IntegrationTests
+namespace VersionOne.SDK.APIClient.IntegrationTests.ServicesTests
 {
     [TestClass]
     public class ServicesTester
     {
-        private readonly string _v1InstanceUrl = ConfigurationManager.AppSettings.Get("InstanceUrl");
-        private readonly string _v1Username = ConfigurationManager.AppSettings.Get("V1Username");
+        private readonly string _v1InstanceUrl = ConfigurationManager.AppSettings.Get("V1Url");
+        private readonly string _v1Username = ConfigurationManager.AppSettings.Get("V1UserName");
         private readonly string _v1Password = ConfigurationManager.AppSettings.Get("V1Password");
-        private readonly string _v1AccessToken = ConfigurationManager.AppSettings.Get("V1AccessToken");
-        private readonly string _windowsUsername = ConfigurationManager.AppSettings.Get("WinUsername");
-        private readonly string _windowsPassword = ConfigurationManager.AppSettings.Get("WinPassword");
-        private readonly string _proxyUrl = ConfigurationManager.AppSettings.Get("ProxyUrl");
-        private readonly string _proxyDomain = ConfigurationManager.AppSettings.Get("ProxyDomain");
-        private readonly string _proxyUsername = ConfigurationManager.AppSettings.Get("ProxyUsername");
-        private readonly string _proxyPassword = ConfigurationManager.AppSettings.Get("ProxyPassword");
 
         [TestMethod]
         public void CreateGetAndDeleteSingleAsset()

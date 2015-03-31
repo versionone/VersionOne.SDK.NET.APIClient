@@ -4,7 +4,7 @@ using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VersionOne.SDK.MSTestExtensions;
 
-namespace VersionOne.SDK.APIClient.LegacyIntegrationTests.ConnectorTests
+namespace VersionOne.SDK.APIClient.IntegrationTests.ConnectorTests
 {
     [TestClass]
     public class VersionOneAPIConnectorTester
