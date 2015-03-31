@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,8 +53,39 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DBTests\BitTester.cs" />
+    <Compile Include="DBTests\DateTimeTester.cs" />
+    <Compile Include="DBTests\IntTester.cs" />
+    <Compile Include="DBTests\StrTester.cs" />
+    <Compile Include="LocalizerTesterBase.cs" />
+    <Compile Include="LocalizerTests\LocalizerTester.cs" />
+    <Compile Include="MetaTesterBase.cs" />
+    <Compile Include="MetaTests\AssetTypeTester.cs" />
+    <Compile Include="MetaTests\AttributeDefinitionTester.cs" />
+    <Compile Include="MetaTests\MetaModelTester.cs" />
+    <Compile Include="MetaTests\OperationTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="V1ConnectorTester.cs" />
+    <Compile Include="ConnectorTests\V1ConnectorTester.cs" />
+    <Compile Include="QueryTests\PagingTester.cs" />
+    <Compile Include="QueryTests\QueryFilter2Tester.cs" />
+    <Compile Include="ResponseConnector.cs" />
+    <Compile Include="ServicesTests\MultiValueAttributeTester.cs" />
+    <Compile Include="ServicesTests\RequiredFieldValidatorTester.cs" />
+    <Compile Include="ServicesTests\ServicesTester.cs" />
+    <Compile Include="ServicesTests\ServicesTesterBase.cs" />
+    <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
+    <Compile Include="UtilityTests\ConnectorsTester.cs" />
+    <Compile Include="UtilityTests\CredentialsTester.cs" />
+    <Compile Include="UtilityTests\DurationTester.cs" />
+    <Compile Include="UtilityTests\EnvironmentContextTester.cs" />
+    <Compile Include="UtilityTests\MimeTypeTester.cs" />
+    <Compile Include="UtilityTests\ModelsAndServicesTester.cs" />
+    <Compile Include="UtilityTests\OidTester.cs" />
+    <Compile Include="UtilityTests\RankTester.cs" />
+    <Compile Include="UtilityTests\TextBuildTester.cs" />
+    <Compile Include="UtilityTests\UrlsTester.cs" />
+    <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
+    <Compile Include="UtilityTests\V1ConfigurationTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
@@ -63,6 +96,12 @@
       <Project>{97c810f7-149b-4c9b-8d5a-87c050eb2f80}</Project>
       <Name>VersionOne.SDK.MSTestExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
