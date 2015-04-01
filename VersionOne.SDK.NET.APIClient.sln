@@ -16,9 +16,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.MSTestExtens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.DocumentationTests", "APIClient.DocumentationTests\VersionOne.SDK.APIClient.DocumentationTests.csproj", "{D5F38D94-3E0C-4DE2-81D5-38C383E2C21F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Tests", "VersionOne.SDK.APIClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{6FC59937-44A3-43DA-B399-DCE41F64813C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Tests", "APIClient.Tests\VersionOne.SDK.APIClient.Tests.csproj", "{6FC59937-44A3-43DA-B399-DCE41F64813C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.IntegrationTests", "VersionOne.SDK.APIClient.IntegrationTests\VersionOne.SDK.APIClient.IntegrationTests.csproj", "{9DAF5746-8EED-4749-BE25-85FEEA949D71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.IntegrationTests", "APIClient.IntegrationTests\VersionOne.SDK.APIClient.IntegrationTests.csproj", "{9DAF5746-8EED-4749-BE25-85FEEA949D71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
