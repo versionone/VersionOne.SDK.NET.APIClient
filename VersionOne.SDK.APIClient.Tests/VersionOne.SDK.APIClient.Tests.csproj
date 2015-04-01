@@ -57,9 +57,9 @@
     <Compile Include="DBTests\DateTimeTester.cs" />
     <Compile Include="DBTests\IntTester.cs" />
     <Compile Include="DBTests\StrTester.cs" />
-    <Compile Include="LocalizerTesterBase.cs" />
+    <Compile Include="LocalizerTests\LocalizerTesterBase.cs" />
     <Compile Include="LocalizerTests\LocalizerTester.cs" />
-    <Compile Include="MetaTesterBase.cs" />
+    <Compile Include="MetaTests\MetaTesterBase.cs" />
     <Compile Include="MetaTests\AssetTypeTester.cs" />
     <Compile Include="MetaTests\AttributeDefinitionTester.cs" />
     <Compile Include="MetaTests\MetaModelTester.cs" />
