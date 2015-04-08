@@ -19,7 +19,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             _metaModel = environment.MetaModel;
             _services = environment.Services;
             _storyAssetType = _metaModel.GetAssetType("Story");
-            _projectId = APIClientIntegrationTestSuiteIT.ProjectId;
+            _projectId = LegacyIntegrationTestHelper.ProjectId;
         }
 
         #region Private Methods

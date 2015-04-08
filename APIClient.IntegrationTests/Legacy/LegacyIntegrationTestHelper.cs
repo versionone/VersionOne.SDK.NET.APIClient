@@ -1,13 +1,13 @@
 ﻿namespace VersionOne.SDK.APIClient.IntegrationTests
 {
-    public class APIClientIntegrationTestSuiteIT
+    public class LegacyIntegrationTestHelper
     {
         private static IMetaModel _metaModel;
         private static IServices _services;
         private static EnvironmentContext _context;
         private static Oid _projectId;
 
-        const string TestProjectName = ".Net.SDK Integration Tests";
+        const string TestProjectName = ".Net.SDK Integration Legacy Tests";
 
         public static Oid ProjectId
         {
@@ -35,7 +35,7 @@
             }
         }
 
-        public static void Setup()
+        private static void Setup()
         {
             _context = new EnvironmentContext();
             _metaModel = _context.MetaModel;

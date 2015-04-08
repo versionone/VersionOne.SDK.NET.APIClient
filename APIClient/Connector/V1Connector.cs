@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -74,7 +75,7 @@ namespace VersionOne.SDK.APIClient
             var inputstream = _pendingStreams[apipath];
             _pendingStreams.Remove(apipath);
             var body = inputstream.ToArray();
-            
+
             return SendData(apipath, body, contentType);
         }
 
@@ -94,8 +95,16 @@ namespace VersionOne.SDK.APIClient
         {
             ConfigureRequestIfNeeded();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType)); 
-            var stringData = data != null ? data.ToString() : string.Empty;
-            var content = new StringContent(stringData, Encoding.UTF8);
+            string stringData = data != null ? data.ToString() : string.Empty;
+            HttpContent content;
+            if (data is byte[])
+            {
+                content = new ByteArrayContent((byte[]) data);
+            }
+            else
+            {
+                content = new StringContent(stringData);
+            }
             var resourceUrl = GetResourceUrl(resource);
             var response = _client.PostAsync(resourceUrl, content).Result;
             ThrowWebExceptionIfNeeded(response);
