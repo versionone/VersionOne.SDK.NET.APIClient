@@ -128,11 +128,12 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.AreEqual(1, story.GetAttribute(childrenAttribute).Values.Cast<object>().Count());
         }
 
+        [Ignore]
         [TestMethod]
         public void CreateStoryWithAttachment()
         {
             var services = GetServices();
-            string file = "./versionone.png";
+            string file = "versionone.png";
 
             Assert.IsTrue(File.Exists(file));
             
@@ -271,11 +272,12 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.AreEqual(1, story.GetAttribute(childrenAttribute).Values.Cast<object>().Count());
         }
 
+        [Ignore]
         [TestMethod]
         public void CreateDefectWithAttachment()
         {
             var services = GetServices();
-            string file = "./versionone.png";
+            string file = "versionone.png";
 
             Assert.IsTrue(File.Exists(file));
 
