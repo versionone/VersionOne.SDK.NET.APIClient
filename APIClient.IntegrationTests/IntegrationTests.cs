@@ -132,7 +132,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void CreateStoryWithAttachment()
         {
             var services = GetServices();
-            string file = "versionone.png";
+            string file = "./versionone.png";
 
             Assert.IsTrue(File.Exists(file));
             
@@ -275,7 +275,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void CreateDefectWithAttachment()
         {
             var services = GetServices();
-            string file = "versionone.png";
+            string file = "./versionone.png";
 
             Assert.IsTrue(File.Exists(file));
 
