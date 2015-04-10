@@ -17,12 +17,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateEpic()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var epicType = services.MetaModel.GetAssetType("Epic");
@@ -37,12 +32,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateEpicWithNestedStory()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             
@@ -68,12 +58,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateStory()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -88,12 +73,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateStoryWithNestedTask()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -122,12 +102,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateStoryWithNestedTest()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -156,12 +131,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateStoryWithAttachment()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
             string file = "versionone.png";
 
             Assert.IsTrue(File.Exists(file));
@@ -231,12 +201,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateDefect()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var defectType = services.MetaModel.GetAssetType("Defect");
@@ -251,12 +216,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateDefectWithNestedTask()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var defectType = services.MetaModel.GetAssetType("Defect");
@@ -285,12 +245,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateDefectWithNestedTest()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var defectType = services.MetaModel.GetAssetType("Defect");
@@ -319,12 +274,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateDefectWithAttachment()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
             string file = "versionone.png";
 
             Assert.IsTrue(File.Exists(file));
@@ -394,12 +344,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateRequest()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var requestType = services.MetaModel.GetAssetType("Request");
@@ -414,12 +359,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void CreateIssue()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var issueType = services.MetaModel.GetAssetType("Issue");
@@ -438,12 +378,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void UpdateScalarAttributeOnStory()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -467,12 +402,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void UpdateSingleRelationAttributeOnStory()
         {
-            IServices services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
-                    .Connect());
+            var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -495,5 +425,16 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         }
 
         #endregion
+
+        private IServices GetServices()
+        {
+            IServices services = new Services(
+                V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                    .WithAccessToken(_v1AccessToken)
+                    .Connect());
+            return services;
+        }
     }
 }
