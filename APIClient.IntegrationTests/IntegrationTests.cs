@@ -142,7 +142,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
                 .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
-                .Connect());
+                .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.MetaModel.GetAssetType("Story");
@@ -286,7 +286,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
                 .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
-                .Connect());
+                .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var defectType = services.MetaModel.GetAssetType("Defect");
@@ -435,7 +435,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
                     .WithAccessToken(_v1AccessToken)
-                    .Connect());
+                    .Build());
             return services;
         }
     }

@@ -338,7 +338,7 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            public V1Connector Connect()
+            public V1Connector Build()
             {
                 return _instance;
             }
@@ -425,7 +425,7 @@ namespace VersionOne.SDK.APIClient
         /// Required terminating method that returns the V1Connector object.
         /// </summary>
         /// <returns>V1Connector</returns>
-        V1Connector Connect();
+        V1Connector Build();
     }
 
     public interface ICanSetProxyOrEndpointOrGetConnector : ICanSetEndpoint, ICanGetConnector

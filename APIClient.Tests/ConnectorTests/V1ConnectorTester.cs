@@ -15,7 +15,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl(null)
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("   ")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("InvalidUrl")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader(null, "1.0")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", null)
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("", "1.0")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "   ")
                 .WithAccessToken("accesstoken")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(null, "password")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", null)
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("    ", "password")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(null, "password")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("fqdn", null)
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("  ", "password")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -169,7 +169,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("fqdn", "")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -180,7 +180,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken(null)
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -191,7 +191,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("   ")
-                .Connect();
+                .Build();
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithInstanceUrl("http://localhost/VersionOne/")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithOAuth2Token("")
-                .Connect();
+                .Build();
         }
         
         [TestMethod]
@@ -214,7 +214,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "password")
                 .WithProxy(null)
-                .Connect();
+                .Build();
         }
     }
 }
