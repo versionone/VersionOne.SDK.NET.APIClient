@@ -158,7 +158,8 @@ namespace VersionOne.SDK.APIClient
             {
                 var statusCode = Convert.ToInt32(response.StatusCode);
                 var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode, HttpWorkerRequest.GetStatusDescription(statusCode));
-                throw new WebException(message);
+                var webException = new WebException(message, (WebExceptionStatus) statusCode);
+                throw webException;
             }
         }
 

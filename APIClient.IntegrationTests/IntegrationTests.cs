@@ -23,7 +23,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var epicType = services.MetaModel.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var nameAttribute = epicType.GetAttributeDefinition("Name");
-            newEpic.SetAttributeValue(nameAttribute, "Test Epic");
+            var name = string.Format("Test Epic {0} Create epic", contextId);
+            newEpic.SetAttributeValue(nameAttribute, name);
             services.Save(newEpic);
 
             Assert.IsNotNull(newEpic.Oid);
@@ -40,7 +41,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newEpic = services.New(epicType, contextId);
             var epicNameAttribute = epicType.GetAttributeDefinition("Name");
             var generateSubStoryOperation = epicType.GetOperation("GenerateSubStory ");
-            newEpic.SetAttributeValue(epicNameAttribute, "Test Epic With Nested Story");
+            var name = string.Format("Test Epic {0} Create epic with nested story", contextId);
+            newEpic.SetAttributeValue(epicNameAttribute, name);
 
             services.Save(newEpic);
             services.ExecuteOperation(generateSubStoryOperation, newEpic.Oid);
@@ -64,7 +66,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var storyType = services.MetaModel.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
-            newStory.SetAttributeValue(nameAttribute, "Test Story");
+            var name = string.Format("Test Story {0} Create story", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
             Assert.IsNotNull(newStory.Oid);
@@ -80,7 +83,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var childrenAttribute = storyType.GetAttributeDefinition("Children");
-            newStory.SetAttributeValue(nameAttribute, "Test Story With Nested Task");
+            var name = string.Format("Test Story {0} Create story with nested task", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
             var taskType = services.MetaModel.GetAssetType("Task");
@@ -109,7 +113,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var childrenAttribute = storyType.GetAttributeDefinition("Children");
-            newStory.SetAttributeValue(nameAttribute, "Test Story With Nested Test");
+            var name = string.Format("Test Story {0} Create story with nested test", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
             var testType = services.MetaModel.GetAssetType("Test");
@@ -149,7 +154,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var attachmentsAttribute = storyType.GetAttributeDefinition("Attachments");
-            newStory.SetAttributeValue(nameAttribute, "Test Story");
+            var name = string.Format("Test Story {0} Create story with attachment", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
 
@@ -161,7 +167,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename"); 
             IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name"); 
             Asset attachment = services.New(attachmentType, Oid.Null); 
-            attachment.SetAttributeValue(attachmentName, "Test Attachment"); 
+            attachment.SetAttributeValue(attachmentName, "Test Attachment on " + newStory.Oid); 
             attachment.SetAttributeValue(attachmentFileName, file); 
             attachment.SetAttributeValue(attachmentContentType, mimeType); 
             attachment.SetAttributeValue(attachmentContent, string.Empty); 
@@ -208,7 +214,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var defectType = services.MetaModel.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
-            newDefect.SetAttributeValue(nameAttribute, "Test Defect");
+            var name = string.Format("Test Defect {0} Create defect", contextId);
+            newDefect.SetAttributeValue(nameAttribute, contextId);
             services.Save(newDefect);
 
             Assert.IsNotNull(newDefect.Oid);
@@ -224,7 +231,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var childrenAttribute = defectType.GetAttributeDefinition("Children");
-            newDefect.SetAttributeValue(nameAttribute, "Test Defect With Nested Task");
+            var name = string.Format("Test Defect {0} Create defect with nested task", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
             var taskType = services.MetaModel.GetAssetType("Task");
@@ -253,7 +261,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var childrenAttribute = defectType.GetAttributeDefinition("Children");
-            newDefect.SetAttributeValue(nameAttribute, "Test Defect With Nested Test");
+            var name = string.Format("Test Defect {0} Create defect with nested test", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
             var testType = services.MetaModel.GetAssetType("Test");
@@ -293,7 +302,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var attachmentsAttribute = defectType.GetAttributeDefinition("Attachments");
-            newDefect.SetAttributeValue(nameAttribute, "Test Defect");
+            var name = string.Format("Test Defect {0} Create defect with nested attachment", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
 
@@ -305,7 +315,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
             IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
             Asset attachment = services.New(attachmentType, Oid.Null);
-            attachment.SetAttributeValue(attachmentName, "Test Attachment");
+            attachment.SetAttributeValue(attachmentName, "Test Attachment on " + newDefect.Oid);
             attachment.SetAttributeValue(attachmentFileName, file);
             attachment.SetAttributeValue(attachmentContentType, mimeType);
             attachment.SetAttributeValue(attachmentContent, string.Empty);
@@ -352,7 +362,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var requestType = services.MetaModel.GetAssetType("Request");
             var newRequest = services.New(requestType, contextId);
             var nameAttribute = requestType.GetAttributeDefinition("Name");
-            newRequest.SetAttributeValue(nameAttribute, "Test Request");
+            var name = string.Format("Test Request {0} Create request", contextId);
+            newRequest.SetAttributeValue(nameAttribute, name);
             services.Save(newRequest);
 
             Assert.IsNotNull(newRequest.Oid);
@@ -367,7 +378,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var issueType = services.MetaModel.GetAssetType("Issue");
             var newIssue = services.New(issueType, contextId);
             var nameAttribute = issueType.GetAttributeDefinition("Name");
-            newIssue.SetAttributeValue(nameAttribute, "Test Issue");
+            var name = string.Format("Test Issue {0} Create issue", contextId);
+            newIssue.SetAttributeValue(nameAttribute, name);
             services.Save(newIssue);
 
             Assert.IsNotNull(newIssue.Oid);
@@ -386,7 +398,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var storyType = services.MetaModel.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
-            newStory.SetAttributeValue(nameAttribute, "Test Story to update scalar attribute");
+            var name = string.Format("Test Story {0} Update scalar attribute", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
             Assert.IsNotNull(newStory.Oid);
@@ -395,7 +408,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             query.Selection.Add(nameAttribute);
             var story = services.Retrieve(query).Assets[0];
             var oldName = story.GetAttribute(nameAttribute).Value.ToString();
-            story.SetAttributeValue(nameAttribute, "Test Story to update scalar attribute - Name updated");
+            story.SetAttributeValue(nameAttribute, name + " - Name updated");
             services.Save(story);
 
             Assert.AreNotSame(oldName, story.GetAttribute(nameAttribute).Value.ToString());
@@ -410,7 +423,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var storyType = services.MetaModel.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
-            newStory.SetAttributeValue(nameAttribute, "Test Story to update single-relation attribute");
+            var name = string.Format("Test Story {0} Update single-relation attribute", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
             Assert.IsNotNull(newStory.Oid);
@@ -424,6 +438,536 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var story = services.Retrieve(query).Assets[0];
 
             Assert.IsNotNull(story.GetAttribute(sourceAttribute).Value.ToString());
+        }
+
+        [TestMethod]
+        public void UpdateMultiRelationAttributeOnStory()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+
+            var parentStory = services.New(storyType, contextId);
+            var name = string.Format("Test Story {0} Update multi-relation attribute", contextId);
+            parentStory.SetAttributeValue(nameAttribute,  name);
+            services.Save(parentStory);
+            var child1Story = services.New(storyType, contextId);
+            child1Story.SetAttributeValue(nameAttribute, name + " - Child 1");
+            services.Save(child1Story);
+            var child2Story = services.New(storyType, contextId);
+            child2Story.SetAttributeValue(nameAttribute, name + " - Child 2");
+            services.Save(child2Story);
+
+            var dependantsAttribute = storyType.GetAttributeDefinition("Dependants");
+            parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
+            services.Save(parentStory);
+
+            var query = new Query(parentStory.Oid);
+            query.Selection.Add(dependantsAttribute);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+
+            parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
+            services.Save(parentStory);
+
+            var query2 = new Query(parentStory.Oid);
+            query2.Selection.Add(dependantsAttribute);
+            story = services.Retrieve(query2).Assets[0];
+
+            Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
+        }
+
+        #endregion
+
+        #region Queries
+
+        [TestMethod]
+        public void QuerySingleAsset()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query single asset", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var query = new Query(newStory.Oid);
+            query.Selection.Add(nameAttribute);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.IsNotNull(story);
+            Assert.IsTrue(story.GetAttribute(nameAttribute).Value.ToString().Equals(name));
+        }
+
+        [TestMethod]
+        public void QueryMultipleAssets()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query multiple assets", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            var result = services.Retrieve(query);
+
+            Assert.IsTrue(result.Assets.Count > 2);
+        }
+
+        [TestMethod]
+        public void QueryAttributes()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var benefitsAttribute = storyType.GetAttributeDefinition("Benefits");
+            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+            newStory.SetAttributeValue(nameAttribute, "Test Story on " + contextId + " - Name attribute");
+            newStory.SetAttributeValue(benefitsAttribute, "Test Story on " + contextId + " - Benefits attribute");
+            newStory.SetAttributeValue(estimateAttribute, "24");
+            services.Save(newStory);
+
+            var query = new Query(newStory.Oid);
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(benefitsAttribute);
+            query.Selection.Add(estimateAttribute);
+
+            var story = services.Retrieve(query).Assets[0];
+            
+            Assert.IsNotNull(story);
+            var nameAttr = story.GetAttribute(nameAttribute);
+            Assert.IsNotNull(nameAttr);
+            Assert.IsTrue(nameAttr.Value.ToString().Equals("Test Story on " + contextId + " - Name attribute"));
+            var benefitsAttr = story.GetAttribute(benefitsAttribute);
+            Assert.IsNotNull(benefitsAttr);
+            Assert.IsTrue(benefitsAttr.Value.ToString().Equals("Test Story on " + contextId + " - Benefits attribute"));
+            var estimateAttr = story.GetAttribute(estimateAttribute);
+            Assert.IsNotNull(estimateAttr);
+            Assert.IsTrue(estimateAttr.Value.ToString().Equals("24"));
+        }
+
+        [TestMethod]
+        public void QueryRelations()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query relations", contextId);
+            newStory.SetAttributeValue(nameAttribute, contextId);
+            var workitemPriorityType = services.MetaModel.GetAssetType("WorkitemPriority");
+            var newWorkitemPriority = services.New(workitemPriorityType, contextId);
+            newWorkitemPriority.SetAttributeValue(workitemPriorityType.GetAttributeDefinition("Name"),
+                "Test WorkItemPriority on " + contextId);
+            services.Save(newWorkitemPriority);
+            var priorityAttribute = storyType.GetAttributeDefinition("Priority");
+            newStory.SetAttributeValue(priorityAttribute, newWorkitemPriority.Oid);
+            services.Save(newStory);
+
+            var query = new Query(newStory.Oid);
+            query.Selection.Add(priorityAttribute);
+            var story = services.Retrieve(query).Assets[0];
+            Assert.IsNotNull(story);
+            var workitemPriority = story.GetAttribute(priorityAttribute);
+            Assert.IsNotNull(workitemPriority);
+            Assert.IsTrue(
+                workitemPriority.Value.ToString().Equals(newWorkitemPriority.Oid.ToString()));
+        }
+
+        [TestMethod]
+        public void QueryFilter()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query filter", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, "Another " + name);
+            services.Save(newStory);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            var filterTerm = new FilterTerm(nameAttribute);
+            filterTerm.Equal(name);
+            query.Filter = filterTerm;
+            var result = services.Retrieve(query);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Assets.Count == 2);
+
+            result.Assets.ForEach(
+                asset => Assert.IsTrue(asset.GetAttribute(nameAttribute).Value.ToString().Equals(name)));
+        }
+
+        [TestMethod]
+        public void QueryFilterWithMultipleAttributes()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+            var name = string.Format("Test Story {0} Query filter with multiple attributes", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.SetAttributeValue(estimateAttribute, "24");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.SetAttributeValue(estimateAttribute, "2");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, "Another " + name);
+            newStory.SetAttributeValue(estimateAttribute, "2");
+            services.Save(newStory);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(estimateAttribute);
+            var nameFilterTerm = new FilterTerm(nameAttribute);
+            nameFilterTerm.Equal(name);
+            var estimateFilterTerm = new FilterTerm(estimateAttribute);
+            estimateFilterTerm.Equal("24");
+            query.Filter = new AndFilterTerm(nameFilterTerm, estimateFilterTerm);
+            var result = services.Retrieve(query);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Assets.Count == 1);
+            result.Assets.ForEach(
+                asset => Assert.IsTrue(asset.GetAttribute(nameAttribute).Value.ToString().Equals(name)));
+            result.Assets.ForEach(
+                asset => Assert.IsTrue(asset.GetAttribute(estimateAttribute).Value.ToString().Equals("24")));
+
+        }
+
+        [TestMethod]
+        public void QueryFind()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var descriptionAttribute = storyType.GetAttributeDefinition("Description");
+            var name = string.Format("Test Story {0} Query find", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.SetAttributeValue(descriptionAttribute, "Description for " + name);
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, "Another " + name);
+            newStory.SetAttributeValue(descriptionAttribute, "Description for " + name);
+            services.Save(newStory);
+
+            System.Threading.Thread.Sleep(10000);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            query.Selection.Add(descriptionAttribute);
+            var attributeSelection = new AttributeSelection(descriptionAttribute);
+            query.Find = new QueryFind(name, attributeSelection);
+            var result = services.Retrieve(query);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Assets.Count == 2);
+            result.Assets.ForEach(
+                asset =>
+                    Assert.IsTrue(
+                        asset.GetAttribute(descriptionAttribute)
+                            .Value.ToString()
+                            .IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0));
+        }
+
+        [TestMethod]
+        public void QuerySort()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query sort", contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 2");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 1");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 3");
+            services.Save(newStory);
+
+            System.Threading.Thread.Sleep(10000);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            var attributeSelection = new AttributeSelection(nameAttribute);
+            query.Find = new QueryFind(name, attributeSelection);
+            query.OrderBy.MinorSort(nameAttribute, OrderBy.Order.Ascending);
+            var result = services.Retrieve(query);
+
+            Assert.IsTrue(result.Assets.Count == 3);
+            Assert.IsTrue(result.Assets[0].GetAttribute(nameAttribute).Value.ToString().EndsWith("1"));
+            Assert.IsTrue(result.Assets[1].GetAttribute(nameAttribute).Value.ToString().EndsWith("2"));
+            Assert.IsTrue(result.Assets[2].GetAttribute(nameAttribute).Value.ToString().EndsWith("3"));
+        }
+
+        [TestMethod]
+        public void QueryPaging()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query paging", contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 1");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 2");
+            services.Save(newStory);
+            newStory = services.New(storyType, contextId);
+            newStory.SetAttributeValue(nameAttribute, name + " 3");
+            services.Save(newStory);
+
+            System.Threading.Thread.Sleep(10000);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            var attributeSelection = new AttributeSelection(nameAttribute);
+            query.Find = new QueryFind(name, attributeSelection);
+            query.Paging = new Paging(0, 2);
+            var result = services.Retrieve(query);
+
+            Assert.IsTrue(result.Assets.Count == 2);
+        }
+
+        [TestMethod]
+        public void QueryHistory()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query history", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            newStory.SetAttributeValue(nameAttribute, name + " - updated");
+            services.Save(newStory);
+            newStory.SetAttributeValue(nameAttribute, name + " - updated again");
+            services.Save(newStory);
+
+            var query = new Query(storyType, true);
+            query.Selection.Add(nameAttribute);
+            var filterTerm = new FilterTerm(storyType.GetAttributeDefinition("ID"));
+            filterTerm.Equal(newStory.Oid.Momentless);
+            query.Filter = filterTerm;
+            var result = services.Retrieve(query);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Assets.Count == 3);
+        }
+
+        [TestMethod]
+        public void QueryAsof()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Query asof", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+            System.Threading.Thread.Sleep(10000);
+            newStory.SetAttributeValue(nameAttribute, name + " - updated");
+            services.Save(newStory);
+            newStory.SetAttributeValue(nameAttribute, name + " - updated again");
+            services.Save(newStory);
+
+            var query = new Query(storyType);
+            query.Selection.Add(nameAttribute);
+            query.AsOf = DateTime.Now.AddMilliseconds(-3500);
+            var result = services.Retrieve(query);
+
+            Assert.IsNotNull(result);
+            Assert.AreNotEqual(0, result.TotalAvaliable);
+        }
+
+        [TestMethod]
+        [DeploymentItem("versionone.png")]
+        public void QueryAttachment()
+        {
+            var services = GetServices();
+            string file = "versionone.png";
+
+            Assert.IsTrue(File.Exists(file));
+
+            string mimeType = MimeType.Resolve(file);
+            IAttachments attachments = new Attachments(V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
+                .Build());
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var attachmentsAttribute = storyType.GetAttributeDefinition("Attachments");
+            var name = string.Format("Test Story {0} Query attachment", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+
+            IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
+            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
+            IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
+            IAttributeDefinition attachmentContentType =
+                attachmentType.GetAttributeDefinition("ContentType");
+            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
+            IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
+            Asset newAttachment = services.New(attachmentType, Oid.Null);
+            newAttachment.SetAttributeValue(attachmentName, "Test Attachment on " + newStory.Oid);
+            newAttachment.SetAttributeValue(attachmentFileName, file);
+            newAttachment.SetAttributeValue(attachmentContentType, mimeType);
+            newAttachment.SetAttributeValue(attachmentContent, string.Empty);
+            newAttachment.SetAttributeValue(attachmentAssetDef, newStory.Oid);
+            services.Save(newAttachment);
+            string key = newAttachment.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = attachments.GetWriteStream(key))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            attachments.SetWriteStream(key, mimeType);
+
+            var query = new Query(attachmentType);
+            query.Selection.Add(attachmentContent);
+            var attachment = services.Retrieve(query).Assets[0];
+
+            Assert.IsNotNull(attachment);
+            Assert.IsNotNull(attachment.GetAttribute(attachmentContent).Value);
+        }
+
+        #endregion
+
+        #region Operations
+
+        [TestMethod]
+        public void OperationDeleteOnEpic()
+        {
+            var services = GetServices();
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var epicType = services.MetaModel.GetAssetType("Epic");
+            var newEpic = services.New(epicType, contextId);
+            var nameAttribute = epicType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Epic {0} Create epic", contextId);
+            newEpic.SetAttributeValue(nameAttribute, name);
+            services.Save(newEpic);
+
+            var deletedEpicId = services.ExecuteOperation(epicType.GetOperation("Delete"), newEpic.Oid);
+            var query = new Query(deletedEpicId.Momentless);
+            query.Selection.Add(nameAttribute);
+
+            Assert.IsTrue(services.Retrieve(query).Assets.Count == 0);
+        }
+
+        [TestMethod]
+        public void OperationCloseOnStory()
+        {
+            var services = GetServices();
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Create story", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var closedStoryId = services.ExecuteOperation(storyType.GetOperation("Inactivate"), newStory.Oid);
+            var query = new Query(closedStoryId);
+            var isClosedAttr = storyType.GetAttributeDefinition("IsClosed");
+            query.Selection.Add(isClosedAttr);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.IsNotNull(story);
+            Assert.IsTrue(Boolean.Parse(story.GetAttribute(isClosedAttr).Value.ToString()));
+        }
+
+        [TestMethod]
+        public void OperationReopenOnStory()
+        {
+            var services = GetServices();
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Create story", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var closedStoryId = services.ExecuteOperation(storyType.GetOperation("Inactivate"), newStory.Oid);
+            var query = new Query(closedStoryId);
+            var isClosedAttr = storyType.GetAttributeDefinition("IsClosed");
+            query.Selection.Add(isClosedAttr);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.IsNotNull(story);
+            Assert.IsTrue(Boolean.Parse(story.GetAttribute(isClosedAttr).Value.ToString()));
+
+            var reopenedId = services.ExecuteOperation(storyType.GetOperation("Reactivate"), closedStoryId);
+            query = new Query(reopenedId);
+            query.Selection.Add(isClosedAttr);
+            story = services.Retrieve(query).Assets[0];
+
+            Assert.IsNotNull(story);
+            Assert.IsFalse(Boolean.Parse(story.GetAttribute(isClosedAttr).Value.ToString()));
         }
 
         #endregion

@@ -106,7 +106,7 @@ namespace VersionOne.SDK.APIClient
             catch (WebException ex)
             {
                 //if we get a 404, return an empty query result otherwise throw the exception
-                if (ex.Response is HttpWebResponse && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
+                if ((ex.Response is HttpWebResponse && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound) || ex.Status.ToString() == "404")
                 {
                     return GetEmptyQueryResult(query);
                 }
