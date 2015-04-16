@@ -11,6 +11,44 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
     {
         private readonly string _v1InstanceUrl = ConfigurationManager.AppSettings.Get("V1Url");
         private readonly string _v1AccessToken = ConfigurationManager.AppSettings.Get("V1AccessToken");
+        private readonly string _v1Username = ConfigurationManager.AppSettings.Get("V1UserName");
+        private readonly string _v1Password = ConfigurationManager.AppSettings.Get("V1Password");
+
+        #region Connection
+
+        [TestMethod]
+        public void ConnectionWithUsernameAndPassword()
+        {
+            var services = new Services(
+                V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                    .WithUsernameAndPassword(_v1Username, _v1Password)
+                    .Build());
+
+            var member20Id = services.GetOid("Member:20");
+            var result = services.Retrieve(new Query(member20Id));
+
+            Assert.IsTrue(result.Assets.Count == 1);
+        }
+
+        [TestMethod]
+        public void ConnectionWithAccessToken()
+        {
+            var services = new Services(
+                V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                    .WithAccessToken(_v1AccessToken)
+                    .Build());
+
+            var member20Id = services.GetOid("Member:20");
+            var result = services.Retrieve(new Query(member20Id));
+
+            Assert.IsTrue(result.Assets.Count == 1);
+        }
+
+        #endregion
 
         #region Creates
 
@@ -71,6 +109,94 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             services.Save(newStory);
 
             Assert.IsNotNull(newStory.Oid);
+        }
+
+        [TestMethod]
+        public void CreateStoryWithConversation()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var name = string.Format("Test Story {0} Create story with conversation", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var conversationType = services.MetaModel.GetAssetType("Conversation");
+            var expressionType = services.MetaModel.GetAssetType("Expression");
+            var authorAttribute = expressionType.GetAttributeDefinition("Author");
+            var authoredAtAttribute = expressionType.GetAttributeDefinition("AuthoredAt");
+            var contentAttribute = expressionType.GetAttributeDefinition("Content");
+            var belongsToAttribute = expressionType.GetAttributeDefinition("BelongsTo");
+            var inReplyToAttribute = expressionType.GetAttributeDefinition("InReplyTo");
+            var mentionsAttribute = expressionType.GetAttributeDefinition("Mentions");
+            
+            var newConversation = services.New(conversationType);
+            var questionExpression = services.New(expressionType);
+            
+            services.Save(newConversation);
+            questionExpression.SetAttributeValue(authorAttribute, services.GetOid("Member:20"));
+            questionExpression.SetAttributeValue(authoredAtAttribute, DateTime.Now);
+            questionExpression.SetAttributeValue(contentAttribute, "Is this a test conversation?");
+            questionExpression.SetAttributeValue(belongsToAttribute, newConversation.Oid);
+            questionExpression.AddAttributeValue(mentionsAttribute, newStory.Oid);
+            services.Save(questionExpression);
+            var answerExpression = services.New(expressionType, questionExpression.Oid);
+            answerExpression.SetAttributeValue(authorAttribute, services.GetOid("Member:20"));
+            answerExpression.SetAttributeValue(authoredAtAttribute, DateTime.Now.AddMinutes(15));
+            answerExpression.SetAttributeValue(contentAttribute, "Yes it is!");
+            answerExpression.SetAttributeValue(inReplyToAttribute, questionExpression.Oid);
+            services.Save(answerExpression);
+        }
+
+        [TestMethod]
+        public void CreateStoryWithConversationAndMention()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var mentionedInExpressionsAttribute = storyType.GetAttributeDefinition("MentionedInExpressions");
+            var name = string.Format("Test Story {0} Create story with conversation and mention", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            var storyTobeMentioned = services.New(storyType, contextId);
+            storyTobeMentioned.SetAttributeValue(nameAttribute, name + " (to be mentioned)");
+            services.Save(storyTobeMentioned);
+
+            var conversationType = services.MetaModel.GetAssetType("Conversation");
+            var expressionType = services.MetaModel.GetAssetType("Expression");
+            var authorAttribute = expressionType.GetAttributeDefinition("Author");
+            var authoredAtAttribute = expressionType.GetAttributeDefinition("AuthoredAt");
+            var contentAttribute = expressionType.GetAttributeDefinition("Content");
+            var belongsToAttribute = expressionType.GetAttributeDefinition("BelongsTo");
+            var inReplyToAttribute = expressionType.GetAttributeDefinition("InReplyTo");
+
+            var newConversation = services.New(conversationType, newStory.Oid);
+            var questionExpression = services.New(expressionType, newStory.Oid);
+
+            services.Save(newConversation);
+            questionExpression.SetAttributeValue(authorAttribute, services.GetOid("Member:20"));
+            questionExpression.SetAttributeValue(authoredAtAttribute, DateTime.Now);
+            questionExpression.SetAttributeValue(contentAttribute, "Can I mention another story in a conversation?");
+            questionExpression.SetAttributeValue(belongsToAttribute, newConversation.Oid);
+            services.Save(questionExpression);
+            var answerExpression = services.New(expressionType, questionExpression.Oid);
+            answerExpression.SetAttributeValue(authorAttribute, services.GetOid("Member:20"));
+            answerExpression.SetAttributeValue(authoredAtAttribute, DateTime.Now.AddMinutes(15));
+            answerExpression.SetAttributeValue(contentAttribute, "Yes I can!");
+            answerExpression.SetAttributeValue(inReplyToAttribute, questionExpression.Oid);
+            services.Save(answerExpression);
+
+            newStory.AddAttributeValue(mentionedInExpressionsAttribute, questionExpression.Oid);
+            services.Save(newStory);
+            storyTobeMentioned.AddAttributeValue(mentionedInExpressionsAttribute, answerExpression.Oid);
+            services.Save(storyTobeMentioned);
         }
 
         [TestMethod]
@@ -141,7 +267,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             string file = "versionone.png";
 
             Assert.IsTrue(File.Exists(file));
-            
+
             string mimeType = MimeType.Resolve(file);
             IAttachments attachments = new Attachments(V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
@@ -158,23 +284,22 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-
             IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
-            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset"); 
+            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
             IAttributeDefinition attachmentContentType =
                 attachmentType.GetAttributeDefinition("ContentType");
-            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename"); 
-            IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name"); 
-            Asset attachment = services.New(attachmentType, Oid.Null); 
-            attachment.SetAttributeValue(attachmentName, "Test Attachment on " + newStory.Oid); 
-            attachment.SetAttributeValue(attachmentFileName, file); 
-            attachment.SetAttributeValue(attachmentContentType, mimeType); 
-            attachment.SetAttributeValue(attachmentContent, string.Empty); 
-            attachment.SetAttributeValue(attachmentAssetDef, newStory.Oid); 
-            services.Save(attachment);
-            string key = attachment.Oid.Key.ToString();
-            using(Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
+            IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
+            Asset attachment = services.New(attachmentType, Oid.Null);
+            attachment.SetAttributeValue(attachmentName, "Test Attachment on " + newStory.Oid);
+            attachment.SetAttributeValue(attachmentFileName, file);
+            attachment.SetAttributeValue(attachmentContentType, mimeType);
+            attachment.SetAttributeValue(attachmentContent, string.Empty);
+            attachment.SetAttributeValue(attachmentAssetDef, newStory.Oid);
+            services.Save(attachment);
+            string key = attachment.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
                 using (Stream output = attachments.GetWriteStream(key))
                 {
@@ -189,7 +314,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                     }
                 }
             }
-            attachments.SetWriteStream(key, mimeType);
+            attachments.SetWriteStream(key, mimeType);
 
             var query = new Query(newStory.Oid.Momentless);
             query.Selection.Add(attachmentsAttribute);
@@ -197,12 +322,64 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             Assert.AreEqual(1, story.GetAttribute(attachmentsAttribute).Values.Cast<object>().Count());
         }
-
-        [Ignore]
+        
         [TestMethod]
+        [DeploymentItem("versionone.png")]
         public void CreateStoryWithEmbeddedImage()
         {
-            //TODO CreateStoryWithEmbeddedImage
+            var services = GetServices();
+            string file = "versionone.png";
+
+            Assert.IsTrue(File.Exists(file));
+
+            string mimeType = MimeType.Resolve(file);
+            IAttachments attachments = new Attachments(V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken).UseEndpoint("embedded.img/")
+                .Build());
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var descriptionAttribute = storyType.GetAttributeDefinition("Description");
+            var name = string.Format("Test Story {0} Create story with embedded image", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.SetAttributeValue(descriptionAttribute, "Test description");
+            services.Save(newStory);
+
+            var embeddedImageType = services.MetaModel.GetAssetType("EmbeddedImage");
+            var newEmbeddedImage = services.New(embeddedImageType, Oid.Null);
+            var assetAttribute = embeddedImageType.GetAttributeDefinition("Asset");
+            var contentAttribute = embeddedImageType.GetAttributeDefinition("Content");
+            var contentTypeAttribute = embeddedImageType.GetAttributeDefinition("ContentType");
+            newEmbeddedImage.SetAttributeValue(assetAttribute, newStory.Oid);
+            newEmbeddedImage.SetAttributeValue(contentTypeAttribute, mimeType);
+            newEmbeddedImage.SetAttributeValue(contentAttribute, string.Empty);
+            services.Save(newEmbeddedImage);
+
+            string key = newEmbeddedImage.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = attachments.GetWriteStream(key))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            attachments.SetWriteStream(key, mimeType);
+            newStory.SetAttributeValue(descriptionAttribute,
+                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key,
+                    newEmbeddedImage.Oid.Momentless));
+            services.Save(newStory);
         }
 
         [TestMethod]
@@ -215,7 +392,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var name = string.Format("Test Defect {0} Create defect", contextId);
-            newDefect.SetAttributeValue(nameAttribute, contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
             Assert.IsNotNull(newDefect.Oid);
@@ -288,8 +465,6 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
             string file = "versionone.png";
 
-            Assert.IsTrue(File.Exists(file));
-
             string mimeType = MimeType.Resolve(file);
             IAttachments attachments = new Attachments(V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
@@ -302,10 +477,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var attachmentsAttribute = defectType.GetAttributeDefinition("Attachments");
-            var name = string.Format("Test Defect {0} Create defect with nested attachment", contextId);
+            var name = string.Format("Test Defect {0} Create defect with attachment", contextId);
             newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
-
 
             IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
@@ -346,11 +520,60 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.AreEqual(1, story.GetAttribute(attachmentsAttribute).Values.Cast<object>().Count());
         }
 
-        [Ignore]
         [TestMethod]
+        [DeploymentItem("versionone.png")]
         public void CreateDefectWithEmbeddedImage()
         {
-            //TODO CreateDefectWithEmbeddedImage
+            var services = GetServices();
+            string file = "versionone.png";
+
+            string mimeType = MimeType.Resolve(file);
+            IAttachments attachments = new Attachments(V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken).UseEndpoint("embedded.img/")
+                .Build());
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var defectType = services.MetaModel.GetAssetType("Defect");
+            var newDefect = services.New(defectType, contextId);
+            var nameAttribute = defectType.GetAttributeDefinition("Name");
+            var descriptionAttribute = defectType.GetAttributeDefinition("Description");
+            var name = string.Format("Test Defect {0} Create defect with embedded image", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
+            services.Save(newDefect);
+
+            var embeddedImageType = services.MetaModel.GetAssetType("EmbeddedImage");
+            var newEmbeddedImage = services.New(embeddedImageType, Oid.Null);
+            var assetAttribute = embeddedImageType.GetAttributeDefinition("Asset");
+            var contentAttribute = embeddedImageType.GetAttributeDefinition("Content");
+            var contentTypeAttribute = embeddedImageType.GetAttributeDefinition("ContentType");
+            newEmbeddedImage.SetAttributeValue(assetAttribute, newDefect.Oid);
+            newEmbeddedImage.SetAttributeValue(contentTypeAttribute, mimeType);
+            newEmbeddedImage.SetAttributeValue(contentAttribute, string.Empty);
+            services.Save(newEmbeddedImage);
+
+            string key = newEmbeddedImage.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = attachments.GetWriteStream(key))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            attachments.SetWriteStream(key, mimeType);
+            newDefect.SetAttributeValue(descriptionAttribute,
+                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key,
+                    newEmbeddedImage.Oid.Momentless));
+            services.Save(newDefect);
         }
 
         [TestMethod]
@@ -384,7 +607,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             Assert.IsNotNull(newIssue.Oid);
         }
-
+        
         #endregion
 
         #region Updates
