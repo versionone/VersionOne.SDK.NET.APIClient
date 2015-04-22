@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace VersionOne.SDK.APIClient
 {
     public interface IServices
@@ -12,5 +14,6 @@ namespace VersionOne.SDK.APIClient
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);
         void SetUpstreamUserAgent(string userAgent);
+        Dictionary<string, string> Loc(IAttributeDefinition[] attributes);
     }
 }

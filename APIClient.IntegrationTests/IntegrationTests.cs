@@ -1195,6 +1195,27 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         #endregion
 
+        #region Loc2
+
+        [TestMethod]
+        public void LocStoryName()
+        {
+            var services = GetServices();
+
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
+
+            var locDict = services.Loc(new []{nameAttribute, estimateAttribute});
+            Assert.IsTrue(locDict.Keys.Count > 0);
+            var locName = locDict[nameAttribute.Token];
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
+            var locEstimate = locDict[estimateAttribute.Token];
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(locEstimate));
+        }
+
+        #endregion 
+
         private IServices GetServices()
         {
             IServices services = new Services(

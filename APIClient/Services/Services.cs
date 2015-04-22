@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
+using Newtonsoft.Json.Linq;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -272,6 +273,46 @@ namespace VersionOne.SDK.APIClient
             {
                 throw new APIException("Failed to get new asset!", assetType.Token, ex);
             }
+        }
+
+        public Dictionary<string, string> Loc(IAttributeDefinition[] attributes)
+        {
+            var locs = new Dictionary<string, string>();
+            var urlParams =
+                attributes.Select(
+                    attributeDefinition =>
+                        string.Format("AttributeDefinition'{0}'{1}", attributeDefinition.Name,
+                            attributeDefinition.AssetType.Token)).ToList();
+
+            var path = string.Format("?[{0}]", string.Join(",", urlParams));
+
+            Stream stream;
+            if (_connector != null)
+            {
+                path = "loc-2.v1/" + path;
+                stream = _connector.GetData(path);
+            }
+            else
+            {
+                _v1Connector.UseLoc2Api();
+                stream = _v1Connector.GetData(path);
+            }
+
+            string result;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            var jsonResult = JObject.Parse(result);
+            foreach (var attributeDefinition in attributes)
+            {
+                var param = string.Format("AttributeDefinition'{0}'{1}", attributeDefinition.Name,
+                    attributeDefinition.AssetType.Token);
+                locs.Add(attributeDefinition.Token, jsonResult[param].Value<string>());
+            }
+
+            return locs;
         }
 
         private QueryResult ParseQueryResult(XmlElement element, Query query)
