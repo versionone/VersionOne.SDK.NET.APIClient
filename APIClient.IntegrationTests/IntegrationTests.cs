@@ -1195,10 +1195,10 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         #endregion
 
-        #region Loc2
+        #region Loc
 
         [TestMethod]
-        public void LocStoryName()
+        public void LocStoryNameAndEstimate()
         {
             var services = GetServices();
 
@@ -1212,6 +1212,18 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
             var locEstimate = locDict[estimateAttribute.Token];
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locEstimate));
+        }
+
+        [TestMethod]
+        public void LocEpicName()
+        {
+            var services = GetServices();
+
+            var epicType = services.MetaModel.GetAssetType("Epic");
+            var nameAttribute = epicType.GetAttributeDefinition("Name");
+
+            var locName = services.Loc(nameAttribute);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
         }
 
         #endregion 

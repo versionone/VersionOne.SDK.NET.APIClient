@@ -275,6 +275,33 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
+        public string Loc(IAttributeDefinition attribute)
+        {
+            var urlParam = string.Format("AttributeDefinition'{0}'{1}", attribute.Name, attribute.AssetType.Token);
+
+            var path = string.Format("?{0}", string.Join(",", urlParam));
+
+            Stream stream;
+            if (_connector != null)
+            {
+                path = "loc.v1/" + path;
+                stream = _connector.GetData(path);
+            }
+            else
+            {
+                _v1Connector.UseLocApi();
+                stream = _v1Connector.GetData(path);
+            }
+
+            string result;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            return result;
+        }
+
         public Dictionary<string, string> Loc(IAttributeDefinition[] attributes)
         {
             var locs = new Dictionary<string, string>();
