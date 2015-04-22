@@ -14,7 +14,8 @@ namespace VersionOne.SDK.APIClient
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);
         void SetUpstreamUserAgent(string userAgent);
-        Dictionary<string, string> Loc(IAttributeDefinition[] attributes);
+        string Loc(string key);
         string Loc(IAttributeDefinition attribute);
+        Dictionary<string, string> Loc(IAttributeDefinition[] attributes);
     }
 }
