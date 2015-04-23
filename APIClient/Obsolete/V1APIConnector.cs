@@ -3,7 +3,7 @@ using System.Net;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete("Use VersionOneAPIConnector instead.")]
+    [Obsolete("Use V1Connector instead.")]
     public class V1APIConnector : V1CredsAPIConnector
     {
         public V1APIConnector(string urlPrefix, string username = null, string password = null, bool? integratedAuth = null,
