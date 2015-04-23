@@ -25,6 +25,7 @@ namespace VersionOne.SDK.APIClient
         const string QUERY_API = "query.v1/";
         const string LOC_API = "loc.v1/";
         const string LOC2_API = "loc-2.v1/";
+        const string CONFIG_API = "config.v1/";
 
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
@@ -149,6 +150,11 @@ namespace VersionOne.SDK.APIClient
         internal void UseLocApi()
         {
             _endpoint = LOC_API;
+        }
+
+        internal void UseConfigApi()
+        {
+            _endpoint = CONFIG_API;
         }
 
         internal void SetUpstreamUserAgent(string userAgent)

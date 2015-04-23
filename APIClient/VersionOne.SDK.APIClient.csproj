@@ -207,7 +207,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Interfaces\IOperation.cs" />
-    <Compile Include="Obsolete\IV1Configuration.cs" />
+    <Compile Include="Configuration\IV1Configuration.cs" />
     <Compile Include="Obsolete\Localizer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -268,7 +268,7 @@
     <Compile Include="Obsolete\V1Central.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Obsolete\V1Configuration.cs" />
+    <Compile Include="Configuration\V1Configuration.cs" />
     <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
