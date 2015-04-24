@@ -16,6 +16,6 @@ namespace VersionOne.SDK.APIClient
         void SetUpstreamUserAgent(string userAgent);
         string Loc(string key);
         string Loc(IAttributeDefinition attribute);
-        Dictionary<string, string> Loc(IAttributeDefinition[] attributes);
+        Dictionary<string, string> Loc(params IAttributeDefinition[] attributes);
     }
 }

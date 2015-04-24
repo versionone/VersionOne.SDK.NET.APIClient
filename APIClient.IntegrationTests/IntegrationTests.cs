@@ -1206,7 +1206,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
 
-            var locDict = services.Loc(new []{nameAttribute, estimateAttribute});
+            var locDict = services.Loc(nameAttribute, estimateAttribute);
             Assert.IsTrue(locDict.Keys.Count > 0);
             var locName = locDict[nameAttribute.Token];
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));

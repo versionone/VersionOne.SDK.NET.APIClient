@@ -18,14 +18,14 @@ namespace VersionOne.SDK.APIClient
     /// </summary>
     public class V1Connector
     {
-        const string META_API = "meta.v1/";
-        const string DATA_API = "rest-1.v1/Data/";
-        const string HISTORY_API = "rest-1.v1/Hist/";
-        const string NEW_API = "rest-1.v1/New";
-        const string QUERY_API = "query.v1/";
-        const string LOC_API = "loc.v1/";
-        const string LOC2_API = "loc-2.v1/";
-        const string CONFIG_API = "config.v1/";
+        private const string META_API = "meta.v1/";
+        private const string DATA_API = "rest-1.v1/Data/";
+        private const string HISTORY_API = "rest-1.v1/Hist/";
+        private const string NEW_API = "rest-1.v1/New";
+        private const string QUERY_API = "query.v1/";
+        private const string LOC_API = "loc.v1/";
+        private const string LOC2_API = "loc-2.v1/";
+        private const string CONFIG_API = "config.v1/";
 
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;

@@ -326,7 +326,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public Dictionary<string, string> Loc(IAttributeDefinition[] attributes)
+        public Dictionary<string, string> Loc(params IAttributeDefinition[] attributes)
         {
             var locs = new Dictionary<string, string>();
             var urlParams =
