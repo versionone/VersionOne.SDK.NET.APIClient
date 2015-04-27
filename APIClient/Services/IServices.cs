@@ -17,5 +17,6 @@ namespace VersionOne.SDK.APIClient
         string Loc(string key);
         string Loc(IAttributeDefinition attribute);
         Dictionary<string, string> Loc(params IAttributeDefinition[] attributes);
+        string ExecutePassThroughQuery(string query);
     }
 }

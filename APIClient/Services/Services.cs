@@ -366,6 +366,13 @@ namespace VersionOne.SDK.APIClient
             return locs;
         }
 
+        public string ExecutePassThroughQuery(string query)
+        {
+            _v1Connector.UseQueryApi();
+
+            return _v1Connector.StringSendData(data: query, contentType:"application/json");
+        }
+
         private QueryResult ParseQueryResult(XmlElement element, Query query)
         {
             switch (element.LocalName)

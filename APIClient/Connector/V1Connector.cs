@@ -96,23 +96,19 @@ namespace VersionOne.SDK.APIClient
 
         internal Stream SendData(string resource = null, object data = null, string contentType = "application/xml")
         {
-            ConfigureRequestIfNeeded();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType)); 
-            string stringData = data != null ? data.ToString() : string.Empty;
-            HttpContent content;
-            if (data is byte[])
-            {
-                content = new ByteArrayContent((byte[]) data);
-            }
-            else
-            {
-                content = new StringContent(stringData);
-            }
-            var resourceUrl = GetResourceUrl(resource);
-            var response = _client.PostAsync(resourceUrl, content).Result;
+            var response = Post(resource, data, contentType);
             ThrowWebExceptionIfNeeded(response);
             var result = response.Content.ReadAsStreamAsync().Result;
-            LogResponse(response, result.ToString(), stringData);
+            LogResponse(response, result.ToString(), data != null ? data.ToString() : string.Empty);
+
+            return result;
+        }
+        
+        internal string StringSendData(string resource = null, object data = null, string contentType = "application/xml")
+        {
+            var response = Post(resource, data, contentType);
+            var result = response.Content.ReadAsStringAsync().Result;
+            LogResponse(response, result, data != null ? data.ToString() : string.Empty);
 
             return result;
         }
@@ -160,6 +156,27 @@ namespace VersionOne.SDK.APIClient
         internal void SetUpstreamUserAgent(string userAgent)
         {
             _upstreamUserAgent = userAgent;
+        }
+
+        private HttpResponseMessage Post(string resource = null, object data = null, string contentType = "application/xml")
+        {
+            ConfigureRequestIfNeeded();
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
+            string stringData = data != null ? data.ToString() : string.Empty;
+            HttpContent content;
+            if (data is byte[])
+            {
+                content = new ByteArrayContent((byte[])data);
+            }
+            else
+            {
+                content = new StringContent(stringData);
+            }
+            var resourceUrl = GetResourceUrl(resource);
+            var response = _client.PostAsync(resourceUrl, content).Result;
+            ThrowWebExceptionIfNeeded(response);
+            
+            return response;
         }
 
         private string GetResourceUrl(string resource)
