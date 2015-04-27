@@ -17,6 +17,12 @@ namespace VersionOne.SDK.APIClient
         string Loc(string key);
         string Loc(IAttributeDefinition attribute);
         Dictionary<string, string> Loc(params IAttributeDefinition[] attributes);
+        
+        /// <summary>
+        /// Executes a query using query.v1 API.
+        /// </summary>
+        /// <param name="query">string representation for JSON/YAML query</param>
+        /// <returns></returns>
         string ExecutePassThroughQuery(string query);
     }
 }

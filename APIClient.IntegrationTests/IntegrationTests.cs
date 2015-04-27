@@ -1226,7 +1226,34 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
         }
 
-        #endregion 
+        #endregion
+
+        [TestMethod]
+        public void QueryV1WithJson()
+        {
+            var services = GetServices();
+
+            var json =
+                "{\"from\": \"Story\",\"select\": [\"Name\",\"Estimate\"],\"filter\": [\"Name='StoryName'|Estimate>'0'\"]}";
+            
+            var res = services.ExecutePassThroughQuery(json);
+        }
+
+        [TestMethod]
+        public void QueryV1WithYaml()
+        {
+            var services = GetServices();
+
+            var yaml = "from: Story\n" +
+                       "select:\n" +
+                       "  - Name\n" +
+                       "  - Estimate\n" +
+                       "filter:\n" +
+                       "  - Name='StoryName'|Estimate>'0'";
+
+            var res = services.ExecutePassThroughQuery(yaml);
+
+        }
 
         private IServices GetServices()
         {
