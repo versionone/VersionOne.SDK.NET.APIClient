@@ -609,7 +609,15 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             Assert.IsNotNull(newIssue.Oid);
         }
-        
+
+        [TestMethod]
+        [ExpectedException(typeof(MetaException))]
+        public void CreateUnknownSingleAsset()
+        {
+            var services = GetServices();
+            var unknownAsset = services.MetaModel.GetAssetType("Unknown");           
+        }
+
         #endregion
 
         #region Updates
@@ -710,6 +718,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         #region Queries
 
         [TestMethod]
+        [ExpectedException(typeof(OidException))]
+        public void QueryInvalidOid()
+        {
+            var services = GetServices();
+            var invalidOid = services.GetOid("unknown:007");
+        }
+
+        [TestMethod]
         public void QuerySingleAsset()
         {
             var services = GetServices();
@@ -728,6 +744,15 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             Assert.IsNotNull(story);
             Assert.IsTrue(story.GetAttribute(nameAttribute).Value.ToString().Equals(name));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MetaException))]
+        public void QueryUnknownSingleAsset()
+        {
+            var services = GetServices();
+            var storyType = services.MetaModel.GetAssetType("Unknown");
+          
         }
 
         [TestMethod]
@@ -789,6 +814,18 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var estimateAttr = story.GetAttribute(estimateAttribute);
             Assert.IsNotNull(estimateAttr);
             Assert.IsTrue(estimateAttr.Value.ToString().Equals("24"));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(APIException))]
+        public void QueryUnknownAttribute()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var storyType = services.MetaModel.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);            
+            var queryUnknowAttribute = storyType.GetAttributeDefinition("Unknown");
         }
 
         [TestMethod]
@@ -932,6 +969,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                         asset.GetAttribute(descriptionAttribute)
                             .Value.ToString()
                             .IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MetaException))]
+        public void QueryFindUnknownAsset()
+        {
+            var services = GetServices();
+            var query = new Query(services.MetaModel.GetAssetType("Unknown"));
         }
 
         [TestMethod]
@@ -1141,6 +1186,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             query.Selection.Add(nameAttribute);
 
             Assert.IsTrue(services.Retrieve(query).Assets.Count == 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(OidException))]
+        public void OperationDeleteUnknownAsset()
+        {
+            var services = GetServices();
+            var deleteUnknown = services.ExecuteOperation(services.MetaModel.GetOperation("Delete"), services.GetOid("unknown:007"));
         }
 
         [TestMethod]
@@ -1537,7 +1590,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithAccessToken(_v1AccessToken)
+                    //.WithAccessToken(_v1AccessToken)
+                    .WithUsernameAndPassword("admin", "admin")
                     .Build());
             return services;
         }
