@@ -11,7 +11,7 @@ namespace VersionOne.SDK.APIClient
 {
     public class Services : IServices
     {
-        private readonly IMetaModel _metaModel;
+        private readonly IMetaModel _meta;
         private readonly IAPIConnector _connector;
         private readonly V1Connector _v1Connector;
         private Oid _loggedIn;
@@ -22,8 +22,8 @@ namespace VersionOne.SDK.APIClient
             {
                 if (_loggedIn == null)
                 {
-                    var q = new Query(_metaModel.GetAssetType("Member"));
-                    var term = new FilterTerm(_metaModel.GetAttributeDefinition("Member.IsSelf"));
+                    var q = new Query(_meta.GetAssetType("Member"));
+                    var term = new FilterTerm(_meta.GetAttributeDefinition("Member.IsSelf"));
                     term.Equal(true);
                     q.Filter = term;
                     var list = Retrieve(q).Assets;
@@ -42,14 +42,14 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public Services(IMetaModel metaModel, IAPIConnector connector)
+        public Services(IMetaModel meta, IAPIConnector connector)
         {
-            if (metaModel == null)
-                throw new ArgumentNullException("metaModel");
+            if (meta == null)
+                throw new ArgumentNullException("meta");
             if (connector == null)
                 throw new ArgumentNullException("connector");
 
-            _metaModel = metaModel;
+            _meta = meta;
             _connector = connector;
         }
 
@@ -59,12 +59,12 @@ namespace VersionOne.SDK.APIClient
                 throw new ArgumentNullException("v1Connector");
 
             _v1Connector = v1Connector;
-            _metaModel = new MetaModel(_v1Connector);
+            _meta = new MetaModel(_v1Connector);
         }
 
-        public IMetaModel MetaModel
+        public IMetaModel Meta
         {
-            get { return _metaModel; }
+            get { return _meta; }
         }
 
         public void SetUpstreamUserAgent(string userAgent)
@@ -120,7 +120,7 @@ namespace VersionOne.SDK.APIClient
 
         public Oid GetOid(string token)
         {
-            return Oid.FromToken(token, _metaModel);
+            return Oid.FromToken(token, _meta);
         }
 
         public Oid ExecuteOperation(IOperation op, Oid oid)
@@ -464,7 +464,7 @@ namespace VersionOne.SDK.APIClient
             var asset = new Asset(query.Oid);
             list.Add(asset);
 
-            var attribdef = _metaModel.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
+            var attribdef = _meta.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
 
             ParseAttributeNode(asset, attribdef, element);
 

@@ -18,14 +18,14 @@ namespace VersionOne.SDK.APIClient
     /// </summary>
     public class V1Connector
     {
-        private const string META_API = "meta.v1/";
-        private const string DATA_API = "rest-1.v1/Data/";
-        private const string HISTORY_API = "rest-1.v1/Hist/";
-        private const string NEW_API = "rest-1.v1/New";
-        private const string QUERY_API = "query.v1/";
-        private const string LOC_API = "loc.v1/";
-        private const string LOC2_API = "loc-2.v1/";
-        private const string CONFIG_API = "config.v1/";
+        private const string META_API_ENDPOINT = "meta.v1/";
+        private const string DATA_API_ENDPOINT = "rest-1.v1/Data/";
+        private const string HISTORY_API_ENDPOINT = "rest-1.v1/Hist/";
+        private const string NEW_API_ENDPOINT = "rest-1.v1/New";
+        private const string QUERY_API_ENDPOINT = "query.v1/";
+        private const string LOC_API_ENDPOINT = "loc.v1/";
+        private const string LOC2_API_ENDPOINT = "loc-2.v1/";
+        private const string CONFIG_API_ENDPOINT = "config.v1/";
 
         private readonly HttpClient _client;
         private readonly HttpClientHandler _handler;
@@ -115,42 +115,42 @@ namespace VersionOne.SDK.APIClient
 
         internal void UseDataApi()
         {
-            _endpoint = DATA_API;
+            _endpoint = DATA_API_ENDPOINT;
         }
 
         internal void UseHistoryApi()
         {
-            _endpoint = HISTORY_API;
+            _endpoint = HISTORY_API_ENDPOINT;
         }
 
         internal void UseNewApi()
         {
-            _endpoint = NEW_API;
+            _endpoint = NEW_API_ENDPOINT;
         }
 
         internal void UseMetaApi()
         {
-            _endpoint = META_API;
+            _endpoint = META_API_ENDPOINT;
         }
 
         internal void UseQueryApi()
         {
-            _endpoint = QUERY_API;
+            _endpoint = QUERY_API_ENDPOINT;
         }
 
         internal void UseLoc2Api()
         {
-            _endpoint = LOC2_API;
+            _endpoint = LOC2_API_ENDPOINT;
         }
 
         internal void UseLocApi()
         {
-            _endpoint = LOC_API;
+            _endpoint = LOC_API_ENDPOINT;
         }
 
         internal void UseConfigApi()
         {
-            _endpoint = CONFIG_API;
+            _endpoint = CONFIG_API_ENDPOINT;
         }
 
         internal void SetUpstreamUserAgent(string userAgent)

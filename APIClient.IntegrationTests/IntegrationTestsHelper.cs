@@ -25,7 +25,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithUserAgentHeader("IntegrationTests", "1.0")
                 .WithAccessToken(ConfigurationManager.AppSettings.Get("V1AccessToken"))
                 .Build());
-            var assetType = services.MetaModel.GetAssetType("Scope");
+            var assetType = services.Meta.GetAssetType("Scope");
             var nameAttribute = assetType.GetAttributeDefinition("Name");
             var projectId = services.GetOid("Scope:0");
             var newAsset = services.New(assetType, projectId);

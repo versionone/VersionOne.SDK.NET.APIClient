@@ -2,7 +2,9 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests
 {
@@ -58,7 +60,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var epicType = services.MetaModel.GetAssetType("Epic");
+            var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var nameAttribute = epicType.GetAttributeDefinition("Name");
             var name = string.Format("Test Epic {0} Create epic", contextId);
@@ -75,7 +77,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             
-            var epicType = services.MetaModel.GetAssetType("Epic");
+            var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var epicNameAttribute = epicType.GetAttributeDefinition("Name");
             var generateSubStoryOperation = epicType.GetOperation("GenerateSubStory ");
@@ -101,7 +103,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story", contextId);
@@ -117,15 +119,15 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story with conversation", contextId);
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-            var conversationType = services.MetaModel.GetAssetType("Conversation");
-            var expressionType = services.MetaModel.GetAssetType("Expression");
+            var conversationType = services.Meta.GetAssetType("Conversation");
+            var expressionType = services.Meta.GetAssetType("Expression");
             var authorAttribute = expressionType.GetAttributeDefinition("Author");
             var authoredAtAttribute = expressionType.GetAttributeDefinition("AuthoredAt");
             var contentAttribute = expressionType.GetAttributeDefinition("Content");
@@ -157,7 +159,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var mentionedInExpressionsAttribute = storyType.GetAttributeDefinition("MentionedInExpressions");
@@ -169,8 +171,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             storyTobeMentioned.SetAttributeValue(nameAttribute, name + " (to be mentioned)");
             services.Save(storyTobeMentioned);
 
-            var conversationType = services.MetaModel.GetAssetType("Conversation");
-            var expressionType = services.MetaModel.GetAssetType("Expression");
+            var conversationType = services.Meta.GetAssetType("Conversation");
+            var expressionType = services.Meta.GetAssetType("Expression");
             var authorAttribute = expressionType.GetAttributeDefinition("Author");
             var authoredAtAttribute = expressionType.GetAttributeDefinition("AuthoredAt");
             var contentAttribute = expressionType.GetAttributeDefinition("Content");
@@ -205,7 +207,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var childrenAttribute = storyType.GetAttributeDefinition("Children");
@@ -213,7 +215,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-            var taskType = services.MetaModel.GetAssetType("Task");
+            var taskType = services.Meta.GetAssetType("Task");
             var newTask = services.New(taskType, newStory.Oid);
             newTask.SetAttributeValue(nameAttribute, "Test Task Nested in " + newStory.Oid);
 
@@ -235,7 +237,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var childrenAttribute = storyType.GetAttributeDefinition("Children");
@@ -243,7 +245,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-            var testType = services.MetaModel.GetAssetType("Test");
+            var testType = services.Meta.GetAssetType("Test");
             var newTest = services.New(testType, newStory.Oid);
             newTest.SetAttributeValue(nameAttribute, "Test Test Nested in " + newStory.Oid);
 
@@ -276,7 +278,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var attachmentsAttribute = storyType.GetAttributeDefinition("Attachments");
@@ -284,7 +286,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-            IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
+            IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
             IAttributeDefinition attachmentContentType =
@@ -340,7 +342,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var descriptionAttribute = storyType.GetAttributeDefinition("Description");
@@ -349,7 +351,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(descriptionAttribute, "Test description");
             services.Save(newStory);
 
-            var embeddedImageType = services.MetaModel.GetAssetType("EmbeddedImage");
+            var embeddedImageType = services.Meta.GetAssetType("EmbeddedImage");
             var newEmbeddedImage = services.New(embeddedImageType, Oid.Null);
             var assetAttribute = embeddedImageType.GetAttributeDefinition("Asset");
             var contentAttribute = embeddedImageType.GetAttributeDefinition("Content");
@@ -388,7 +390,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var defectType = services.MetaModel.GetAssetType("Defect");
+            var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var name = string.Format("Test Defect {0} Create defect", contextId);
@@ -404,7 +406,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var defectType = services.MetaModel.GetAssetType("Defect");
+            var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var childrenAttribute = defectType.GetAttributeDefinition("Children");
@@ -412,7 +414,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
-            var taskType = services.MetaModel.GetAssetType("Task");
+            var taskType = services.Meta.GetAssetType("Task");
             var newTask = services.New(taskType, newDefect.Oid);
             newTask.SetAttributeValue(nameAttribute, "Test Task Nested in " + newDefect.Oid);
 
@@ -434,7 +436,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var defectType = services.MetaModel.GetAssetType("Defect");
+            var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var childrenAttribute = defectType.GetAttributeDefinition("Children");
@@ -442,7 +444,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
-            var testType = services.MetaModel.GetAssetType("Test");
+            var testType = services.Meta.GetAssetType("Test");
             var newTest = services.New(testType, newDefect.Oid);
             newTest.SetAttributeValue(nameAttribute, "Test Test Nested in " + newDefect.Oid);
 
@@ -473,7 +475,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var defectType = services.MetaModel.GetAssetType("Defect");
+            var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var attachmentsAttribute = defectType.GetAttributeDefinition("Attachments");
@@ -481,7 +483,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
-            IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
+            IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
             IAttributeDefinition attachmentContentType =
@@ -535,7 +537,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var defectType = services.MetaModel.GetAssetType("Defect");
+            var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
             var descriptionAttribute = defectType.GetAttributeDefinition("Description");
@@ -543,7 +545,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newDefect.SetAttributeValue(nameAttribute, name);
             services.Save(newDefect);
 
-            var embeddedImageType = services.MetaModel.GetAssetType("EmbeddedImage");
+            var embeddedImageType = services.Meta.GetAssetType("EmbeddedImage");
             var newEmbeddedImage = services.New(embeddedImageType, Oid.Null);
             var assetAttribute = embeddedImageType.GetAttributeDefinition("Asset");
             var contentAttribute = embeddedImageType.GetAttributeDefinition("Content");
@@ -582,7 +584,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var requestType = services.MetaModel.GetAssetType("Request");
+            var requestType = services.Meta.GetAssetType("Request");
             var newRequest = services.New(requestType, contextId);
             var nameAttribute = requestType.GetAttributeDefinition("Name");
             var name = string.Format("Test Request {0} Create request", contextId);
@@ -598,7 +600,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var issueType = services.MetaModel.GetAssetType("Issue");
+            var issueType = services.Meta.GetAssetType("Issue");
             var newIssue = services.New(issueType, contextId);
             var nameAttribute = issueType.GetAttributeDefinition("Name");
             var name = string.Format("Test Issue {0} Create issue", contextId);
@@ -618,7 +620,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Update scalar attribute", contextId);
@@ -643,7 +645,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Update single-relation attribute", contextId);
@@ -669,7 +671,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var nameAttribute = storyType.GetAttributeDefinition("Name");
 
             var parentStory = services.New(storyType, contextId);
@@ -713,7 +715,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query single asset", contextId);
@@ -734,7 +736,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query multiple assets", contextId);
@@ -760,7 +762,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var benefitsAttribute = storyType.GetAttributeDefinition("Benefits");
@@ -795,12 +797,12 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query relations", contextId);
             newStory.SetAttributeValue(nameAttribute, contextId);
-            var workitemPriorityType = services.MetaModel.GetAssetType("WorkitemPriority");
+            var workitemPriorityType = services.Meta.GetAssetType("WorkitemPriority");
             var newWorkitemPriority = services.New(workitemPriorityType, contextId);
             newWorkitemPriority.SetAttributeValue(workitemPriorityType.GetAttributeDefinition("Name"),
                 "Test WorkItemPriority on " + contextId);
@@ -825,7 +827,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query filter", contextId);
@@ -858,7 +860,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
@@ -900,7 +902,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var descriptionAttribute = storyType.GetAttributeDefinition("Description");
@@ -938,7 +940,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query sort", contextId);
@@ -972,7 +974,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query paging", contextId);
@@ -1003,7 +1005,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query history", contextId);
@@ -1031,7 +1033,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Query asof", contextId);
@@ -1069,7 +1071,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var attachmentsAttribute = storyType.GetAttributeDefinition("Attachments");
@@ -1078,7 +1080,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             services.Save(newStory);
 
 
-            IAssetType attachmentType = services.MetaModel.GetAssetType("Attachment");
+            IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
             IAttributeDefinition attachmentContentType =
@@ -1127,7 +1129,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var epicType = services.MetaModel.GetAssetType("Epic");
+            var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var nameAttribute = epicType.GetAttributeDefinition("Name");
             var name = string.Format("Test Epic {0} Create epic", contextId);
@@ -1146,7 +1148,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story", contextId);
@@ -1168,7 +1170,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story", contextId);
@@ -1202,7 +1204,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
 
@@ -1219,7 +1221,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var epicType = services.MetaModel.GetAssetType("Epic");
+            var epicType = services.Meta.GetAssetType("Epic");
             var nameAttribute = epicType.GetAttributeDefinition("Name");
 
             var locName = services.Loc(nameAttribute);
@@ -1228,19 +1230,55 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         #endregion
 
+        #region Config
+
         [TestMethod]
-        public void QueryV1WithJson()
+        public void GetConfig()
+        {
+            var connector = V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken)
+                .Build();
+            var configuration = new V1Configuration(connector);
+
+            Assert.IsNotNull(configuration.EffortTracking);
+            Assert.IsNotNull(configuration.StoryTrackingLevel);
+            Assert.IsNotNull(configuration.DefectTrackingLevel);
+            Assert.IsNotNull(configuration.MaxAttachmentSize);
+            Assert.IsNotNull(configuration.CapacityPlanning);
+        }
+
+        #endregion
+
+        #region Query.v1
+
+        [TestMethod]
+        public void ExecuteSingleJsonQuery()
         {
             var services = GetServices();
 
-            var json =
-                "{\"from\": \"Story\",\"select\": [\"Name\",\"Estimate\"],\"filter\": [\"Name='StoryName'|Estimate>'0'\"]}";
+            var jsonQuery =
+                "{" +
+                "  \"from\": \"Story\"," +
+                "  \"select\": [\"Name\",\"Estimate\"]," +
+                "  \"filter\": [\"Name='StoryName'|Estimate>'0'\"]" +
+                "}";
             
-            var res = services.ExecutePassThroughQuery(json);
+            var res = services.ExecutePassThroughQuery(jsonQuery);
+            var stories = JArray.Parse(res).First;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"].Value<double>();
+
+                Assert.IsTrue(storyName.Equals("StoryName") || storyEstimate > 0);
+            }
         }
 
         [TestMethod]
-        public void QueryV1WithYaml()
+        public void ExecuteSingleYamlQuery()
         {
             var services = GetServices();
 
@@ -1252,8 +1290,246 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                        "  - Name='StoryName'|Estimate>'0'";
 
             var res = services.ExecutePassThroughQuery(yaml);
+            var stories = JArray.Parse(res).First;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"].Value<double>();
+
+                Assert.IsTrue(storyName.Equals("StoryName") || storyEstimate > 0);
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteMultipleJsonQuery()
+        {
+            var services = GetServices();
+
+            var json =
+                "[" +
+                " {" +
+                "    \"from\": \"Story\"," +
+                "    \"select\": [\"Name\",\"Estimate\"]," +
+                "    \"filter\": [\"Name='StoryName'|Estimate>'0'\"]" +
+                " }," +
+                " {" +
+                "    \"from\": \"Member\"," +
+                "    \"select\": [\"Name\"]" +
+                " }" +
+                "]";
+
+            var res = services.ExecutePassThroughQuery(json);
+            var stories = JArray.Parse(res).First;
+            var members = JArray.Parse(res).Last;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"].Value<double>();
+
+                Assert.IsTrue(storyName.Equals("StoryName") || storyEstimate > 0);
+            }
+
+            foreach (var member in members)
+            {
+                var memberName = member["Name"].Value<string>();
+
+                Assert.IsTrue(!string.IsNullOrWhiteSpace(memberName));
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteMultipleYamlQuery()
+        {
+            var services = GetServices();
+
+            var yaml = "  - from: Story\n" +
+                       "    select:\n" +
+                       "      - Name\n" +
+                       "      - Estimate\n" +
+                       "    filter:\n" +
+                       "      - Name='StoryName'|Estimate>'0'\n" +
+                       "  - from: Member\n" +
+                       "    select:\n" +
+                       "      - Name";
+
+            var res = services.ExecutePassThroughQuery(yaml);
+            var stories = JArray.Parse(res).First;
+            var members = JArray.Parse(res).Last;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"].Value<double>();
+
+                Assert.IsTrue(storyName.Equals("StoryName") || storyEstimate > 0);
+            }
+
+            foreach (var member in members)
+            {
+                var memberName = member["Name"].Value<string>();
+
+                Assert.IsTrue(!string.IsNullOrWhiteSpace(memberName));
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteSubSelectJsonQuery()
+        {
+            var services = GetServices();
+
+            var json =
+                "{" +
+                "   \"from\": \"Story\"," +
+                "   \"select\": [\"Name\",\"Estimate\", " +
+                "                {\"from\": \"Owners\", " +
+                "                 \"select\": [\"Name\", \"Nickname\"]" +
+                "                }" +
+                "               ]}";
+
+            var res = services.ExecutePassThroughQuery(json);
+            var stories = JArray.Parse(res).First;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"];
+                var storyOwners = story["Owners"];
+
+                Assert.IsTrue(!string.IsNullOrWhiteSpace(storyName));
+                Assert.IsNotNull(storyEstimate);
+                Assert.IsNotNull(storyOwners);
+                foreach (var owner in storyOwners)
+                {
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(owner["Name"].Value<string>()));
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(owner["Nickname"].Value<string>()));
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteSubSelectYamlQuery()
+        {
+            var services = GetServices();
+
+            var yaml = "  - from: Story\n" +
+                       "    select:\n" +
+                       "      - Name\n" +
+                       "      - Estimate\n" +
+                       "      - from: Owners\n" +
+                       "        select:\n" +
+                       "          - Name\n" +
+                       "          - Nickname\n";
+
+            var res = services.ExecutePassThroughQuery(yaml);
+            var stories = JArray.Parse(res).First;
+
+            foreach (var story in stories)
+            {
+                var storyName = story["Name"].Value<string>();
+                var storyEstimate = story["Estimate"];
+                var storyOwners = story["Owners"];
+
+                Assert.IsTrue(!string.IsNullOrWhiteSpace(storyName));
+                Assert.IsNotNull(storyEstimate);
+                Assert.IsNotNull(storyOwners);
+                foreach (var owner in storyOwners)
+                {
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(owner["Name"].Value<string>()));
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(owner["Nickname"].Value<string>()));
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteGroupJsonQuery()
+        {
+            var services = GetServices();
+
+            var json =
+                "{" +
+                   "\"from\": \"Story\"," +
+                   "\"select\": [" +
+                       "\"Name\", \"Number\" " +
+                     "]," +
+                   "\"group\": [" +
+                      "{" +
+                        "\"from\": \"Status\"," + 
+                        "\"select\": [" +
+                            "\"Name\"" +
+                         "]" +
+                      "}" +
+                   "]" +
+                "}";
+
+            var res = services.ExecutePassThroughQuery(json);
+            var groups = JArray.Parse(res).First;
+
+            foreach (var group in groups)
+            {
+                Assert.IsTrue(group["_children"].Values<object>().Any());
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteGroupYamlQuery()
+        {
+            var services = GetServices();
+
+            var yaml = "  - from: Story\n" +
+                       "    select:\n" +
+                       "      - Name\n" +
+                       "      - Number\n" +
+                       "    group:\n" +
+                       "      - from: Status\n" +
+                       "        select:\n" +
+                       "          - Name\n";
+
+            var res = services.ExecutePassThroughQuery(yaml);
+            var groups = JArray.Parse(res).First;
+
+            foreach (var group in groups)
+            {
+                Assert.IsTrue(group["_children"].Values<object>().Any());
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(WebException))]
+        public void MalformedJsonQuery()
+        {
+            var services = GetServices();
+
+            var json =
+                "{" +
+                "  \"from\": \"Story\"," +
+                "  \"select\": \"Name\",\"Estimate\"," +
+                "  \"filter\": [\"Name='StoryName'|Estimate>'0'\"" +
+                "}";
+
+            var res = services.ExecutePassThroughQuery(json);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(WebException))]
+        public void MalformedYamlQuery()
+        {
+            var services = GetServices();
+
+            var yaml = "from: Story\n" +
+                       "   select:\n" +
+                       "   Name\n" +
+                       "  - Estimate\n" +
+                       "filter:\n" +
+                       "- Name='StoryName'|Estimate>'0'";
+
+            var res = services.ExecutePassThroughQuery(yaml);
 
         }
+        #endregion
 
         private IServices GetServices()
         {
