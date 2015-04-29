@@ -615,7 +615,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void CreateUnknownSingleAsset()
         {
             var services = GetServices();
-            var unknownAsset = services.MetaModel.GetAssetType("Unknown");           
+            var unknownAsset = services.Meta.GetAssetType("Unknown");           
         }
 
         #endregion
@@ -751,7 +751,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void QueryUnknownSingleAsset()
         {
             var services = GetServices();
-            var storyType = services.MetaModel.GetAssetType("Unknown");
+            var storyType = services.Meta.GetAssetType("Unknown");
           
         }
 
@@ -823,7 +823,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var services = GetServices();
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
-            var storyType = services.MetaModel.GetAssetType("Story");
+            var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);            
             var queryUnknowAttribute = storyType.GetAttributeDefinition("Unknown");
         }
@@ -976,7 +976,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void QueryFindUnknownAsset()
         {
             var services = GetServices();
-            var query = new Query(services.MetaModel.GetAssetType("Unknown"));
+            var query = new Query(services.Meta.GetAssetType("Unknown"));
         }
 
         [TestMethod]
@@ -1193,7 +1193,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void OperationDeleteUnknownAsset()
         {
             var services = GetServices();
-            var deleteUnknown = services.ExecuteOperation(services.MetaModel.GetOperation("Delete"), services.GetOid("unknown:007"));
+            var deleteUnknown = services.ExecuteOperation(services.Meta.GetOperation("Delete"), services.GetOid("unknown:007"));
         }
 
         [TestMethod]
