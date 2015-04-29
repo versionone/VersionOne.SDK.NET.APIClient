@@ -817,7 +817,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(APIException))]
+        [ExpectedException(typeof(MetaException))]
         public void QueryUnknownAttribute()
         {
             var services = GetServices();
