@@ -28,10 +28,4 @@ namespace VersionOne.SDK.APIClient
         /// </summary>
         Mix
     }
-
-    public enum CapacityPlanning
-    {
-        On,
-        Off
-    }
 }

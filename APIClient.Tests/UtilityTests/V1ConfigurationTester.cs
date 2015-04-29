@@ -5,7 +5,7 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
     [TestClass]
     public class V1ConfigurationTester
     {
-        private static void RunTest(string testName, bool exepectedTracking, TrackingLevel exepectedStoryLevel, TrackingLevel expectedDefectLevel, CapacityPlanning expectedCapacityPlanning = CapacityPlanning.Off)
+        private static void RunTest(string testName, bool exepectedTracking, TrackingLevel exepectedStoryLevel, TrackingLevel expectedDefectLevel, string expectedCapacityPlanning = "Off")
         {
             V1Configuration testSubject = new V1Configuration(new XmlResponseConnector("TestData.xml", "config.v1/" + testName, "V1ConfigurationTester"));
             Assert.AreEqual(exepectedTracking, testSubject.EffortTracking);
@@ -65,13 +65,13 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
         [TestMethod]
         public void FalseOnOnOff()
         {
-            RunTest("FalseOnOnOff", false, TrackingLevel.On, TrackingLevel.On, CapacityPlanning.Off);
+            RunTest("FalseOnOnOff", false, TrackingLevel.On, TrackingLevel.On, "Off");
         }
 
         [TestMethod]
         public void FalseOnOnOn()
         {
-            RunTest("FalseOnOnOn", false, TrackingLevel.On, TrackingLevel.On, CapacityPlanning.On);
+            RunTest("FalseOnOnOn", false, TrackingLevel.On, TrackingLevel.On, "On");
         }
     }
 }

@@ -92,19 +92,13 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public CapacityPlanning CapacityPlanning
+        public string CapacityPlanning
         {
             get
             {
-                var result = CapacityPlanning.Off;
-
                 var value = GetSetting(CapacityPlanningKey);
-                if (!string.IsNullOrEmpty(value))
-                {
-                    result = (CapacityPlanning)Enum.Parse(typeof(CapacityPlanning), value);
-                }
 
-                return result;
+                return value;
             }
         }
 
