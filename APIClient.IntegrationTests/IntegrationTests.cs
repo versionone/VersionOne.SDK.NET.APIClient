@@ -274,7 +274,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAttachments attachments = new Attachments(V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
+                .WithAccessToken(_v1AccessToken)
+                .UseEndpoint("attachment.img/")
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
@@ -289,8 +290,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
-            IAttributeDefinition attachmentContentType =
-                attachmentType.GetAttributeDefinition("ContentType");
+            IAttributeDefinition attachmentContentType = attachmentType.GetAttributeDefinition("ContentType");
             IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
             IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
             Asset attachment = services.New(attachmentType, Oid.Null);
@@ -301,6 +301,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             attachment.SetAttributeValue(attachmentAssetDef, newStory.Oid);
             services.Save(attachment);
             string key = attachment.Oid.Key.ToString();
+
             using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
                 using (Stream output = attachments.GetWriteStream(key))
@@ -338,7 +339,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAttachments attachments = new Attachments(V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                .WithAccessToken(_v1AccessToken).UseEndpoint("embedded.img/")
+                .WithAccessToken(_v1AccessToken)
+                .UseEndpoint("embedded.img/")
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
@@ -379,8 +381,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             }
             attachments.SetWriteStream(key, mimeType);
             newStory.SetAttributeValue(descriptionAttribute,
-                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key,
-                    newEmbeddedImage.Oid.Momentless));
+                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key, newEmbeddedImage.Oid.Momentless));
             services.Save(newStory);
         }
 
@@ -1112,7 +1113,8 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             IAttachments attachments = new Attachments(V1Connector
                 .WithInstanceUrl(_v1InstanceUrl)
                 .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
+                .WithAccessToken(_v1AccessToken)
+                .UseEndpoint("attachment.img/")
                 .Build());
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
@@ -1124,14 +1126,13 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newStory.SetAttributeValue(nameAttribute, name);
             services.Save(newStory);
 
-
             IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
             IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
             IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
-            IAttributeDefinition attachmentContentType =
-                attachmentType.GetAttributeDefinition("ContentType");
+            IAttributeDefinition attachmentContentType = attachmentType.GetAttributeDefinition("ContentType");
             IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
             IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
+
             Asset newAttachment = services.New(attachmentType, Oid.Null);
             newAttachment.SetAttributeValue(attachmentName, "Test Attachment on " + newStory.Oid);
             newAttachment.SetAttributeValue(attachmentFileName, file);
@@ -1140,6 +1141,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             newAttachment.SetAttributeValue(attachmentAssetDef, newStory.Oid);
             services.Save(newAttachment);
             string key = newAttachment.Oid.Key.ToString();
+
             using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
                 using (Stream output = attachments.GetWriteStream(key))
