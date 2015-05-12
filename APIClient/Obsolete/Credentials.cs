@@ -2,7 +2,7 @@
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This interface has been deprecated.")]
     public interface ICredentials
     {
         string V1UserName { get; }
@@ -14,7 +14,7 @@ namespace VersionOne.SDK.APIClient
     /// <summary>
     /// Retrieves credential information from the executing assemblies .config file.
     /// </summary>
-    [Obsolete]
+    [Obsolete("This class has been deprecated.")]
     public sealed class Credentials : ICredentials
     {
 

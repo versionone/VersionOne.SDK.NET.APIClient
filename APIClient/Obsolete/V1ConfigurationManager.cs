@@ -6,7 +6,7 @@ namespace VersionOne.SDK.APIClient
     /// <summary>
     /// Named config settings that match those in the app.config file.
     /// </summary>
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public static class Settings
     {
         public static string V1Url { get { return "V1Url"; } }
@@ -23,7 +23,7 @@ namespace VersionOne.SDK.APIClient
         public static string UseWindowsIntegratedAuth { get { return "UseWindowsIntegratedAuth"; } }
     }
 
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public static class V1ConfigurationManager
     {
         public static TPrimativeType GetValue<TPrimativeType>(string key, TPrimativeType defaultValue)

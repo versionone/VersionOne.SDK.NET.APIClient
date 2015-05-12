@@ -4,7 +4,7 @@ using System.IO;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This interface has been deprecated. Please use V1Connector instead.")]
     public interface IAPIConnector
     {
         Stream GetData();

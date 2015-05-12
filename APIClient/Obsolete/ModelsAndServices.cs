@@ -2,7 +2,7 @@
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This interface has been deprecated. Please use V1Connector instead.")]
     public interface IModelsAndServices
     {
         IMetaModel MetaModel { get; }
@@ -13,7 +13,7 @@ namespace VersionOne.SDK.APIClient
         IV1Configuration V1ConfigurationWithProxy { get; }
     }
 
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public sealed class ModelsAndServices : IModelsAndServices
     {
 

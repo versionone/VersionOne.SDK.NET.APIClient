@@ -5,7 +5,7 @@ namespace VersionOne.SDK.APIClient
     /// <summary>
     /// Provides connectors for a VersionOne instance.
     /// </summary>
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public interface IConnectors
     {
         IAPIConnector MetaConnector { get; }

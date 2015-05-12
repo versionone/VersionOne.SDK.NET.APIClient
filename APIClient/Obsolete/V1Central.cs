@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This interface has been deprecated. Please use V1Connector instead.")]
     public interface ICentral
     {
         IServices Services { get; }
@@ -11,7 +11,7 @@ namespace VersionOne.SDK.APIClient
         ILocalizer Loc { get; }
     }
 
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public class V1Central : ICentral
     {
         public V1Central(XmlNode config)

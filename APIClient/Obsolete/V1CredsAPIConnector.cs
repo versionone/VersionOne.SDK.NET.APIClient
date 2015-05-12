@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete("Use V1Connector instead.")]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public class V1CredsAPIConnector : IAPIConnector
     {
         private readonly string _urlPrefix;

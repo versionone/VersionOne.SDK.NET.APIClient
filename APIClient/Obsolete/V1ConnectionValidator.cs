@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public class V1ConnectionValidator
     {
         private readonly string _connectionUrl;

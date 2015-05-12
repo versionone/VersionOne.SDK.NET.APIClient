@@ -4,7 +4,7 @@ using System.IO;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This class has been deprecated.")]
 	public class Localizer : ILocalizer
 	{
 		private readonly IDictionary<string,string> _map = new Dictionary<string,string>();

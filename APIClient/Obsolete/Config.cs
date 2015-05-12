@@ -4,7 +4,7 @@ using System;
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This class has been deprecated.")]
     internal class Config
     {
         private static DebugListener _listener;

@@ -2,7 +2,7 @@
 
 namespace VersionOne.SDK.APIClient
 {
-    [Obsolete]
+    [Obsolete("This class has been deprecated. Please use V1Connector instead.")]
     public sealed class EnvironmentContext
     {
 
