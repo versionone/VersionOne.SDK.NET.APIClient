@@ -104,7 +104,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.Meta.GetAssetType("Story");
-            var newStory = services.New(storyType, contextId);
+            var newStory = services.New(storyType);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story", contextId);
             newStory.SetAttributeValue(nameAttribute, name);
@@ -1252,7 +1252,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         #endregion
 
-        #region Loc
+        #region Localization
 
         [TestMethod]
         public void LocStoryNameAndEstimate()
@@ -1263,7 +1263,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var estimateAttribute = storyType.GetAttributeDefinition("Estimate");
 
-            var locDict = services.Loc(nameAttribute, estimateAttribute);
+            var locDict = services.Localization(nameAttribute, estimateAttribute);
             Assert.IsTrue(locDict.Keys.Count > 0);
             var locName = locDict[nameAttribute.Token];
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
@@ -1279,7 +1279,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             var epicType = services.Meta.GetAssetType("Epic");
             var nameAttribute = epicType.GetAttributeDefinition("Name");
 
-            var locName = services.Loc(nameAttribute);
+            var locName = services.Localization(nameAttribute);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(locName));
         }
 

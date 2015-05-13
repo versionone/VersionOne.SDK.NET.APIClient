@@ -14,9 +14,9 @@ namespace VersionOne.SDK.APIClient
         Oid GetOid(string token);
         Oid ExecuteOperation(IOperation op, Oid oid);
         void SetUpstreamUserAgent(string userAgent);
-        string Loc(string key);
-        string Loc(IAttributeDefinition attribute);
-        Dictionary<string, string> Loc(params IAttributeDefinition[] attributes);
+        string Localization(string key);
+        string Localization(IAttributeDefinition attribute);
+        Dictionary<string, string> Localization(params IAttributeDefinition[] attributes);
         
         /// <summary>
         /// Executes a query using the Query API (query.v1 endpoint).

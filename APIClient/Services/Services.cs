@@ -275,7 +275,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public string Loc(string key)
+        public string Localization(string key)
         {
             var path = string.Format("?{0}", key);
             Stream stream;
@@ -299,7 +299,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public string Loc(IAttributeDefinition attribute)
+        public string Localization(IAttributeDefinition attribute)
         {
             var urlParam = string.Format("AttributeDefinition'{0}'{1}", attribute.Name, attribute.AssetType.Token);
 
@@ -326,7 +326,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        public Dictionary<string, string> Loc(params IAttributeDefinition[] attributes)
+        public Dictionary<string, string> Localization(params IAttributeDefinition[] attributes)
         {
             var locs = new Dictionary<string, string>();
             var urlParams =
