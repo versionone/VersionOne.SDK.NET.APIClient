@@ -104,7 +104,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
             var contextId = IntegrationTestsHelper.TestProjectOid;
             var storyType = services.Meta.GetAssetType("Story");
-            var newStory = services.New(storyType);
+            var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
             var name = string.Format("Test Story {0} Create story", contextId);
             newStory.SetAttributeValue(nameAttribute, name);
@@ -1592,8 +1592,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    //.WithAccessToken(_v1AccessToken)
-                    .WithUsernameAndPassword("admin", "admin")
+                    .WithAccessToken(_v1AccessToken)
                     .Build());
             return services;
         }

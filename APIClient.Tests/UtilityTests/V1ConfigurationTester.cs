@@ -5,7 +5,7 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
     [TestClass]
     public class V1ConfigurationTester
     {
-        private static void RunTest(string testName, bool exepectedTracking, TrackingLevel exepectedStoryLevel, TrackingLevel expectedDefectLevel, string expectedCapacityPlanning = "Off")
+        private static void RunTest(string testName, bool exepectedTracking, TrackingLevel exepectedStoryLevel, TrackingLevel expectedDefectLevel, string expectedCapacityPlanning = null)
         {
             V1Configuration testSubject = new V1Configuration(new XmlResponseConnector("TestData.xml", "config.v1/" + testName, "V1ConfigurationTester"));
             Assert.AreEqual(exepectedTracking, testSubject.EffortTracking);

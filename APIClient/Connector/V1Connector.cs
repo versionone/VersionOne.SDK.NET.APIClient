@@ -27,13 +27,14 @@ namespace VersionOne.SDK.APIClient
         private const string LOC2_API_ENDPOINT = "loc-2.v1/";
         private const string CONFIG_API_ENDPOINT = "config.v1/";
 
-        private readonly HttpClient _client;
-        private readonly HttpClientHandler _handler;
         private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
+        private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
         private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
+        private readonly Uri _baseAddress;
+        private IWebProxy _webProxy;
+        private System.Net.ICredentials _credentials;
         private string _endpoint;
         private string _upstreamUserAgent;
-        private bool _isRequestConfigured = false;
 
         private V1Connector(string instanceUrl)
         {
@@ -45,8 +46,7 @@ namespace VersionOne.SDK.APIClient
             Uri baseAddress;
             if (Uri.TryCreate(instanceUrl, UriKind.Absolute, out baseAddress))
             {
-                _handler = new HttpClientHandler();
-                _client = new HttpClient(_handler) {BaseAddress = baseAddress};
+                _baseAddress = baseAddress;
                 _upstreamUserAgent = FormatAssemblyUserAgent(Assembly.GetEntryAssembly());
             }
             else
@@ -84,12 +84,15 @@ namespace VersionOne.SDK.APIClient
 
         internal Stream GetData(string resource = null)
         {
-            ConfigureRequestIfNeeded();
-            var resourceUrl = GetResourceUrl(resource);
-            var response = _client.GetAsync(resourceUrl).Result;
-            ThrowWebExceptionIfNeeded(response);
-            var result = response.Content.ReadAsStreamAsync().Result;
-            LogResponse(response, result.ToString());
+            Stream result;
+            using (var httpClient = CreateHttpClient())
+            {
+                var resourceUrl = GetResourceUrl(resource);
+                var response = httpClient.GetAsync(resourceUrl).Result;
+                ThrowWebExceptionIfNeeded(response);
+                result = response.Content.ReadAsStreamAsync().Result;
+                LogResponse(response, result.ToString());
+            }
 
             return result;
         }
@@ -160,23 +163,26 @@ namespace VersionOne.SDK.APIClient
 
         private HttpResponseMessage Post(string resource = null, object data = null, string contentType = "application/xml")
         {
-            ConfigureRequestIfNeeded();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
-            string stringData = data != null ? data.ToString() : string.Empty;
-            HttpContent content;
-            if (data is byte[])
+            HttpResponseMessage result;
+            using (var httpClient = CreateHttpClient())
             {
-                content = new ByteArrayContent((byte[])data);
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
+                string stringData = data != null ? data.ToString() : string.Empty;
+                HttpContent content;
+                if (data is byte[])
+                {
+                    content = new ByteArrayContent((byte[]) data);
+                }
+                else
+                {
+                    content = new StringContent(stringData);
+                }
+                var resourceUrl = GetResourceUrl(resource);
+                result = httpClient.PostAsync(resourceUrl, content).Result;
+                ThrowWebExceptionIfNeeded(result);
             }
-            else
-            {
-                content = new StringContent(stringData);
-            }
-            var resourceUrl = GetResourceUrl(resource);
-            var response = _client.PostAsync(resourceUrl, content).Result;
-            ThrowWebExceptionIfNeeded(response);
-            
-            return response;
+
+            return result;
         }
 
         private string GetResourceUrl(string resource)
@@ -208,19 +214,7 @@ namespace VersionOne.SDK.APIClient
 
             return result;
         }
-
-        private void ConfigureRequestIfNeeded()
-        {
-            if (!_isRequestConfigured)
-            {
-                _handler.PreAuthenticate = true;
-                _handler.AllowAutoRedirect = true;
-                _client.DefaultRequestHeaders.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
-                _client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-                _isRequestConfigured = true;
-            }
-        }
-
+        
         private string UserAgent
         {
             get
@@ -275,6 +269,31 @@ namespace VersionOne.SDK.APIClient
             _log.Info(stringBuilder.ToString());
         }
 
+        private HttpClient CreateHttpClient()
+        {
+            var httpClient = new HttpClient(CreateHttpClientHandler()) { BaseAddress = _baseAddress };
+            foreach (var requestHeader in _requestHeaders)
+            {
+                httpClient.DefaultRequestHeaders.Add(requestHeader.Key, requestHeader.Value);
+            }
+            httpClient.DefaultRequestHeaders.Add("Accept-Language", CultureInfo.CurrentCulture.Name);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+
+            return httpClient;
+        }
+
+        private HttpClientHandler CreateHttpClientHandler()
+        {
+            var httpClientHandler = new HttpClientHandler();
+            //httpClientHandler.PreAuthenticate = true;
+            //httpClientHandler.AllowAutoRedirect = true;
+            if (_webProxy != null)
+                httpClientHandler.Proxy = _webProxy;
+            httpClientHandler.Credentials = _credentials;
+
+            return httpClientHandler;
+        }
+
         #region Fluent Builder
 
         private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethod, ICanSetProxyOrEndpointOrGetConnector, ICanSetEndpointOrGetConnector, ICanSetProxyOrGetConnector
@@ -293,7 +312,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(version))
                     throw new ArgumentNullException("version");
 
-                _instance._client.DefaultRequestHeaders.Add(name, version);
+                _instance._requestHeaders.Add(name, version);
 
                 return this;
             }
@@ -305,7 +324,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(password))
                     throw new ArgumentNullException("password");
 
-                _instance._handler.Credentials = new NetworkCredential(username, password);
+                _instance._credentials = new NetworkCredential(username, password);
 
                 return this;
             }
@@ -314,10 +333,10 @@ namespace VersionOne.SDK.APIClient
             {
                 var credentialCache = new CredentialCache
                 {
-                    {_instance._client.BaseAddress, "NTLM", CredentialCache.DefaultNetworkCredentials},
-                    {_instance._client.BaseAddress, "Negotiate", CredentialCache.DefaultNetworkCredentials}
+                    {_instance._baseAddress, "NTLM", CredentialCache.DefaultNetworkCredentials},
+                    {_instance._baseAddress, "Negotiate", CredentialCache.DefaultNetworkCredentials}
                 };
-                _instance._handler.Credentials = credentialCache;
+                _instance._credentials = credentialCache;
 
                 return this;
             }
@@ -329,7 +348,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(password))
                     throw new ArgumentNullException("password");
 
-                _instance._handler.Credentials = new NetworkCredential(fullyQualifiedDomainUsername, password);
+                _instance._credentials = new NetworkCredential(fullyQualifiedDomainUsername, password);
 
                 return this;
             }
@@ -339,7 +358,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
 
-                _instance._client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                _instance._requestHeaders.Add("Authorization", "Bearer " + accessToken);
 
                 return this;
             }
@@ -349,7 +368,7 @@ namespace VersionOne.SDK.APIClient
                 if (string.IsNullOrWhiteSpace(accessToken))
                     throw new ArgumentNullException("accessToken");
 
-                _instance._client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                _instance._requestHeaders.Add("Authorization", "Bearer " + accessToken);
 
                 return this;
             }
@@ -369,7 +388,7 @@ namespace VersionOne.SDK.APIClient
                 if (proxyProvider == null)
                     throw new ArgumentNullException("proxyProvider");
 
-                _instance._handler.Proxy = proxyProvider.CreateWebProxy();
+                _instance._webProxy = proxyProvider.CreateWebProxy();
 
                 return this;
             }
@@ -384,7 +403,7 @@ namespace VersionOne.SDK.APIClient
                 if (proxyProvider == null)
                     throw new ArgumentNullException("proxyProvider");
 
-                _instance._handler.Proxy = proxyProvider.CreateWebProxy();
+                _instance._webProxy = proxyProvider.CreateWebProxy();
 
                 return this;
             }
