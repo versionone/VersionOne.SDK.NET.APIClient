@@ -1,10 +1,11 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace VersionOne.SDK.APIClient.IntegrationTests
 {
     class IntegrationTestsHelper
     {
-        const string TestProjectName = ".Net.SDK Integration Tests";
+        readonly static string TestProjectName = ".Net.SDK Integration Tests: " + DateTime.Now;
 
         private static Oid _testProjectId;
 
