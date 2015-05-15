@@ -9,7 +9,9 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Xml.Linq;
 using log4net;
+using Newtonsoft.Json.Linq;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -199,9 +201,33 @@ namespace VersionOne.SDK.APIClient
             {
                 var statusCode = Convert.ToInt32(response.StatusCode);
                 var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode, HttpWorkerRequest.GetStatusDescription(statusCode));
-                var webException = new WebException(message, (WebExceptionStatus) statusCode);
+                APIException innerException = null;
+                var apiMessage = GetErrorMessageFromResponse(response);
+                if (!string.IsNullOrWhiteSpace(apiMessage))
+                    innerException = new APIException(apiMessage);
+
+                var webException = new WebException(message, innerException, (WebExceptionStatus) statusCode, null);
+                
                 throw webException;
             }
+        }
+
+        private string GetErrorMessageFromResponse(HttpResponseMessage response)
+        {
+            string result = null;
+            if (response.Content.Headers.ContentType.ToString().Contains("text/xml"))
+            {
+                var doc = XDocument.Load(response.Content.ReadAsStreamAsync().Result);
+                var lastMessage = doc.Descendants().LastOrDefault(e => e.Name.LocalName == "Message");
+                result = lastMessage != null ? lastMessage.Value : string.Empty;
+            }
+            else
+            {
+                dynamic errorResponse = JObject.Parse(response.Content.ReadAsStringAsync().Result);
+                result = errorResponse.exceptions[0]["message"].Value;
+            }
+
+            return result;
         }
 
         private string ValidateResource(string resource)
