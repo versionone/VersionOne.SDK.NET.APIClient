@@ -214,17 +214,24 @@ namespace VersionOne.SDK.APIClient
 
         private string GetErrorMessageFromResponse(HttpResponseMessage response)
         {
-            string result = null;
-            if (response.Content.Headers.ContentType.ToString().Contains("text/xml"))
+            string result;
+            try
             {
-                var doc = XDocument.Load(response.Content.ReadAsStreamAsync().Result);
-                var lastMessage = doc.Descendants().LastOrDefault(e => e.Name.LocalName == "Message");
-                result = lastMessage != null ? lastMessage.Value : string.Empty;
+                if (response.Content.Headers.ContentType.ToString().Contains("text/xml"))
+                {
+                    var doc = XDocument.Load(response.Content.ReadAsStreamAsync().Result);
+                    var lastMessage = doc.Descendants().LastOrDefault(e => e.Name.LocalName == "Message");
+                    result = lastMessage != null ? lastMessage.Value : string.Empty;
+                }
+                else
+                {
+                    dynamic errorResponse = JObject.Parse(response.Content.ReadAsStringAsync().Result);
+                    result = errorResponse.exceptions[0]["message"].Value;
+                }
             }
-            else
+            catch (Exception)
             {
-                dynamic errorResponse = JObject.Parse(response.Content.ReadAsStringAsync().Result);
-                result = errorResponse.exceptions[0]["message"].Value;
+                result = null;
             }
 
             return result;
