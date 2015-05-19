@@ -1,54 +1,52 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {
-    [TestFixture]
+    [TestClass]
     public class UrlsTester
     {
-
         private IUrls _target;
 
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
-            _target = new Urls(); 
+            _target = new Urls();
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TearDown()
         {
             _target = null;
         }
 
-        [Test]
+        [TestMethod]
         public void V1UrlTest()
         {
-            Assert.IsNotNullOrEmpty(_target.V1Url);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.V1Url));
         }
 
-        [Test]
+        [TestMethod]
         public void DataUrlTest()
         {
-            Assert.IsNotNullOrEmpty(_target.DataUrl);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.DataUrl));
         }
 
-        [Test]
+        [TestMethod]
         public void MetaUrlTest()
         {
-            Assert.IsNotNullOrEmpty(_target.MetaUrl);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.MetaUrl));
         }
 
-        [Test]
+        [TestMethod]
         public void ProxyUrlTest()
         {
-            Assert.IsNotNullOrEmpty(_target.ProxyUrl);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.ProxyUrl));
         }
 
-        [Test]
+        [TestMethod]
         public void ConfigUrlTest()
         {
-            Assert.IsNotNullOrEmpty(_target.ConfigUrl);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.ConfigUrl));
         }
-
     }
 }

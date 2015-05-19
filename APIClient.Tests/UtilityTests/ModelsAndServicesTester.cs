@@ -1,15 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {
-    [TestFixture]
+    [TestClass]
     public class ModelsAndServicesTester
     {
-
         private IModelsAndServices _defaultTarget;
         private IModelsAndServices _nonDefaultTarget;
 
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
             _defaultTarget = new ModelsAndServices();
@@ -17,14 +16,14 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             _nonDefaultTarget = new ModelsAndServices(connectors);
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TearDown()
         {
             _defaultTarget = null;
             _nonDefaultTarget = null;
         }
 
-        [Test]
+        [TestMethod]
         public void ServicesTest()
         {
             Assert.IsNotNull(_defaultTarget.Services);
@@ -33,7 +32,7 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             Assert.IsNotNull(_nonDefaultTarget.ServicesWithProxy);
         }
 
-        [Test]
+        [TestMethod]
         public void MetaModelTests()
         {
             Assert.IsNotNull(_defaultTarget.MetaModel);
@@ -42,7 +41,7 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             Assert.IsNotNull(_nonDefaultTarget.MetaModelWithProxy);
         }
 
-        [Test]
+        [TestMethod]
         public void ConfigTests()
         {
             Assert.IsNotNull(_defaultTarget.V1Configuration);
@@ -50,7 +49,5 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
             Assert.IsNotNull(_nonDefaultTarget.V1Configuration);
             Assert.IsNotNull(_nonDefaultTarget.V1ConfigurationWithProxy);
         }
-
-
     }
 }

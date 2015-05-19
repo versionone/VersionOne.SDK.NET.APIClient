@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace VersionOne.SDK.APIClient {
-    public abstract class CompositeBuilder : IQueryBuilder {
+namespace VersionOne.SDK.APIClient
+{
+    public abstract class CompositeBuilder : IQueryBuilder
+    {
         public readonly IList<IQueryBuilder> Builders = new List<IQueryBuilder>();
 
-        public BuildResult Build(Query query, BuildResult result) {
-            foreach (var builder in Builders) {
+        public BuildResult Build(Query query, BuildResult result)
+        {
+            foreach (var builder in Builders)
+            {
                 builder.Build(query, result);
             }
 

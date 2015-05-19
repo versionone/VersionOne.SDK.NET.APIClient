@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <SignAssembly>false</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>http://localhost/VersionOne.SDK.APIClient/</PublishUrl>
     <Install>true</Install>
@@ -57,8 +57,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\VersionOne.SDK.APIClient.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -122,21 +121,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FParsec">
-      <HintPath>..\packages\FParsec.1.0.1\lib\net40-client\FParsec.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="FParsecCS">
-      <HintPath>..\packages\FParsec.1.0.1\lib\net40-client\FParsecCS.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Data, Version=1.1.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Data.DesignTime">
-      <HintPath>..\packages\FSharp.Data.1.1.10\lib\net40\FSharp.Data.DesignTime.dll</HintPath>
-    </Reference>
-    <Reference Include="OAuth2Client">
-      <HintPath>..\packages\OAuth2Client.1.6.1.2571\lib\net45\OAuth2Client.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -145,114 +135,108 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="VersionOne.Parsers">
-      <HintPath>..\packages\VersionOne.Parsers.1.1.0.0\lib\net45\VersionOne.Parsers.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Aggregate.cs" />
-    <Compile Include="AssetStateManager.cs" />
+    <Compile Include="Model\Aggregate.cs" />
+    <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Attachments.cs" />
-    <Compile Include="Attribute.cs" />
-    <Compile Include="AttributeType.cs" />
-    <Compile Include="Config.cs">
+    <Compile Include="Model\Asset\Attribute\Attribute.cs" />
+    <Compile Include="Model\Asset\Attribute\AttributeType.cs" />
+    <Compile Include="Obsolete\Config.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1CredsAPIConnector.cs" />
-    <Compile Include="VersionOneAPIConnector.cs" />
-    <Compile Include="V1ConfigurationManager.cs" />
-    <Compile Include="Connectors.cs" />
-    <Compile Include="Credentials.cs" />
-    <Compile Include="EnvironmentContext.cs" />
-    <Compile Include="ModelsAndServices.cs" />
+    <Compile Include="Connector\V1Connector.cs" />
+    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="Services\Services.cs" />
+    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
+    <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
+    <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
+    <Compile Include="Services\IServices.cs" />
+    <Compile Include="Utils\DB.cs" />
+    <Compile Include="Obsolete\V1ConfigurationManager.cs" />
+    <Compile Include="Obsolete\Connectors.cs" />
+    <Compile Include="Obsolete\Credentials.cs" />
+    <Compile Include="Obsolete\EnvironmentContext.cs" />
+    <Compile Include="Obsolete\ModelsAndServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Asset.cs">
+    <Compile Include="Model\Asset\Asset.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssetList.cs">
+    <Compile Include="Model\Asset\AssetList.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssetType.cs">
+    <Compile Include="Model\Asset\AssetType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MultiValueAttribute.cs" />
+    <Compile Include="Model\Asset\Attribute\MultiValueAttribute.cs" />
     <Compile Include="Query\IValueProvider.cs" />
     <Compile Include="Query\ValueProvider.cs" />
     <Compile Include="Query\ValueStringizer.cs" />
-    <Compile Include="SingleValueAttribute.cs" />
-    <Compile Include="Urls.cs" />
-    <Compile Include="V1Oauth2APIConnector.cs" />
-    <Compile Include="XmlApiWriter.cs">
+    <Compile Include="Model\Asset\Attribute\SingleValueAttribute.cs" />
+    <Compile Include="Obsolete\Urls.cs" />
+    <Compile Include="Services\XmlApiWriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttributeDefinition.cs">
+    <Compile Include="Model\Asset\Attribute\AttributeDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttributeSelection.cs">
+    <Compile Include="Query\AttributeSelection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DB.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Duration.cs">
+    <Compile Include="Model\Asset\Attribute\Duration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HashCode.cs">
+    <Compile Include="Utils\HashCode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IAPIConnector.cs" />
-    <Compile Include="IAssetType.cs" />
+    <Compile Include="Obsolete\IAPIConnector.cs" />
+    <Compile Include="Model\Interfaces\IAssetType.cs" />
     <Compile Include="IAttachments.cs" />
-    <Compile Include="IAttributeDefinition.cs" />
-    <Compile Include="IMetaModel.cs" />
-    <Compile Include="ILocalizer.cs">
+    <Compile Include="Model\Interfaces\IAttributeDefinition.cs" />
+    <Compile Include="MetaModel\IMetaModel.cs" />
+    <Compile Include="Obsolete\ILocalizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IOperation.cs" />
-    <Compile Include="IServices.cs" />
-    <Compile Include="IV1Configuration.cs" />
-    <Compile Include="Localizer.cs">
+    <Compile Include="Model\Interfaces\IOperation.cs" />
+    <Compile Include="Configuration\IV1Configuration.cs" />
+    <Compile Include="Obsolete\Localizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaModel.cs">
+    <Compile Include="MetaModel\MetaModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MimeType.cs" />
-    <Compile Include="Oid.cs">
+    <Compile Include="Model\Oid.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operation.cs">
+    <Compile Include="Model\Asset\Operation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OrderBy.cs">
+    <Compile Include="Query\OrderBy.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Paging.cs">
+    <Compile Include="Query\Paging.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProxyProvider.cs" />
+    <Compile Include="Connector\ProxyProvider.cs" />
     <Compile Include="Query\Builders\AsOfBuilder.cs" />
     <Compile Include="Query\Builders\BuildResult.cs" />
     <Compile Include="Query\Builders\CompositeBuilder.cs" />
     <Compile Include="Query\Builders\FindBuilder.cs" />
-    <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
     <Compile Include="Query\Builders\IQueryBuilder.cs" />
     <Compile Include="Query\Builders\PagingBuilder.cs" />
     <Compile Include="Query\Builders\QueryBuilder.cs" />
-    <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Query\AndFilterTerm.cs" />
     <Compile Include="Query\Builders\SelectionBuilder.cs" />
     <Compile Include="Query\Builders\SortBuilder.cs" />
@@ -272,25 +256,22 @@
     </Compile>
     <Compile Include="Query\QueryVariable.cs" />
     <Compile Include="Query\TokenTerm.cs" />
-    <Compile Include="Rank.cs" />
+    <Compile Include="Model\Asset\Attribute\Rank.cs" />
     <Compile Include="RequiredFieldValidator.cs" />
-    <Compile Include="Services.cs">
+    <Compile Include="Utils\TextBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TextBuilder.cs">
+    <Compile Include="Model\Pair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pair.cs">
+    <Compile Include="Obsolete\V1APIConnector.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1APIConnector.cs">
+    <Compile Include="Obsolete\V1Central.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="V1Central.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="V1Configuration.cs" />
-    <Compile Include="V1ConnectionValidator.cs">
+    <Compile Include="Configuration\V1Configuration.cs" />
+    <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
     <None Include="App.config" />
@@ -315,9 +296,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

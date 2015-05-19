@@ -1,48 +1,49 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {
-    [TestFixture]
+    [TestClass]
     public class CredentialsTester
     {
-
         public ICredentials _target;
 
-        [SetUp]
+        [TestInitialize]
         public void TestFixtureSetup()
         {
             _target = new Credentials();
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestFixtureTearDown()
         {
             _target = null;
         }
 
-        [Test]
+        [TestMethod]
         public void V1UserNameTest()
         {
-            Assert.IsNotNullOrEmpty(_target.V1UserName);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.V1UserName));
         }
 
-        [Test]
+        [TestMethod]
         public void V1PasswordTest()
         {
-            Assert.IsNotNullOrEmpty(_target.V1Password);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.V1Password));
+
         }
 
-        [Test]
+        [TestMethod]
         public void ProxyUserNameTest()
         {
-            Assert.IsNotNullOrEmpty(_target.ProxyUserName);
+            Assert.IsFalse(string.IsNullOrEmpty(_target.ProxyUserName));
+
         }
 
-        [Test]
+        [TestMethod]
         public void ProxyPasswordTest()
         {
-            Assert.IsNotNullOrEmpty(_target.ProxyPassword);
-        }
+            Assert.IsFalse(string.IsNullOrEmpty(_target.ProxyPassword));
 
+        }
     }
 }

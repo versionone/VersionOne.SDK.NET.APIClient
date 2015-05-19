@@ -1,10 +1,14 @@
-namespace VersionOne.SDK.APIClient {
-    public class NoOpTerm : IFilterTerm {
-        public string Token {
+namespace VersionOne.SDK.APIClient
+{
+    public class NoOpTerm : IFilterTerm
+    {
+        public string Token
+        {
             get { return null; }
         }
 
-        public string ShortToken {
+        public string ShortToken
+        {
             get { return null; }
         }
     }

@@ -1,20 +1,22 @@
-
-using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VersionOne.SDK.MSTestExtensions;
 
 namespace VersionOne.SDK.APIClient.Tests.MetaTests
 {
-	[TestFixture]
-	public class OperationTester : MetaTesterBase
-	{
-		protected override string MetaTestKeys { get { return "OperationTester"; } }
+    [TestClass]
+    public class OperationTester : MetaTesterBase
+    {
+        protected override string MetaTestKeys { get { return "OperationTester"; } }
 		
-		[ExpectedException(typeof(MetaException), ExpectedMessage = "Unknown Operation: Story.DoNothing")]
-		[Test] public void InvalidOperation()
+        [ExpectedExceptionAndMessage(typeof(MetaException), "Unknown Operation: Story.DoNothing")]
+		[TestMethod] 
+        public void InvalidOperation()
 		{
 			Meta.GetOperation("Story.DoNothing");
 		}
 		
-		[Test] public void BaseAssetDelete()
+		[TestMethod] 
+        public void BaseAssetDelete()
 		{
 			IOperation op = Meta.GetOperation("BaseAsset.Delete");
 			Assert.AreEqual("BaseAsset",op.AssetType.Token);
@@ -23,7 +25,8 @@ namespace VersionOne.SDK.APIClient.Tests.MetaTests
 			Assert.AreEqual("BaseAsset.IsDeletable",op.ValidatorAttribute.Token);
 		}
 		
-		[Test] public void LoadedByGetAssetType()
+		[TestMethod] 
+        public void LoadedByGetAssetType()
 		{
 			Meta.GetAssetType("List");
 			IOperation op = Meta.GetOperation("List.Delete");
@@ -34,7 +37,8 @@ namespace VersionOne.SDK.APIClient.Tests.MetaTests
 			Assert.AreEqual("List.IsDeletable",op.ValidatorAttribute.Token);			
 		}
 		
-		[Test] public void MetaModelLookupOperation()
+		[TestMethod] 
+        public void MetaModelLookupOperation()
 		{
 			IOperation op = Meta.GetOperation("MyType.Delete");
 			

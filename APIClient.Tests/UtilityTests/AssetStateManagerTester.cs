@@ -1,15 +1,15 @@
 ﻿using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {
-    [TestFixture]
-    public class AssetStatemanagerTester
+    [TestClass]
+    public class AssetStateManagerTester
     {
-        [Test]
+        [TestMethod]
         public void GetAssetStateFromStringTest()
         {
-            
+
             var state = AssetStateManager.GetAssetStateFromString("64");
             Assert.AreEqual(AssetState.Active, state);
 
@@ -27,24 +27,22 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         public void NullArgumentTest()
         {
             var state = AssetStateManager.GetAssetStateFromString(null);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         public void EmptyStringTest()
         {
             AssetStateManager.GetAssetStateFromString(string.Empty);
         }
-        
+
         public void NonExistantEnumValueTest()
         {
             var state = AssetStateManager.GetAssetStateFromString("1");
             Assert.AreEqual(1, state);
         }
-
-
     }
 }

@@ -1,15 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 {
-    [TestFixture]
+    [TestClass]
     public class ConnectorsTester
     {
-
         private IConnectors _connectors;
         private IConnectors _connectorsWithInjectedUrlsAndCreds;
 
-        [SetUp]
+        [TestInitialize]
         public void TestFixtureSetup()
         {
 
@@ -18,14 +17,14 @@ namespace VersionOne.SDK.APIClient.Tests.UtilityTests
 
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestFixtureTearDown()
         {
             _connectors = null;
             _connectorsWithInjectedUrlsAndCreds = null;
         }
 
-        [Test]
+        [TestMethod]
         public void ConnectorTest()
         {
             Assert.IsNotNull(_connectors.DataConnector);

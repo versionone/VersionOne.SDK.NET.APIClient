@@ -324,6 +324,22 @@
 				<Setting key="DefectTrackingLevel" value="On"/>
 			</Configuration>
 		</Response>
+    <Response path="config.v1/FalseOnOnOff">
+      <Configuration version="8.0.55555.17206">
+        <Setting key="EffortTracking" value="False"/>
+        <Setting key="StoryTrackingLevel" value="On"/>
+        <Setting key="DefectTrackingLevel" value="On"/>
+        <Setting key="CapacityPlanning" value="Off"/>
+      </Configuration>
+    </Response>
+    <Response path="config.v1/FalseOnOnOn">
+      <Configuration version="8.0.55555.17206">
+        <Setting key="EffortTracking" value="False"/>
+        <Setting key="StoryTrackingLevel" value="On"/>
+        <Setting key="DefectTrackingLevel" value="On"/>
+        <Setting key="CapacityPlanning" value="On"/>
+      </Configuration>
+    </Response>
 	</Test>
 
   <Test name="MultiValueAttributeTester">

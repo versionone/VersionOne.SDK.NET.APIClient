@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace VersionOne.SDK.APIClient {
-    public class Query {
+namespace VersionOne.SDK.APIClient
+{
+    public class Query
+    {
         private readonly bool isHistorical;
         private readonly IAssetType assetType;
         private readonly IAttributeDefinition parentRelation;
@@ -12,39 +14,46 @@ namespace VersionOne.SDK.APIClient {
         private OrderBy orderBy = new OrderBy();
         private Paging paging = new Paging();
         private DateTime asOf = DateTime.MinValue;
-        private readonly IList<QueryVariable> variables = new List<QueryVariable>(); 
+        private readonly IList<QueryVariable> variables = new List<QueryVariable>();
 
-        public Query(IAssetType assetType) : this(assetType, false) {}
-        public Query(IAssetType assetType, IAttributeDefinition parentrelation) : this(assetType, false, parentrelation) {}
-        public Query(IAssetType assetType, bool historical) : this(assetType, historical, null) {}
+        public Query(IAssetType assetType) : this(assetType, false) { }
+        public Query(IAssetType assetType, IAttributeDefinition parentrelation) : this(assetType, false, parentrelation) { }
+        public Query(IAssetType assetType, bool historical) : this(assetType, historical, null) { }
 
-        public Query(IAssetType assetType, bool historical, IAttributeDefinition parentRelation) {
+        public Query(IAssetType assetType, bool historical, IAttributeDefinition parentRelation)
+        {
             Find = null;
             this.assetType = assetType;
             isHistorical = historical;
             oid = Oid.Null;
             this.parentRelation = parentRelation;
-            
-            if (this.parentRelation != null) {
-                if(this.parentRelation.AttributeType != AttributeType.Relation) {
+
+            if (this.parentRelation != null)
+            {
+                if (this.parentRelation.AttributeType != AttributeType.Relation)
+                {
                     throw new ApplicationException("Parent Relation must be a Relation Attribute Type");
                 }
 
-                if(this.parentRelation.IsMultiValue) {
+                if (this.parentRelation.IsMultiValue)
+                {
                     throw new ApplicationException("Parent Relation cannot be multi-value");
                 }
             }
         }
 
-        public Query(Oid oid) : this(oid, false) {}
+        public Query(Oid oid) : this(oid, false) { }
 
-        public Query(Oid oid, bool historical) {
+        public Query(Oid oid, bool historical)
+        {
             Find = null;
-            if(oid.IsNull) {
+            if (oid.IsNull)
+            {
                 throw new ApplicationException("Invalid Query OID Parameter");
             }
-  
-            if(oid.HasMoment && historical) {
+
+            if (oid.HasMoment && historical)
+            {
                 throw new NotSupportedException("Historical Query with Momented OID not supported");
             }
 
@@ -53,67 +62,85 @@ namespace VersionOne.SDK.APIClient {
             this.oid = oid;
         }
 
-        public IAssetType AssetType {
+        public IAssetType AssetType
+        {
             get { return assetType; }
         }
 
-        public bool IsHistorical {
+        public bool IsHistorical
+        {
             get { return isHistorical; }
         }
 
-        public Oid Oid {
+        public Oid Oid
+        {
             get { return oid; }
         }
 
-        public IAttributeDefinition ParentRelation {
+        public IAttributeDefinition ParentRelation
+        {
             get { return parentRelation; }
         }
 
-        public AttributeSelection Selection {
+        public AttributeSelection Selection
+        {
             get { return selection; }
-            set {
-                if(value != null) {
+            set
+            {
+                if (value != null)
+                {
                     selection = value;
                 }
             }
         }
 
-        public IFilterTerm Filter {
+        public IFilterTerm Filter
+        {
             get { return filter; }
-            set {
-                if(value != null) {
+            set
+            {
+                if (value != null)
+                {
                     filter = value;
                 }
             }
         }
 
-        public OrderBy OrderBy {
+        public OrderBy OrderBy
+        {
             get { return orderBy; }
-            set {
-                if(value != null) {
+            set
+            {
+                if (value != null)
+                {
                     orderBy = value;
                 }
             }
         }
 
-        public Paging Paging {
+        public Paging Paging
+        {
             get { return paging; }
-            set {
-                if(value != null) {
+            set
+            {
+                if (value != null)
+                {
                     paging = value;
                 }
             }
         }
 
-        public DateTime AsOf {
+        public DateTime AsOf
+        {
             get { return asOf; }
             set { asOf = value; }
         }
 
         public QueryFind Find { get; set; }
 
-        public ICollection<QueryVariable> Variables {
+        public ICollection<QueryVariable> Variables
+        {
             get { return variables; }
-        } 
+        }
     }
 }

@@ -56,8 +56,8 @@ namespace VersionOne.SDK.APIClient
             {
                 asset.EnsureAttribute(attributeDefinition);
                 Attribute attribute = asset.GetAttribute(attributeDefinition);
-                
-                if(attribute == null || !Validate(asset, attributeDefinition)) 
+
+                if (attribute == null || !Validate(asset, attributeDefinition))
                 {
                     results.Add(attributeDefinition);
                 }

@@ -1,7 +1,10 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
-namespace VersionOne.SDK.APIClient {
-    public class FindBuilder : QueryBuilder {
+namespace VersionOne.SDK.APIClient
+{
+    public class FindBuilder : QueryBuilder
+    {
         protected override void DoBuild(Query query, BuildResult result)
         {
 
