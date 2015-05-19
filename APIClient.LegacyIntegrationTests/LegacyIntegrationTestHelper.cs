@@ -1,4 +1,6 @@
-﻿namespace VersionOne.SDK.APIClient.IntegrationTests
+﻿using System;
+
+namespace VersionOne.SDK.APIClient.IntegrationTests
 {
     public class LegacyIntegrationTestHelper
     {
@@ -7,7 +9,7 @@
         private static EnvironmentContext _context;
         private static Oid _projectId;
 
-        const string TestProjectName = ".Net.SDK Integration Legacy Tests";
+        readonly static string TestProjectName = ".Net.SDK Legacy Integration Tests " + DateTime.Now;
 
         public static Oid ProjectId
         {
