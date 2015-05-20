@@ -12,23 +12,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <tags>$tags$</tags>
-    <dependencies>
-      <dependency id="OAuth2Client" version="1.6.1.2571" />
-    </dependencies>
     <!--
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>15.0.0.0</releaseNotes>
     -->
-    <copyright>$copyright$</copyright>
-    <owners>$author$</owners>    
-    <licenseUrl>https://github.com/versionone/VersionOne.SDK.NET.APIClient/blob/developing/LICENSE.md</licenseUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance> 
-    <projectUrl>https://github.com/versionone/VersionOne.SDK.NET.APIClient/</projectUrl>
-    <iconUrl>https://raw.github.com/versionone/VersionOne.SDK.NET.APIClient/developing/package_icon_32px.png</iconUrl>
-    <description>Provides coarse-grained access to VersionOne Asset objects via the REST-based HTTP API for building custom applications against the VersionOne platform.</description>    
-    <!--
-		<releaseNotes>15.0.0.0</releaseNotes>
-	-->
-    <copyright>$copyright$</copyright>
-    <tags>V1 VersionOne API apiclient agile</tags>
   </metadata>
 </package>
