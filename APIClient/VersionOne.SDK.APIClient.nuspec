@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/versionone/VersionOne.SDK.NET.APIClient/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/versionone/VersionOne.SDK.NET.APIClient/master/package_icon_32px.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>Provides coarse-grained access to VersionOne Asset objects via the REST-based HTTP API for building custom applications against the VersionOne platform.</description>
     <tags>$tags$</tags>
     <!--
     <releaseNotes>15.0.0.0</releaseNotes>

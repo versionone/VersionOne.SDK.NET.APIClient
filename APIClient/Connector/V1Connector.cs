@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,6 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Xml.Linq;
-using log4net;
 using Newtonsoft.Json.Linq;
 
 namespace VersionOne.SDK.APIClient
@@ -31,7 +31,8 @@ namespace VersionOne.SDK.APIClient
 
         private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
         private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
-        private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
+        private readonly bool _isDebugEnabled;
+        //private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
         private readonly Uri _baseAddress;
         private IWebProxy _webProxy;
         private System.Net.ICredentials _credentials;
@@ -44,6 +45,8 @@ namespace VersionOne.SDK.APIClient
                 throw new ArgumentNullException("instanceUrl");
             if (!instanceUrl.EndsWith("/"))
                 instanceUrl += "/";
+
+            _isDebugEnabled = Config.IsDebugMode;
 
             Uri baseAddress;
             if (Uri.TryCreate(instanceUrl, UriKind.Absolute, out baseAddress))
@@ -270,36 +273,71 @@ namespace VersionOne.SDK.APIClient
         
         private void LogRequest(HttpRequestMessage rm, string requestBody)
         {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("REQUEST");
-            stringBuilder.AppendLine("\tMethod: " + rm.Method);
-            stringBuilder.AppendLine("\tRequest URL: " + rm.RequestUri);
-            stringBuilder.AppendLine("\tHeaders: ");
-            foreach (var header in rm.Headers)
-            {
-                stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
-            }
-            stringBuilder.AppendLine("\tBody: ");
-            stringBuilder.AppendLine("\t\t" + requestBody);
+            //var stringBuilder = new StringBuilder();
+            //stringBuilder.AppendLine("REQUEST");
+            //stringBuilder.AppendLine("\tMethod: " + rm.Method);
+            //stringBuilder.AppendLine("\tRequest URL: " + rm.RequestUri);
+            //stringBuilder.AppendLine("\tHeaders: ");
+            //foreach (var header in rm.Headers)
+            //{
+            //    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
+            //}
+            //stringBuilder.AppendLine("\tBody: ");
+            //stringBuilder.AppendLine("\t\t" + requestBody);
 
-            _log.Info(stringBuilder.ToString());
+            //_log.Info(stringBuilder.ToString());
+
+            if (_isDebugEnabled)
+            {
+                var stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("REQUEST");
+                stringBuilder.AppendLine("\tMethod: " + rm.Method);
+                stringBuilder.AppendLine("\tRequest URL: " + rm.RequestUri);
+                stringBuilder.AppendLine("\tHeaders: ");
+                foreach (var header in rm.Headers)
+                {
+                    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
+                }
+                stringBuilder.AppendLine("\tBody: ");
+                stringBuilder.AppendLine("\t\t" + requestBody);
+
+                Debug.WriteLine(stringBuilder.ToString());
+                Debug.WriteLine("");
+            }
         }
 
         private void LogResponse(HttpResponseMessage resp, string responseBody, string requestBody = "")
         {
             LogRequest(resp.RequestMessage, requestBody);
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("RESPONSE");
-            stringBuilder.AppendLine("\tStatus code: " + resp.StatusCode);
-            stringBuilder.AppendLine("\tHeaders: ");
-            foreach (var header in resp.Headers)
-            {
-                stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
-            }
-            stringBuilder.AppendLine("\tBody: ");
-            stringBuilder.AppendLine("\t\t" + responseBody);
+            //var stringBuilder = new StringBuilder();
+            //stringBuilder.AppendLine("RESPONSE");
+            //stringBuilder.AppendLine("\tStatus code: " + resp.StatusCode);
+            //stringBuilder.AppendLine("\tHeaders: ");
+            //foreach (var header in resp.Headers)
+            //{
+            //    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
+            //}
+            //stringBuilder.AppendLine("\tBody: ");
+            //stringBuilder.AppendLine("\t\t" + responseBody);
 
-            _log.Info(stringBuilder.ToString());
+            //_log.Info(stringBuilder.ToString());
+
+            if (_isDebugEnabled)
+            {
+                var stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("RESPONSE");
+                stringBuilder.AppendLine("\tStatus code: " + resp.StatusCode);
+                stringBuilder.AppendLine("\tHeaders: ");
+                foreach (var header in resp.Headers)
+                {
+                    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
+                }
+                stringBuilder.AppendLine("\tBody: ");
+                stringBuilder.AppendLine("\t\t" + responseBody);
+
+                Debug.WriteLine(stringBuilder.ToString());
+                Debug.WriteLine("");
+            }
         }
 
         private HttpClient CreateHttpClient()
