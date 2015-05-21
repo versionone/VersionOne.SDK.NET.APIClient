@@ -1,21 +1,13 @@
 ## Acknowledgements
-Package management support is provided by NuGet, which is open source software.
 
-The original software is available from:
-  http://nuget.codeplex.com/
+######Package management support is provided by NuGet, which is open source software.
 
-This software is available under an Apache License v2.0:
-  http://nuget.codeplex.com/license
+- The original software is available from: [http://nuget.codeplex.com/](http://nuget.codeplex.com/)  
+- This software is available under an Apache License v2.0: [http://nuget.codeplex.com/license](http://nuget.codeplex.com/license)  
 
-Unit test support is provided by the NUnit library, which is open source software, written by Charlie Poole, James W. Newkirk, Michael C. Two, Alexei A. Vorontsov, and Philip A.Craig, with respective copyrights.
+######JSON support is provided by Json.NET, which is open source software.
 
-The original software is available from:
-  http://www.nunit.org/
+- The original software is available from: [http://www.newtonsoft.com/json](http://www.newtonsoft.com/json)  
+- This software is available under a MIT License: [https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md) 
 
-This library is available under an NUnit License:
-  http://www.nunit.org/index.php?p=license&r=2.6
 
-Lightweight object identity is provided by an adaptation of Paul Hsieh's SuperFastHash.
-
-The original algorithm is documented in C++ at:
-  http://www.azillionmonkeys.com/qed/hash.html
