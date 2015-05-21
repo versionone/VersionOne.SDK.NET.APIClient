@@ -1,11 +1,11 @@
-# VersionOne SDK.NET APIClient Library
-The APIClient provides access to the Core API without concern for the underlying RESTful API or the HTTP/XML plumbing. Through the APIClient, developers can query for simple or complex sets of information, update the information, and execute system-defined operations. The APIClient is best suited for course-grained and bulk access.
+# VersionOne .NET SDK
+The .NET SDK provides access to the Core API without concern for the underlying RESTful API or the HTTP/XML plumbing. Through the SDK, developers can query for simple or complex sets of information, update the information, and execute system-defined operations. The SDK is best suited for course-grained and bulk access.
 
 ## How to get the library as a precompiled package
 
 _Do this if you only want to use the functionality, but are not interested in compiling from source or in contributing code to the project._
 
-Use the NuGet package manager from Visual Studio or nuget.exe. Search for `VersionOne.SDK.APIClient` to find the precompiled package. Packages installed via NuGet have been tested by VersionOne against the product release version specified in the description of the package. Learn more about NuGet here: http://docs.nuget.org/docs/start-here/overview
+Use the NuGet package manager from Visual Studio or nuget.exe. Search for `VersionOne.SDK.APIClient` to find the precompiled package. Packages installed via NuGet have been tested by VersionOne against the product release version specified in the description of the package. You can learn more about NuGet here: [http://docs.nuget.org/docs/start-here/overview](http://docs.nuget.org/docs/start-here/overview).
 
 ## How to obtain the source code
 
@@ -20,14 +20,14 @@ You can obtain it in two ways:
 
 _Do this if you are not planning to contribute code back to the project._
 
-1. Navigate to http://github.com/versionone/VersionOne.SDK.NET.APIClient
+1. Navigate to [http://github.com/versionone/VersionOne.SDK.NET.APIClient](http://github.com/versionone/VersionOne.SDK.NET.APIClient).
 2. Click the ZIP button near the top. This downloads all the code as a single zip file.
 
 ### How to clone the source code repository from GitHub
 
 _Do this if you want to contribute code to the project._
 
-1. Install _Git for Windows_ from http://msysgit.github.com/
+1. Install _Git for Windows_ from [http://msysgit.github.com/](http://msysgit.github.com/).
 2. Run Git Bash from the start menu
 3. Type `git clone git@github.com:versionone/VersionOne.SDK.NET.APIClient.git`
 
@@ -94,10 +94,9 @@ By default Visual Studio's debugger will not stop on breakpoints when executing 
 This forces the NUnit runner to execute under .NET 4.0, and allows Visual Studio to thus load the debug symbols. Otherwise, NUnit executes under 2.0, but spawns a separate process to execute the tests under version 4.0.
 
 ## Getting Help
-Need to bootstrap on VersionOne SDK.NET quickly? VersionOne services brings a wealth of development experience to training and mentoring on VersionOne SDK.NET:
+While we strive to make the SDK as easy to use as possible, you may still occasionally need some help, and there are a few different ways you can get it:  
 
-http://www.versionone.com/training/product_training_services/
-
-Have a question? Get help from the community of VersionOne developers:
-
-http://groups.google.com/group/versionone-dev/
+- [Code Samples](https://community.versionone.com/Developers/Developer-Library/Sample_Code): A growing list of recipes for working with the VersionOne API. Check here first to see if an answer already exists.  
+- [StackOverflow](http://stackoverflow.com/questions/tagged/versionone): For asking question of the VersionOne Developer Community.  
+- [VersionOne Support](): Our support team is well versed in the VersionOne API, including accessing it via the SDK.  
+- [VersionOne Technical Services](http://www.versionone.com/training/technical_services/): A paid support offering, this team provides API training, development pairing, and complete custom development services.  

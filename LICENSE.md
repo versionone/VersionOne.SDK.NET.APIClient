@@ -1,5 +1,5 @@
-# VersionOne SDK.NET APIClient License
-Copyright (c) 2008-2012 VersionOne, Inc.
+# VersionOne .NET SDK License
+Copyright (c) 2008-2015 VersionOne, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 
