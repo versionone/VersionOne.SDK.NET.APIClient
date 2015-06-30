@@ -9,23 +9,33 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 
         private static Oid _testProjectId;
 
-        public static Oid TestProjectOid
+        public static Oid GetTestProjectOid(bool useOAuthendpoints = false)
         {
-            get
-            {
                 if (_testProjectId == null)
-                    CreateTestProject();
+                    CreateTestProject(useOAuthendpoints);
 
                 return _testProjectId;
-            }
         }
-
-        private static void CreateTestProject()
+        
+        private static void CreateTestProject(bool useOAuthEndpoints)
         {
-            var services = new Services(V1Connector.WithInstanceUrl(ConfigurationManager.AppSettings.Get("V1Url"))
-                .WithUserAgentHeader("IntegrationTests", "1.0")
-                .WithAccessToken(ConfigurationManager.AppSettings.Get("V1AccessToken"))
-                .Build());
+            V1Connector connector;
+            if (useOAuthEndpoints)
+            {
+                connector = V1Connector.WithInstanceUrl(ConfigurationManager.AppSettings.Get("V1Url"))
+                    .WithUserAgentHeader("IntegrationTests", "1.0")
+                    .WithAccessToken(ConfigurationManager.AppSettings.Get("V1AccessToken"))
+                    .UseOAuthEndpoints()
+                    .Build();
+            }
+            else
+            {
+                connector = V1Connector.WithInstanceUrl(ConfigurationManager.AppSettings.Get("V1Url"))
+                    .WithUserAgentHeader("IntegrationTests", "1.0")
+                    .WithAccessToken(ConfigurationManager.AppSettings.Get("V1AccessToken"))
+                    .Build();
+            }
+            var services = new Services(connector);
             var assetType = services.Meta.GetAssetType("Scope");
             var nameAttribute = assetType.GetAttributeDefinition("Name");
             var projectId = services.GetOid("Scope:0");

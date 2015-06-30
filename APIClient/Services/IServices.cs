@@ -24,5 +24,8 @@ namespace VersionOne.SDK.APIClient
         /// <param name="query">string The query to execute in JSON or YAML format.</param>
         /// <returns>String containing the query results in a JSON format.</returns>
         string ExecutePassThroughQuery(string query);
+
+        void AttachFileToAsset(string filePath, Asset asset, string attachmentName);
+        void EmbedImageToAsset(string filePath, Asset asset);
     }
 }
