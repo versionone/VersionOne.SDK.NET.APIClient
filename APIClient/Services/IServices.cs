@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -25,7 +26,9 @@ namespace VersionOne.SDK.APIClient
         /// <returns>String containing the query results in a JSON format.</returns>
         string ExecutePassThroughQuery(string query);
 
-        void AttachFileToAsset(string filePath, Asset asset, string attachmentName);
-        void EmbedImageToAsset(string filePath, Asset asset);
+        Oid SaveAttachment(string filePath, Asset asset, string attachmentName);
+        Oid SaveEmbeddedImage(string filePath, Asset asset);
+        Stream GetAttachment(Oid attachmentOid);
+        Stream GetEmbeddedImage(Oid embeddedImageOid);
     }
 }
