@@ -59,7 +59,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var nameAttribute = epicType.GetAttributeDefinition("Name");
@@ -75,7 +75,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             
             var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
@@ -102,7 +102,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -118,7 +118,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -158,7 +158,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -206,7 +206,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -236,7 +236,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -278,7 +278,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .UseEndpoint("attachment.img/")
                 .Build());
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -343,7 +343,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .UseEndpoint("embedded.img/")
                 .Build());
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -385,12 +385,63 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             services.Save(newStory);
         }
 
+        [Ignore]
+        [TestMethod]
+        [DeploymentItem("versionone.png")]
+        public void CreateStoryWithAttachmentOAuth()
+        {
+            var services = GetServices(true);
+            string file = "versionone.png";
+
+            Assert.IsTrue(File.Exists(file));
+
+            var contextId = IntegrationTestsHelper.GetTestProjectOid(true);
+            var storyType = services.Meta.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var attachmentsAttribute = storyType.GetAttributeDefinition("Attachments");
+            var name = string.Format("Test Story {0} Create story with attachment", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            services.Save(newStory);
+
+            services.AttachFileToAsset(file, newStory, "Test Attachment on " + newStory.Oid);
+
+            var query = new Query(newStory.Oid.Momentless);
+            query.Selection.Add(attachmentsAttribute);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.AreEqual(1, story.GetAttribute(attachmentsAttribute).Values.Cast<object>().Count());
+        }
+
+        [Ignore]
+        [TestMethod]
+        [DeploymentItem("versionone.png")]
+        public void CreateStoryWithEmbeddedImageOauth()
+        {
+            var services = GetServices(true);
+            string file = "versionone.png";
+
+            Assert.IsTrue(File.Exists(file));
+
+            var contextId = IntegrationTestsHelper.GetTestProjectOid(true);
+            var storyType = services.Meta.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var descriptionAttribute = storyType.GetAttributeDefinition("Description");
+            var name = string.Format("Test Story {0} Create story with embedded image", contextId);
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.SetAttributeValue(descriptionAttribute, "Test description");
+            services.Save(newStory);
+
+            services.EmbedImageToAsset(file, newStory);
+        }
+
         [TestMethod]
         public void CreateDefect()
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
@@ -406,7 +457,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
@@ -436,7 +487,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
@@ -475,7 +526,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
                 .Build());
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
@@ -537,7 +588,127 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .WithAccessToken(_v1AccessToken).UseEndpoint("embedded.img/")
                 .Build());
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
+            var defectType = services.Meta.GetAssetType("Defect");
+            var newDefect = services.New(defectType, contextId);
+            var nameAttribute = defectType.GetAttributeDefinition("Name");
+            var descriptionAttribute = defectType.GetAttributeDefinition("Description");
+            var name = string.Format("Test Defect {0} Create defect with embedded image", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
+            services.Save(newDefect);
+
+            var embeddedImageType = services.Meta.GetAssetType("EmbeddedImage");
+            var newEmbeddedImage = services.New(embeddedImageType, Oid.Null);
+            var assetAttribute = embeddedImageType.GetAttributeDefinition("Asset");
+            var contentAttribute = embeddedImageType.GetAttributeDefinition("Content");
+            var contentTypeAttribute = embeddedImageType.GetAttributeDefinition("ContentType");
+            newEmbeddedImage.SetAttributeValue(assetAttribute, newDefect.Oid);
+            newEmbeddedImage.SetAttributeValue(contentTypeAttribute, mimeType);
+            newEmbeddedImage.SetAttributeValue(contentAttribute, string.Empty);
+            services.Save(newEmbeddedImage);
+
+            string key = newEmbeddedImage.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = attachments.GetWriteStream(key))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            attachments.SetWriteStream(key, mimeType);
+            newDefect.SetAttributeValue(descriptionAttribute,
+                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key,
+                    newEmbeddedImage.Oid.Momentless));
+            services.Save(newDefect);
+        }
+
+        [Ignore]
+        [TestMethod]
+        [DeploymentItem("versionone.png")]
+        public void CreateDefectWithAttachmentOAuth()
+        {
+            var services = GetServices();
+            string file = "versionone.png";
+
+            string mimeType = MimeType.Resolve(file);
+            IAttachments attachments = new Attachments(V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken).UseEndpoint("attachment.img/")
+                .Build());
+
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
+            var defectType = services.Meta.GetAssetType("Defect");
+            var newDefect = services.New(defectType, contextId);
+            var nameAttribute = defectType.GetAttributeDefinition("Name");
+            var attachmentsAttribute = defectType.GetAttributeDefinition("Attachments");
+            var name = string.Format("Test Defect {0} Create defect with attachment", contextId);
+            newDefect.SetAttributeValue(nameAttribute, name);
+            services.Save(newDefect);
+
+            IAssetType attachmentType = services.Meta.GetAssetType("Attachment");
+            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
+            IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
+            IAttributeDefinition attachmentContentType =
+                attachmentType.GetAttributeDefinition("ContentType");
+            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
+            IAttributeDefinition attachmentName = attachmentType.GetAttributeDefinition("Name");
+            Asset attachment = services.New(attachmentType, Oid.Null);
+            attachment.SetAttributeValue(attachmentName, "Test Attachment on " + newDefect.Oid);
+            attachment.SetAttributeValue(attachmentFileName, file);
+            attachment.SetAttributeValue(attachmentContentType, mimeType);
+            attachment.SetAttributeValue(attachmentContent, string.Empty);
+            attachment.SetAttributeValue(attachmentAssetDef, newDefect.Oid);
+            services.Save(attachment);
+            string key = attachment.Oid.Key.ToString();
+            using (Stream input = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = attachments.GetWriteStream(key))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            attachments.SetWriteStream(key, mimeType);
+
+            var query = new Query(newDefect.Oid.Momentless);
+            query.Selection.Add(attachmentsAttribute);
+            var story = services.Retrieve(query).Assets[0];
+
+            Assert.AreEqual(1, story.GetAttribute(attachmentsAttribute).Values.Cast<object>().Count());
+        }
+
+        [Ignore]
+        [TestMethod]
+        [DeploymentItem("versionone.png")]
+        public void CreateDefectWithEmbeddedImageOAuth()
+        {
+            var services = GetServices();
+            string file = "versionone.png";
+
+            string mimeType = MimeType.Resolve(file);
+            IAttachments attachments = new Attachments(V1Connector
+                .WithInstanceUrl(_v1InstanceUrl)
+                .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                .WithAccessToken(_v1AccessToken).UseEndpoint("embedded.img/")
+                .Build());
+
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var defectType = services.Meta.GetAssetType("Defect");
             var newDefect = services.New(defectType, contextId);
             var nameAttribute = defectType.GetAttributeDefinition("Name");
@@ -584,7 +755,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var requestType = services.Meta.GetAssetType("Request");
             var newRequest = services.New(requestType, contextId);
             var nameAttribute = requestType.GetAttributeDefinition("Name");
@@ -600,7 +771,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var issueType = services.Meta.GetAssetType("Issue");
             var newIssue = services.New(issueType, contextId);
             var nameAttribute = issueType.GetAttributeDefinition("Name");
@@ -628,7 +799,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -653,7 +824,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -679,7 +850,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var nameAttribute = storyType.GetAttributeDefinition("Name");
 
@@ -731,7 +902,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -761,7 +932,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -787,7 +958,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -823,7 +994,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);            
             var queryUnknowAttribute = storyType.GetAttributeDefinition("Unknown");
@@ -834,7 +1005,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -864,7 +1035,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -897,7 +1068,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -939,7 +1110,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -985,7 +1156,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1019,7 +1190,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1050,7 +1221,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1078,7 +1249,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         {
             var services = GetServices();
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1117,7 +1288,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
                 .UseEndpoint("attachment.img/")
                 .Build());
 
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1175,7 +1346,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void OperationDeleteOnEpic()
         {
             var services = GetServices();
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var epicType = services.Meta.GetAssetType("Epic");
             var newEpic = services.New(epicType, contextId);
             var nameAttribute = epicType.GetAttributeDefinition("Name");
@@ -1202,7 +1373,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void OperationCloseOnStory()
         {
             var services = GetServices();
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1224,7 +1395,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         public void OperationReopenOnStory()
         {
             var services = GetServices();
-            var contextId = IntegrationTestsHelper.TestProjectOid;
+            var contextId = IntegrationTestsHelper.GetTestProjectOid();
             var storyType = services.Meta.GetAssetType("Story");
             var newStory = services.New(storyType, contextId);
             var nameAttribute = storyType.GetAttributeDefinition("Name");
@@ -1586,14 +1757,28 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         }
         #endregion
 
-        private IServices GetServices()
+        private IServices GetServices(bool useOAuthEndpoints = false)
         {
-            IServices services = new Services(
-                V1Connector
+            V1Connector connector;
+            if (useOAuthEndpoints)
+            {
+                connector = V1Connector
                     .WithInstanceUrl(_v1InstanceUrl)
                     .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
                     .WithAccessToken(_v1AccessToken)
-                    .Build());
+                    .UseOAuthEndpoints()
+                    .Build();
+            }
+            else
+            {
+                connector = V1Connector
+                    .WithInstanceUrl(_v1InstanceUrl)
+                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                    .WithAccessToken(_v1AccessToken)
+                    .Build();
+            }
+            IServices services = new Services(connector);
+                
             return services;
         }
     }
