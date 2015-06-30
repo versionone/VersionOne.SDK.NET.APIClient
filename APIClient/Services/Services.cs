@@ -373,7 +373,7 @@ namespace VersionOne.SDK.APIClient
             return _v1Connector.StringSendData(data: query, contentType:"application/json");
         }
 
-        public void AttachFileToAsset(string filePath, Asset asset, string attachmentName)
+        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentNullException("filePath");
@@ -421,9 +421,27 @@ namespace VersionOne.SDK.APIClient
                 _v1Connector.UseAttachmentApi();
                 _v1Connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), mimeType);
             }
+
+            return attachment.Oid;
         }
 
-        public void EmbedImageToAsset(string filePath, Asset asset)
+        public Stream GetAttachment(Oid attachmentOid)
+        {
+            Stream result = null;
+            if (_connector != null)
+            {
+                result = _connector.GetData(attachmentOid.Key.ToString());
+            }
+            else if (_v1Connector != null)
+            {
+                _v1Connector.UseAttachmentApi();
+                result = _v1Connector.GetData(attachmentOid.Key.ToString());
+            }
+
+            return result;
+        }
+        
+        public Oid SaveEmbeddedImage(string filePath, Asset asset)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentNullException("filePath");
@@ -467,11 +485,24 @@ namespace VersionOne.SDK.APIClient
                 _v1Connector.UseEmbeddedApi();
                 _v1Connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), mimeType);
             }
-            var assetType = Meta.GetAssetType(asset.AssetType.Token);
-            var descriptionAttribute = assetType.GetAttributeDefinition("Description");
-            asset.SetAttributeValue(descriptionAttribute,
-                string.Format("<img src=\"{0}\" alt=\"\" data-oid=\"{1}\" />", "embedded.img/" + key, newEmbeddedImage.Oid.Momentless));
-            Save(asset);
+
+            return newEmbeddedImage.Oid;
+        }
+
+        public Stream GetEmbeddedImage(Oid embeddedImageOid)
+        {
+            Stream result = null;
+            if (_connector != null)
+            {
+                result = _connector.GetData(embeddedImageOid.Key.ToString());
+            }
+            else if (_v1Connector != null)
+            {
+                _v1Connector.UseEmbeddedApi();
+                result = _v1Connector.GetData(embeddedImageOid.Key.ToString());
+            }
+
+            return result;
         }
 
         private QueryResult ParseQueryResult(XmlElement element, Query query)
