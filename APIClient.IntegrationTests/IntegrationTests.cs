@@ -22,17 +22,24 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         [TestMethod]
         public void ConnectionWithUsernameAndPassword()
         {
-            var services = new Services(
-                V1Connector
-                    .WithInstanceUrl(_v1InstanceUrl)
-                    .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
-                    .WithUsernameAndPassword(_v1Username, _v1Password)
-                    .Build());
+            if (_useOAuthEndpoints)
+            {
+                Assert.Inconclusive();
+            }
+            else
+            {
+                var services = new Services(
+                    V1Connector
+                        .WithInstanceUrl(_v1InstanceUrl)
+                        .WithUserAgentHeader(".NET_SDK_Integration_Test", "1.0")
+                        .WithUsernameAndPassword(_v1Username, _v1Password)
+                        .Build());
 
-            var member20Id = services.GetOid("Member:20");
-            var result = services.Retrieve(new Query(member20Id));
+                var member20Id = services.GetOid("Member:20");
+                var result = services.Retrieve(new Query(member20Id));
 
-            Assert.IsTrue(result.Assets.Count == 1);
+                Assert.IsTrue(result.Assets.Count == 1);
+            }
         }
 
         [TestMethod]
