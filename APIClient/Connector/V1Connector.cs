@@ -616,6 +616,7 @@ namespace VersionOne.SDK.APIClient
         /// </summary>
         /// <param name="endpoint">The API endpoint.</param>
         /// <returns>ICanSetProxyOrGetConnector</returns>
+        [Obsolete("This method has been deprecated.")]
         ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
 
         /// <summary>
