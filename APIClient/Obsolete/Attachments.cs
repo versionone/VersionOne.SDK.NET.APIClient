@@ -1,8 +1,10 @@
+using System;
 using System.IO;
 using System.Net;
 
 namespace VersionOne.SDK.APIClient
 {
+    [Obsolete("This class has been deprecated. Please use methods of the Services class instead.")]
     public class Attachments : IAttachments
     {
         private readonly IAPIConnector _connector;
