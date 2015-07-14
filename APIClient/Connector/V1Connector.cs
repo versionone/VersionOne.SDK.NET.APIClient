@@ -618,6 +618,10 @@ namespace VersionOne.SDK.APIClient
         /// <returns>ICanSetProxyOrGetConnector</returns>
         ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
 
+        /// <summary>
+        /// Optional method for specifying that the connection should be made using the OAuth endpoints.
+        /// </summary>
+        /// <returns>ICanSetProxyOrGetConnector</returns>
         ICanSetProxyOrGetConnector UseOAuthEndpoints();
     }
 
