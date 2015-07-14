@@ -142,7 +142,7 @@
   <ItemGroup>
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
-    <Compile Include="Attachments.cs" />
+    <Compile Include="Obsolete\Attachments.cs" />
     <Compile Include="Model\Asset\Attribute\Attribute.cs" />
     <Compile Include="Model\Asset\Attribute\AttributeType.cs" />
     <Compile Include="Obsolete\Config.cs">
@@ -199,7 +199,7 @@
     </Compile>
     <Compile Include="Obsolete\IAPIConnector.cs" />
     <Compile Include="Model\Interfaces\IAssetType.cs" />
-    <Compile Include="IAttachments.cs" />
+    <Compile Include="Obsolete\IAttachments.cs" />
     <Compile Include="Model\Interfaces\IAttributeDefinition.cs" />
     <Compile Include="MetaModel\IMetaModel.cs" />
     <Compile Include="Obsolete\ILocalizer.cs">
