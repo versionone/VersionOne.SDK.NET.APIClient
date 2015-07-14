@@ -22,12 +22,19 @@ namespace VersionOne.SDK.APIClient
     {
         private const string META_API_ENDPOINT = "meta.v1/";
         private const string DATA_API_ENDPOINT = "rest-1.v1/Data/";
+        private const string DATA_API_OAUTH_ENDPOINT = "rest-1.oauth.v1/Data/";
         private const string HISTORY_API_ENDPOINT = "rest-1.v1/Hist/";
+        private const string HISTORY_API_OAUTH_ENDPOINT = "rest-1.oauth.v1/Hist/";
         private const string NEW_API_ENDPOINT = "rest-1.v1/New";
+        private const string NEW_API_OAUTH_ENDPOINT = "rest-1.oauth.v1/New/";
         private const string QUERY_API_ENDPOINT = "query.v1/";
         private const string LOC_API_ENDPOINT = "loc.v1/";
         private const string LOC2_API_ENDPOINT = "loc-2.v1/";
         private const string CONFIG_API_ENDPOINT = "config.v1/";
+        private const string ATTACHMENT_API_ENDPOINT = "attachment.img/";
+        private const string ATTACHMENT_API_OAUTH_ENDPOINT = "attachment.oauth.img/";
+        private const string EMBEDDED_API_ENDPOINT = "embedded.img/";
+        private const string EMBEDDED_API_OAUTH_ENDPOINT = "embedded.oauth.img/";
 
         private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
         private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
@@ -38,6 +45,7 @@ namespace VersionOne.SDK.APIClient
         private System.Net.ICredentials _credentials;
         private string _endpoint;
         private string _upstreamUserAgent;
+        private bool _useOAuthEndpoints;
 
         private V1Connector(string instanceUrl)
         {
@@ -123,17 +131,17 @@ namespace VersionOne.SDK.APIClient
 
         internal void UseDataApi()
         {
-            _endpoint = DATA_API_ENDPOINT;
+            _endpoint = _useOAuthEndpoints ? DATA_API_OAUTH_ENDPOINT : DATA_API_ENDPOINT;
         }
 
         internal void UseHistoryApi()
         {
-            _endpoint = HISTORY_API_ENDPOINT;
+            _endpoint = _useOAuthEndpoints ? HISTORY_API_OAUTH_ENDPOINT : HISTORY_API_ENDPOINT;
         }
 
         internal void UseNewApi()
         {
-            _endpoint = NEW_API_ENDPOINT;
+            _endpoint = _useOAuthEndpoints ? NEW_API_OAUTH_ENDPOINT : NEW_API_ENDPOINT;
         }
 
         internal void UseMetaApi()
@@ -159,6 +167,16 @@ namespace VersionOne.SDK.APIClient
         internal void UseConfigApi()
         {
             _endpoint = CONFIG_API_ENDPOINT;
+        }
+
+        internal void UseAttachmentApi()
+        {
+            _endpoint = _useOAuthEndpoints ? ATTACHMENT_API_OAUTH_ENDPOINT : ATTACHMENT_API_ENDPOINT;
+        }
+
+        internal void UseEmbeddedApi()
+        {
+            _endpoint = _useOAuthEndpoints ? EMBEDDED_API_OAUTH_ENDPOINT : EMBEDDED_API_ENDPOINT;
         }
 
         internal void SetUpstreamUserAgent(string userAgent)
@@ -454,6 +472,13 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
+            public ICanSetProxyOrGetConnector UseOAuthEndpoints()
+            {
+                _instance._useOAuthEndpoints = true;
+
+                return this;
+            }
+
             public ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider)
             {
                 if (proxyProvider == null)
@@ -592,6 +617,12 @@ namespace VersionOne.SDK.APIClient
         /// <param name="endpoint">The API endpoint.</param>
         /// <returns>ICanSetProxyOrGetConnector</returns>
         ICanSetProxyOrGetConnector UseEndpoint(string endpoint);
+
+        /// <summary>
+        /// Optional method for specifying that the connection should be made using the OAuth endpoints.
+        /// </summary>
+        /// <returns>ICanSetProxyOrGetConnector</returns>
+        ICanSetProxyOrGetConnector UseOAuthEndpoints();
     }
 
     #endregion
