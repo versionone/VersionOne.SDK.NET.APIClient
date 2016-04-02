@@ -7,459 +7,465 @@ using MoreLinq;
 
 namespace GettingStarted
 {
-    public class Program
-    {
-        // Modify to point to your application URL:
-        private const string BaseUrl = "http://localhost/VersionOne.Web";
+	public class Program
+	{
+		// Modify to point to your application URL:
+		//private const string BaseUrl = "http://localhost/VersionOne.Web";
+		private const string BaseUrl = "https://www14.v1host.com/v1sdktesting";
 
-        // If you want to use the standard username and password credentials, set your credentials here:
-        private const string UserName = "admin";
-        private const string Password = "admin";
+		// If you want to use the standard username and password credentials, set your credentials here:
+		private const string UserName = "admin";
+		private const string Password = "admin";
 
-        // Otherwise, if you want to use OAuth2 instead of username and password, set these values appropriately:
-        private const bool UseOAuth2 = false;
-        private const string OAuth2_client_secrets_path = @"C:\temp\client_secrets.json";
-        private const string OAuth2_stored_credentials_path = @"C:\temp\stored_credentials.json";
+		public void Run()
+		{
+			var runStaticExamples = ReadString("VersionOne API Client Example Runner: Type i for interactive mode or s to run the static examples: ");
 
-        public void Run()
-        {
-            var runStaticExamples = ReadString("VersionOne API Client Example Runner: Type i for interactive mode or s to run the static examples: ");
+			if (runStaticExamples.Equals("i", StringComparison.OrdinalIgnoreCase))
+			{
+				var keepGoing = "y";
 
-            if (runStaticExamples.Equals("i", StringComparison.OrdinalIgnoreCase))
-            {
-                var keepGoing = "y";
+				while (keepGoing.Equals("y", StringComparison.OrdinalIgnoreCase))
+				{
+					RunExample(ShowInteractiveFluentQuery, pauseBeforeContinue: false);
 
-                while (keepGoing.Equals("y", StringComparison.OrdinalIgnoreCase))
-                {
-                    RunExample(ShowInteractiveFluentQuery, pauseBeforeContinue: false);
+					keepGoing = ReadString("Continue? y for yes, n to exit");
+				}
+			}
+			else
+			{
+				// Static Examples
 
-                    keepGoing = ReadString("Continue? y for yes, n to exit");
-                }
-            }
-            else
-            {
-                // Static Examples
+				RunExample(ShowAdminMemberToken,
+						   "Showing the admin member oid value...",
+						   "Press any key to show admin member oid token");
 
-                RunExample(ShowAdminMemberToken,
-                           "Showing the admin member oid value...",
-                           "Press any key to show admin member oid token");
+				RunExample(ShowMultipleAttributes,
+						   "Showing multiple attributes from the admin member...",
+						   "Press any key to continue");
 
-                RunExample(ShowMultipleAttributes,
-                           "Showing multiple attributes from the admin member...",
-                           "Press any key to continue");
+				RunExample(ShowMultipleAttributesVNextTypedQuery,
+						   "TypedQuery Approach Showing multiple attributes from the admin member...",
+						   "Press any key to continue");
 
-                RunExample(ShowMultipleAttributesVNextTypedQuery,
-                           "TypedQuery Approach Showing multiple attributes from the admin member...",
-                           "Press any key to continue");
+				RunExample(ShowMultipleAttributesVNextFreeQuery,
+						   "FreeQuery Approach Showing multiple attributes from the admin member...",
+						   "Press any key to continue");
 
-                RunExample(ShowMultipleAttributesVNextFreeQuery,
-                           "FreeQuery Approach Showing multiple attributes from the admin member...",
-                           "Press any key to continue");
+				RunExample(ShowMultipleAttributesVNextFluentQuery,
+						   "FluentQuery Approach Showing multiple attributes from the admin member...",
+						   "Press any key to continue");
 
-                RunExample(ShowMultipleAttributesVNextFluentQuery,
-                           "FluentQuery Approach Showing multiple attributes from the admin member...",
-                           "Press any key to continue");
+				RunExample(ShowProjectNameWithVNextFreeQuery,
+						   "FreeQuery Approach Showing project name...",
+						   "Press any key to continue");
 
-                RunExample(ShowProjectNameWithVNextFreeQuery,
-                           "FreeQuery Approach Showing project name...",
-                           "Press any key to continue");
+				RunExample(UpdateAdminMemberNameFluentQuery,
+						   "Updating the admin member's name with a FluentQuery result",
+						   "Press any key to continue...");
 
-                RunExample(UpdateAdminMemberNameFluentQuery,
-                           "Updating the admin member's name with a FluentQuery result",
-                           "Press any key to continue...");
+				RunExample(UpdateAdminMemberName,
+						   "Updating the admin member's name...",
+						   "Press any key to continue...");
 
-                RunExample(UpdateAdminMemberName,
-                           "Updating the admin member's name...",
-                           "Press any key to exit...");
-            }
-        }
+				RunExample(AssetTypes,
+						   "Getting the TeamRooms...",
+						   "Press any key to exit...");
+			}
+		}
 
-        #region Examples
+		#region Examples
 
-        public void ShowAdminMemberToken()
-        {
-            var query = new Query(Oid.FromToken("Member:20", _metaModel));
-            var result = _services.Retrieve(query);
-            var member = result.Assets[0];
+		public void ShowAdminMemberToken()
+		{
+			var query = new Query(Oid.FromToken("Member:20", _services.Meta));
+			var result = _services.Retrieve(query);
+			var member = result.Assets[0];
 
-            Console.WriteLine(member.Oid.Token);
-        }
+			Console.WriteLine(member.Oid.Token);
+		}
 
-        public void ShowMultipleAttributesVNextTypedQuery()
-        {
-            dynamic member = new TypedQuery<Member>().Execute(
-                "Member:20",
-                new[] { "Name", "Email" }
-                // Can also use:
-                // new object[] { Member.Fields.Name, Member.Fields.Email }
-                ).FirstOrDefault();
+		public void ShowMultipleAttributesVNextTypedQuery()
+		{
+			dynamic member = new TypedQuery<Member>().Execute(
+				"Member:20",
+				new[] { "Name", "Email" }
+				// Can also use:
+				// new object[] { Member.Fields.Name, Member.Fields.Email }
+				).FirstOrDefault();
 
-            if (member != null)
-            {
-                Console.WriteLine("Name: " + member.Name);
-                Console.WriteLine("Email: " + member.Email);
-            }
-        }
+			if (member != null)
+			{
+				Console.WriteLine("Name: " + member.Name);
+				Console.WriteLine("Email: " + member.Email);
+			}
+		}
 
-        public void ShowMultipleAttributesVNextFreeQuery()
-        {
-            new FreeQuery(
-                "Member",
+		public void ShowMultipleAttributesVNextFreeQuery()
+		{
+			new FreeQuery(
+				"Member",
 
-                where: new[]
-                           {
+				where: new[]
+						   {
                                                      // The term is optional, it's the default
                                Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal),
-                           },
+						   },
 
-                select: new[] { "Name", "Email", "Username", "OwnedWorkitems.@Count" },
+				select: new[] { "Name", "Email", "Username", "OwnedWorkitems.@Count" },
 
-                success: (assets) =>
-                {
-                    dynamic member = assets.FirstOrDefault();
+				success: (assets) =>
+				{
+					dynamic member = assets.FirstOrDefault();
 
-                    if (member != null)
-                    {
-                        Console.WriteLine("Name: " + member.Name);
-                        Console.WriteLine("Email: " + member.Email);
-                        Console.WriteLine("Username: " + member.Username);
-                    }
-                },
+					if (member != null)
+					{
+						Console.WriteLine("Name: " + member.Name);
+						Console.WriteLine("Email: " + member.Email);
+						Console.WriteLine("Username: " + member.Username);
+					}
+				},
 
-                error: (exception) => Console.WriteLine("Exception! " + exception.Message));
-        }
+				error: (exception) => Console.WriteLine("Exception! " + exception.Message));
+		}
 
-        public void ShowMultipleAttributesVNextFluentQuery()
-        {
-            new
-                FluentQuery("Member")
-                .Where(
-                    Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal) // default is Equal
-                )
-                .Select(
-                    "Name", "Email", "Username", "OwnedWorkitems.@Count"
-                )
-                .Success(assets =>
-                             {
-                                 dynamic member = assets.FirstOrDefault();
-                                 if (member != null)
-                                 {
-                                     Console.WriteLine("Fluent Name: " + member.Name);
-                                     Console.WriteLine("Email: " + member.Email);
-                                     Console.WriteLine("Username: " + member.Username);
-                                 }
-                             }
-                )
-                .WhenEmpty(() => Console.WriteLine("No results found..."))
-                .Error(exception => Console.WriteLine("Exception! " + exception.Message))
-                .Execute();
-        }
+		public void ShowMultipleAttributesVNextFluentQuery()
+		{
+			new
+				FluentQuery("Member")
+				.Where(
+					Op.Get("Email", "admin@company.com", FilterTerm.Operator.Equal) // default is Equal
+				)
+				.Select(
+					"Name", "Email", "Username", "OwnedWorkitems.@Count"
+				)
+				.Success(assets =>
+							 {
+								 dynamic member = assets.FirstOrDefault();
+								 if (member != null)
+								 {
+									 Console.WriteLine("Fluent Name: " + member.Name);
+									 Console.WriteLine("Email: " + member.Email);
+									 Console.WriteLine("Username: " + member.Username);
+								 }
+							 }
+				)
+				.WhenEmpty(() => Console.WriteLine("No results found..."))
+				.Error(exception => Console.WriteLine("Exception! " + exception.Message))
+				.Execute();
+		}
 
-        public void ShowInteractiveFluentQuery()
-        {
-            var assetTypeName = ReadString("What asset type do you want to query? (ex: Story, Member)");
-            var query = new FluentQuery(assetTypeName);
+		public void ShowInteractiveFluentQuery()
+		{
+			var assetTypeName = ReadString("What asset type do you want to query? (ex: Story, Member)");
+			var query = new FluentQuery(assetTypeName);
 
-            Console.WriteLine();
-            var criteria = ReadValues(
-                "Enter one or more comma-separated filter terms ins the form of Field=value (ex: ID=Story:1083, Name=My Story). Hit enter to continue.",
-                ParseCommaDelimItems, ParseFilterTerm);
+			Console.WriteLine();
+			var criteria = ReadValues(
+				"Enter one or more comma-separated filter terms ins the form of Field=value (ex: ID=Story:1083, Name=My Story). Hit enter to continue.",
+				ParseCommaDelimItems, ParseFilterTerm);
 
-            query.Where(criteria.ToArray());
+			query.Where(criteria.ToArray());
 
-            Console.WriteLine();
-            var selectTerms = ReadValues("Enter one or more comma-separated field names to select. (ex: Name, CreatedBy). Hit enter to continue.)",
-                ParseCommaDelimItems);
+			Console.WriteLine();
+			var selectTerms = ReadValues("Enter one or more comma-separated field names to select. (ex: Name, CreatedBy). Hit enter to continue.)",
+				ParseCommaDelimItems);
 
-            query.Select(selectTerms.ToArray());
+			query.Select(selectTerms.ToArray());
 
-            query.OnSuccess = assets =>
-            {
-                assets.ForEach(asset =>
-                    selectTerms.ForEach(fieldName =>
-                        Console.WriteLine(fieldName + ": " + asset.GetValueByName(fieldName))
-                    )
-                );
-                // Above is the same thing as:
-                //foreach (AssetClassBase asset in assets)
-                //{
-                //    foreach (var fieldName in selectTerms)
-                //    {
-                //        Console.WriteLine(fieldName + ": " + asset.GetValueByName(fieldName));
-                //    }
-                //}
-            };
-            query.OnEmptyResults = () => Console.WriteLine("No results found...");
-            query.OnError = PrintError;
+			query.OnSuccess = assets =>
+			{
+				assets.ForEach(asset =>
+					selectTerms.ForEach(fieldName =>
+						Console.WriteLine(fieldName + ": " + asset.GetValueByName(fieldName))
+					)
+				);
+				// Above is the same thing as:
+				//foreach (AssetClassBase asset in assets)
+				//{
+				//    foreach (var fieldName in selectTerms)
+				//    {
+				//        Console.WriteLine(fieldName + ": " + asset.GetValueByName(fieldName));
+				//    }
+				//}
+			};
+			query.OnEmptyResults = () => Console.WriteLine("No results found...");
+			query.OnError = PrintError;
 
-            query.Execute();
-        }
+			query.Execute();
+		}
 
 
-        private void PrintError(Exception exception)
-        {
-            Console.WriteLine("Exception! " + exception.Message);
-        }
+		private void PrintError(Exception exception)
+		{
+			Console.WriteLine("Exception! " + exception.Message);
+		}
 
-        public void ShowProjectNameWithVNextFreeQuery()
-        {
-            new FreeQuery(
-                "Scope",
+		public void ShowProjectNameWithVNextFreeQuery()
+		{
+			new FreeQuery(
+				"Scope",
 
-                where: new[] 
-                           {
-                                Op.Get("Name", "Call Center")  
-                           },
+				where: new[]
+						   {
+								Op.Get("Name", "Call Center")
+						   },
 
-                select: new[] { "Name" },
+				select: new[] { "Name" },
 
-                success: (assets) =>
-                             {
-                                 foreach (dynamic asset in assets)
-                                     Console.WriteLine(asset.Name);
-                             },
+				success: (assets) =>
+							 {
+								 foreach (dynamic asset in assets)
+									 Console.WriteLine(asset.Name);
+							 },
 
-                error: (exception) => Console.WriteLine("Exception! " + exception.Message));
-        }
+				error: (exception) => Console.WriteLine("Exception! " + exception.Message));
+		}
 
-        public void ShowMultipleAttributes()
-        {
-            var query = new Query(Oid.FromToken("Member:20", _metaModel));
-            var nameAttribute = _metaModel.GetAttributeDefinition("Member.Name");
-            var emailAttribute = _metaModel.GetAttributeDefinition("Member.Email");
-            query.Selection.Add(nameAttribute);
-            query.Selection.Add(emailAttribute);
+		public void ShowMultipleAttributes()
+		{
+			var query = new Query(Oid.FromToken("Member:20", _services.Meta));
+			var nameAttribute = _services.Meta.GetAttributeDefinition("Member.Name");
+			var emailAttribute = _services.Meta.GetAttributeDefinition("Member.Email");
+			query.Selection.Add(nameAttribute);
+			query.Selection.Add(emailAttribute);
 
-            var result = _services.Retrieve(query);
-            var member = result.Assets[0];
+			var result = _services.Retrieve(query);
+			var member = result.Assets[0];
 
-            Console.WriteLine("Oid Token: " + member.Oid.Token);
-            Console.WriteLine("Name: " + member.GetAttribute(nameAttribute).Value);
-            Console.WriteLine("Email: " + member.GetAttribute(emailAttribute).Value);
-        }
+			Console.WriteLine("Oid Token: " + member.Oid.Token);
+			Console.WriteLine("Name: " + member.GetAttribute(nameAttribute).Value);
+			Console.WriteLine("Email: " + member.GetAttribute(emailAttribute).Value);
+		}
 
-        public void UpdateAdminMemberNameFluentQuery()
-        {
-            FluentQuery query = null;
-            query = new FluentQuery("Member")
-                .Where(
-                    Op.Get("ID", "Member:20")
-                )
-                .Select(
-                    "Name"
-                )
-                .Success(assets =>
-                             {
-                                 dynamic member = assets.FirstOrDefault();
-                                 if (member != null)
-                                 {
-                                     Console.WriteLine("Name is currently: " + member.Name);
+		public void UpdateAdminMemberNameFluentQuery()
+		{
+			FluentQuery query = null;
+			query = new FluentQuery("Member")
+				.Where(
+					Op.Get("ID", "Member:20")
+				)
+				.Select(
+					"Name"
+				)
+				.Success(assets =>
+							 {
+								 dynamic member = assets.FirstOrDefault();
+								 if (member != null)
+								 {
+									 Console.WriteLine("Name is currently: " + member.Name);
 
-                                     var newName = string.Empty;
-                                     while (newName == string.Empty)
-                                     {
-                                         newName = ReadString("Please enter a new name and hit enter");
-                                     }
+									 var newName = string.Empty;
+									 while (newName == string.Empty)
+									 {
+										 newName = ReadString("Please enter a new name and hit enter");
+									 }
 
-                                     member.Name = newName;
+									 member.Name = newName;
 
-                                     var asset = (AssetClassBase)member;
-                                     asset.SaveChanges();
-                                 }
-                             }
-                )
-                .WhenEmpty(() => Console.WriteLine("No results found..."))
-                .Execute();
+									 var asset = (AssetClassBase)member;
+									 asset.SaveChanges();
+								 }
+							 }
+				)
+				.WhenEmpty(() => Console.WriteLine("No results found..."))
+				.Execute();
 
-            Console.WriteLine();
-            Console.WriteLine("Saved member, now requerying...");
-            Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine("Saved member, now requerying...");
+			Console.WriteLine();
 
-            query.Execute(assets => {
-                dynamic memberNow = assets.FirstOrDefault();
-                if (memberNow != null)
-                {
-                    Console.WriteLine("Name is now: " + memberNow.Name);
-                }
-            });
-        }
+			query.Execute(assets =>
+			{
+				dynamic memberNow = assets.FirstOrDefault();
+				if (memberNow != null)
+				{
+					Console.WriteLine("Name is now: " + memberNow.Name);
+				}
+			});
+		}
 
-        public void UpdateAdminMemberName()
-        {
-            var query = new Query(Oid.FromToken("Member:20", _metaModel));
-            var nameAttribute = _metaModel.GetAttributeDefinition("Member.Name");
-            query.Selection.Add(nameAttribute);
-            var result = _services.Retrieve(query);
-            var member = result.Assets[0];
-            var nameValue = member.GetAttribute(nameAttribute).Value as string;
-            Console.WriteLine("Name is currently: " + nameValue);
+		public void UpdateAdminMemberName()
+		{
+			var query = new Query(Oid.FromToken("Member:20", _services.Meta));
+			var nameAttribute = _services.Meta.GetAttributeDefinition("Member.Name");
+			query.Selection.Add(nameAttribute);
+			var result = _services.Retrieve(query);
+			var member = result.Assets[0];
+			var nameValue = member.GetAttribute(nameAttribute).Value as string;
+			Console.WriteLine("Name is currently: " + nameValue);
 
-            var newName = string.Empty;
-            while (newName == string.Empty)
-            {
-                newName = ReadString("Please enter a new name and hit enter");
-            }
+			var newName = string.Empty;
+			while (newName == string.Empty)
+			{
+				newName = ReadString("Please enter a new name and hit enter");
+			}
 
-            member.SetAttributeValue(nameAttribute, newName);
-            _services.Save(member);
+			member.SetAttributeValue(nameAttribute, newName);
+			_services.Save(member);
 
-            Console.WriteLine();
-            Console.WriteLine("Saved member, now requerying...");
-            Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine("Saved member, now requerying...");
+			Console.WriteLine();
 
-            result = _services.Retrieve(query);
-            member = result.Assets[0];
-            nameValue = member.GetAttribute(nameAttribute).Value as string;
-            Console.WriteLine("Name is now: " + nameValue);
-        }
+			result = _services.Retrieve(query);
+			member = result.Assets[0];
+			nameValue = member.GetAttribute(nameAttribute).Value as string;
+			Console.WriteLine("Name is now: " + nameValue);
+		}
 
-        #endregion
+		// Mark Irvin StackOverflow Example: http://stackoverflow.com/questions/30756782/versionone-api-client-not-recognizing-asset-types/30789979#30789979
 
-        #region Execution
+		public void AssetTypes()
+		{
+			new
+				FluentQuery("TeamRoom")
+				.Select("Team.Name", "Name")
+				.Success(assets => {
+					foreach (dynamic asset in assets)
+					{
+						var team = asset["Team.Name"] + ":" + asset.Name;
+						Console.WriteLine(team);
+					}
+				})
+				.Execute();
+		}
 
-        private static void RunExample(Action exampleMethod, string exampleMessage = null, string nextMessage = null,
-            bool pauseBeforeContinue = true)
-        {
-            if (exampleMessage != null)
-            {
-                Console.WriteLine(exampleMessage);
-            }
-            Console.WriteLine();
-            exampleMethod();
-            Console.WriteLine();
-            if (nextMessage != null)
-            {
-                Console.WriteLine(nextMessage);
-            }
-            Console.WriteLine();
-            if (pauseBeforeContinue)
-            {
-                Console.ReadKey();
-            }
-        }
+		//.WhenEmpty(() => Console.WriteLine("No results found..."))
+		//.Error(exception => Console.WriteLine("Exception! " + exception.Message))
 
-        private string ReadString(string message)
-        {
-            Console.WriteLine(message);
-            return Console.ReadLine();
-        }
+		#endregion
 
-        private IEnumerable<string> ReadValues(string lineMessage, Func<string, IEnumerable<string>> parseLine, string terminationPattern = "")
-        {
-            var lines = new List<string>();
-            string newLine = null;
-            while (newLine != terminationPattern)
-            {
-                newLine = ReadString(lineMessage);
-                if (newLine != terminationPattern)
-                {
-                    if (parseLine != null)
-                    {
-                        var items = parseLine(newLine);
-                        lines.AddRange(items);
-                    }
-                    else
-                    {
-                        lines.Add(newLine);
-                    }
-                }
-            }
-            return lines;
-        }
+		#region Execution
 
-        private IEnumerable<T> ReadValues<T>(string lineMessage,
-            Func<string, IEnumerable<string>> parseLine,
-            Func<string, T> converter,
-            string terminationPattern = "") where T : class
-        {
-            var results = new List<T>();
-            string newLine = null;
-            while (newLine != terminationPattern)
-            {
-                newLine = ReadString(lineMessage);
-                if (newLine != terminationPattern)
-                {
-                    var items = parseLine(newLine);
-                    items.ForEach(part =>
-                        {
-                            var item = converter(part);
-                            if (item != null)
-                            {
-                                results.Add(item);
-                            }
-                        }
-                    );
-                }
-            }
-            return results;
-        }
+		private static void RunExample(Action exampleMethod, string exampleMessage = null, string nextMessage = null,
+			bool pauseBeforeContinue = true)
+		{
+			if (exampleMessage != null)
+			{
+				Console.WriteLine(exampleMessage);
+			}
+			Console.WriteLine();
+			exampleMethod();
+			Console.WriteLine();
+			if (nextMessage != null)
+			{
+				Console.WriteLine(nextMessage);
+			}
+			Console.WriteLine();
+			if (pauseBeforeContinue)
+			{
+				Console.ReadKey();
+			}
+		}
 
-        private IEnumerable<string> ParseCommaDelimItems(string line)
-        {
-            if (line.Contains(','))
-            {
-                var items = line.Split(',');
+		private string ReadString(string message)
+		{
+			Console.WriteLine(message);
+			return Console.ReadLine();
+		}
 
-                var trimmedItems = items.Select(x => x.Trim());
+		private IEnumerable<string> ReadValues(string lineMessage, Func<string, IEnumerable<string>> parseLine, string terminationPattern = "")
+		{
+			var lines = new List<string>();
+			string newLine = null;
+			while (newLine != terminationPattern)
+			{
+				newLine = ReadString(lineMessage);
+				if (newLine != terminationPattern)
+				{
+					if (parseLine != null)
+					{
+						var items = parseLine(newLine);
+						lines.AddRange(items);
+					}
+					else
+					{
+						lines.Add(newLine);
+					}
+				}
+			}
+			return lines;
+		}
 
-                return trimmedItems;
-            }
+		private IEnumerable<T> ReadValues<T>(string lineMessage,
+			Func<string, IEnumerable<string>> parseLine,
+			Func<string, T> converter,
+			string terminationPattern = "") where T : class
+		{
+			var results = new List<T>();
+			string newLine = null;
+			while (newLine != terminationPattern)
+			{
+				newLine = ReadString(lineMessage);
+				if (newLine != terminationPattern)
+				{
+					var items = parseLine(newLine);
+					items.ForEach(part =>
+						{
+							var item = converter(part);
+							if (item != null)
+							{
+								results.Add(item);
+							}
+						}
+					);
+				}
+			}
+			return results;
+		}
 
-            return new[] { line };
-        }
+		private IEnumerable<string> ParseCommaDelimItems(string line)
+		{
+			if (line.Contains(','))
+			{
+				var items = line.Split(',');
 
-        private Tuple<string, object, FilterTerm.Operator> ParseFilterTerm(string item)
-        {
-            if (!item.Contains("="))
-            {
-                Console.WriteLine("Must enter terms in the form Field=value (ex: Email=admin@company.com).");
-                return null;
-            }
+				var trimmedItems = items.Select(x => x.Trim());
 
-            var items = item.Split('=');
-            var trimmedItems = items.Select(x => x.Trim()).ToList();
+				return trimmedItems;
+			}
 
-            return Op.Get(trimmedItems[0], trimmedItems[1]);
-        }
+			return new[] { line };
+		}
 
-        public static void Main(string[] args)
-        {
-            var clientType = ClientType.Standard;
-            if (UseOAuth2 || (args.Length > 0 && args[0].Equals("oauth2", StringComparison.OrdinalIgnoreCase)))
-            {
-                clientType = ClientType.OAuth2;
-            }
-            var program = new Program(clientType);
-            program.Run();
-        }
+		private Tuple<string, object, FilterTerm.Operator> ParseFilterTerm(string item)
+		{
+			if (!item.Contains("="))
+			{
+				Console.WriteLine("Must enter terms in the form Field=value (ex: Email=admin@company.com).");
+				return null;
+			}
 
-        private readonly IServices _services;
-        private readonly IMetaModel _metaModel;
+			var items = item.Split('=');
+			var trimmedItems = items.Select(x => x.Trim()).ToList();
 
-        public enum ClientType
-        {
-            Standard,
-            OAuth2
-        }
+			return Op.Get(trimmedItems[0], trimmedItems[1]);
+		}
 
-        public Program(ClientType clientType)
-        {
+		public static void Main(string[] args)
+		{
+			var clientType = ClientType.Standard;
+			var program = new Program(clientType);
+			program.Run();
+		}
+
+		private readonly IServices _services;
+
+		public enum ClientType
+		{
+			Standard,
+			OAuth2
+		}
+
+		public Program(ClientType clientType)
+		{
 			var servicesFactory = new V1ServicesFactory();
-            if (clientType == ClientType.Standard)
-            {
-                _services = servicesFactory.CreateServices(BaseUrl, UserName, Password);
-            }
-            else if (clientType == ClientType.OAuth2)
-            {
-                _services = servicesFactory.CreateServices(BaseUrl, 
-                    new OAuth2Client.Storage.JsonFileStorage(OAuth2_client_secrets_path, OAuth2_stored_credentials_path));
-            }
-            _metaModel = servicesFactory.GetMetaModel();
+			_services = servicesFactory.CreateServices(BaseUrl, UserName, Password);
 
-            ServicesProvider.Services = _services;
-            MetaModelProvider.Meta = _metaModel;
-        }
+			ServicesProvider.Services = _services;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

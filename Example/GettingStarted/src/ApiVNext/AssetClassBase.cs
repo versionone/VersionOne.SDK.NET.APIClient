@@ -22,7 +22,9 @@ namespace ApiVNext
             _wrapped = wrapped;
         }
 
-        protected string AssetBasePrefix { get; set; }
+	    public object this[string name] => GetValueByName(name);
+
+	    protected string AssetBasePrefix { get; set; }
 
         public override bool TryGetMember(GetMemberBinder binder,
                                           out object result)
