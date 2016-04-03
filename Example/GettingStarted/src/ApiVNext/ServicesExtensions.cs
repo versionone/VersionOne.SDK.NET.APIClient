@@ -15,4 +15,14 @@ namespace GettingStarted.ApiVNext
 			return new FluentQuery(assetTypeName, services.Meta);
 		}
 	}
+
+	public static class CanSetProxyOrEndpointOrGetConnectorExtensions
+	{
+		public static FluentQuery Query(this ICanSetProxyOrEndpointOrGetConnector obj, 
+			string assetTypeName)
+		{
+			return new Services(obj.Build()).Query(assetTypeName);
+		}
+	}
+	
 }

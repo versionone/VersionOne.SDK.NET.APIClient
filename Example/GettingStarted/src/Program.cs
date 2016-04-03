@@ -69,9 +69,14 @@ namespace GettingStarted
 				//		   "Updating the admin member's name...",
 				//		   "Press any key to continue...");
 
-				RunExample(AssetTypes,
-						   "Getting the TeamRooms...",
+				//RunExample(AssetTypes,
+				//		   "Getting the TeamRooms...",
+				//		   "Press any key to exit...");
+
+				RunExample(FullSample,
+						   "Getting the TeamRooms from the top...",
 						   "Press any key to exit...");
+
 			}
 		}
 
@@ -329,6 +334,24 @@ namespace GettingStarted
 					}
 				})
 				.Execute();
+		}
+
+		public void FullSample()
+		{
+			V1Connector
+			.WithInstanceUrl(BaseUrl)
+			.WithUserAgentHeader("Sample", "0.0.0")
+			.WithUsernameAndPassword(UserName, Password)
+			.Query("TeamRoom")
+			.Select("Team.Name", "Name")
+			.Success(assets => {
+				foreach (dynamic asset in assets)
+				{
+					var team = asset["Team.Name"] + ":" + asset.Name;
+					Console.WriteLine(team);
+				}
+			})
+			.Execute();
 		}
 
 		//.WhenEmpty(() => Console.WriteLine("No results found..."))
