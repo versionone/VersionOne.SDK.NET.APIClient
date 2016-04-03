@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VersionOne.SDK.APIClient;
 using ApiVNext;
+using GettingStarted.ApiVNext;
 using MoreLinq;
 
 namespace GettingStarted
@@ -36,37 +37,37 @@ namespace GettingStarted
 			{
 				// Static Examples
 
-				RunExample(ShowAdminMemberToken,
-						   "Showing the admin member oid value...",
-						   "Press any key to show admin member oid token");
+				//RunExample(ShowAdminMemberToken,
+				//		   "Showing the admin member oid value...",
+				//		   "Press any key to show admin member oid token");
 
-				RunExample(ShowMultipleAttributes,
-						   "Showing multiple attributes from the admin member...",
-						   "Press any key to continue");
+				//RunExample(ShowMultipleAttributes,
+				//		   "Showing multiple attributes from the admin member...",
+				//		   "Press any key to continue");
 
-				RunExample(ShowMultipleAttributesVNextTypedQuery,
-						   "TypedQuery Approach Showing multiple attributes from the admin member...",
-						   "Press any key to continue");
+				//RunExample(ShowMultipleAttributesVNextTypedQuery,
+				//		   "TypedQuery Approach Showing multiple attributes from the admin member...",
+				//		   "Press any key to continue");
 
-				RunExample(ShowMultipleAttributesVNextFreeQuery,
-						   "FreeQuery Approach Showing multiple attributes from the admin member...",
-						   "Press any key to continue");
+				//RunExample(ShowMultipleAttributesVNextFreeQuery,
+				//		   "FreeQuery Approach Showing multiple attributes from the admin member...",
+				//		   "Press any key to continue");
 
-				RunExample(ShowMultipleAttributesVNextFluentQuery,
-						   "FluentQuery Approach Showing multiple attributes from the admin member...",
-						   "Press any key to continue");
+				//RunExample(ShowMultipleAttributesVNextFluentQuery,
+				//		   "FluentQuery Approach Showing multiple attributes from the admin member...",
+				//		   "Press any key to continue");
 
-				RunExample(ShowProjectNameWithVNextFreeQuery,
-						   "FreeQuery Approach Showing project name...",
-						   "Press any key to continue");
+				//RunExample(ShowProjectNameWithVNextFreeQuery,
+				//		   "FreeQuery Approach Showing project name...",
+				//		   "Press any key to continue");
 
-				RunExample(UpdateAdminMemberNameFluentQuery,
-						   "Updating the admin member's name with a FluentQuery result",
-						   "Press any key to continue...");
+				//RunExample(UpdateAdminMemberNameFluentQuery,
+				//		   "Updating the admin member's name with a FluentQuery result",
+				//		   "Press any key to continue...");
 
-				RunExample(UpdateAdminMemberName,
-						   "Updating the admin member's name...",
-						   "Press any key to continue...");
+				//RunExample(UpdateAdminMemberName,
+				//		   "Updating the admin member's name...",
+				//		   "Press any key to continue...");
 
 				RunExample(AssetTypes,
 						   "Getting the TeamRooms...",
@@ -318,8 +319,7 @@ namespace GettingStarted
 
 		public void AssetTypes()
 		{
-			new
-				FluentQuery("TeamRoom")
+			_services.Query("TeamRoom")
 				.Select("Team.Name", "Name")
 				.Success(assets => {
 					foreach (dynamic asset in assets)
@@ -372,17 +372,15 @@ namespace GettingStarted
 			while (newLine != terminationPattern)
 			{
 				newLine = ReadString(lineMessage);
-				if (newLine != terminationPattern)
+				if (newLine == terminationPattern) continue;
+				if (parseLine != null)
 				{
-					if (parseLine != null)
-					{
-						var items = parseLine(newLine);
-						lines.AddRange(items);
-					}
-					else
-					{
-						lines.Add(newLine);
-					}
+					var items = parseLine(newLine);
+					lines.AddRange(items);
+				}
+				else
+				{
+					lines.Add(newLine);
 				}
 			}
 			return lines;
@@ -398,35 +396,29 @@ namespace GettingStarted
 			while (newLine != terminationPattern)
 			{
 				newLine = ReadString(lineMessage);
-				if (newLine != terminationPattern)
+				if (newLine == terminationPattern) continue;
+				var items = parseLine(newLine);
+				items.ForEach(part =>
 				{
-					var items = parseLine(newLine);
-					items.ForEach(part =>
-						{
-							var item = converter(part);
-							if (item != null)
-							{
-								results.Add(item);
-							}
-						}
-					);
+					var item = converter(part);
+					if (item != null)
+					{
+						results.Add(item);
+					}
 				}
+					);
 			}
 			return results;
 		}
 
-		private IEnumerable<string> ParseCommaDelimItems(string line)
+		private static IEnumerable<string> ParseCommaDelimItems(string line)
 		{
-			if (line.Contains(','))
-			{
-				var items = line.Split(',');
+			if (!line.Contains(',')) return new[] {line};
+			var items = line.Split(',');
 
-				var trimmedItems = items.Select(x => x.Trim());
+			var trimmedItems = items.Select(x => x.Trim());
 
-				return trimmedItems;
-			}
-
-			return new[] { line };
+			return trimmedItems;
 		}
 
 		private Tuple<string, object, FilterTerm.Operator> ParseFilterTerm(string item)
@@ -445,7 +437,7 @@ namespace GettingStarted
 
 		public static void Main(string[] args)
 		{
-			var clientType = ClientType.Standard;
+			const ClientType clientType = ClientType.Standard;
 			var program = new Program(clientType);
 			program.Run();
 		}
@@ -454,8 +446,7 @@ namespace GettingStarted
 
 		public enum ClientType
 		{
-			Standard,
-			OAuth2
+			Standard
 		}
 
 		public Program(ClientType clientType)
