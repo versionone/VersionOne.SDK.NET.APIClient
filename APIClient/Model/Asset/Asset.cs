@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace VersionOne.SDK.APIClient
 {
-    public class Asset
+    public class Asset : DynamicObject
     {
         private Oid oid = Oid.Null;
         private readonly IDictionary<string, Attribute> attributes = new Dictionary<string, Attribute>();
         private readonly IAssetType assetType;
         private readonly AssetList children = new AssetList();
+        protected string AssetBasePrefix { get; set; }
+        private IMetaModel metaModel;
+        private IServices services;
 
         public IAssetType AssetType
         {
@@ -55,6 +59,20 @@ namespace VersionOne.SDK.APIClient
         {
             this.assetType = assetType;
         }
+
+        public Asset(string basePrefix, IMetaModel metaModel, IServices services)
+        {
+            Configure(basePrefix, metaModel, services);
+        }
+
+        public void Configure(string basePrefix, IMetaModel metaModel, IServices services)
+        {
+            this.AssetBasePrefix = basePrefix;
+            this.metaModel = metaModel;
+            this.services = services;
+        }
+
+        public object this[string name] => GetValueByName(name);
 
         public void SetAttributeValue(IAttributeDefinition attribdef, object value)
         {
@@ -152,6 +170,50 @@ namespace VersionOne.SDK.APIClient
             }
 
             return attrib;
+        }
+
+        #region DynamicObject members
+
+        public override bool TryGetMember(GetMemberBinder binder,
+                                          out object result)
+        {
+            var attribute = GetAttributeByName(binder.Name);
+            result = GetAttribute(attribute).Value;
+            return result != null;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            var attribute = GetAttributeByName(binder.Name);
+            if (attribute != null)
+            {
+                SetAttributeValue(attribute, value);
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+
+        public IAttributeDefinition GetAttributeByName(object fieldName)
+        {
+            return metaModel.GetAttributeDefinition(AssetBasePrefix + "." + fieldName);
+        }
+
+        public object GetValueByName(string fieldName)
+        {
+            var attribute = GetAttributeByName(fieldName);
+            return GetAttribute(attribute).Value;
+        }
+
+        public void SaveChanges()
+        {
+            services.Save(this);
+        }
+
+        public void SaveChanges(string comment)
+        {
+            services.Save(this, comment);
         }
     }
 }

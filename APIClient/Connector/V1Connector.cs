@@ -513,6 +513,11 @@ namespace VersionOne.SDK.APIClient
 
                 return this;
             }
+
+            public FluentQuery Query(string assetTypeName)
+            {
+                return new Services(this.Build()).Query(assetTypeName);
+            }
         }
 
         #endregion
@@ -587,6 +592,7 @@ namespace VersionOne.SDK.APIClient
         /// <param name="proxyProvider">The ProxyProvider containing the proxy URI, username, and password.</param>
         /// <returns>ICanSetEndpointOrGetConnector</returns>
         ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
+        FluentQuery Query(string assetTypeName);
     }
 
     public interface ICanSetEndpointOrGetConnector : ICanGetConnector

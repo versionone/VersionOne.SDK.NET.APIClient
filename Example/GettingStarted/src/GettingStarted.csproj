@@ -63,18 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiVNext\AssetClassBase.cs" />
-    <Compile Include="ApiVNext\FluentQuery.cs" />
-    <Compile Include="ApiVNext\FreeQuery.cs" />
-    <Compile Include="ApiVNext\ServicesExtensions.cs" />
-    <Compile Include="ApiVNext\Member.cs" />
-    <Compile Include="ApiVNext\MetaModelProvider.cs" />
-    <Compile Include="ApiVNext\Op.cs" />
-    <Compile Include="ApiVNext\TypedAssetClass.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ApiVNext\TypedQuery.cs" />
-    <Compile Include="ApiVNext\ServicesProvider.cs" />
-    <Compile Include="V1ServicesFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

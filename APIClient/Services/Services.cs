@@ -720,5 +720,10 @@ namespace VersionOne.SDK.APIClient
                 }
             }
         }
+
+        public FluentQuery Query(string assetTypeName)
+        {
+            return new FluentQuery(assetTypeName, this.Meta, this);
+        }
     }
 }
