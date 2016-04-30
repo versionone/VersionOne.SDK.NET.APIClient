@@ -3,18 +3,18 @@ using VersionOne.SDK.APIClient;
 
 namespace GettingStarted
 {
-	public class Program
-	{
-		// Modify to point to your application URL:
-		//private const string BaseUrl = "http://localhost/VersionOne.Web";
-		private const string BaseUrl = "https://www14.v1host.com/v1sdktesting";
+    public class Program
+    {
+        // Modify to point to your application URL:
+        //private const string BaseUrl = "http://localhost/VersionOne.Web";
+        private const string BaseUrl = "https://www14.v1host.com/v1sdktesting";
 
-		// If you want to use the standard username and password credentials, set your credentials here:
-		private const string UserName = "admin";
-		private const string Password = "admin";
+        // If you want to use the standard username and password credentials, set your credentials here:
+        private const string UserName = "admin";
+        private const string Password = "admin";
 
-		public void Run()
-		{
+        public void Run()
+        {
             const string continueMsg = "Press any key to continue...";
             const string exitMsg = "Press any key to exit...";
 
@@ -43,7 +43,8 @@ namespace GettingStarted
             .WithUsernameAndPassword(UserName, Password)
             .Query("TeamRoom")
             .Select("Team.Name", "Name")
-            .Success(assets => {
+            .Success(assets =>
+            {
                 foreach (Asset asset in assets)
                 {
                     var team = asset["Team.Name"] + ":" + asset["Name"];
@@ -55,7 +56,7 @@ namespace GettingStarted
         }
 
         public void GetTeamRoomsWithRetrieve()
-        { 
+        {
             var queryResult = V1Connector
             .WithInstanceUrl(BaseUrl)
             .WithUserAgentHeader("Sample", "0.0.0")
@@ -92,25 +93,25 @@ namespace GettingStarted
         }
 
         private static void RunExample(Action exampleMethod, string exampleMessage = null, string nextMessage = null,
-			bool pauseBeforeContinue = true)
-		{
-			if (exampleMessage != null)
-			{
-				Console.WriteLine(exampleMessage);
-			}
-			Console.WriteLine();
-			exampleMethod();
-			Console.WriteLine();
-			if (nextMessage != null)
-			{
-				Console.WriteLine(nextMessage);
-			}
-			Console.WriteLine();
-			if (pauseBeforeContinue)
-			{
-				Console.ReadKey();
-			}
-		}
+            bool pauseBeforeContinue = true)
+        {
+            if (exampleMessage != null)
+            {
+                Console.WriteLine(exampleMessage);
+            }
+            Console.WriteLine();
+            exampleMethod();
+            Console.WriteLine();
+            if (nextMessage != null)
+            {
+                Console.WriteLine(nextMessage);
+            }
+            Console.WriteLine();
+            if (pauseBeforeContinue)
+            {
+                Console.ReadKey();
+            }
+        }
 
         private string ReadString(string message)
         {
@@ -119,10 +120,10 @@ namespace GettingStarted
         }
 
         public static void Main(string[] args)
-		{
-			var program = new Program();
-			program.Run();
-		}
+        {
+            var program = new Program();
+            program.Run();
+        }
 
-	}
+    }
 }
