@@ -36,7 +36,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HttpMock, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HttpMock.1.2.1\lib\net40\HttpMock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kayak, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -69,10 +86,14 @@
     <Compile Include="QueryTests\PagingTester.cs" />
     <Compile Include="QueryTests\QueryFilter2Tester.cs" />
     <Compile Include="ResponseConnector.cs" />
+    <Compile Include="ServicesTests\Constructor\When_preLoadMeta_is_false.cs" />
+    <Compile Include="ServicesTests\MetaSamplePayloads.cs" />
     <Compile Include="ServicesTests\MultiValueAttributeTester.cs" />
     <Compile Include="ServicesTests\RequiredFieldValidatorTester.cs" />
+    <Compile Include="ServicesTests\Constructor\ServicesConstructorTesterBase.cs" />
     <Compile Include="ServicesTests\ServicesTester.cs" />
     <Compile Include="ServicesTests\ServicesTesterBase.cs" />
+    <Compile Include="ServicesTests\Constructor\When_preLoadMeta_is_true.cs" />
     <Compile Include="UtilityTests\AssetStateManagerTester.cs" />
     <Compile Include="UtilityTests\ConnectorsTester.cs" />
     <Compile Include="UtilityTests\CredentialsTester.cs" />
@@ -102,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
