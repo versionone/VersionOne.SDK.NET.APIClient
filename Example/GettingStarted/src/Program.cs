@@ -1,5 +1,6 @@
 ﻿using System;
 using VersionOne.SDK.APIClient;
+using static VersionOne.SDK.APIClient.Operators;
 
 namespace GettingStarted
 {
@@ -43,6 +44,9 @@ namespace GettingStarted
             .WithUsernameAndPassword(UserName, Password)
             .Query("TeamRoom")
             .Select("Team.Name", "Name")
+            .Where(
+                Equal("Team.Name", "Brainstorm Team")
+            )
             .Success(assets =>
             {
                 foreach (Asset asset in assets)

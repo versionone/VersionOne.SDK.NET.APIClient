@@ -39,8 +39,7 @@ namespace VersionOne.SDK.APIClient
             get { return attributes; }
         }
 
-        public AssetList Children
-        {
+        public AssetList Children {
             get { return children; }
         }
 
@@ -74,25 +73,13 @@ namespace VersionOne.SDK.APIClient
 
         public object this[string name] => GetValueByName(name);
 
-        public void SetAttributeValue(IAttributeDefinition attribdef, object value)
-        {
-            EnsureAttribute(attribdef).SetValue(value);
-        }
+        public void SetAttributeValue(IAttributeDefinition attribdef, object value) => EnsureAttribute(attribdef).SetValue(value);
 
-        public void ForceAttributeValue(IAttributeDefinition attribdef, object value)
-        {
-            EnsureAttribute(attribdef).ForceValue(value);
-        }
+        public void ForceAttributeValue(IAttributeDefinition attribdef, object value) => EnsureAttribute(attribdef).ForceValue(value);
 
-        public void AddAttributeValue(IAttributeDefinition attribdef, object value)
-        {
-            EnsureAttribute(attribdef).AddValue(value);
-        }
+        public void AddAttributeValue(IAttributeDefinition attribdef, object value) => EnsureAttribute(attribdef).AddValue(value);
 
-        public void RemoveAttributeValue(IAttributeDefinition attribdef, object value)
-        {
-            EnsureAttribute(attribdef).RemoveValue(value);
-        }
+        public void RemoveAttributeValue(IAttributeDefinition attribdef, object value) => EnsureAttribute(attribdef).RemoveValue(value);
 
         /// <summary>
         /// Clear an attribute from cache based on definition.
@@ -153,10 +140,8 @@ namespace VersionOne.SDK.APIClient
             get { return attributes.Values.Any(attrib => attrib.HasChanged); }
         }
 
-        public void LoadAttributeValue(IAttributeDefinition attribdef, object value)
-        {
+        public void LoadAttributeValue(IAttributeDefinition attribdef, object value) => 
             EnsureAttribute(attribdef).LoadValue(value);
-        }
 
         public Attribute EnsureAttribute(IAttributeDefinition attribdef)
         {
@@ -195,25 +180,13 @@ namespace VersionOne.SDK.APIClient
 
         #endregion
 
-        public IAttributeDefinition GetAttributeByName(object fieldName)
-        {
-            return metaModel.GetAttributeDefinition(AssetBasePrefix + "." + fieldName);
-        }
+        public IAttributeDefinition GetAttributeByName(object fieldName) => 
+            metaModel.GetAttributeDefinition(AssetBasePrefix + "." + fieldName);
 
-        public object GetValueByName(string fieldName)
-        {
-            var attribute = GetAttributeByName(fieldName);
-            return GetAttribute(attribute).Value;
-        }
+        public object GetValueByName(string fieldName) => GetAttribute(GetAttributeByName(fieldName)).Value;
 
-        public void SaveChanges()
-        {
-            services.Save(this);
-        }
+        public void SaveChanges() => services.Save(this);
 
-        public void SaveChanges(string comment)
-        {
-            services.Save(this, comment);
-        }
+        public void SaveChanges(string comment) => services.Save(this, comment);
     }
 }

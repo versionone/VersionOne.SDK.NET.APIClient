@@ -151,6 +151,7 @@
     <Compile Include="Connector\V1Connector.cs" />
     <Compile Include="Query\Builders\HierarchicalPartBuilder.cs" />
     <Compile Include="Query\FluentQuery.cs" />
+    <Compile Include="Query\Operators.cs" />
     <Compile Include="Services\Services.cs" />
     <Compile Include="Query\Builders\QueryURLBuilder.cs" />
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />

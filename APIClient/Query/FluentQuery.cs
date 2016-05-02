@@ -37,9 +37,9 @@ namespace VersionOne.SDK.APIClient
         public FluentQuery Select(params object[] fields)
         {
             SelectFields.AddRange(fields);
-
             return this;
         }
+
 
         public FluentQuery Success(Action<IEnumerable<Asset>> callback)
         {
