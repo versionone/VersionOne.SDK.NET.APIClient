@@ -90,7 +90,7 @@
     <Compile Include="ServicesTests\MetaSamplePayloads.cs" />
     <Compile Include="ServicesTests\MultiValueAttributeTester.cs" />
     <Compile Include="ServicesTests\RequiredFieldValidatorTester.cs" />
-    <Compile Include="ServicesTests\Constructor\ServicesConstructorTesterBase.cs" />
+    <Compile Include="ServicesTests\Constructor\ServicesConstructorTestsHelpers.cs" />
     <Compile Include="ServicesTests\ServicesTester.cs" />
     <Compile Include="ServicesTests\ServicesTesterBase.cs" />
     <Compile Include="ServicesTests\Constructor\When_preLoadMeta_is_true.cs" />
