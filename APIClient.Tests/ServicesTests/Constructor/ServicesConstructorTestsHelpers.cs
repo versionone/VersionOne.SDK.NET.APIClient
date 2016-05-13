@@ -1,5 +1,6 @@
 ﻿using HttpMock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
@@ -9,7 +10,7 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
         private static readonly string BASE_URL = "http://localhost:9191";
         private static readonly string MOCK_SERVER = "MockServer";
 
-        public static void Configure(TestContext context)
+        public static void Configure(IDictionary<string, object> context)
         {
             IHttpServer mockServer = HttpMockRepository.At(BASE_URL);
             SetMockServer(context, mockServer);
@@ -18,14 +19,14 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
             ConfigurationManager.AppSettings["V1Url"] = BASE_URL;
         }
 
-        private static void SetMockServer(TestContext context, IHttpServer mockServer)
+        private static void SetMockServer(IDictionary<string, object> context, IHttpServer mockServer)
         {
-            context.Properties[MOCK_SERVER] = mockServer;
+            context[MOCK_SERVER] = mockServer;
         }
 
-        private static IHttpServer GetMockServer(TestContext context)
+        private static IHttpServer GetMockServer(IDictionary<string, object> context)
         {
-            return context.Properties[MOCK_SERVER] as IHttpServer;
+            return context[MOCK_SERVER] as IHttpServer;
         }
 
         public static V1Connector CreateConnector()
@@ -36,19 +37,19 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
                 .Build();
         }
 
-        public static void ConfigureRoute(TestContext context, string route, string payload)
+        public static void ConfigureRoute(IDictionary<string, object> context, string route, string payload)
         {
             GetMockServer(context).Stub(s => s.Get(route))
                 .Return(payload)
                 .OK();
         }
 
-        public static void AssertRouteCalled(TestContext context, string route)
+        public static void AssertRouteCalled(IDictionary<string, object> context, string route)
         {
             GetMockServer(context).AssertWasCalled(s => s.Get(route));
         }
 
-        public static void AssertRouteNotCalled(TestContext context, string route)
+        public static void AssertRouteNotCalled(IDictionary<string, object> context, string route)
         {
             GetMockServer(context).AssertWasNotCalled(s => s.Get(route));
         }

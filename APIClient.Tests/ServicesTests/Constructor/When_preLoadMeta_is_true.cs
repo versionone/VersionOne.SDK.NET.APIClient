@@ -1,43 +1,41 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Machine.Specifications;
 
 namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
 {
+    using System.Collections.Generic;
     using static ServicesConstructorTestsHelpers;
 
-    [TestClass]
-    public class When_preLoadMeta_is_true
+    [Subject(typeof(Services), "Constructor")]
+    public class When_preLoadMeta_is_true : ServicesConstructorSpecs
     {
-        private static IServices SUT;
+        private static IServices Subject;
         private static IAssetType AssetTypeType;
         private static IAssetType PrimaryRelationType;
-        private static TestContext Context;
 
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
+        Establish context = () =>
         {
-            Context = context;
+            ServicesConstructorSpecs.Initialize(); // TODO: don't know if this is clean...
+
             Configure(Context);
             ConfigureRoute(Context, "/meta.v1//", MetaSamplePayloads.FullSubset);
             var connector = CreateConnector();
-            SUT = new Services(connector, true); // preLoadMeta = true!S
+            Subject = new Services(connector, true); // preLoadMeta = true!
+        };
 
-            AssetTypeType = SUT.Meta.GetAssetType("AssetType");
-            PrimaryRelationType = SUT.Meta.GetAssetType("PrimaryRelation");
-        }
+        Because of = () =>
+        {
+            AssetTypeType = Subject.Meta.GetAssetType("AssetType");
+            PrimaryRelationType = Subject.Meta.GetAssetType("PrimaryRelation");
+        };
 
-        [TestMethod]
-        public void It_should_call_full_meta_route() => AssertRouteCalled(Context, "/meta.v1//");
+        It should_call_full_meta_route = () => AssertRouteCalled(Context, "/meta.v1//");
 
-        [TestMethod]
-        public void It_should_let_me_get_the_AssetType_type() => Assert.IsNotNull(AssetTypeType);
+        It should_let_me_get_the_AssetType_type = () => AssetTypeType.ShouldNotBeNull();
 
-        [TestMethod]
-        public void It_should_not_access_the_AssetType_route() => AssertRouteNotCalled(Context, "/meta.v1//AssetType");
+        It should_not_access_the_AssetType_route = () => AssertRouteNotCalled(Context, "/meta.v1//AssetType");
 
-        [TestMethod]
-        public void It_should_let_me_get_the_PrimaryRelation_type() => Assert.IsNotNull(PrimaryRelationType);
+        It should_let_me_get_the_PrimaryRelation_type = () => PrimaryRelationType.ShouldNotBeNull();
 
-        [TestMethod]
-        public void It_should_not_access_the_PrimaryRelation_route() => AssertRouteNotCalled(Context, "/meta.v1//PrimaryRelation");
+        It should_not_access_the_PrimaryRelation_route = () => AssertRouteNotCalled(Context, "/meta.v1//PrimaryRelation");
     }
 }
