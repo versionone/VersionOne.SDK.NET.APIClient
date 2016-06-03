@@ -53,13 +53,14 @@ namespace VersionOne.SDK.APIClient
             _connector = connector;
         }
 
-        public Services(V1Connector v1Connector)
+        public Services(V1Connector v1Connector, bool preLoadMeta = false, IMetaModel metaModel = null)
         {
             if (v1Connector == null)
                 throw new ArgumentNullException("v1Connector");
-
             _v1Connector = v1Connector;
-            _meta = new MetaModel(_v1Connector);
+
+            if (metaModel != null) _meta = metaModel;
+            else _meta = new MetaModel(_v1Connector, preLoadMeta);
         }
 
         public IMetaModel Meta
@@ -72,7 +73,8 @@ namespace VersionOne.SDK.APIClient
             if (_connector != null)
             {
                 _connector.SetUpstreamUserAgent(userAgent);
-            } else 
+            }
+            else
             {
                 _v1Connector.SetUpstreamUserAgent(userAgent);
             }
@@ -143,7 +145,7 @@ namespace VersionOne.SDK.APIClient
                 }
                 doc.Load(stream);
                 stream.Dispose();
-                
+
                 var asset = ParseAssetNode(doc.DocumentElement);
 
                 return asset.Oid;
@@ -370,7 +372,7 @@ namespace VersionOne.SDK.APIClient
         {
             _v1Connector.UseQueryApi();
 
-            return _v1Connector.StringSendData(data: query, contentType:"application/json");
+            return _v1Connector.StringSendData(data: query, contentType: "application/json");
         }
 
         public Oid SaveAttachment(string filePath, Asset asset, string attachmentName)
@@ -440,7 +442,7 @@ namespace VersionOne.SDK.APIClient
 
             return result;
         }
-        
+
         public Oid SaveEmbeddedImage(string filePath, Asset asset)
         {
             if (string.IsNullOrWhiteSpace(filePath))
