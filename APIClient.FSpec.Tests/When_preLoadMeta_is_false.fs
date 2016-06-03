@@ -10,12 +10,11 @@ let specs =
         describe "Constructor" [
             context "When preLoadMeta is false" [
                 subject <| fun ctx ->
-                    configure(ctx)
+                    configure ctx
                     configureRoute ctx "/meta.v1//AssetType" assetTypeType
                     configureRoute ctx "/meta.v1//PrimaryRelation" primaryRelationType
 
-                    let connector = createConnector
-                    Services(connector)
+                    createConnector |> Services
                 
                 before <| fun ctx ->
                     let subject = ctx.GetSubject<IServices>()
