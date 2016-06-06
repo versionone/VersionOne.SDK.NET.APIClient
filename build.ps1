@@ -1,5 +1,3 @@
-Framework "4.6"
-
 param(
     [alias("t")]
     [string]$tasks = ''
