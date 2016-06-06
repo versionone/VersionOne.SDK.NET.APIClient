@@ -10,5 +10,6 @@
 		"description":"Provides coarse-grained access to VersionOne assets via the REST API for building custom applications against the VersionOne platform.",
 		"tags": "V1 VersionOne API SDK apiclient agile",
 		"copyright":"Copyright 2008-2016, VersionOne, Inc."
-	}
+	},
+    "framework": "4.6"
 }
