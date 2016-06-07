@@ -13,9 +13,6 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor
         {
             IHttpServer mockServer = HttpMockRepository.At(BASE_URL);
             SetMockServer(context, mockServer);
-        
-            // The client itself relies upon this configuration setting:
-            ConfigurationManager.AppSettings["V1Url"] = BASE_URL;
         }
 
         private static void SetMockServer(TestContext context, IHttpServer mockServer)
