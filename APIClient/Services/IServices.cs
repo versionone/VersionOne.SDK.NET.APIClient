@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using VersionOne.Assets;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -18,7 +19,7 @@ namespace VersionOne.SDK.APIClient
         string Localization(string key);
         string Localization(IAttributeDefinition attribute);
         Dictionary<string, string> Localization(params IAttributeDefinition[] attributes);
-        FluentQuery Query(string assetTypeName);
+        IFluentQueryBuilder Query(string assetTypeName);
         
         /// <summary>
         /// Executes a query using the Query API (query.v1 endpoint).

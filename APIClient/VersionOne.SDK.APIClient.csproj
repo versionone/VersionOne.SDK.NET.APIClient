@@ -121,9 +121,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net451\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -138,6 +147,10 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="YamlDotNet, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.4.0.0\lib\net35\YamlDotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Aggregate.cs" />
@@ -273,6 +286,25 @@
     <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="vNext\Client\Assets\AcccessTokenAuthenticator.cs" />
+    <Compile Include="vNext\Client\Assets\AssetBase.cs" />
+    <Compile Include="vNext\Client\Assets\AssetDeserializer.cs" />
+    <Compile Include="vNext\Client\Assets\FluentQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\IFluentQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\IOidToken.cs" />
+    <Compile Include="vNext\Client\Assets\ClientUtilities.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonFunctions.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonOperator.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonOperatorConstants.cs" />
+    <Compile Include="vNext\Client\Assets\IAssetBase.cs" />
+    <Compile Include="vNext\Client\Assets\Mapped.cs" />
+    <Compile Include="vNext\Client\NOTES.cs" />
+    <Compile Include="vNext\Client\Assets\QueryApiQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\RestApiPayloadBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\TranslateAssetXmlToHalJson.cs" />
+    <Compile Include="vNext\Client\Assets\AssetClient.cs" />
+    <Compile Include="vNext\Client\Assets\WhereCriterion.cs" />
+    <Compile Include="vNext\QueryYamlPayloadBuilder.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
     <None Include="packages.config" />
