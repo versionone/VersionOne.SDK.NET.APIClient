@@ -21,25 +21,25 @@ namespace GettingStarted
 			const string continueMsg = "Press any key to continue...";
 			const string exitMsg = "Press any key to exit...";
 
-			RunExample(GetTeamRoomsWithRetrieve,
-						"Getting the TeamRooms with Retrieve",
-						continueMsg);
+			//RunExample(GetTeamRoomsWithRetrieve,
+			//			"Getting the TeamRooms with Retrieve",
+			//			continueMsg);
 
-			RunExample(ErrorExampleWithExecute,
-						"Showing an exception message via Execute",
-						continueMsg);
+			//RunExample(ErrorExampleWithExecute,
+			//			"Showing an exception message via Execute",
+			//			continueMsg);
 
-			RunExample(ErrorExampleWithRetrieve,
-						"Showing an exception message via Retrievev",
-						continueMsg);
+			//RunExample(ErrorExampleWithRetrieve,
+			//			"Showing an exception message via Retrievev",
+			//			continueMsg);
 
-			RunExample(GetStoryByName,
-						"Query a Story asset by its Name attribute",
-						continueMsg);
+			//RunExample(GetStoryByName,
+			//			"Query a Story asset by its Name attribute",
+			//			continueMsg);
 
-			RunExample(CreateStory,
-						"Create a Story on a Scope",
-						exitMsg);
+			//RunExample(CreateStory,
+			//			"Create a Story on a Scope",
+			//			exitMsg);
 
 			RunExample(CreateStoryWithConversation,
 						"Create a Story with a Conversation",

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.githubusercontent.com/versionone/VersionOne.SDK.NET.APIClient/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/versionone/VersionOne.SDK.NET.APIClient/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/versionone/VersionOne.SDK.NET.APIClient/master/package_icon_32px.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Provides coarse-grained access to VersionOne Asset objects via the REST-based HTTP API for building custom applications against the VersionOne platform.</description>
+    <tags>$tags$</tags>
+    <!--
+    <releaseNotes>15.0.0.0</releaseNotes>
+    -->
+  </metadata>
+</package>
