@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+
 public class Program
 {
-	private string instanceUrl = "https://www16.v1host.com/api-examples";
-	private string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
+	string instanceUrl = "https://www16.v1host.com/api-examples";
+	string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 	public void Run()
 	{
-		var allTypesInAssembly = Assembly.GetExecutingAssembly()
+		var exampleTypesInAssembly = Assembly.GetExecutingAssembly()
 			.GetTypes()
 			.Where(t =>
 				t.Name != "Program"
@@ -16,11 +17,15 @@ public class Program
 				&& t.GetMethod("Run") != null
 			);
 
-		foreach (var type in allTypesInAssembly)
+		foreach (var type in exampleTypesInAssembly)
 		{
-			var instance = Activator.CreateInstance(type, instanceUrl, accessToken);
+			var example = Activator.CreateInstance(type);
+			var instanceUrlField = type.GetField("instanceUrl", BindingFlags.Instance | BindingFlags.NonPublic);
+			var accessTokenField = type.GetField("accessToken", BindingFlags.Instance | BindingFlags.NonPublic);
+			instanceUrlField.SetValue(example, instanceUrl);
+			accessTokenField.SetValue(example, accessToken);
 			var run = type.GetMethod("Run");
-			run.Invoke(instance, null);
+			run.Invoke(example, null);
 		}
 
 		Console.WriteLine("Press any key to exit...");

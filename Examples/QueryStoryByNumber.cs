@@ -5,8 +5,8 @@ namespace Examples
 {
 	public class QueryStoryByNumber
 	{
-		private string instanceUrl = "https://www16.v1host.com/api-examples";
-		private string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
+		string instanceUrl = "https://www14.v1host.com/api-examples";
+		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		public void Run()
 		{
@@ -49,30 +49,12 @@ namespace Examples
 				Console.WriteLine(story.GetAttribute(nameAttribute).Value);
 				Console.WriteLine(story.GetAttribute(numberAttribute).Value);
 			}
-
-			if (!autoClose)
-			{
-				Console.WriteLine("Press any key to exit...");
-				Console.ReadLine();
-			}
 		}
 
 		static void Main(string[] args)
 		{
-			new QueryStoryByNumber().Run();
-		}
-
-		public QueryStoryByNumber()
-		{
-		}
-
-		private bool autoClose = false;
-
-		public QueryStoryByNumber(string instanceUrl, string accessToken)
-		{
-			this.instanceUrl = instanceUrl;
-			this.accessToken = accessToken;
-			this.autoClose = true;
+			var example = new QueryStoryByNumber();
+			example.Run();
 		}
 	}
 }
