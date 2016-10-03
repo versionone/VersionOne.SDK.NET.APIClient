@@ -134,6 +134,8 @@ namespace VersionOne.SDK.APIClient
 		internal string Username { get; set; }
 		internal string Password { get; set; }
 
+		internal string AccessToken { get; set; }
+
 		internal void UseDataApi()
 		{
 			_endpoint = _useOAuthEndpoints ? DATA_API_OAUTH_ENDPOINT : DATA_API_ENDPOINT;
@@ -461,6 +463,7 @@ namespace VersionOne.SDK.APIClient
 					throw new ArgumentNullException("accessToken");
 
 				_instance._requestHeaders.Add("Authorization", "Bearer " + accessToken);
+				_instance.AccessToken = accessToken;
 
 				return this;
 			}

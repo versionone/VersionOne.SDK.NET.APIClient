@@ -725,8 +725,20 @@ namespace VersionOne.SDK.APIClient
 
 		public IFluentQueryBuilder Query(string assetTypeName)
 		{
-			var client = new AssetClient(_v1Connector.RestApiUrl,
-				_v1Connector.Username, _v1Connector.Password);
+			AssetClient client;
+			if (!string.IsNullOrWhiteSpace(_v1Connector.Username))
+			{
+				client = new AssetClient(_v1Connector.RestApiUrl,
+					_v1Connector.Username, _v1Connector.Password);
+			}
+			else if (!string.IsNullOrWhiteSpace(_v1Connector.AccessToken))
+			{
+				client = new AssetClient(_v1Connector.RestApiUrl, _v1Connector.AccessToken);
+			}
+			else
+			{
+				throw new InvalidOperationException("Could not find any credentials to use. Please call either WithUsernameAndPassword or WithAccessToken before attempting to call Query.");
+			}
 			client.UserAgent = _v1Connector.UserAgent;
 			return client.Query(assetTypeName);
 		}
