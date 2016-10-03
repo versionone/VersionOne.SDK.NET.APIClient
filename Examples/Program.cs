@@ -7,14 +7,14 @@ public class Program
 	string instanceUrl = "https://www16.v1host.com/api-examples";
 	string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
-	public void Run()
+	public void Execute()
 	{
 		var exampleTypesInAssembly = Assembly.GetExecutingAssembly()
 			.GetTypes()
 			.Where(t =>
 				t.Name != "Program"
 				&& t.IsNotPublic == false
-				&& t.GetMethod("Run") != null
+				&& t.GetMethod("Execute") != null
 			);
 
 		foreach (var type in exampleTypesInAssembly)
@@ -24,16 +24,17 @@ public class Program
 			var accessTokenField = type.GetField("accessToken", BindingFlags.Instance | BindingFlags.NonPublic);
 			instanceUrlField.SetValue(example, instanceUrl);
 			accessTokenField.SetValue(example, accessToken);
-			var run = type.GetMethod("Run");
+			var run = type.GetMethod("Execute");
 			run.Invoke(example, null);
 		}
 
 		Console.WriteLine("Press any key to exit...");
-		Console.ReadLine();
+		Console.ReadKey();
 	}
 
 	public static void Main()
 	{
-		new Program().Run();
+		var program = new Program();
+		program.Execute();
 	}
 }

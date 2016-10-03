@@ -5,10 +5,10 @@ namespace Examples
 {
 	public class QueryStoryByNumber
 	{
-		string instanceUrl = "https://www14.v1host.com/api-examples";
+		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
-		public void Run()
+		public void Execute()
 		{
 			//Set up a connection to VersionOne using simple authentication
 			V1Connector connector = V1Connector
@@ -54,7 +54,9 @@ namespace Examples
 		static void Main(string[] args)
 		{
 			var example = new QueryStoryByNumber();
-			example.Run();
+			example.Execute();
+			Console.WriteLine("Press any key to exit...");
+			Console.ReadKey();
 		}
 	}
 }
