@@ -52,6 +52,8 @@
     <Compile Include="QueryStoryByNameVNext.cs" />
     <Compile Include="QueryStoryByName.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
+    <Compile Include="QueryStoriesWithinAScopeVNext.cs" />
+    <Compile Include="UpdateScalarAttributeOnStoryVNext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">

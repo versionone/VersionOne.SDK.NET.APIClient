@@ -723,7 +723,16 @@ namespace VersionOne.SDK.APIClient
 			}
 		}
 
-		public IFluentQueryBuilder Query(string assetTypeName)
+		public IFluentQueryBuilder Query(string assetTypeName) =>
+			CreateAssetClient().Query(assetTypeName);
+
+		public IAssetBase Create(string assetTypeName, object attributes) =>
+			CreateAssetClient().Create(assetTypeName, attributes);
+
+		public IAssetBase Update(string oidToken, object attributes) => 
+			CreateAssetClient().Update(oidToken, attributes);
+
+		private AssetClient CreateAssetClient()
 		{
 			AssetClient client;
 			if (!string.IsNullOrWhiteSpace(_v1Connector.Username))
@@ -740,15 +749,7 @@ namespace VersionOne.SDK.APIClient
 				throw new InvalidOperationException("Could not find any credentials to use. Please call either WithUsernameAndPassword or WithAccessToken before attempting to call Query.");
 			}
 			client.UserAgent = _v1Connector.UserAgent;
-			return client.Query(assetTypeName);
-		}
-
-		public IAssetBase Create(string assetTypeName, object attributes)
-		{
-			var client = new AssetClient(_v1Connector.RestApiUrl,
-				_v1Connector.Username, _v1Connector.Password);
-			client.UserAgent = _v1Connector.UserAgent;
-			return client.Create(assetTypeName, attributes);
+			return client;
 		}
 	}
 }

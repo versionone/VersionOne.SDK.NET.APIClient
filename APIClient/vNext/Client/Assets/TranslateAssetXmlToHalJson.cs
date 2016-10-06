@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace VersionOne.Assets
 {
+
 	public class TranslateAssetXmlOutputToHalJson
 	{
 		private Dictionary<string, string> _attributeNameToDtoPropertyMappings = new Dictionary<string, string>();
@@ -170,6 +171,14 @@ namespace VersionOne.Assets
 					relatedAssets.Add(asset);
 				}
 				AddRelationItems(relatedAssets, relations, relationName);
+				// TODO: remove quick hack
+				var assetReferences = relatedAssets.Select(ra =>
+				{
+					var obj = ra as JObject;
+					var response = new AssetReferenceResponse(obj["idref"].ToString(), obj["href"].ToString());
+					return response;
+				});
+				propertyContainer.Add(relationName, JArray.FromObject(assetReferences));
 			}
 
 			propertyContainer.Add("_links", relations);

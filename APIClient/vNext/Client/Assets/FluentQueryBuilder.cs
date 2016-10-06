@@ -144,7 +144,10 @@ namespace VersionOne.Assets
 
 			if (!string.IsNullOrWhiteSpace(_id))
 			{
-				builder.Append("/" + _id);
+				var oidParts = _id.Split(':');
+				if (oidParts.Length < 2)
+					throw new InvalidOperationException($"_id must contain an oidToken in the correct format, for example Story:12345, but contained: {_id}");
+				builder.Append("/" + oidParts[1]);
 			}
 
 			if (query.Length > 0)

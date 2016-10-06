@@ -543,6 +543,15 @@ namespace VersionOne.SDK.APIClient
 				if (attributes == null) attributes = new { };
 				return new Services(this.Build()).Create(assetTypeName, attributes);
 			}
+
+			public IAssetBase Update(string oidToken, object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new NullReferenceException("attributes");
+
+				return new Services(this.Build()).Update(oidToken, attributes);
+			}
 		}
 
 		#endregion
@@ -619,6 +628,7 @@ namespace VersionOne.SDK.APIClient
 		ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
 		IFluentQueryBuilder Query(string assetTypeName);
 		IAssetBase Create(string assetTypeName, object attributes = null);
+		IAssetBase Update(string oidToken, object attributes);
 	}
 
 	public interface ICanSetEndpointOrGetConnector : ICanGetConnector

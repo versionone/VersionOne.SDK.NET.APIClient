@@ -18,7 +18,20 @@ namespace VersionOne.Assets
     {
         public string idref { get; set; }
         public string act { get; set; }
-    }
+	}
+
+	internal class AssetReferenceResponse
+	{
+		public AssetReferenceResponse(string idref, string href)
+		{
+			Idref = idref;
+			Href = href;
+		}
+		public string Idref { get; set; }
+		public string Href { get; set; }
+
+		public override string ToString() => Idref;
+	}
 
     public static class ClientUtilities
     {
