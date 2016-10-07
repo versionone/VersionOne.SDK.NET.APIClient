@@ -175,7 +175,8 @@ namespace VersionOne.Assets
 				var assetReferences = relatedAssets.Select(ra =>
 				{
 					var obj = ra as JObject;
-					var response = new AssetReferenceResponse(obj["idref"].ToString(), obj["href"].ToString());
+					//var response = new AssetReferenceResponse(obj["idref"].ToString(), obj["href"].ToString());
+					var response = obj["idref"].ToString();
 					return response;
 				});
 				propertyContainer.Add(relationName, JArray.FromObject(assetReferences));

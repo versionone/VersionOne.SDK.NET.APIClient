@@ -32,9 +32,10 @@ namespace Examples
 				.Select("Workitems:Story")
 				.RetrieveFirst();
 
-			foreach(var story in scope["Workitems:Story"])
+			WriteLine($"Story count: {scope["Workitems:Story"].Count}");
+			foreach (var story in scope["Workitems:Story"])
 			{
-				WriteLine(story); 
+				WriteLine(story);
 			}
 		}
 	}
