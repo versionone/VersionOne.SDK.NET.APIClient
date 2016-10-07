@@ -46,7 +46,7 @@ namespace VersionOne.Assets
 			var req = new RestRequest(assetTypeName, Method.POST);
 			req.AddParameter("application/json", payload, ParameterType.RequestBody);
 			var res = this.Post<dynamic>(req);
-			return new AssetBase(res.Data[0]);
+			return new AssetBase(res.Data[0], true);
 		}
 
 		//public IRestResponse<dynamic> Update(string oidToken, object attributes)
@@ -57,10 +57,20 @@ namespace VersionOne.Assets
 			var req = new RestRequest(asset, Method.POST);
 			req.AddParameter("application/json", payload, ParameterType.RequestBody);
 			var res = this.Post<dynamic>(req);
-			return new AssetBase(res.Data[0]);
+			return new AssetBase(res.Data[0], true);
 		}
 
-		public IFluentQueryBuilder Query(string assetTypeName)
+		public IAssetBase Update(IAssetBase asset)
+		{
+			var oidToken = asset.OidToken;
+			// TODO: the only kind of IAssetBase. Should there be others?
+			var concreteAsset = asset as AssetBase;
+			var changes = concreteAsset.GetChangesDto();
+			return Update(oidToken, changes);
+		}
+
+
+		public IFluentQueryBuilder Query(string assetSource)
 		{
 			Func<string, IList<IAssetBase>> execute = (string query) =>
 			{
@@ -70,11 +80,11 @@ namespace VersionOne.Assets
 				var assets = new List<IAssetBase>(results.Count);
 				foreach (dynamic item in results)
 				{
-					assets.Add(new AssetBase(item));
+					assets.Add(new AssetBase(item, true));
 				}
 				return assets;
 			};
-			return new FluentQueryBuilder(assetTypeName, execute);
+			return new FluentQueryBuilder(assetSource, execute);
 		}
 	}
 }

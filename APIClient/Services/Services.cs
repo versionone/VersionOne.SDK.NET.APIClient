@@ -732,6 +732,9 @@ namespace VersionOne.SDK.APIClient
 		public IAssetBase Update(string oidToken, object attributes) => 
 			CreateAssetClient().Update(oidToken, attributes);
 
+		public IAssetBase Update(IAssetBase asset) =>
+			CreateAssetClient().Update(asset);
+
 		private AssetClient CreateAssetClient()
 		{
 			AssetClient client;

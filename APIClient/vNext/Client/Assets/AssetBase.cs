@@ -21,12 +21,14 @@ namespace VersionOne.Assets
 			new Dictionary<string, List<Tuple<string, AddOrRemove>>>();
 		private Dictionary<string, bool> _modifiedAttributes = new Dictionary<string, bool>();
 
-		private bool _fromDynamic = false;
+		private bool _fromDynamic;
+		private bool _fromQueryResult;
 
-		public AssetBase(dynamic wrapped)
+		public AssetBase(dynamic wrapped, bool fromQueryResult = false)
 		{
 			_wrapped = wrapped;
 			_fromDynamic = true;
+			_fromQueryResult = fromQueryResult;
 		}
 
 		public AssetBase(string assetTypeName, object attributes = null)
@@ -77,7 +79,7 @@ namespace VersionOne.Assets
 
 		public JObject GetChangesDto()
 		{
-			if (_fromDynamic) return _wrapped as JObject;
+			if (_fromDynamic && !_fromQueryResult) return _wrapped as JObject;
 
 			var changesObj = new JObject();
 			foreach (var key in _modifiedAttributes.Keys)

@@ -16,8 +16,20 @@ namespace VersionOne.Assets
 		private string _id = string.Empty;
 		private Func<string, IList<IAssetBase>> _executor = null;
 
-		public FluentQueryBuilder(string assetTypeName, Func<string, IList<IAssetBase>> executor)
+		public FluentQueryBuilder(string assetSource, Func<string, IList<IAssetBase>> executor)
 		{
+			// TODO this is a little weird the way the split occurs again in the ToString()
+			string assetTypeName;
+			if (assetSource.IndexOf(':') > -1)
+			{
+				var oidTokenParts = assetSource.Split(':');
+				assetTypeName = oidTokenParts[0];
+				_id = assetSource;
+			}
+			else
+			{
+				assetTypeName = assetSource;
+			}
 			if (string.IsNullOrWhiteSpace(assetTypeName))
 			{
 				throw new ArgumentNullException("assetTypeName");

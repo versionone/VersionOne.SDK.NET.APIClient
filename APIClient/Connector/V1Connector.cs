@@ -552,6 +552,15 @@ namespace VersionOne.SDK.APIClient
 
 				return new Services(this.Build()).Update(oidToken, attributes);
 			}
+
+			public IAssetBase Update(IAssetBase asset)
+			{
+				_instance.UseDataApi();
+
+				if (asset == null) throw new NullReferenceException("asset");
+
+				return new Services(this.Build()).Update(asset);
+			}
 		}
 
 		#endregion
@@ -629,6 +638,7 @@ namespace VersionOne.SDK.APIClient
 		IFluentQueryBuilder Query(string assetTypeName);
 		IAssetBase Create(string assetTypeName, object attributes = null);
 		IAssetBase Update(string oidToken, object attributes);
+		IAssetBase Update(IAssetBase asset);
 	}
 
 	public interface ICanSetEndpointOrGetConnector : ICanGetConnector

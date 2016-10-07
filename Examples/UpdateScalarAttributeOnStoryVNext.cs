@@ -18,45 +18,24 @@ namespace Examples
 
 		public void Execute()
 		{
-			const string scope = "Scope: 1015";
-
 			var v1 = V1Connector
 				.WithInstanceUrl(instanceUrl)
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken);
 
-			var originalName = $"Test Story {scope} Update scalar attribute";
-
-			var story = v1.Create("Story", new {
-				Scope = scope,
-				Name = originalName
+			dynamic newStory = v1.Create("Story", new {
+				Scope = "Scope: 1015",
+				Name = $"Test Story Scope:1015 Update scalar attribute"
 			});
 
-			var oidToken = story.OidToken;
+			dynamic retrievedStory = v1.Query(newStory.OidToken).Select("Name").RetrieveFirst();
+			retrievedStory.Name = $"{newStory.Name} - Name updated";
 
-			dynamic retrievedStory = v1
-				.Query("Story")
-				.Id(oidToken)
-				.Select("Name")
-				.RetrieveFirst();
+			v1.Update(retrievedStory);
 
-			var retrievedOriginalName = retrievedStory.Name;
-			var updatedName = $"{originalName} - Name updated";
-
-			v1.Update(oidToken, new {
-				Name = updatedName
-			});
-
-			dynamic updatedStory = v1
-				.Query("Story")
-				.Id(oidToken)
-				.Select("Name")
-				.RetrieveFirst();
-
-			var retrievedUpdatedName = updatedStory.Name;
-
-			WriteLine($"Retrieved original name: {retrievedOriginalName}");
-			WriteLine($"Retrieved updated name: {retrievedUpdatedName}");
+			dynamic updatedStory = v1.Query(retrievedStory.OidToken).Select("Name").RetrieveFirst();
+			WriteLine($"{newStory.OidToken} original name: {newStory.Name}");
+			WriteLine($"{retrievedStory.OidToken} updated name: {updatedStory.Name}");
 		}
 	}
 }
