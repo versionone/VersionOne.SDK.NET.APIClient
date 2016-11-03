@@ -319,8 +319,8 @@ namespace VersionOne.SDK.APIClient
                 stringBuilder.AppendLine("\tBody: ");
                 stringBuilder.AppendLine("\t\t" + requestBody);
 
-                Debug.WriteLine(stringBuilder.ToString());
-                Debug.WriteLine("");
+				Trace.WriteLine(stringBuilder.ToString());
+				Trace.WriteLine("");
             }
         }
 
@@ -353,8 +353,8 @@ namespace VersionOne.SDK.APIClient
                 stringBuilder.AppendLine("\tBody: ");
                 stringBuilder.AppendLine("\t\t" + responseBody);
 
-                Debug.WriteLine(stringBuilder.ToString());
-                Debug.WriteLine("");
+                Trace.WriteLine(stringBuilder.ToString());
+				Trace.WriteLine("");
             }
         }
 
