@@ -148,20 +148,20 @@ namespace VersionOne.SDK.APIClient
 			if (Config.IsDebugMode)
 			{
 				var methodtxt = req.Method;
-				Debug.WriteLine(string.Empty);
-				Debug.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-				Debug.WriteLine("Method: " + req.Method);
-				Debug.WriteLine("Request URL: " + req.RequestUri);
-				Debug.WriteLine(req.Headers.ToString());
-				Debug.WriteLine(req.ToString());
-				Debug.WriteLine("Response from: " + resp.ResponseUri);
-				Debug.WriteLine("Status Code: " + Convert.ToInt32((resp as HttpWebResponse).StatusCode));
-				Debug.WriteLine("Status Name: " + (resp as HttpWebResponse).StatusCode);
-				Debug.WriteLine("Status Description: " + (resp as HttpWebResponse).StatusDescription);
-				Debug.WriteLine(resp.Headers.ToString());
-				Debug.WriteLine(resp.ToString());
-				Debug.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-				Debug.WriteLine(string.Empty);
+				Trace.WriteLine(string.Empty);
+				Trace.WriteLine("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+				Trace.WriteLine("Method: " + req.Method);
+				Trace.WriteLine("Request URL: " + req.RequestUri);
+				Trace.WriteLine(req.Headers.ToString());
+				Trace.WriteLine(req.ToString());
+				Trace.WriteLine("Response from: " + resp.ResponseUri);
+				Trace.WriteLine("Status Code: " + Convert.ToInt32((resp as HttpWebResponse).StatusCode));
+				Trace.WriteLine("Status Name: " + (resp as HttpWebResponse).StatusCode);
+				Trace.WriteLine("Status Description: " + (resp as HttpWebResponse).StatusDescription);
+				Trace.WriteLine(resp.Headers.ToString());
+				Trace.WriteLine(resp.ToString());
+				Trace.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+				Trace.WriteLine(string.Empty);
 			}
 		}
 
