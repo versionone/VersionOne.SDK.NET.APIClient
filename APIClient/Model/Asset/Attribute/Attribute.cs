@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace VersionOne.SDK.APIClient
 {
-    public abstract class Attribute
+    public abstract class Attribute : IAttribute
     {
         private readonly IAttributeDefinition def;
         private readonly Asset asset;
@@ -14,15 +14,9 @@ namespace VersionOne.SDK.APIClient
             this.asset = asset;
         }
 
-        public Asset Asset
-        {
-            get { return asset; }
-        }
+        public Asset Asset => asset;
 
-        public IAttributeDefinition Definition
-        {
-            get { return def; }
-        }
+        public IAttributeDefinition Definition => def;
 
         public abstract object OriginalValue { get; }
         public abstract object NewValue { get; }

@@ -7,7 +7,7 @@ namespace VersionOne.SDK.APIClient
     public class Asset
     {
         private Oid oid = Oid.Null;
-        private readonly IDictionary<string, Attribute> attributes = new Dictionary<string, Attribute>();
+        private readonly IDictionary<string, IAttribute> attributes = new Dictionary<string, IAttribute>();
         private readonly IAssetType assetType;
         private readonly AssetList children = new AssetList();
 
@@ -30,15 +30,9 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public IDictionary<string, Attribute> Attributes
-        {
-            get { return attributes; }
-        }
+        public IDictionary<string, IAttribute> Attributes => attributes;
 
-        public AssetList Children
-        {
-            get { return children; }
-        }
+        public AssetList Children => children;
 
         public Asset(Oid oid)
         {
@@ -95,9 +89,9 @@ namespace VersionOne.SDK.APIClient
 
         public Attribute GetAttribute(IAttributeDefinition attribdef)
         {
-            Attribute attrib;
+            IAttribute attrib;
             attributes.TryGetValue(ResolveAttributeDefinition(attribdef).Token, out attrib);
-            return attrib;
+            return (Attribute)attrib;
         }
 
         private IAttributeDefinition ResolveAttributeDefinition(IAttributeDefinition attribdef)
@@ -143,7 +137,7 @@ namespace VersionOne.SDK.APIClient
         public Attribute EnsureAttribute(IAttributeDefinition attribdef)
         {
             attribdef = ResolveAttributeDefinition(attribdef);
-            Attribute attrib;
+            IAttribute attrib;
 
             if (!attributes.TryGetValue(attribdef.Token, out attrib))
             {
@@ -151,7 +145,7 @@ namespace VersionOne.SDK.APIClient
                 attributes[attribdef.Token] = attrib;
             }
 
-            return attrib;
+            return (Attribute)attrib;
         }
     }
 }
