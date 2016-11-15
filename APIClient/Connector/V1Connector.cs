@@ -314,7 +314,7 @@ namespace VersionOne.SDK.APIClient
                 stringBuilder.AppendLine("\tHeaders: ");
                 foreach (var header in rm.Headers)
                 {
-                    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
+                    stringBuilder.AppendLine("\t\t" + header.Key + "=" + string.Join(",", header.Value));
                 }
                 stringBuilder.AppendLine("\tBody: ");
                 stringBuilder.AppendLine("\t\t" + requestBody);
@@ -348,8 +348,8 @@ namespace VersionOne.SDK.APIClient
                 stringBuilder.AppendLine("\tHeaders: ");
                 foreach (var header in resp.Headers)
                 {
-                    stringBuilder.AppendLine("\t\t" + header.Key + "=" + header.Value);
-                }
+					stringBuilder.AppendLine("\t\t" + header.Key + "=" + string.Join(",", header.Value));
+				}
                 stringBuilder.AppendLine("\tBody: ");
                 stringBuilder.AppendLine("\t\t" + responseBody);
 
