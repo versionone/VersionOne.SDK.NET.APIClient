@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.ServicesTests
@@ -63,6 +64,49 @@ namespace VersionOne.SDK.APIClient.Tests.ServicesTests
             var x = storyAsset.GetAttribute(storyRequests).NewValues.Cast<object>().ToList();
 
             Assert.IsTrue(x.Contains(contextOid), "Story Requests contains " + contextOid.Token);
+        }
+
+        [TestMethod]
+        public void Asset_with_valid_Guid_Attribute()
+        {
+            var payloadGuid = Guid.Parse("98771fb4-71b8-42ec-be8b-69414daa020e");
+
+            var subject = new Services(Meta, DataConnector);
+            var publicationType = Meta.GetAssetType("Publication");
+            var payloadAttribute = publicationType.GetAttributeDefinition("Payload");
+            var query = new Query(publicationType);
+            query.Selection.Add(payloadAttribute);
+            var filter = new FilterTerm(payloadAttribute);
+            filter.Equal(payloadGuid);
+            query.Filter = filter;
+            var result = subject.Retrieve(query);
+
+            var payloadFromResult = (Guid) result.Assets[0].GetAttribute(payloadAttribute).Value;
+
+            Assert.AreEqual(payloadGuid, payloadFromResult);
+        }
+
+        [TestMethod]
+        public void Asset_with_null_Guid_Attribute()
+        {
+            var subject = new Services(Meta, DataConnector);
+            var query = new Query(Oid.FromToken("Publication:12346", Meta));
+
+            var publicationType = Meta.GetAssetType("Publication");
+            var payloadAttribute = publicationType.GetAttributeDefinition("Payload");
+            query.Selection.Add(payloadAttribute);
+
+            try
+            {
+                subject.Retrieve(query);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Assert.AreEqual("Value cannot be null.\r\nCannot coerce a NULL value to a Guid", ex.Message);
+                return;
+            }
+
+            Assert.Fail("Expected to raise ArgumentNullException, but did not.");
         }
     }
 }

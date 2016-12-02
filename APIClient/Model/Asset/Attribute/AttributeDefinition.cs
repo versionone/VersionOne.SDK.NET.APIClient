@@ -172,6 +172,10 @@ namespace VersionOne.SDK.APIClient
                     return DB.BigInt(value);
                 case AttributeType.Blob:
                     return value;
+                case AttributeType.Guid:
+                    if (value is string) return Guid.Parse(value as string);
+                    if (value == null) throw new ArgumentNullException("Cannot coerce a NULL value to a Guid");
+                    throw new FormatException("The value passed must be of type String, but was " + value.GetType().Name);
                 default:
                     throw new MetaException("Unsupported AttributeType ", AttributeType.ToString());
             }
