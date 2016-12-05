@@ -173,7 +173,6 @@ namespace VersionOne.SDK.APIClient
                 case AttributeType.Blob:
                     return value;
                 case AttributeType.Guid:
-		            return new {};
 					if (value == null) throw new ArgumentNullException("value", "Cannot coerce a NULL value to a Guid");
 					return Guid.Parse(DB.Str(value));
 				default:
