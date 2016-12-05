@@ -17,5 +17,6 @@ namespace VersionOne.SDK.APIClient
         Rank,
         Blob,
         LongInt,
+        Guid
     }
 }

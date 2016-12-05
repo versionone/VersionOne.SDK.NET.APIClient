@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryPublicationForPayloadGuidAttribute.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
   </ItemGroup>
   <ItemGroup>
