@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<TestData>	
+<TestData>
 	<Test name="AssetTypeTester">
 		<Response path="meta.v1/Story/Name">
 			<AttributeDefinition href="/v1.six/meta.v1/Story/Name" of="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
 				<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 				<OrderByAttribute href="/v1.six/meta.v1/Story/Name" tokenref="Story.Name" />
-			</AttributeDefinition>			
+			</AttributeDefinition>
 		</Response>
 		<Response path="meta.v1/Story">
 			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
@@ -38,7 +38,7 @@
 				<AttributeDefinition name="Name" token="BaseAsset.Name" displayname="AttributeDefinition'Name'BaseAsset" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
 					<OrderByAttribute href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 				</AttributeDefinition>
-			</AssetType>			
+			</AssetType>
 		</Response>
 		<Response path="meta.v1/List">
 			<AssetType href="/v1.six/meta.v1/List" version="6.5.55555.30353" name="List" token="List" displayname="AssetType'List" abstract="True" />
@@ -49,10 +49,10 @@
 		<Response path="meta.v1/Task">
 			<AssetType href="/v1.six/meta.v1/Task" version="6.5.55555.30353" name="Task" token="Task" displayname="AssetType'Task" abstract="False">
 				<Base nameref="Workitem" href="/v1.six/meta.v1/Workitem" />
-			</AssetType>			
+			</AssetType>
 		</Response>
 	</Test>
-	
+
 	<Test name="LocalizerTester">
 		<Response path="loc.v1/?Simple">Resolve To Simple</Response>
 	</Test>
@@ -69,11 +69,11 @@
 				<OrderByAttribute href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 			</AttributeDefinition>
 		</Response>
-    <Response path="meta.v1/Publication/Payload">
-      <AttributeDefinition href="/v1.six/meta.v1/Publication/Payload" of="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Payload" token="Publication.Payload" displayname="AttributeDefinition'Payload'Publication" attributetype="Guid" isreadonly="False" isrequired="True" ismultivalue="False" iscanned="True" iscustom="False">
-        <OrderByAttribute href="/v1.six/meta.v1/Publication/Payload" tokenref="Publication.Payload"/>
-      </AttributeDefinition>
-    </Response>
+		<Response path="meta.v1/Publication/Payload">
+			<AttributeDefinition href="/v1.six/meta.v1/Publication/Payload" of="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Payload" token="Publication.Payload" displayname="AttributeDefinition'Payload'Publication" attributetype="Guid" isreadonly="False" isrequired="True" ismultivalue="False" iscanned="True" iscustom="False">
+				<OrderByAttribute href="/v1.six/meta.v1/Publication/Payload" tokenref="Publication.Payload"/>
+			</AttributeDefinition>
+		</Response>
 		<Response path="meta.v1/Story">
 			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
 				<Base nameref="BaseAsset" href="/v1.six/meta.v1/BaseAsset" />
@@ -102,20 +102,20 @@
 				</Operation>
 			</AssetType>
 		</Response>
-    <Response path="meta.v1/Publication">
-      <AssetType href="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Publication" token="Publication" displayname="AssetType'Publication" abstract="False">
-        <DefaultOrderBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <DefaultDisplayBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <Name href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <AttributeDefinition name="ID" token="Publication.ID" displayname="AttributeDefinition'ID'Publication" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False" iscanned="True" iscustom="False">
-          <ReciprocalRelation href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
-          <OrderByAttribute href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
-          <DisplayByAttribute href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-          <RelatedAsset nameref="Publication" href="/v1.six/meta.v1/Publication"/>
-        </AttributeDefinition>
-      </AssetType>
-   </Response>
-    
+		<Response path="meta.v1/Publication">
+			<AssetType href="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Publication" token="Publication" displayname="AssetType'Publication" abstract="False">
+				<DefaultOrderBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<DefaultDisplayBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<Name href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<AttributeDefinition name="ID" token="Publication.ID" displayname="AttributeDefinition'ID'Publication" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False" iscanned="True" iscustom="False">
+					<ReciprocalRelation href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
+					<OrderByAttribute href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
+					<DisplayByAttribute href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+					<RelatedAsset nameref="Publication" href="/v1.six/meta.v1/Publication"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+
 		<Response path="meta.v1/BaseAsset">
 			<AssetType href="/v1.six/meta.v1/BaseAsset" version="6.5.55555.30353" name="BaseAsset" token="BaseAsset" displayname="AssetType'BaseAsset" abstract="True">
 				<DefaultOrderBy href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
@@ -124,14 +124,14 @@
 					<OrderByAttribute href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 				</AttributeDefinition>
 			</AssetType>
-		</Response>	
+		</Response>
 	</Test>
-	
+
 	<Test name="OperationTester">
 		<Response path="meta.v1/BaseAsset/IsDeletable">
 			<AttributeDefinition href="/v1.six/meta.v1/BaseAsset/IsDeletable" of="/v1.six/meta.v1/BaseAsset" version="6.5.55555.30353" name="IsDeletable" token="BaseAsset.IsDeletable" displayname="AttributeDefinition'IsDeletable'BaseAsset" attributetype="Boolean" isreadonly="True" isrequired="False" ismultivalue="False">
 				<OrderByAttribute href="/v1.six/meta.v1/BaseAsset/IsDeletable" tokenref="BaseAsset.IsDeletable" />
-			</AttributeDefinition>			
+			</AttributeDefinition>
 		</Response>
 		<Response path="meta.v1/BaseAsset/Delete">
 			<Operation href="/v1.six/meta.v1/BaseAsset/Delete" of="/v1.six/meta.v1/BaseAsset" version="6.5.55555.30353" name="Delete">
@@ -158,14 +158,14 @@
 				</Operation>
 			</AssetType>
 		</Response>
-		
+
 		<Response path="meta.v1/MyType">
 			<AssetType href="/v1.six/meta.v1/MyType" version="6.5.55555.30353" name="MyType" token="MyType" displayname="AssetType'MyType" abstract="True" />
 		</Response>
 		<Response path="meta.v1/MyType/Delete">
 			<Operation href="/v1.six/meta.v1/MyType/Delete" of="/v1.six/meta.v1/MyType" version="6.5.55555.30353" name="Delete" />
-		</Response>		
-	</Test>	
+		</Response>
+	</Test>
 
 	<Test name="MetaModelTester">
 		<Response path="meta.v1/BaseAsset">
@@ -180,23 +180,23 @@
 		</Response>
 		<Response path="meta.v1/Story">
 			<AssetType href="/VersionOne/meta.v1/Story" version="1.2.3.4" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
-				<Base nameref="PrimaryWorkitem" href="/VersionOne/meta.v1/PrimaryWorkitem" /> 
-				<DefaultOrderBy href="/VersionOne/meta.v1/Story/Order" tokenref="Story.Order" /> 
-				<DefaultDisplayBy href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" /> 
+				<Base nameref="PrimaryWorkitem" href="/VersionOne/meta.v1/PrimaryWorkitem" />
+				<DefaultOrderBy href="/VersionOne/meta.v1/Story/Order" tokenref="Story.Order" />
+				<DefaultDisplayBy href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" />
 				<AttributeDefinition name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-					<Base href="/VersionOne/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" /> 
-					<OrderByAttribute href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" /> 
+					<Base href="/VersionOne/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
+					<OrderByAttribute href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" />
 				</AttributeDefinition>
 				<Operation name="Copy">
-					<Validator href="/VersionOne/meta.v1/Story/CheckCopy" tokenref="Story.CheckCopy" /> 
+					<Validator href="/VersionOne/meta.v1/Story/CheckCopy" tokenref="Story.CheckCopy" />
 				</Operation>
 			</AssetType>
 		</Response>
 		<Response path="meta.v1/Story/Name">
 			<AttributeDefinition href="/VersionOne/meta.v1/Story/Name" of="/VersionOne/meta.v1/Story" version="1.2.3.4" name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-				<Base href="/VersionOne/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" /> 
-				<OrderByAttribute href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" /> 
-			</AttributeDefinition>		
+				<Base href="/VersionOne/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
+				<OrderByAttribute href="/VersionOne/meta.v1/Story/Name" tokenref="Story.Name" />
+			</AttributeDefinition>
 		</Response>
 	</Test>
 
@@ -210,7 +210,7 @@
 					<RelatedAsset nameref="Scope" href="/v1.six/meta.v1/Scope" />
 				</AttributeDefinition>
 				<AttributeDefinition name="ToDo" token="Workitem.ToDo" displayname="AttributeDefinition'ToDo'Workitem" attributetype="Numeric" isreadonly="False" isrequired="False" ismultivalue="False" />
-			</AssetType>			
+			</AssetType>
 		</Response>
 		<Response path="meta.v1/Scope">
 			<AssetType href="/v1.six/meta.v1/Scope" version="6.5.55555.39753" name="Scope" token="Scope" displayname="AssetType'Scope" abstract="False" />
@@ -218,16 +218,16 @@
 		<Response path="meta.v1/Theme">
 			<AssetType href="/v1.six/meta.v1/Theme" version="6.5.55555.39753" name="Theme" token="Theme" displayname="AssetType'Theme" abstract="False">
 				<Base nameref="Workitem" href="/v1.six/meta.v1/Workitem" />
-			</AssetType>			
+			</AssetType>
 		</Response>
 	</Test>
-	
+
 	<Test name="OidTester">
 		<Response path="meta.v1/Story">
 			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False" />
 		</Response>
 	</Test>
-	
+
 	<Test name="ServicesTester">
 		<Response path="meta.v1/Story">
 			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
@@ -235,15 +235,15 @@
 				<AttributeDefinition href="/v1.six/meta.v1/Story/Name" of="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
 					<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 					<OrderByAttribute href="/v1.six/meta.v1/Story/Name" tokenref="Story.Name" />
-				</AttributeDefinition>	
+				</AttributeDefinition>
 				<AttributeDefinition name="Owners" token="Story.Owners" displayname="AttributeDefinition'Owners'Story" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="True">
-					<ReciprocalRelation href="/v1.six/meta.v1/Member/OwnedWorkitems" tokenref="Member.OwnedWorkitems" /> 
+					<ReciprocalRelation href="/v1.six/meta.v1/Member/OwnedWorkitems" tokenref="Member.OwnedWorkitems" />
 					<RelatedAsset nameref="Member" href="/v1.six/meta.v1/Member" />
 				</AttributeDefinition>
 				<AttributeDefinition name="Requests" token="Story.Requests" displayname="AttributeDefinition'Requests'Story" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="True">
 					<ReciprocalRelation href="/v1.six/meta.v1/Request/Stories" tokenref="Request.Stories" />
 					<RelatedAsset nameref="Request" href="/v1.six/meta.v1/Request" />
-				</AttributeDefinition>				
+				</AttributeDefinition>
 			</AssetType>
 		</Response>
 		<Response path="meta.v1/Request">
@@ -257,11 +257,11 @@
 					<ReciprocalRelation href="/v1.six/meta.v1/Story/Requests" tokenref="Story.Requests" />
 					<RelatedAsset nameref="Request" href="/v1.six/meta.v1/Story" />
 				</AttributeDefinition>
-			</AssetType>			
+			</AssetType>
 		</Response>
 		<Response path="meta.v1/Member">
 			<AssetType href="/v1.six/meta.v1/Member" version="8.0.55555.26647" name="Member" token="Member" displayname="AssetType'Member" abstract="False">
-			<Base nameref="BaseAsset" href="/v1.six/meta.v1/BaseAsset" />
+				<Base nameref="BaseAsset" href="/v1.six/meta.v1/BaseAsset" />
 				<AttributeDefinition name="Name" token="Member.Name" displayname="AttributeDefinition'Name'Member" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
 					<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
 					<OrderByAttribute href="/v1.six/meta.v1/Member/Name" tokenref="Member.Name" />
@@ -274,43 +274,43 @@
 			</Asset>
 		</Response>
 		<Response path="rest-1.v1/Data/Story/1036/Owners?">
-			<Relation name="Owners" href="/v1.six/rest-1.v1/Data/Story/1036/Owners" of="/v1.six/rest-1.v1/Data/Story/1036" /> 
+			<Relation name="Owners" href="/v1.six/rest-1.v1/Data/Story/1036/Owners" of="/v1.six/rest-1.v1/Data/Story/1036" />
 		</Response>
-    <Response path="rest-1.v1/New/Story?ctx=Request:6075">
-      <Asset href="/V1Production/rest-1.v1/New/Story">
-        <Attribute name="Name" act="set">Bigger Description Fields</Attribute>
-        <Relation name="Requests">
-          <Asset href="/V1Production/rest-1.v1/Data/Request/6075" idref="Request:6075" act="add" />
-        </Relation>
-      </Asset>
-    </Response>
-    <Response path="meta.v1/Publication">
-       <AssetType href="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Publication" token="Publication" displayname="AssetType'Publication" abstract="False">
-        <DefaultOrderBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <DefaultDisplayBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <Name href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-        <AttributeDefinition name="ID" token="Publication.ID" displayname="AttributeDefinition'ID'Publication" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False" iscanned="True" iscustom="False">
-          <ReciprocalRelation href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
-          <OrderByAttribute href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
-          <DisplayByAttribute href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
-          <RelatedAsset nameref="Publication" href="/v1.six/meta.v1/Publication"/>
-        </AttributeDefinition>
-        <AttributeDefinition href="/v1.six/meta.v1/Publication/Payload" of="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Payload" token="Publication.Payload" displayname="AttributeDefinition'Payload'Publication" attributetype="Guid" isreadonly="False" isrequired="True" ismultivalue="False" iscanned="True" iscustom="False">
-          <OrderByAttribute href="/v1.six/meta.v1/Publication/Payload" tokenref="Publication.Payload"/>
-        </AttributeDefinition> 
-      </AssetType>
-    </Response>
-    <Response path="rest-1.v1/Data/Publication?sel=Publication.Payload&amp;where=Publication.Payload='98771fb4-71b8-42ec-be8b-69414daa020e'">
-      <Asset href="/V1Production/rest-1.v1/Publication/12345" id="Publication:12345">
-        <Attribute name="Payload">g</Attribute>
-        <Attribute name="Payload">98771fb4-71b8-42ec-be8b-69414daa020e</Attribute>
-      </Asset>
-    </Response> 
-    <Response path="rest-1.v1/Data/Publication/12346/Payload?">
-      <Asset href="/V1Production/rest-1.v1/Publication/12346" id="Publication:12346">
-        <Attribute name="Payload"></Attribute>
-      </Asset>
-    </Response>
+		<Response path="rest-1.v1/New/Story?ctx=Request:6075">
+			<Asset href="/V1Production/rest-1.v1/New/Story">
+				<Attribute name="Name" act="set">Bigger Description Fields</Attribute>
+				<Relation name="Requests">
+					<Asset href="/V1Production/rest-1.v1/Data/Request/6075" idref="Request:6075" act="add" />
+				</Relation>
+			</Asset>
+		</Response>
+		<Response path="meta.v1/Publication">
+			<AssetType href="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Publication" token="Publication" displayname="AssetType'Publication" abstract="False">
+				<DefaultOrderBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<DefaultDisplayBy href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<Name href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+				<AttributeDefinition name="ID" token="Publication.ID" displayname="AttributeDefinition'ID'Publication" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False" iscanned="True" iscustom="False">
+					<ReciprocalRelation href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
+					<OrderByAttribute href="/v1.six/meta.v1/Publication/ID" tokenref="Publication.ID"/>
+					<DisplayByAttribute href="/v1.six/meta.v1/Publication/Name" tokenref="Publication.Name"/>
+					<RelatedAsset nameref="Publication" href="/v1.six/meta.v1/Publication"/>
+				</AttributeDefinition>
+				<AttributeDefinition href="/v1.six/meta.v1/Publication/Payload" of="/v1.six/meta.v1/Publication" version="16.3.2.207" name="Payload" token="Publication.Payload" displayname="AttributeDefinition'Payload'Publication" attributetype="Guid" isreadonly="False" isrequired="True" ismultivalue="False" iscanned="True" iscustom="False">
+					<OrderByAttribute href="/v1.six/meta.v1/Publication/Payload" tokenref="Publication.Payload"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="rest-1.v1/Data/Publication?sel=Publication.Payload&amp;where=Publication.Payload='98771fb4-71b8-42ec-be8b-69414daa020e'">
+			<Asset href="/V1Production/rest-1.v1/Publication/12345" id="Publication:12345">
+				<Attribute name="Payload">g</Attribute>
+				<Attribute name="Payloadd">98771fb4-71b8-42ec-be8b-69414daa020e</Attribute>
+			</Asset>
+		</Response>
+		<Response path="rest-1.v1/Data/Publication/12346/Payload?">
+			<Asset href="/V1Production/rest-1.v1/Publication/12346" id="Publication:12346">
+				<Attribute name="Payload"></Attribute>
+			</Asset>
+		</Response>
 	</Test>
 
 	<Test name="V1ConfigurationTester">
@@ -370,175 +370,175 @@
 				<Setting key="DefectTrackingLevel" value="On"/>
 			</Configuration>
 		</Response>
-    <Response path="config.v1/FalseOnOnOff">
-      <Configuration version="8.0.55555.17206">
-        <Setting key="EffortTracking" value="False"/>
-        <Setting key="StoryTrackingLevel" value="On"/>
-        <Setting key="DefectTrackingLevel" value="On"/>
-        <Setting key="CapacityPlanning" value="Off"/>
-      </Configuration>
-    </Response>
-    <Response path="config.v1/FalseOnOnOn">
-      <Configuration version="8.0.55555.17206">
-        <Setting key="EffortTracking" value="False"/>
-        <Setting key="StoryTrackingLevel" value="On"/>
-        <Setting key="DefectTrackingLevel" value="On"/>
-        <Setting key="CapacityPlanning" value="On"/>
-      </Configuration>
-    </Response>
+		<Response path="config.v1/FalseOnOnOff">
+			<Configuration version="8.0.55555.17206">
+				<Setting key="EffortTracking" value="False"/>
+				<Setting key="StoryTrackingLevel" value="On"/>
+				<Setting key="DefectTrackingLevel" value="On"/>
+				<Setting key="CapacityPlanning" value="Off"/>
+			</Configuration>
+		</Response>
+		<Response path="config.v1/FalseOnOnOn">
+			<Configuration version="8.0.55555.17206">
+				<Setting key="EffortTracking" value="False"/>
+				<Setting key="StoryTrackingLevel" value="On"/>
+				<Setting key="DefectTrackingLevel" value="On"/>
+				<Setting key="CapacityPlanning" value="On"/>
+			</Configuration>
+		</Response>
 	</Test>
 
-  <Test name="MultiValueAttributeTester">
-    <Response path="meta.v1/Story">
-      <AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
-        <Base nameref="PrimaryWorkitem" href="/v1.six/meta.v1/PrimaryWorkitem" />
-        <AttributeDefinition href="/v1.six/meta.v1/Story/Name" of="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
-          <OrderByAttribute href="/v1.six/meta.v1/Story/Name" tokenref="Story.Name" />
-        </AttributeDefinition>
-        <AttributeDefinition name="Owners" token="Story.Owners" displayname="AttributeDefinition'Owners'Story" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="True">
-          <ReciprocalRelation href="/v1.six/meta.v1/Member/OwnedWorkitems" tokenref="Member.OwnedWorkitems" />
-          <RelatedAsset nameref="Member" href="/v1.six/meta.v1/Member" />
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="meta.v1/Member">
-      <AssetType href="/v1.six/meta.v1/Member" version="8.0.55555.26647" name="Member" token="Member" displayname="AssetType'Member" abstract="False">
-        <Base nameref="BaseAsset" href="/v1.six/meta.v1/BaseAsset" />
-        <AttributeDefinition name="Name" token="Member.Name" displayname="AttributeDefinition'Name'Member" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
-          <OrderByAttribute href="/v1.six/meta.v1/Member/Name" tokenref="Member.Name" />
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="rest-1.v1/Data/Story/1063">
-      <Asset href="/VersionOne/rest-1.v1/Data/Story/1063/1" id="Story:1063:1">
-        <Relation name="Owners">
-          <Asset href="/VersionOne/rest-1.v1/Data/Member/1001" idref="Member:1001" />
-        </Relation>
-      </Asset>
-    </Response>
-    <Response path="rest-1.v1/Data/Story/1063?sel=">
-      <Asset href="/VersionOne/rest-1.v1/Data/Story/1063" id="Story:1063" />
-    </Response>
-    <Response path="rest-1.v1/Data/Story/1063/Owners?">
-      <Relation name="Owners" href="/VersionOne/rest-1.v1/Data/Story/1063/Owners" of="/VersionOne/rest-1.v1/Data/Story/1063">
-        <Asset href="/VersionOne/rest-1.v1/Data/Member/1001" idref="Member:1001" />
-      </Relation>
-    </Response>
+	<Test name="MultiValueAttributeTester">
+		<Response path="meta.v1/Story">
+			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
+				<Base nameref="PrimaryWorkitem" href="/v1.six/meta.v1/PrimaryWorkitem" />
+				<AttributeDefinition href="/v1.six/meta.v1/Story/Name" of="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Name" token="Story.Name" displayname="AttributeDefinition'Name'Story" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
+					<OrderByAttribute href="/v1.six/meta.v1/Story/Name" tokenref="Story.Name" />
+				</AttributeDefinition>
+				<AttributeDefinition name="Owners" token="Story.Owners" displayname="AttributeDefinition'Owners'Story" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="True">
+					<ReciprocalRelation href="/v1.six/meta.v1/Member/OwnedWorkitems" tokenref="Member.OwnedWorkitems" />
+					<RelatedAsset nameref="Member" href="/v1.six/meta.v1/Member" />
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="meta.v1/Member">
+			<AssetType href="/v1.six/meta.v1/Member" version="8.0.55555.26647" name="Member" token="Member" displayname="AssetType'Member" abstract="False">
+				<Base nameref="BaseAsset" href="/v1.six/meta.v1/BaseAsset" />
+				<AttributeDefinition name="Name" token="Member.Name" displayname="AttributeDefinition'Name'Member" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name" />
+					<OrderByAttribute href="/v1.six/meta.v1/Member/Name" tokenref="Member.Name" />
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="rest-1.v1/Data/Story/1063">
+			<Asset href="/VersionOne/rest-1.v1/Data/Story/1063/1" id="Story:1063:1">
+				<Relation name="Owners">
+					<Asset href="/VersionOne/rest-1.v1/Data/Member/1001" idref="Member:1001" />
+				</Relation>
+			</Asset>
+		</Response>
+		<Response path="rest-1.v1/Data/Story/1063?sel=">
+			<Asset href="/VersionOne/rest-1.v1/Data/Story/1063" id="Story:1063" />
+		</Response>
+		<Response path="rest-1.v1/Data/Story/1063/Owners?">
+			<Relation name="Owners" href="/VersionOne/rest-1.v1/Data/Story/1063/Owners" of="/VersionOne/rest-1.v1/Data/Story/1063">
+				<Asset href="/VersionOne/rest-1.v1/Data/Member/1001" idref="Member:1001" />
+			</Relation>
+		</Response>
 
-    <Response path="rest-1.v1/Data/Member?sel=">
-      <Assets total="2" pageSize="2147483647" pageStart="0">
-        <Asset href="/VersionOne/rest-1.v1/Data/Member/20" id="Member:20">
-        </Asset>
-        <Asset href="/VersionOne/rest-1.v1/Data/Member/1001" id="Member:1001"/>
-      </Assets>
-    </Response>
-  </Test>
+		<Response path="rest-1.v1/Data/Member?sel=">
+			<Assets total="2" pageSize="2147483647" pageStart="0">
+				<Asset href="/VersionOne/rest-1.v1/Data/Member/20" id="Member:20">
+				</Asset>
+				<Asset href="/VersionOne/rest-1.v1/Data/Member/1001" id="Member:1001"/>
+			</Assets>
+		</Response>
+	</Test>
 
-  <Test name="RequiredFieldValidatorTester">
-    <Response path="meta.v1/Defect">
-      <AssetType href="/v1.six/meta.v1/Defect" version="6.5.55555.30353" name="Defect" token="Defect" displayname="AssetType'Defect" abstract="False">
-        <Base nameref="PrimaryWorkitem" href="/VersionOne/meta.v1/PrimaryWorkitem"/>
-        <DefaultOrderBy href="/v1.six/meta.v1/Defect/Order" tokenref="Defect.Order"/>
-        <DefaultDisplayBy href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
-        <ShortName href="/v1.six/meta.v1/Defect/Number" tokenref="Defect.Number"/>
-        <Name href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
-        <Description href="/v1.six/meta.v1/Defect/Description" tokenref="Defect.Description"/>
-        <AttributeDefinition name="Name" token="Defect.Name" displayname="AttributeDefinition'Name'Defect" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name"/>
-          <OrderByAttribute href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
-        </AttributeDefinition>
-        <AttributeDefinition name="Parent" token="Defect.Parent" displayname="AttributeDefinition'Parent'Defect" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="False">
-          <Base href="/VersionOne/meta.v1/Workitem/Parent" tokenref="Workitem.Parent"/>
-          <ReciprocalRelation href="/VersionOne/meta.v1/Theme/Children" tokenref="Theme.Children"/>
-          <OrderByAttribute href="/VersionOne/meta.v1/Defect/Parent.Name" tokenref="Defect.Parent.Name"/>
-          <DisplayByAttribute href="/VersionOne/meta.v1/Defect/Parent.Name" tokenref="Defect.Parent.Name"/>
-          <RelatedAsset nameref="Theme" href="/VersionOne/meta.v1/Theme"/>
-        </AttributeDefinition>
-        <AttributeDefinition name="Super" token="Defect.Super" displayname="AttributeDefinition'Super'Defect" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False">
-          <Base href="/VersionOne/meta.v1/Workitem/Super" tokenref="Workitem.Super"/>
-          <ReciprocalRelation href="/VersionOne/meta.v1/Workitem/Subs" tokenref="Workitem.Subs"/>
-          <OrderByAttribute href="/VersionOne/meta.v1/Defect/Super.Name" tokenref="Defect.Super.Name"/>
-          <DisplayByAttribute href="/VersionOne/meta.v1/Defect/Super.Name" tokenref="Defect.Super.Name"/>
-          <RelatedAsset nameref="Workitem" href="/VersionOne/meta.v1/Workitem"/>
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="meta.v1/AttributeDefinition">
-      <AssetType href="/VersionOne/meta.v1/AttributeDefinition" version="9.2.4704.40" name="AttributeDefinition" token="AttributeDefinition" displayname="AssetType'AttributeDefinition" abstract="True">
-        <DefaultOrderBy href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        <DefaultDisplayBy href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        <ShortName href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        <Name href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        <AttributeDefinition name="Name" token="AttributeDefinition.Name" displayname="AttributeDefinition'Name'AttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <OrderByAttribute href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="meta.v1/AttributeDefinition/Asset.AssetTypesMeAndDown.Name">
-      <AttributeDefinition href="/VersionOne//meta.v1/AttributeDefinition/Asset.AssetTypesMeAndDown.Name" of="/VersionOne/meta.v1/AttributeDefinition" version="9.2.4704.40" name="Asset.AssetTypesMeAndDown.Name" token="AttributeDefinition.Asset.AssetTypesMeAndDown.Name" displayname="AttributeDefinition'Asset.AssetTypesMeAndDown.Name'AttributeDefinition" attributetype="Text" isreadonly="True" isrequired="True" ismultivalue="True">
-        <RelatedAttribute href="/VersionOne//meta.v1/AssetType/Name" tokenref="AssetType.Name"/>
-      </AttributeDefinition>
-    </Response>
-    <Response path="rest-1.v1/Data/AttributeDefinition?sel=AttributeDefinition.Name&amp;where=AttributeDefinition.Asset.AssetTypesMeAndDown.Name='Defect'">
-      <Assets total="3" pageSize="2147483647" pageStart="0">
-        <Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5718" id="HierarchyRelationDefinition:-5718">
-          <Attribute name="Name">Super</Attribute>
-        </Asset>
-        <Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5277" id="HierarchyRelationDefinition:-5277">
-          <Attribute name="Name">Parent</Attribute>
-        </Asset>
-        <Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5278" id="HierarchyRelationDefinition:-5278">
-          <Attribute name="Name">Name</Attribute>
-        </Asset>
-      </Assets>
-    </Response>
-    <Response path="meta.v1/SimpleAttributeDefinition">
-      <AssetType href="/meta.v1/SimpleAttributeDefinition" version="9.2.4704.13" name="SimpleAttributeDefinition" token="SimpleAttributeDefinition" displayname="AssetType'SimpleAttributeDefinition" abstract="False">
-        <Base nameref="AttributeDefinition" href="/meta.v1/AttributeDefinition"/>
-        <DefaultOrderBy href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-        <DefaultDisplayBy href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-        <ShortName href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-        <Name href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-        <AttributeDefinition name="Name" token="SimpleAttributeDefinition.Name" displayname="AttributeDefinition'Name'SimpleAttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <Base href="/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-          <OrderByAttribute href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="/meta.v1/AttributeDefinition/Name">
-      <AttributeDefinition href="/meta.v1/SimpleAttributeDefinition/Name" of="/meta.v1/SimpleAttributeDefinition" version="9.2.4704.13" name="Name" token="SimpleAttributeDefinition.Name" displayname="AttributeDefinition'Name'SimpleAttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-        <Base href="/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-        <OrderByAttribute href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
-      </AttributeDefinition>
-    </Response>
-    <Response path="meta.v1/HierarchyRelationDefinition">
-      <AssetType href="/VersionOne/meta.v1/HierarchyRelationDefinition" version="9.2.4704.40" name="HierarchyRelationDefinition" token="HierarchyRelationDefinition" displayname="AssetType'HierarchyRelationDefinition" abstract="False">
-        <Base nameref="RelationDefinition" href="/VersionOne/meta.v1/RelationDefinition"/>
-        <DefaultOrderBy href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
-        <DefaultDisplayBy href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
-        <ShortName href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
-        <Name href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
-        <AttributeDefinition name="Name" token="HierarchyRelationDefinition.Name" displayname="AttributeDefinition'Name'HierarchyRelationDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
-          <Base href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
-          <OrderByAttribute href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-    <Response path="meta.v1/RelationDefinition">
-      <AssetType href="/VersionOne/meta.v1/RelationDefinition" version="9.2.4704.40" name="RelationDefinition" token="RelationDefinition" displayname="AssetType'RelationDefinition" abstract="True">
-        <Base nameref="AttributeDefinition" href="/VersionOne/meta.v1/AttributeDefinition"/>
-        <DefaultOrderBy href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
-        <DefaultDisplayBy href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
-        <ShortName href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
-        <Name href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
-        <AttributeDefinition name="RelatedAssetType" token="RelationDefinition.RelatedAssetType" displayname="AttributeDefinition'RelatedAssetType'RelationDefinition" attributetype="Relation" isreadonly="False" isrequired="True" ismultivalue="False">
-          <OrderByAttribute href="/VersionOne/meta.v1/RelationDefinition/RelatedAssetType.Order" tokenref="RelationDefinition.RelatedAssetType.Order"/>
-          <DisplayByAttribute href="/VersionOne/meta.v1/RelationDefinition/RelatedAssetType.Name" tokenref="RelationDefinition.RelatedAssetType.Name"/>
-          <RelatedAsset nameref="AssetType"	href="/VersionOne/meta.v1/AssetType"/>
-        </AttributeDefinition>
-      </AssetType>
-    </Response>
-  </Test>
+	<Test name="RequiredFieldValidatorTester">
+		<Response path="meta.v1/Defect">
+			<AssetType href="/v1.six/meta.v1/Defect" version="6.5.55555.30353" name="Defect" token="Defect" displayname="AssetType'Defect" abstract="False">
+				<Base nameref="PrimaryWorkitem" href="/VersionOne/meta.v1/PrimaryWorkitem"/>
+				<DefaultOrderBy href="/v1.six/meta.v1/Defect/Order" tokenref="Defect.Order"/>
+				<DefaultDisplayBy href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
+				<ShortName href="/v1.six/meta.v1/Defect/Number" tokenref="Defect.Number"/>
+				<Name href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
+				<Description href="/v1.six/meta.v1/Defect/Description" tokenref="Defect.Description"/>
+				<AttributeDefinition name="Name" token="Defect.Name" displayname="AttributeDefinition'Name'Defect" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<Base href="/v1.six/meta.v1/BaseAsset/Name" tokenref="BaseAsset.Name"/>
+					<OrderByAttribute href="/v1.six/meta.v1/Defect/Name" tokenref="Defect.Name"/>
+				</AttributeDefinition>
+				<AttributeDefinition name="Parent" token="Defect.Parent" displayname="AttributeDefinition'Parent'Defect" attributetype="Relation" isreadonly="False" isrequired="False" ismultivalue="False">
+					<Base href="/VersionOne/meta.v1/Workitem/Parent" tokenref="Workitem.Parent"/>
+					<ReciprocalRelation href="/VersionOne/meta.v1/Theme/Children" tokenref="Theme.Children"/>
+					<OrderByAttribute href="/VersionOne/meta.v1/Defect/Parent.Name" tokenref="Defect.Parent.Name"/>
+					<DisplayByAttribute href="/VersionOne/meta.v1/Defect/Parent.Name" tokenref="Defect.Parent.Name"/>
+					<RelatedAsset nameref="Theme" href="/VersionOne/meta.v1/Theme"/>
+				</AttributeDefinition>
+				<AttributeDefinition name="Super" token="Defect.Super" displayname="AttributeDefinition'Super'Defect" attributetype="Relation" isreadonly="True" isrequired="False" ismultivalue="False">
+					<Base href="/VersionOne/meta.v1/Workitem/Super" tokenref="Workitem.Super"/>
+					<ReciprocalRelation href="/VersionOne/meta.v1/Workitem/Subs" tokenref="Workitem.Subs"/>
+					<OrderByAttribute href="/VersionOne/meta.v1/Defect/Super.Name" tokenref="Defect.Super.Name"/>
+					<DisplayByAttribute href="/VersionOne/meta.v1/Defect/Super.Name" tokenref="Defect.Super.Name"/>
+					<RelatedAsset nameref="Workitem" href="/VersionOne/meta.v1/Workitem"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="meta.v1/AttributeDefinition">
+			<AssetType href="/VersionOne/meta.v1/AttributeDefinition" version="9.2.4704.40" name="AttributeDefinition" token="AttributeDefinition" displayname="AssetType'AttributeDefinition" abstract="True">
+				<DefaultOrderBy href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				<DefaultDisplayBy href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				<ShortName href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				<Name href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				<AttributeDefinition name="Name" token="AttributeDefinition.Name" displayname="AttributeDefinition'Name'AttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<OrderByAttribute href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="meta.v1/AttributeDefinition/Asset.AssetTypesMeAndDown.Name">
+			<AttributeDefinition href="/VersionOne//meta.v1/AttributeDefinition/Asset.AssetTypesMeAndDown.Name" of="/VersionOne/meta.v1/AttributeDefinition" version="9.2.4704.40" name="Asset.AssetTypesMeAndDown.Name" token="AttributeDefinition.Asset.AssetTypesMeAndDown.Name" displayname="AttributeDefinition'Asset.AssetTypesMeAndDown.Name'AttributeDefinition" attributetype="Text" isreadonly="True" isrequired="True" ismultivalue="True">
+				<RelatedAttribute href="/VersionOne//meta.v1/AssetType/Name" tokenref="AssetType.Name"/>
+			</AttributeDefinition>
+		</Response>
+		<Response path="rest-1.v1/Data/AttributeDefinition?sel=AttributeDefinition.Name&amp;where=AttributeDefinition.Asset.AssetTypesMeAndDown.Name='Defect'">
+			<Assets total="3" pageSize="2147483647" pageStart="0">
+				<Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5718" id="HierarchyRelationDefinition:-5718">
+					<Attribute name="Name">Super</Attribute>
+				</Asset>
+				<Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5277" id="HierarchyRelationDefinition:-5277">
+					<Attribute name="Name">Parent</Attribute>
+				</Asset>
+				<Asset href="/VersionOne/rest-1.v1/Data/HierarchyRelationDefinition/-5278" id="HierarchyRelationDefinition:-5278">
+					<Attribute name="Name">Name</Attribute>
+				</Asset>
+			</Assets>
+		</Response>
+		<Response path="meta.v1/SimpleAttributeDefinition">
+			<AssetType href="/meta.v1/SimpleAttributeDefinition" version="9.2.4704.13" name="SimpleAttributeDefinition" token="SimpleAttributeDefinition" displayname="AssetType'SimpleAttributeDefinition" abstract="False">
+				<Base nameref="AttributeDefinition" href="/meta.v1/AttributeDefinition"/>
+				<DefaultOrderBy href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+				<DefaultDisplayBy href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+				<ShortName href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+				<Name href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+				<AttributeDefinition name="Name" token="SimpleAttributeDefinition.Name" displayname="AttributeDefinition'Name'SimpleAttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<Base href="/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+					<OrderByAttribute href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="/meta.v1/AttributeDefinition/Name">
+			<AttributeDefinition href="/meta.v1/SimpleAttributeDefinition/Name" of="/meta.v1/SimpleAttributeDefinition" version="9.2.4704.13" name="Name" token="SimpleAttributeDefinition.Name" displayname="AttributeDefinition'Name'SimpleAttributeDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+				<Base href="/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+				<OrderByAttribute href="/meta.v1/SimpleAttributeDefinition/Name" tokenref="SimpleAttributeDefinition.Name"/>
+			</AttributeDefinition>
+		</Response>
+		<Response path="meta.v1/HierarchyRelationDefinition">
+			<AssetType href="/VersionOne/meta.v1/HierarchyRelationDefinition" version="9.2.4704.40" name="HierarchyRelationDefinition" token="HierarchyRelationDefinition" displayname="AssetType'HierarchyRelationDefinition" abstract="False">
+				<Base nameref="RelationDefinition" href="/VersionOne/meta.v1/RelationDefinition"/>
+				<DefaultOrderBy href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
+				<DefaultDisplayBy href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
+				<ShortName href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
+				<Name href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
+				<AttributeDefinition name="Name" token="HierarchyRelationDefinition.Name" displayname="AttributeDefinition'Name'HierarchyRelationDefinition" attributetype="Text" isreadonly="False" isrequired="True" ismultivalue="False">
+					<Base href="/VersionOne/meta.v1/AttributeDefinition/Name" tokenref="AttributeDefinition.Name"/>
+					<OrderByAttribute href="/VersionOne/meta.v1/HierarchyRelationDefinition/Name" tokenref="HierarchyRelationDefinition.Name"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+		<Response path="meta.v1/RelationDefinition">
+			<AssetType href="/VersionOne/meta.v1/RelationDefinition" version="9.2.4704.40" name="RelationDefinition" token="RelationDefinition" displayname="AssetType'RelationDefinition" abstract="True">
+				<Base nameref="AttributeDefinition" href="/VersionOne/meta.v1/AttributeDefinition"/>
+				<DefaultOrderBy href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
+				<DefaultDisplayBy href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
+				<ShortName href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
+				<Name href="/VersionOne/meta.v1/RelationDefinition/Name" tokenref="RelationDefinition.Name"/>
+				<AttributeDefinition name="RelatedAssetType" token="RelationDefinition.RelatedAssetType" displayname="AttributeDefinition'RelatedAssetType'RelationDefinition" attributetype="Relation" isreadonly="False" isrequired="True" ismultivalue="False">
+					<OrderByAttribute href="/VersionOne/meta.v1/RelationDefinition/RelatedAssetType.Order" tokenref="RelationDefinition.RelatedAssetType.Order"/>
+					<DisplayByAttribute href="/VersionOne/meta.v1/RelationDefinition/RelatedAssetType.Name" tokenref="RelationDefinition.RelatedAssetType.Name"/>
+					<RelatedAsset nameref="AssetType"	href="/VersionOne/meta.v1/AssetType"/>
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+	</Test>
 </TestData>
