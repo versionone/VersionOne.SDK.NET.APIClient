@@ -302,8 +302,7 @@
 		</Response>
 		<Response path="rest-1.v1/Data/Publication?sel=Publication.Payload&amp;where=Publication.Payload='98771fb4-71b8-42ec-be8b-69414daa020e'">
 			<Asset href="/V1Production/rest-1.v1/Publication/12345" id="Publication:12345">
-				<Attribute name="Payload">g</Attribute>
-				<Attribute name="Payloadd">98771fb4-71b8-42ec-be8b-69414daa020e</Attribute>
+				<Attribute name="Payload">98771fb4-71b8-42ec-be8b-69414daa020e</Attribute>
 			</Asset>
 		</Response>
 		<Response path="rest-1.v1/Data/Publication/12346/Payload?">
