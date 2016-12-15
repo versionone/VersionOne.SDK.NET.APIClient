@@ -142,6 +142,7 @@
   <ItemGroup>
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
+    <Compile Include="Model\Asset\Attribute\IAttribute.cs" />
     <Compile Include="Obsolete\Attachments.cs" />
     <Compile Include="Model\Asset\Attribute\Attribute.cs" />
     <Compile Include="Model\Asset\Attribute\AttributeType.cs" />

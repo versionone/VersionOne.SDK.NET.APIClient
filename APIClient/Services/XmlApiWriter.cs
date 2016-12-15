@@ -145,14 +145,14 @@ namespace VersionOne.SDK.APIClient
             writer.WriteEndElement();
         }
 
-        private void WriteAttributeReference(Attribute attrib)
+        private void WriteAttributeReference(IAttribute attrib)
         {
             AttributeToXml(attrib);
         }
 
         #region Attribute Value Output
 
-        private void AttributeToXml(Attribute attribute)
+        private void AttributeToXml(IAttribute attribute)
         {
             if (changesOnly && !attribute.HasChanged)
             {
@@ -189,7 +189,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        private void RelationAttributeToXml(Attribute attribute)
+        private void RelationAttributeToXml(IAttribute attribute)
         {
             if (attribute.HasChanged && attribute.Definition.IsMultiValue)
             {
