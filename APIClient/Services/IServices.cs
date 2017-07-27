@@ -32,8 +32,9 @@ namespace VersionOne.SDK.APIClient
         /// <param name="filePath">Path and name of the attachment file.</param>
         /// <param name="asset">Asset to save the attachment to.</param>
         /// <param name="attachmentName">The name of the attachment.</param>
+        /// <param name="useAbsolutePathAsFileName">Option to use the Ansolute Path as the FileName. Defaults to true.</param>
         /// <returns>Oid</returns>
-        Oid SaveAttachment(string filePath, Asset asset, string attachmentName);
+        Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useAbsolutePathAsFileName = true);
 
         /// <summary>
         /// Saves an embedded image to the specified asset.

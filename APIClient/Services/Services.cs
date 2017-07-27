@@ -375,12 +375,15 @@ namespace VersionOne.SDK.APIClient
             return _v1Connector.StringSendData(data: query, contentType: "application/json");
         }
 
-        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName)
+        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useAbsolutePathAsFileName = true)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentNullException("filePath");
             if (!File.Exists(filePath))
                 throw new APIException(string.Format("File \"{0}\" does not exist.", filePath));
+
+            if (!useAbsolutePathAsFileName)
+                filePath = Path.GetFileName(filePath);
 
             var mimeType = MimeType.Resolve(filePath);
             IAssetType attachmentType = Meta.GetAssetType("Attachment");
