@@ -375,15 +375,12 @@ namespace VersionOne.SDK.APIClient
             return _v1Connector.StringSendData(data: query, contentType: "application/json");
         }
 
-        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useAbsolutePathAsFileName = true)
+        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentNullException("filePath");
             if (!File.Exists(filePath))
                 throw new APIException(string.Format("File \"{0}\" does not exist.", filePath));
-
-            if (!useAbsolutePathAsFileName)
-                filePath = Path.GetFileName(filePath);
 
             var mimeType = MimeType.Resolve(filePath);
             IAssetType attachmentType = Meta.GetAssetType("Attachment");
@@ -395,6 +392,65 @@ namespace VersionOne.SDK.APIClient
             Asset attachment = New(attachmentType, Oid.Null);
             attachment.SetAttributeValue(attachmentNameAttr, attachmentName);
             attachment.SetAttributeValue(attachmentFileName, filePath);
+            attachment.SetAttributeValue(attachmentContentType, mimeType);
+            attachment.SetAttributeValue(attachmentContent, string.Empty);
+            attachment.SetAttributeValue(attachmentAssetDef, asset.Oid);
+            Save(attachment);
+
+            string key = attachment.Oid.Key.ToString();
+
+            using (Stream input = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (Stream output = _connector != null ? _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)) : _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)))
+                {
+                    byte[] buffer = new byte[input.Length + 1];
+                    while (true)
+                    {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                            break;
+
+                        output.Write(buffer, 0, read);
+                    }
+                }
+            }
+            if (_connector != null)
+            {
+                _connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), mimeType);
+            }
+            else
+            {
+                _v1Connector.UseAttachmentApi();
+                _v1Connector.EndRequest(key.Substring(key.LastIndexOf('/') + 1), mimeType);
+            }
+
+            return attachment.Oid;
+        }
+        
+        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useFileNameAsFileName)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentNullException("filePath");
+            if (!File.Exists(filePath))
+                throw new APIException(string.Format("File \"{0}\" does not exist.", filePath));
+
+            string fileName;
+
+            if (useFileNameAsFileName)
+                fileName = Path.GetFileName(filePath);
+            else
+                fileName = filePath;
+
+            var mimeType = MimeType.Resolve(filePath);
+            IAssetType attachmentType = Meta.GetAssetType("Attachment");
+            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
+            IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
+            IAttributeDefinition attachmentContentType = attachmentType.GetAttributeDefinition("ContentType");
+            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
+            IAttributeDefinition attachmentNameAttr = attachmentType.GetAttributeDefinition("Name");
+            Asset attachment = New(attachmentType, Oid.Null);
+            attachment.SetAttributeValue(attachmentNameAttr, attachmentName);
+            attachment.SetAttributeValue(attachmentFileName, fileName);
             attachment.SetAttributeValue(attachmentContentType, mimeType);
             attachment.SetAttributeValue(attachmentContent, string.Empty);
             attachment.SetAttributeValue(attachmentAssetDef, asset.Oid);
