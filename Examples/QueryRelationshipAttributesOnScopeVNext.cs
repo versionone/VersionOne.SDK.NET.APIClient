@@ -3,14 +3,14 @@ using static System.Console;
 
 namespace Examples
 {
-	public class QuerySpecificAttributesOnScopes
+	public class QueryRelationshipAttributesOnScopeVNext
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new QuerySpecificAttributesOnScopes();
+			var example = new QueryRelationshipAttributesOnScopeVNext();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();
