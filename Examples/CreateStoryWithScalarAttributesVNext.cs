@@ -28,7 +28,7 @@ namespace Examples
 				Name = $"Test Story Scope:1015 Update scalar attribute"
 			});
 
-      			// TODO: what should newStory contain now?
+      			WriteLine("Created: " + newStory.OidToken); // Should be a new OID Token value!
 		}
 	}
 }
