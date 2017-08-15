@@ -10,7 +10,7 @@ namespace Examples
 
 		static void Main()
 		{
-			var example = new QueryStoryByNumber();
+			var example = new QueryStoryByNumberVNext();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();

@@ -1,6 +1,5 @@
 ﻿using VersionOne.SDK.APIClient;
 using static System.Console;
-using static VersionOne.Assets.ClientUtilities;
 
 namespace Examples
 {

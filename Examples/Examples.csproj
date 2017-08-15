@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateStoryWithScalarAttributesVNext.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="QueryRelationshipAttributesOnScopeVNext.cs" />
     <Compile Include="QueryStoryByNumberVNext.cs" />
     <Compile Include="QueryStoryByNameVNext.cs" />
     <Compile Include="QueryStoryByName.cs" />
@@ -65,6 +67,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
