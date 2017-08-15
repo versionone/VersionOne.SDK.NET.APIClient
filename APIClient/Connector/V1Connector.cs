@@ -518,6 +518,7 @@ namespace VersionOne.SDK.APIClient
 
 			public IFluentQueryBuilder Query(object querySource) {
 				this._instance.UseDataApi();
+				this._instance._requestHeaders.Add("Accept", "application/json");
 				Func<string, IList<dynamic>> executor = resource =>
 				{
 					var assets = new List<dynamic>();
@@ -609,7 +610,7 @@ namespace VersionOne.SDK.APIClient
 		IFluentQueryBuilder Query(object querySource);
 	}
 
-    public interface ICanSetEndpointOrGetConnector : ICanGetConnector
+public interface ICanSetEndpointOrGetConnector : ICanGetConnector
     {
         /// <summary>
         /// Optional method for specifying an API endpoint to connect to.

@@ -21,7 +21,7 @@ namespace VersionOne.SDK.APIClient.vNext
 			if (_querySource is string)
 			{
 				var source = _querySource as string;
-				return source.Replace(':', '/') + "?accept=application/json";
+				return source.Replace(':', '/');
 			}
 			throw new InvalidOperationException("querySource must be of type string for now...");
 		}
