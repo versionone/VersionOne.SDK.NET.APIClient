@@ -140,6 +140,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="vNext\FluentQueryBuilder.cs" />
+    <Compile Include="vNext\IFluentQueryBuilder.cs" />
     <Compile Include="Model\Aggregate.cs" />
     <Compile Include="Model\Asset\AssetStateManager.cs" />
     <Compile Include="Obsolete\Attachments.cs" />

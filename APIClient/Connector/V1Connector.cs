@@ -12,6 +12,8 @@ using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using VersionOne.SDK.APIClient.vNext;
+using System.Collections;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -513,7 +515,24 @@ namespace VersionOne.SDK.APIClient
 
                 return this;
             }
-        }
+
+			public IFluentQueryBuilder Query(object querySource) {
+				this._instance.UseDataApi();
+				Func<string, IList<dynamic>> executor = resource =>
+				{
+					var assets = new List<dynamic>();
+					using (var stream = this._instance.GetData(resource))
+					using (var reader = new StreamReader(stream))
+					{
+						var json = reader.ReadToEnd();
+						dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+						assets.Add(obj);
+					}
+					return assets;
+				};
+				return new FluentQueryBuilder(querySource, executor);
+			}
+		}
 
         #endregion
     }
@@ -586,8 +605,9 @@ namespace VersionOne.SDK.APIClient
         /// </summary>
         /// <param name="proxyProvider">The ProxyProvider containing the proxy URI, username, and password.</param>
         /// <returns>ICanSetEndpointOrGetConnector</returns>
-        ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
-    }
+		ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
+		IFluentQueryBuilder Query(object querySource);
+	}
 
     public interface ICanSetEndpointOrGetConnector : ICanGetConnector
     {
