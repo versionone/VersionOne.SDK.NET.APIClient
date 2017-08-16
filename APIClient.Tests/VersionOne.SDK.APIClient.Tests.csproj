@@ -107,7 +107,11 @@
     <Compile Include="UtilityTests\UrlsTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationTester.cs" />
-    <Compile Include="vNextTests\Query\When_Query_for_Asset_By_OID_Token.cs" />
+    <Compile Include="vNextTests\Query\With_null_executor.cs" />
+    <Compile Include="vNextTests\Query\With_null_querySource.cs" />
+    <Compile Include="vNextTests\Query\By_OID_Token.cs" />
+    <Compile Include="vNextTests\Query\By_AssetType.cs" />
+    <Compile Include="vNextTests\Query\QueryTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">

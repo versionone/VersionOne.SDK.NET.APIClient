@@ -10,8 +10,8 @@ namespace VersionOne.SDK.APIClient.vNext
 
 		public FluentQueryBuilder(object querySource, Func<string, IList<dynamic>> executor)
 		{
-			_querySource = querySource;
-			_executor = executor;
+			_querySource = querySource ?? throw new ArgumentNullException(nameof(querySource));
+			_executor = executor ?? throw new ArgumentNullException(nameof(executor));
 		}
 
 		public IList<object> Retrieve() => _executor(this.ToString());
@@ -23,6 +23,7 @@ namespace VersionOne.SDK.APIClient.vNext
 				var source = _querySource as string;
 				return source.Replace(':', '/');
 			}
+
 			throw new InvalidOperationException("querySource must be of type string for now...");
 		}
 	}
