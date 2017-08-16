@@ -107,6 +107,7 @@
     <Compile Include="UtilityTests\UrlsTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationManagerTester.cs" />
     <Compile Include="UtilityTests\V1ConfigurationTester.cs" />
+    <Compile Include="vNextTests\Query\When_Query_for_Asset_By_OID_Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">

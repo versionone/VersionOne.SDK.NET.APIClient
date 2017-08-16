@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VersionOne.SDK.APIClient.vNext
 {
-	internal class FluentQueryBuilder : IFluentQueryBuilder
+	public class FluentQueryBuilder : IFluentQueryBuilder
 	{
 		private object _querySource;
 		private Func<string, IList<dynamic>> _executor;
