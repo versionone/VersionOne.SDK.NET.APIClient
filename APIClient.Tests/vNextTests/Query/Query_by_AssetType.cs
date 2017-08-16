@@ -4,7 +4,7 @@ using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {
 	[TestClass]
-	public class By_AssetType
+	public class Query_by_AssetType
 	{
 		[ClassInitialize]
 		public static void Initialize(TestContext context) => Setup(context, "Story");

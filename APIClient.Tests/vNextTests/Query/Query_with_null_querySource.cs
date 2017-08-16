@@ -5,7 +5,7 @@ using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {
 	[TestClass]
-	public class With_null_querySource
+	public class Query_with_null_querySource
 	{
 		private static Exception ExpectedException;
 

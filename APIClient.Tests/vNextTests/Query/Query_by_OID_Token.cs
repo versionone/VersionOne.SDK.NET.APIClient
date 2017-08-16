@@ -4,7 +4,7 @@ using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {
 	[TestClass]
-	public class By_OID_Token
+	public class Query_by_OID_Token
 	{
 		[ClassInitialize]
 		public static void Initialize(TestContext context) => Setup(context, "Story:1006");
