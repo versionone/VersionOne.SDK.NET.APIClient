@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
+using static VersionOne.SDK.APIClient.vNext.FluentQueryBuilder;
 
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {

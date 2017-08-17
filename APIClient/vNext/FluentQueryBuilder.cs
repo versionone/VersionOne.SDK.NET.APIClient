@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace VersionOne.SDK.APIClient.vNext
 {
@@ -10,8 +11,22 @@ namespace VersionOne.SDK.APIClient.vNext
 
 		public FluentQueryBuilder(object querySource, Func<string, IList<dynamic>> executor)
 		{
-			_querySource = querySource ?? throw new ArgumentNullException(nameof(querySource));
-			_executor = executor ?? throw new ArgumentNullException(nameof(executor));
+			//_querySource = (querySource ?? throw new ArgumentNullException(nameof(querySource)));
+
+			if (querySource != null) {
+				_querySource = querySource;
+			}
+			else {
+				throw new ArgumentException(nameof(querySource));
+			}
+
+			//_executor = executor ?? throw new ArgumentNullException(nameof(executor));
+			if (executor != null) {
+				_executor = executor;
+			}
+			else { 
+				throw new ArgumentException(nameof(executor));
+			}
 		}
 
 		public IList<object> Retrieve() => _executor(this.ToString());
@@ -25,6 +40,11 @@ namespace VersionOne.SDK.APIClient.vNext
 			}
 
 			throw new InvalidOperationException("querySource must be of type string for now...");
+		}
+		public IList<object> Select(object [] selections)
+		{
+			IList<object> selectList = new List<object>(null);
+			return selectList;
 		}
 	}
 }

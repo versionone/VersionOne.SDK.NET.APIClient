@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.APIClient.Le
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{81907CE9-E551-4661-A3B9-5A06D86A9648}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sdk samples", "sdk samples\sdk samples.csproj", "{8B802D74-B29E-4F31-A8FD-398884CE56E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,24 @@ Global
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|x86.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.Release|x86.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|Any CPU.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|Any CPU.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
+		{8B802D74-B29E-4F31-A8FD-398884CE56E0}.ReleaseWithDebug|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

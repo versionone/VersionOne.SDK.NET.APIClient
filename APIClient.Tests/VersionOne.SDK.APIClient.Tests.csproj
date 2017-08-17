@@ -112,6 +112,7 @@
     <Compile Include="vNextTests\Query\Query_by_OID_Token.cs" />
     <Compile Include="vNextTests\Query\Query_by_AssetType.cs" />
     <Compile Include="vNextTests\Query\QueryTestBase.cs" />
+    <Compile Include="vNextTests\Select\Select_Single_Attribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
@@ -130,6 +131,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
