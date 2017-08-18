@@ -23,10 +23,14 @@ namespace Examples
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken)
 				.Query("Story:1006")
+				.Select("Name,Description")
 				.Retrieve();
 
 			dynamic story = assets[0];
 			WriteLine(story.id); // TODO: OidToken
+			WriteLine(story.href); // TODO: OidToken
+			WriteLine(story.Attributes.Name); // TODO: OidToken
+			WriteLine(story.Attributes.Name); // TODO: OidToken
 			//WriteLine(story.Attributes.Ideas);
 		}
 	}

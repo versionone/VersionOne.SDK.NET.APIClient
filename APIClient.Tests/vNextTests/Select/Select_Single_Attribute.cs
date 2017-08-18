@@ -7,7 +7,7 @@ namespace VersionOne.SDK.APIClient.Tests.vNextTests.Select
 	public class Select_Single_Attribute
 	{
 		[ClassInitialize]
-		public static void Initialize(TestContext context) => Setup(context, "Story");
+		public static void Initialize(TestContext context) => Setup(context, "Story","Name");
 
 		[TestMethod]
 		public void Selected_Attributes_should_only_be_returned() => Assert.AreEqual("Story", ResultPath);

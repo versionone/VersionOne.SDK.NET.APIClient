@@ -20,5 +20,13 @@ namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 			SUT = new FluentQueryBuilder(querySource, ex);
 			ResultPath = SUT.ToString();
 		}
+		public static void Setup(TestContext context, string querySource, string selectList, Func<string, IList<dynamic>> executor = null, bool useExecutorParameter = false)
+		{
+			Context = context;
+			var ex = ExecutorStub;
+			if (useExecutorParameter) ex = executor;
+			SUT = new FluentQueryBuilder(querySource, ex);
+			ResultPath = SUT.ToString();
+		}
 	}
 }

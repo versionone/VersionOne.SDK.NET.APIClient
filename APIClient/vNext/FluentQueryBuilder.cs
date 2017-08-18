@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
+using System.Linq;
+using System.Text;
 namespace VersionOne.SDK.APIClient.vNext
 {
 	public class FluentQueryBuilder : IFluentQueryBuilder
 	{
 		private object _querySource;
 		private Func<string, IList<dynamic>> _executor;
+		public readonly List<object> SelectFields = new List<object>();
 
 		public FluentQueryBuilder(object querySource, Func<string, IList<dynamic>> executor)
 		{
@@ -28,23 +29,30 @@ namespace VersionOne.SDK.APIClient.vNext
 				throw new ArgumentException(nameof(executor));
 			}
 		}
-
 		public IList<object> Retrieve() => _executor(this.ToString());
 
-		public override string ToString()
-		{
-			if (_querySource is string)
-			{
-				var source = _querySource as string;
-				return source.Replace(':', '/');
-			}
+		public override string ToString() {
+			var source = _querySource as string;
+			var retObj = new StringBuilder(); 
+			var query = new StringBuilder();
 
-			throw new InvalidOperationException("querySource must be of type string for now...");
+			if (!(source is string)) { 
+				throw new InvalidOperationException("querySource must be of type string for now...");
+			}
+			else { 
+				retObj.Append( source.Replace(':', '/') );
+			}
+			if (SelectFields.Count > 0) { 
+				var selectFragment = String.Join(",", SelectFields);
+				retObj.Append("?sel=" + Uri.EscapeDataString(selectFragment));
+			}
+			return retObj.ToString();
 		}
-		public IList<object> Select(object [] selections)
+		public IFluentQueryBuilder Select(params object[] fields)
 		{
-			IList<object> selectList = new List<object>(null);
-			return selectList;
+			SelectFields.AddRange(fields);
+
+			return this;
 		}
 	}
 }
