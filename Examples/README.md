@@ -2,4 +2,4 @@
 
 ## Query Story by Name Attribute
 
-TODO
+It will be nice to have some information here about the new fluent approach!
