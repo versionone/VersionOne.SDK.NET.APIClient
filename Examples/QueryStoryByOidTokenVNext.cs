@@ -24,6 +24,7 @@ namespace Examples
 				.WithAccessToken(accessToken)
 				.Query("Story:1006")
 				.Select("Name,Description")
+				.Where("name='joe'")
 				.Retrieve();
 
 			dynamic story = assets[0];

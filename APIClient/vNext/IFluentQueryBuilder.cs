@@ -6,5 +6,6 @@ namespace VersionOne.SDK.APIClient.vNext
 	{
 		IList<dynamic> Retrieve();
 		IFluentQueryBuilder Select(params object[] fields);
+		IFluentQueryBuilder Where(params object[] pairs);
 	}
 }
