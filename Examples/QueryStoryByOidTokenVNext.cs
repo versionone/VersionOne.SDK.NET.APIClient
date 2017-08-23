@@ -22,17 +22,25 @@ namespace Examples
 				.WithInstanceUrl(instanceUrl)
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken)
-				.Query("Story:1006")
-				.Select("Name,Description")
-				.Where("name='joe'")
+				.Query("Story")
+				.Select("Name")
+				.Where("ToDo","5")
 				.Retrieve();
 
-			dynamic story = assets[0];
-			WriteLine(story.id); // TODO: OidToken
+			dynamic list = assets[0].Assets[0];
+
+			//assets[0].Assets[1].Attributes.Name   is how I accessed the friggin Name and it still returned extra attributes
+			foreach (var asset in list) {
+				WriteLine(asset.Name);	
+			WriteLine(asset.href); // TODO: OidToken
+			}
+			
+		/*	WriteLine(story.id); // TODO: OidToken
 			WriteLine(story.href); // TODO: OidToken
 			WriteLine(story.Attributes.Name); // TODO: OidToken
 			WriteLine(story.Attributes.Name); // TODO: OidToken
 			//WriteLine(story.Attributes.Ideas);
+			*/
 		}
 	}
 }

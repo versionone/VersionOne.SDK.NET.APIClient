@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.RegularExpressions;
+
 namespace VersionOne.SDK.APIClient.vNext
 {
 	public class FluentQueryBuilder : IFluentQueryBuilder
@@ -13,6 +15,7 @@ namespace VersionOne.SDK.APIClient.vNext
 		public List<object> whereClauseElements = new List<object>();
 		//StringBuilder currentQueryToken = new StringBuilder("?");
 		private char currentQueryToken = '?';
+
 		public FluentQueryBuilder(object querySource, Func<string, IList<dynamic>> executor)
 		{
 			//_querySource = (querySource ?? throw new ArgumentNullException(nameof(querySource)));
@@ -39,15 +42,20 @@ namespace VersionOne.SDK.APIClient.vNext
 			var source = _querySource as string;
 			var retObj = new StringBuilder(); 
 			var query = new StringBuilder();
-//Set up serverUrl/rest-1.v1/Data/Asset
+			string oidPattern = @"([a-zA-Z]+(:)[0-9]+)";
 			
 			if (!(source is string)) { 
 				throw new InvalidOperationException("querySource must be of type string for now...");
 			}
-			else { 
-				retObj.Append( source.Replace(':', '/') );
+			//else if (source.Contains(':')) {  //if this is an oid form assetName:####
+			else if (Regex.Match(source,oidPattern).Success) {
+				retObj.Append(source.Replace(':', '/'));
 			}
-//Set up  ?sel=attribute1, attribute 2, ...
+			else
+			{
+				retObj.Append(source);
+			}
+
 			if (SelectFields.Count > 0) { 
 				var selectFragment = String.Join(",", SelectFields);
 				
@@ -55,22 +63,13 @@ namespace VersionOne.SDK.APIClient.vNext
 				currentQueryToken = '&';
 			}
 
-//Set up  Where( sel=attribute1, attribute 2, ...
 			if (whereClauseElements.Count > 0) {
-				StringBuilder tempWhere = new StringBuilder(); 
-				StringBuilder finalClausArrangement = new StringBuilder();
-				char[] delimiters = {'='};
-
-				foreach (object piece in whereClauseElements) {
-				// now parse the damn string
-					//piece.Split(delimiters);
-				}
-				var finalClauseArrangement =  Convert.ToString(whereClauseElements[0]);
-				retObj.Append(Uri.EscapeDataString(currentQueryToken + "where=" + finalClauseArrangement));
+				var whereFragment = String.Join(",", whereClauseElements);
+//				retObj.Append(Uri.EscapeDataString(currentQueryToken + "where=" + whereFragment));
+				retObj.Append(currentQueryToken + "where=" + Uri.EscapeDataString(whereFragment));
 			}
 			return retObj.ToString();
 		}
-//Set up
 
 		public IFluentQueryBuilder Select(params object[] fields) {
 			SelectFields.AddRange(fields);
@@ -84,11 +83,17 @@ namespace VersionOne.SDK.APIClient.vNext
 
 			return parsedList;
 		}
-		public IFluentQueryBuilder Where(params object[] pairs)
+		/*public IFluentQueryBuilder Where(params object[] pairs)
 		{
 			whereClauseElements.AddRange(pairs);
 			return this;
 
+		}*/
+
+		public IFluentQueryBuilder Where(string attributeName, string stringAttributeValue)
+		{
+			whereClauseElements.Add(attributeName + '=' + @"'" + stringAttributeValue + @"'");
+			return this;
 		}
 	}
 }
