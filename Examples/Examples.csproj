@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Examples.QueryStoryByOidTokenVNext</StartupObject>
+    <StartupObject>Examples.QueryScopeSelectWorkitemsVNext</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryPublicationForPayloadGuidAttribute.cs" />
     <Compile Include="QueryStoryByOidSelect.cs" />
+    <Compile Include="QueryScopeSelectWorkitemsVNext.cs" />
     <Compile Include="QueryStoryByOidTokenVNext.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
   </ItemGroup>
