@@ -112,7 +112,8 @@
     <Compile Include="vNextTests\Query\Query_by_OID_Token.cs" />
     <Compile Include="vNextTests\Query\Query_by_AssetType.cs" />
     <Compile Include="vNextTests\Query\QueryTestBase.cs" />
-    <Compile Include="vNextTests\Select\Select_Single_Attribute.cs" />
+    <Compile Include="vNextTests\Select\Select_single_Attribute_from_object_selection.cs" />
+    <Compile Include="vNextTests\Select\Select_single_Attribute_from_string_selection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
