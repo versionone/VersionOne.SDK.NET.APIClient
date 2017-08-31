@@ -7,9 +7,14 @@ namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 	public class Query_by_AssetType
 	{
 		[ClassInitialize]
-		public static void Initialize(TestContext context) => Setup(context, "Story");
+		public static void Initialize(TestContext context)
+		{
+			ConfigureSUT(Context, "Story");
+			ExpectedPath = "Story";
+			ActualPath = SUT.ToString();
+		}
 
 		[TestMethod]
-		public void Path_should_be_the_AssetType_name() => Assert.AreEqual("Story", ResultPath);
+		public void Path_should_be_the_AssetType_name() => Assert.AreEqual(ExpectedPath, ActualPath);
 	}
 }

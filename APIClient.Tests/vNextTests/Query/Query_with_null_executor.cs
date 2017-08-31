@@ -15,7 +15,7 @@ namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 		{
 			try
 			{
-				Setup(context, "Story", null, true);
+				ConfigureSUT(context, "Story", null, true);
 			}
 			catch (Exception ex)
 			{

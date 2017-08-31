@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -14,7 +12,6 @@ namespace VersionOne.SDK.APIClient.vNext
 		public readonly List<object> SelectFields = new List<object>();
 		public List<object> whereClauseElements = new List<object>();
 		//StringBuilder currentQueryToken = new StringBuilder("?");
-		private char currentQueryToken = '?';
 
 		public FluentQueryBuilder(object querySource, Func<string, IList<dynamic>> executor)
 		{
@@ -24,7 +21,7 @@ namespace VersionOne.SDK.APIClient.vNext
 				_querySource = querySource;
 			}
 			else {
-				throw new ArgumentException(nameof(querySource));
+				throw new ArgumentNullException(nameof(querySource));
 			}
 
 			//_executor = executor ?? throw new ArgumentNullException(nameof(executor));
@@ -32,13 +29,14 @@ namespace VersionOne.SDK.APIClient.vNext
 				_executor = executor;
 			}
 			else { 
-				throw new ArgumentException(nameof(executor));
+				throw new ArgumentNullException(nameof(executor));
 			}
 		}
 
 		public IList<object> Retrieve() => _executor(this.ToString());
 
 		public override string ToString() {
+			var currentQueryToken = '?';
 			var source = _querySource as string;
 			var retObj = new StringBuilder(); 
 			var query = new StringBuilder();
