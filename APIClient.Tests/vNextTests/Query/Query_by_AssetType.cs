@@ -3,13 +3,12 @@ using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
 
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {
-	[TestClass]
-	public class Query_by_AssetType
+	public class Query_by_AssetType : QueryTestBase
 	{
 		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		public void Initialize(TestContext context)
 		{
-			ConfigureSUT(Context, "Story");
+			ConfigureSUT("Story");
 			ExpectedPath = "Story";
 			ActualPath = SUT.ToString();
 		}

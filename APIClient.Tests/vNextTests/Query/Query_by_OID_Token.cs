@@ -1,17 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
-using static VersionOne.SDK.APIClient.vNext.FluentQueryBuilder;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Query
 {
-	[TestClass]
-	public class Query_by_OID_Token
+	public class Query_by_OID_Token : QueryTestBase
 	{
 		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		public void Initialize(TestContext context)
 		{
-			ConfigureSUT(context, "Story:1006");
+			ConfigureSUT("Story:1006");
 
 			ExpectedPath = "Story/1006";
 			ActualPath = SUT.ToString();

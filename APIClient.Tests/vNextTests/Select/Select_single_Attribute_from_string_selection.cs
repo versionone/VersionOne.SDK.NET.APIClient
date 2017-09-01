@@ -1,15 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
+using VersionOne.SDK.APIClient.Tests.vNextTests.Query;
 
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Select
 {
 	[TestClass]
-	public class Select_single_Attribute_from_string_selection
+	public class Select_single_Attribute_from_string_selection : QueryTestBase
 	{
-		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		[TestInitialize]
+		public void Initialize()
 		{
-			ConfigureSUT(context, "Story");
+			ConfigureSUT("Story");
 			SUT.Select("Name");
 
 			ExpectedPath = "Story?sel=Name";

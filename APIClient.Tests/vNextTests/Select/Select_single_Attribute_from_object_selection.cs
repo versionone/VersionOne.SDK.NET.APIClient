@@ -1,20 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static VersionOne.SDK.APIClient.Tests.vNextTests.Query.QueryTestBase;
+using VersionOne.SDK.APIClient.Tests.vNextTests.Query;
 
 namespace VersionOne.SDK.APIClient.Tests.vNextTests.Select
 {
 	[TestClass]
-	public class Select_single_Attribute_from_object_selection
+	public class Select_single_Attribute_from_object_selection : QueryTestBase
 	{
 		class ThingThatToStringTurnsIntoAnAttributeName
 		{
 			public override string ToString() => "AttributeName";
 		}
 
-		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		[TestInitialize]
+		public void Initialize()
 		{
-			ConfigureSUT(context, "Story");
+			ConfigureSUT("Story");
 
 			var thing = new ThingThatToStringTurnsIntoAnAttributeName();
 
