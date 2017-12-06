@@ -2,15 +2,16 @@
 {
 	public static class ComparisonFunctions
 	{
-		public static WhereCriterion Equal(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.Equal, MatchValue = matchValue };
-		public static WhereCriterion NotEqual(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.NotEqual, MatchValue = matchValue };
-		public static WhereCriterion LessThan(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.LessThan, MatchValue = matchValue };
-		public static WhereCriterion LessThanOrEqual(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.LessThanOrEqual, MatchValue = matchValue };
-		public static WhereCriterion GreaterThan(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.GreaterThan, MatchValue = matchValue };
-		public static WhereCriterion GreaterThanOrEqual(string expression, object matchValue) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.GreaterThanOrEqual, MatchValue = matchValue };
-		public static WhereCriterion Exists(string expression) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.Exists, MatchValue = WhereCriterion.MatchNotApplicable };
-		public static WhereCriterion NotExists(string expression) => new WhereCriterion { AttributeName = expression, Operator = ComparisonOperator.NotExists, MatchValue = WhereCriterion.MatchNotApplicable };
+		public static Term Equal(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.Equal, matchValue);
+		public static Term NotEqual(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.NotEqual, matchValue);
+		public static Term LessThan(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.LessThan, matchValue);
+		public static Term LessThanOrEqual(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.LessThanOrEqual, matchValue);
+		public static Term GreaterThan(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.GreaterThan, matchValue);
+		public static Term GreaterThanOrEqual(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.GreaterThanOrEqual, matchValue);
+		public static Term Exists(string expression) => new Criterion(expression, ComparisonOperator.Exists);
+		public static Term NotExists(string expression) => new Criterion(expression, ComparisonOperator.NotExists);
 		// TEMP HACK
-		public static WhereCriterion Or(params WhereCriterion[] criteria) => new OrCriterion(criteria);
+		public static Term Or(params Term[] criteria) => new OrTerm(criteria);
+		public static Term And(params Term[] criteria) => new AndTerm(criteria);
 	}
 }

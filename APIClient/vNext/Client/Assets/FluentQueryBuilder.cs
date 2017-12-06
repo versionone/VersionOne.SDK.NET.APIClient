@@ -7,24 +7,19 @@ namespace VersionOne.Assets
 {
 	public class FluentQueryBuilder : IFluentQueryBuilder
 	{
-		public readonly List<object> SelectFields = new List<object>();
-		public readonly List<WhereCriterion> WhereCriteria = new List<WhereCriterion>();
-		public readonly List<string> FilterTokens = new List<string>();
-		public int PageSize = -1;
-		public int PageStart = -1;
-		private readonly string _assetTypeName = string.Empty;
-		private string _id = string.Empty;
 		private Func<string, IList<IAssetBase>> _executor = null;
+		private readonly QuerySpec _querySpec;
 
 		public FluentQueryBuilder(string assetSource, Func<string, IList<IAssetBase>> executor)
 		{
 			// TODO this is a little weird the way the split occurs again in the ToString()
 			string assetTypeName;
+			_querySpec = new QuerySpec();
 			if (assetSource.IndexOf(':') > -1)
 			{
 				var oidTokenParts = assetSource.Split(':');
 				assetTypeName = oidTokenParts[0];
-				_id = assetSource;
+				_querySpec.Id = assetSource;
 			}
 			else
 			{
@@ -39,7 +34,7 @@ namespace VersionOne.Assets
 				throw new ArgumentNullException("executor");
 			}
 			_executor = executor;
-			_assetTypeName = assetTypeName;
+			_querySpec.AssetTypeName = assetTypeName;
 		}
 
 		public IFluentQueryBuilder Id(object id)
@@ -51,33 +46,28 @@ namespace VersionOne.Assets
 			{
 				throw new ArgumentNullException("id", "id.ToString() must return a non-empty string");
 			}
-			_id = val;
+			_querySpec.Id = val;
 
 			return this;
 		}
 
 		public IFluentQueryBuilder Select(params object[] fields)
 		{
-			SelectFields.AddRange(fields);
+			_querySpec.Select.AddRange(fields);
 
 			return this;
 		}
 
 		public IFluentQueryBuilder Where(string attributeName, string matchValue)
 		{
-			WhereCriteria.Add(new WhereCriterion
-			{
-				AttributeName = attributeName,
-				Operator = ComparisonOperator.Equal,
-				MatchValue = matchValue
-			});
+			_querySpec.Where.Add(new Criterion(attributeName, ComparisonOperator.Equal, matchValue));
 
 			return this;
 		}
 
-		public IFluentQueryBuilder Where(params WhereCriterion[] criteria)
+		public IFluentQueryBuilder Where(params Term[] criteria)
 		{
-			WhereCriteria.AddRange(criteria);
+			_querySpec.Where.AddRange(criteria);
 
 			return this;
 		}
@@ -91,94 +81,34 @@ namespace VersionOne.Assets
 
 		public IFluentQueryBuilder Filter(string attributeName, ComparisonOperator op, object filterValue)
 		{
-			WhereCriteria.Add(new WhereCriterion
-			{
-				AttributeName = attributeName,
-				Operator = op,
-				MatchValue = filterValue
-			});
+			_querySpec.Where.Add(new Criterion(attributeName, op, filterValue));
 
 			return this;
 		}
 
 		// Alias for a Where, basically...
 		// TODO jg: maybe this is just confusing
-		public IFluentQueryBuilder Filter(params WhereCriterion[] criteria) => Where(criteria);
-
-		public IFluentQueryBuilder Filter(params string[] filterTokens)
-		{
-			FilterTokens.AddRange(filterTokens);
-			return this;
-		}
+		public IFluentQueryBuilder Filter(params Term[] criteria) => Where(criteria);
 
 		public IFluentQueryBuilder Paging(int pageSize, int pageStart = 0)
 		{
-			PageSize = pageSize;
-			PageStart = pageStart;
+			_querySpec.PageSize = pageSize;
+			_querySpec.PageStart = pageStart;
 
 			return this;
 		}
 
-		public override string ToString()
-		{
-			var builder = new StringBuilder();
-			var query = new StringBuilder();
-
-			if (SelectFields.Count > 0)
-			{
-				var selectFragment = String.Join(",", SelectFields);
-				query.Append("sel=" + Uri.EscapeDataString(selectFragment));
-			}
-
-			if (WhereCriteria.Count > 0)
-			{
-				var encodedCriteria = WhereCriteria.Select(w => w.ToQueryStringParameter());
-
-				var whereFragment = String.Join(";", encodedCriteria);
-
-				if (query.Length > 0)
-				{
-					query.Append("&");
-				}
-				query.Append("where=" + whereFragment);
-			}
-
-			if (PageSize != -1 && PageStart != -1)
-			{
-				if (query.Length > 0)
-				{
-					query.Append("&");
-				}
-				query.Append(string.Format("page={0},{1}", PageSize, PageStart));
-			}
-
-			builder.Append("/" + _assetTypeName);
-
-			if (!string.IsNullOrWhiteSpace(_id))
-			{
-				var oidParts = _id.Split(':');
-				if (oidParts.Length < 2)
-					throw new InvalidOperationException($"_id must contain an oidToken in the correct format, for example Story:12345, but contained: {_id}");
-				builder.Append("/" + oidParts[1]);
-			}
-
-			if (query.Length > 0)
-			{
-				builder.Append("?" + query);
-			}
-
-			return builder.ToString();
-		}
+		public override string ToString() => $"/{_querySpec}";
 
 		public IList<IAssetBase> Retrieve()
 		{
-			var uri = this.ToString();
+			var uri = ToString();
 			return _executor(uri);
 		}
 
 		public IAssetBase RetrieveFirst()
 		{
-			var uri = this.ToString();
+			var uri = ToString();
 			var results = _executor(uri);
 			if (results.Count > 0) return results[0];
 			return null;

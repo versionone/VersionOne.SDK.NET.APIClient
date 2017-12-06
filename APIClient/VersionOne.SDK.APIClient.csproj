@@ -176,9 +176,6 @@
     <Compile Include="Obsolete\Credentials.cs" />
     <Compile Include="Obsolete\EnvironmentContext.cs" />
     <Compile Include="Obsolete\ModelsAndServices.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Model\Asset\Asset.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -287,8 +284,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="vNext\Client\Assets\AcccessTokenAuthenticator.cs" />
+    <Compile Include="vNext\Client\Assets\AndTerm.cs" />
+    <Compile Include="vNext\Client\Assets\AnyCriterion.cs" />
     <Compile Include="vNext\Client\Assets\AssetBase.cs" />
     <Compile Include="vNext\Client\Assets\AssetDeserializer.cs" />
+    <Compile Include="vNext\Client\Assets\CompoundCriterion.cs" />
     <Compile Include="vNext\Client\Assets\FluentQueryBuilder.cs" />
     <Compile Include="vNext\Client\Assets\IFluentQueryBuilder.cs" />
     <Compile Include="vNext\Client\Assets\IOidToken.cs" />
@@ -298,12 +298,15 @@
     <Compile Include="vNext\Client\Assets\ComparisonOperatorConstants.cs" />
     <Compile Include="vNext\Client\Assets\IAssetBase.cs" />
     <Compile Include="vNext\Client\Assets\Mapped.cs" />
+    <Compile Include="vNext\Client\Assets\OrTerm.cs" />
+    <Compile Include="vNext\Client\Assets\QuerySpec.cs" />
+    <Compile Include="vNext\Client\Assets\Term.cs" />
     <Compile Include="vNext\Client\NOTES.cs" />
     <Compile Include="vNext\Client\Assets\QueryApiQueryBuilder.cs" />
     <Compile Include="vNext\Client\Assets\RestApiPayloadBuilder.cs" />
     <Compile Include="vNext\Client\Assets\TranslateAssetXmlToHalJson.cs" />
     <Compile Include="vNext\Client\Assets\AssetClient.cs" />
-    <Compile Include="vNext\Client\Assets\WhereCriterion.cs" />
+    <Compile Include="vNext\Client\Assets\Criterion.cs" />
     <Compile Include="vNext\QueryYamlPayloadBuilder.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
@@ -327,7 +330,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

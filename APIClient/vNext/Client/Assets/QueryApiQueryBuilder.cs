@@ -10,8 +10,8 @@ namespace VersionOne.Assets
     public class QueryApiQueryBuilder
     {
         public readonly List<object> SelectFields = new List<object>();
-        public readonly List<WhereCriterion> WhereCriteria = new List<WhereCriterion>();
-        public readonly List<WhereCriterion> FilterCriteria = new List<WhereCriterion>();
+        public readonly List<Criterion> WhereCriteria = new List<Criterion>();
+        public readonly List<Criterion> FilterCriteria = new List<Criterion>();
         private readonly string _assetType = string.Empty;
 
         public QueryApiQueryBuilder(string assetType)
@@ -32,17 +32,12 @@ namespace VersionOne.Assets
 
         public QueryApiQueryBuilder Where(string attributeName, string matchValue)
         {
-            WhereCriteria.Add(new WhereCriterion
-            {
-                AttributeName = attributeName,
-                Operator = ComparisonOperator.Equal,
-                MatchValue = matchValue
-            });
+	        WhereCriteria.Add(new Criterion(attributeName, ComparisonOperator.Equal, matchValue));
 
             return this;
         }
 
-        public QueryApiQueryBuilder Where(params WhereCriterion[] criteria) { 
+        public QueryApiQueryBuilder Where(params Criterion[] criteria) { 
             WhereCriteria.AddRange(criteria);
 
             return this;
@@ -57,24 +52,19 @@ namespace VersionOne.Assets
 
         public QueryApiQueryBuilder Filter(string attributeName, ComparisonOperator op, object filterValue)
         {
-            FilterCriteria.Add(new WhereCriterion
-            {
-                AttributeName = attributeName,
-                Operator = op,
-                MatchValue = filterValue
-            });
+	        FilterCriteria.Add(new Criterion(attributeName, op, filterValue));
 
             return this;
         }
 
-        public QueryApiQueryBuilder Filter(params WhereCriterion[] criteria)
+        public QueryApiQueryBuilder Filter(params Criterion[] criteria)
         {
             FilterCriteria.AddRange(criteria);
 
             return this;
         }
 
-        public QueryApiQueryBuilder Filter(string attributeName, Func<string, object, WhereCriterion> operatorFunc, object filterValue)
+        public QueryApiQueryBuilder Filter(string attributeName, Func<string, object, Criterion> operatorFunc, object filterValue)
         {
             var result = operatorFunc(attributeName, filterValue);
             FilterCriteria.Add(result);
