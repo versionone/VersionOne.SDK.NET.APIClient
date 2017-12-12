@@ -170,7 +170,7 @@ namespace VersionOne.SDK.APIClient
             {
                 writer.WriteStartElement("Attribute");
                 writer.WriteAttributeString("name", attribute.Definition.Name);
-                ValuesToXml(attribute.Definition, attribute.Values, "Value");
+                MultiValueAttributeToXml(attribute);
                 writer.WriteEndElement();
             }
             else
@@ -228,25 +228,26 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        private void ValuesToXml(IAttributeDefinition attribdef, IEnumerable values, string tag)
+        private void MultiValueAttributeToXml(Attribute attribute)
         {
-            if (values != null)
-            {
-                foreach (var val in values)
-                {
-                    ValueToXml(attribdef, val, tag);
-                }
-            }
+            if (!attribute.HasChanged || !attribute.Definition.IsMultiValue) return;
+
+            WriteMultiValueAttributeValues(attribute.AddedValues, "add");
+            WriteMultiValueAttributeValues(attribute.RemovedValues, "remove");
         }
 
-        private void ValueToXml(IAttributeDefinition attribdef, object val, string tag)
+        private void WriteMultiValueAttributeValues(IEnumerable list, string action)
         {
-            var content = ValueToXmlString(attribdef, val);
-
-            if (content != null)
+            if (list == null)
             {
-                writer.WriteStartElement(tag);
-                writer.WriteString(content);
+                return;
+            }
+
+            foreach (var oid in list.Cast<string>().Where(s => !string.IsNullOrWhiteSpace(s)))
+            {
+                writer.WriteStartElement("Value");
+                writer.WriteAttributeString("act", action);
+                writer.WriteValue(oid);
                 writer.WriteEndElement();
             }
         }

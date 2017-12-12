@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Program</StartupObject>
+    <StartupObject>TaggedWith</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryPublicationForPayloadGuidAttribute.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
+    <Compile Include="TaggedWith.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
