@@ -2,18 +2,18 @@
 {
     public static class XmlApiWriterConstants
     {
-        public static string Act = "act";
-        public static string ActSet = "set";
-        public static string ActAdd = "add";
-        public static string ActRemove = "remove";
-        public static string RelationElement = "Relation";
-        public static string AssetElement = "Asset";
-        public static string IdAttribute = "id";
-        public static string AttributeElement = "Attribute";
-        public static string NameAttribute = "name";
-        public static string IdRefAttribute = "idref";
-        public static string ValueElement = "Value";
-        public static string DateTimeShortFormat = "yyyy-MM-dd";
-        public static string DateTimeLongFormat = "yyyy-MM-ddTHH:mm:ss.fff";
+        public const string Act = "act";
+        public const string ActSet = "set";
+        public const string ActAdd = "add";
+        public const string ActRemove = "remove";
+        public const string RelationElement = "Relation";
+        public const string AssetElement = "Asset";
+        public const string IdAttribute = "id";
+        public const string AttributeElement = "Attribute";
+        public const string NameAttribute = "name";
+        public const string IdRefAttribute = "idref";
+        public const string ValueElement = "Value";
+        public const string DateTimeShortFormat = "yyyy-MM-dd";
+        public const string DateTimeLongFormat = "yyyy-MM-ddTHH:mm:ss.fff";
     }
 }
