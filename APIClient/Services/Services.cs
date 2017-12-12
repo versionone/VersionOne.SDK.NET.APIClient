@@ -44,29 +44,17 @@ namespace VersionOne.SDK.APIClient
 
         public Services(IMetaModel meta, IAPIConnector connector)
         {
-            if (meta == null)
-                throw new ArgumentNullException("meta");
-            if (connector == null)
-                throw new ArgumentNullException("connector");
-
-            _meta = meta;
-            _connector = connector;
+            _meta = meta ?? throw new ArgumentNullException(nameof(meta));
+            _connector = connector ?? throw new ArgumentNullException(nameof(connector));
         }
 
         public Services(V1Connector v1Connector, bool preLoadMeta = false, IMetaModel metaModel = null)
         {
-            if (v1Connector == null)
-                throw new ArgumentNullException("v1Connector");
-            _v1Connector = v1Connector;
-
-            if (metaModel != null) _meta = metaModel;
-            else _meta = new MetaModel(_v1Connector, preLoadMeta);
+            _v1Connector = v1Connector ?? throw new ArgumentNullException(nameof(v1Connector));
+            _meta = metaModel ?? new MetaModel(_v1Connector, preLoadMeta);
         }
 
-        public IMetaModel Meta
-        {
-            get { return _meta; }
-        }
+        public IMetaModel Meta => _meta;
 
         public void SetUpstreamUserAgent(string userAgent)
         {
@@ -120,10 +108,7 @@ namespace VersionOne.SDK.APIClient
             return ParseQueryResult(doc.DocumentElement, query);
         }
 
-        public Oid GetOid(string token)
-        {
-            return Oid.FromToken(token, _meta);
-        }
+        public Oid GetOid(string token) => Oid.FromToken(token, _meta);
 
         public Oid ExecuteOperation(IOperation op, Oid oid)
         {
@@ -166,10 +151,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public void Save(Asset asset)
-        {
-            Save(asset, string.Empty);
-        }
+        public void Save(Asset asset) => Save(asset, string.Empty);
 
         public void Save(Asset asset, string comment)
         {
