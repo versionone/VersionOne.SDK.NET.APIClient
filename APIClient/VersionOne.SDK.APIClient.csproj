@@ -155,6 +155,7 @@
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
     <Compile Include="Services\IServices.cs" />
+    <Compile Include="Services\XmlApiWriterConstants.cs" />
     <Compile Include="Utils\DB.cs" />
     <Compile Include="Obsolete\V1ConfigurationManager.cs" />
     <Compile Include="Obsolete\Connectors.cs" />
