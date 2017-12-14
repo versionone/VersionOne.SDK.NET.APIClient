@@ -10,13 +10,11 @@ namespace VersionOne.SDK.APIClient
 {
 	internal class XmlApiWriter
 	{
-		private readonly bool _changesOnly;
 		private readonly XmlTextWriter _writer;
 
-		public XmlApiWriter(TextWriter response, bool changesOnly = false)
+		public XmlApiWriter(TextWriter response)
 		{
 			_writer = new XmlTextWriter(response);
-			this._changesOnly = changesOnly;
 #if DEBUG
 			_writer.Formatting = Formatting.Indented;
 			_writer.IndentChar = '\t';
@@ -38,7 +36,7 @@ namespace VersionOne.SDK.APIClient
 
 		private void AttributeToXml(Attribute attribute)
 		{
-			if (_changesOnly && !attribute.HasChanged) return;
+			if (!attribute.HasChanged) return;
 
 			if (attribute.Definition.AttributeType == AttributeType.Relation)
 			{
