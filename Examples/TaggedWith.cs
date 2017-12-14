@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
 using VersionOne.SDK.APIClient;
 using static System.Console;
 
@@ -26,10 +27,12 @@ public class TaggedWith
         var idAttribute = storyType.GetAttributeDefinition("ID");
         var taggedWithAttribute = storyType.GetAttributeDefinition("TaggedWith");
         var descAttribute = storyType.GetAttributeDefinition("Description");
-
+        var ownersAttribute = storyType.GetAttributeDefinition("Owners");
+        
         query.Selection.Add(nameAttribute);
         query.Selection.Add(taggedWithAttribute);
         query.Selection.Add(descAttribute);
+        query.Selection.Add(ownersAttribute);
 
         var term = new FilterTerm(idAttribute);
         term.Equal("Story:1004");
@@ -43,7 +46,8 @@ public class TaggedWith
             WriteLine(story.GetAttribute(nameAttribute).Value);
             WriteLine("Before: " + string.Join(",", story.GetAttribute(taggedWithAttribute).Values.Cast<string>()));
             WriteLine(story.GetAttribute(descAttribute));
-
+            WriteLine("Owners Before: " + string.Join(",", story.GetAttribute(ownersAttribute).Values.Cast<Oid>().Select(x => x.ToString())));
+            
             story.AddAttributeValue(taggedWithAttribute, "FIRST TAG");
             // Try to add again:
             story.AddAttributeValue(taggedWithAttribute, "FIRST TAG");
@@ -57,7 +61,16 @@ public class TaggedWith
             story.AddAttributeValue(taggedWithAttribute, "Really actually new 2");
             story.AddAttributeValue(taggedWithAttribute, "Really actually new 2");
 
+            var oid = services.GetOid("Member:1057");
+            var oid2 = services.GetOid("Member:1058");
+            
+            story.AddAttributeValue(ownersAttribute, oid);
+            story.AddAttributeValue(ownersAttribute, oid2);
+            story.AddAttributeValue(ownersAttribute, oid2);
+            story.AddAttributeValue(ownersAttribute, oid2);
+            story.AddAttributeValue(ownersAttribute, oid2);
 
+            
             services.Save(story);
             story.AcceptChanges();
             
