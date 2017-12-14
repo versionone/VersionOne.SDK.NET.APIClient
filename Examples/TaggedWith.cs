@@ -42,12 +42,16 @@ using static System.Console;
 				WriteLine(story.GetAttribute(nameAttribute).Value);
 				WriteLine(string.Join(",", story.GetAttribute(taggedWithAttribute).Values.Cast<string>()));
 
+				// Itentional duplicate calls here, server will handle de-dedupe on query
+				story.AddAttributeValue(taggedWithAttribute, "FIRST TAG");
 				story.AddAttributeValue(taggedWithAttribute, "FIRST TAG");
 				story.AddAttributeValue(taggedWithAttribute, "SECOND TAG");
 				story.RemoveAttributeValue(taggedWithAttribute, "SECOND TAG");
 
 				services.Save(story);
 				story.AcceptChanges();
+
+				WriteLine(string.Join(",", story.GetAttribute(taggedWithAttribute).Values.Cast<string>()));
 			}
 		}
 
