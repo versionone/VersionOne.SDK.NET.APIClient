@@ -44,13 +44,18 @@ namespace VersionOne.SDK.APIClient
 
         public Services(IMetaModel meta, IAPIConnector connector)
         {
-            _meta = meta ?? throw new ArgumentNullException(nameof(meta));
-            _connector = connector ?? throw new ArgumentNullException(nameof(connector));
+            if (meta == null) throw new ArgumentNullException(nameof(meta));
+            _meta = meta;
+
+            if (connector == null) throw new ArgumentNullException(nameof(connector));
+            _connector = connector;
         }
 
         public Services(V1Connector v1Connector, bool preLoadMeta = false, IMetaModel metaModel = null)
         {
-            _v1Connector = v1Connector ?? throw new ArgumentNullException(nameof(v1Connector));
+            if (v1Connector == null) throw new ArgumentNullException(nameof(v1Connector));
+            _v1Connector = v1Connector;
+
             _meta = metaModel ?? new MetaModel(_v1Connector, preLoadMeta);
         }
 

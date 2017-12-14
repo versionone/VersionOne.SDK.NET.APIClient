@@ -44,9 +44,15 @@ namespace VersionOne.SDK.APIClient
 
         public override bool HasChanged => (_newValues != null);
 
-        internal override void SetValue(object value) => throw new ApplicationException("Cannot set value on a multi-value attribute: " + Definition.Token);
+        internal override void SetValue(object value)
+        {
+            throw new ApplicationException("Cannot set value on a multi-value attribute: " + Definition.Token);
+        }
 
-        internal override void ForceValue(object value) => throw new ApplicationException("Cannot force value on a multi-value attribute: " + Definition.Token);
+        internal override void ForceValue(object value)
+        {
+            throw new ApplicationException("Cannot force value on a multi-value attribute: " + Definition.Token);
+        }
 
         internal override void AddValue(object value)
         {
