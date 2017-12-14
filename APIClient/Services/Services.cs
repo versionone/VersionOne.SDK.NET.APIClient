@@ -164,9 +164,6 @@ namespace VersionOne.SDK.APIClient
                 writer.WriteAsset(asset);
                 var data = s.ToString();
 
-                Console.WriteLine("Sending payload: ");
-                Console.WriteLine(data);
-
                 var path = asset.AssetType.Token;
 
                 if (!asset.Oid.IsNull)
