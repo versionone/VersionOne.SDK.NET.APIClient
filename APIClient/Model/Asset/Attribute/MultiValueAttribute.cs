@@ -62,8 +62,7 @@ namespace VersionOne.SDK.APIClient
 
         internal override void ForceValue(object value) => throw new ApplicationException("Cannot force value on a multi-value attribute: " + Definition.Token);
 
-        //private bool ContainsValue(object value) => _values.Contains(value) || _addedValues.Contains(value);
-        private bool AlreadyAddedValue(object value) => _addedValues.Contains(value);
+        private bool ContainsValue(object value) => _values.Contains(value) || _addedValues.Contains(value);
 
         internal override void AddValue(object value)
         {
@@ -73,7 +72,7 @@ namespace VersionOne.SDK.APIClient
             EnsureNewValues();
             EnsureAddedValues();
 
-            if (AlreadyAddedValue(value)) return;
+            if (ContainsValue(value)) return;
 
             _newValues.Add(value);
             _addedValues.Add(value);
