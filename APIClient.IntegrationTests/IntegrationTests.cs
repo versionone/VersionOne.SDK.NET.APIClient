@@ -345,7 +345,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			services.Save(newStory);
 			newStory.AcceptChanges();
 
-			var query = new Query(newStory.Oid);
+			var query = new Query(newStory.Oid.Momentless);
 			query.Selection.Add(taggedWithAttribute);
 			var results = services.Retrieve(query).Assets;
 			Assert.AreEqual(1, results.Count);
@@ -649,7 +649,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			services.Save(newStory);
 			newStory.AcceptChanges();
 
-			var query = new Query(newStory.Oid);
+			var query = new Query(newStory.Oid.Momentless);
 			query.Selection.Add(taggedWithAttribute);
 			var results = services.Retrieve(query).Assets;
 			var story = results[0];
