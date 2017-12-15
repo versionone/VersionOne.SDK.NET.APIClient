@@ -328,6 +328,33 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
         }
 
         [TestMethod]
+        public void CreateStoryWithTaggedWithMultiValueAttribute()
+        {
+            var services = GetServices();
+
+            var contextId = IntegrationTestsHelper.GetTestProjectOid(_useOAuthEndpoints);
+            var storyType = services.Meta.GetAssetType("Story");
+            var newStory = services.New(storyType, contextId);
+            var nameAttribute = storyType.GetAttributeDefinition("Name");
+            var taggedWithAttribute = storyType.GetAttributeDefinition("TaggedWith");
+            var name = $"Test Story {contextId} Create story with TaggedWith values";
+            newStory.SetAttributeValue(nameAttribute, name);
+            newStory.AddAttributeValue(taggedWithAttribute, "Tag 1");
+            newStory.AddAttributeValue(taggedWithAttribute, "Tag 2");
+            newStory.AddAttributeValue(taggedWithAttribute, "Tag 3");
+            services.Save(newStory);
+
+            var query = new Query(newStory.Oid);
+            query.Selection.Add(taggedWithAttribute);
+            var results = services.Retrieve(query).Assets;
+            Assert.AreEqual(1, results.Count);
+            var story = results[0];
+            Assert.IsNotNull(story);
+            var expected = new[] {"Tag 1", "Tag 2", "Tag 3"};
+            Assert.IsTrue(story.GetAttribute(taggedWithAttribute).Values.Cast<string>().All(x => expected.Contains(x)));
+        }
+
+        [TestMethod]
         public void CreateDefect()
         {
             var services = GetServices();
