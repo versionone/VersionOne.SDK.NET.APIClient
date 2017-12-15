@@ -352,7 +352,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			var story = results[0];
 			Assert.IsNotNull(story);
 			var expected = new[] { "Tag 1", "Tag 2", "Tag 3" };
-			Assert.IsTrue(story.GetAttribute(taggedWithAttribute).Values.Cast<string>().All(x => expected.Contains(x)));
+			var actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
+			Assert.Equals(3, actuals.Length);
+			CollectionAssert.AreEqual(expected, actuals);
 		}
 
 		[TestMethod]
@@ -655,7 +657,9 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			var story = results[0];
 			Assert.IsNotNull(story);
 			var expected = new[] { "Tag 1", "Tag 2", "Tag 3" };
-			Assert.IsTrue(story.GetAttribute(taggedWithAttribute).Values.Cast<string>().All(x => expected.Contains(x)));
+			var actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
+			Assert.Equals(3, actuals.Length);
+			CollectionAssert.AreEqual(expected, actuals);
 
 			story.AddAttributeValue(taggedWithAttribute, "Tag 4");
 			story.AddAttributeValue(taggedWithAttribute, "Tag 5");
@@ -664,13 +668,15 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			services.Save(story);
 			story.AcceptChanges();
 
-			expected = new[] { "Tag 3", "Tag 4", "Tag 5" };
 			query = new Query(newStory.Oid.Momentless);
 			query.Selection.Add(taggedWithAttribute);
 			results = services.Retrieve(query).Assets;
 			Assert.AreEqual(1, results.Count);
 			story = results[0];
-			Assert.IsTrue(story.GetAttribute(taggedWithAttribute).Values.Cast<string>().All(x => expected.Contains(x)));
+			expected = new[] { "Tag 3", "Tag 4", "Tag 5" };
+			actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
+			Assert.Equals(3, actuals.Length);
+			CollectionAssert.AreEqual(expected, actuals);
 		}
 
 		#endregion
