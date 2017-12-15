@@ -353,7 +353,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			Assert.IsNotNull(story);
 			var expected = new[] { "Tag 1", "Tag 2", "Tag 3" };
 			var actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
-			Assert.Equals(3, actuals.Length);
+			Assert.AreEqual(3, actuals.Length);
 			CollectionAssert.AreEqual(expected, actuals);
 		}
 
@@ -658,7 +658,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			Assert.IsNotNull(story);
 			var expected = new[] { "Tag 1", "Tag 2", "Tag 3" };
 			var actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
-			Assert.Equals(3, actuals.Length);
+			Assert.AreEqual(3, actuals.Length);
 			CollectionAssert.AreEqual(expected, actuals);
 
 			story.AddAttributeValue(taggedWithAttribute, "Tag 4");
@@ -675,7 +675,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			story = results[0];
 			expected = new[] { "Tag 3", "Tag 4", "Tag 5" };
 			actuals = story.GetAttribute(taggedWithAttribute).Values.Cast<string>().ToArray();
-			Assert.Equals(3, actuals.Length);
+			Assert.AreEqual(3, actuals.Length);
 			CollectionAssert.AreEqual(expected, actuals);
 		}
 
