@@ -14,7 +14,7 @@ namespace VersionOne.SDK.APIClient
 
         public string Stringize(object value)
         {
-            string valueString = value == null ? null : HttpUtility.UrlEncode(value.ToString());
+            var valueString = value == null ? null : HttpUtility.UrlEncode(Format(value).Replace("'", "''"));
             return string.Format("{0}{1}{0}", valueWrapper, valueString);
         }
 

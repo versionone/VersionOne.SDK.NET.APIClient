@@ -48,6 +48,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -155,6 +156,7 @@
     <Compile Include="Obsolete\V1CredsAPIConnector.cs" />
     <Compile Include="Obsolete\VersionOneAPIConnector.cs" />
     <Compile Include="Services\IServices.cs" />
+    <Compile Include="Services\XmlApiWriterConstants.cs" />
     <Compile Include="Utils\DB.cs" />
     <Compile Include="Obsolete\V1ConfigurationManager.cs" />
     <Compile Include="Obsolete\Connectors.cs" />
