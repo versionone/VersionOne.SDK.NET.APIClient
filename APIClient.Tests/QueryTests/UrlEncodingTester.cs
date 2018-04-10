@@ -41,5 +41,29 @@ namespace VersionOne.SDK.APIClient.Tests.QueryTests
 			var url = new QueryURLBuilder(query).ToString();
 			Assert.AreEqual("Data/X?sel=&where=%2BX.Y", url);
 		}
+
+		[Test] public void single_quotes_are_doubled()
+		{
+			var filter = new FilterTerm(Y);
+			filter.Equal("quote ' this");
+
+			var query = new Query(AssetType("X")) {
+				Filter = filter
+			};
+			var url = new QueryURLBuilder(query).ToString();
+			Assert.AreEqual("Data/X?sel=&where=X.Y='quote+%27%27+this'", url);
+		}
+
+		[Test] public void double_quotes_are_doubled()
+		{
+			var filter = new FilterTerm(Y);
+			filter.Equal("quote \" this");
+
+			var query = new Query(AssetType("X")) {
+				Filter = filter
+			};
+			var url = new QueryURLBuilder(query).ToString();
+			Assert.AreEqual("Data/X?sel=&where=X.Y='quote+%22%22+this'", url);
+		}
 	}
 }
