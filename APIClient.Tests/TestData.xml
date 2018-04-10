@@ -228,6 +228,18 @@
 		</Response>
 	</Test>
 
+	<Test name="UrlEncodingTester">
+		<Response path="meta.v1/X">
+			<AssetType href="/v1.six/meta.v1/X" version="6.5.55555.30353" name="X" token="X" displayname="AssetType'X" abstract="False">
+				<DefaultOrderBy href="/v1.six/meta.v1/X/Y" tokenref="X.Y" />
+				<DefaultDisplayBy href="/v1.six/meta.v1/X/Y" tokenref="X.Y" />
+				<AttributeDefinition name="Y" token="X.Y" displayname="AttributeDefinition'Y'X" attributetype="Text" isreadonly="False" isrequired="False" ismultivalue="False">
+					<OrderByAttribute href="/v1.six/meta.v1/X/Y" tokenref="X.Y" />
+				</AttributeDefinition>
+			</AssetType>
+		</Response>
+	</Test>
+
 	<Test name="ServicesTester">
 		<Response path="meta.v1/Story">
 			<AssetType href="/v1.six/meta.v1/Story" version="6.5.55555.30353" name="Story" token="Story" displayname="AssetType'Story" abstract="False">
