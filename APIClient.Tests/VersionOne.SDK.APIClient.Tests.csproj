@@ -85,6 +85,7 @@
     <Compile Include="ConnectorTests\V1ConnectorTester.cs" />
     <Compile Include="QueryTests\PagingTester.cs" />
     <Compile Include="QueryTests\QueryFilter2Tester.cs" />
+    <Compile Include="QueryTests\UrlEncodingTester.cs" />
     <Compile Include="ResponseConnector.cs" />
     <Compile Include="ServicesTests\Constructor\When_preLoadMeta_is_false.cs" />
     <Compile Include="ServicesTests\MetaSamplePayloads.cs" />
