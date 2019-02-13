@@ -18,27 +18,43 @@ namespace Examples
 
 		public void Execute()
 		{
-			V1Connector
+			var story = V1Connector
 				.WithInstanceUrl(instanceUrl)
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken)
-				.Create("Story", new
+				.Create(new
 				{
-					Name = "My Story"
+					AssetType = "Story",
+					Scope = "Scope:0",
+					Name = "My Story",
+					Children = new []
+					{
+						new
+						{
+							AssetType = "Test",
+							Name = "Test"
+						},
+						new
+						{
+							AssetType = "Task",
+							Name = "Task"
+						}
+					}
 				});
 
 			var assets = V1Connector
 				.WithInstanceUrl(instanceUrl)
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken)
-				.Query("Story:1006")
-				.Select("Name")
+				.Query(story.Oid)
+				.Select("Name", "Scope")
 				.Retrieve();
 
-			dynamic story = assets[0];
-			//WriteLine(story.id); // TODO: OidToken
-			WriteLine(story.Name);
-			//WriteLine(story.Attributes.Ideas);
+			dynamic fetchedStory = assets[0];
+			WriteLine(fetchedStory.Oid);
+			WriteLine(fetchedStory.Name);
+			WriteLine(fetchedStory["Scope"].Oid);
+			WriteLine(fetchedStory.Scope.Oid);
 		}
 	}
 }

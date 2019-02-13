@@ -1,16 +1,17 @@
+using VersionOne.Assets;
 using VersionOne.SDK.APIClient;
 using static System.Console;
 
 namespace Examples
 {
-	public class CreateStoryWithScalarAttributesVNext
+	public class NewStoryWithScalarAttributesVNext
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new CreateStoryWithScalarAttributesVNext();
+			var example = new NewStoryWithScalarAttributesVNext();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();
@@ -23,13 +24,13 @@ namespace Examples
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken);
 
-			dynamic newStory = v1.Create(new {
-				AssetType = "Story",
-				Scope = "Scope:1015",
-				Name = $"Test Story Scope:1015 Create new Story with scalar attribute"
-			});
+			dynamic story = new VersionOne.Assets.Asset("Story");
+			story.Scope = "Scope:1015";
+			story.Name = "Story created from newed up Asset obj";
 
-      		WriteLine("Created: " + newStory.Oid); // Should be a new OID Token value!
+			dynamic newStory = v1.Create(story);
+
+      		WriteLine("Created: " + newStory.Oid);
 		}
 	}
 }

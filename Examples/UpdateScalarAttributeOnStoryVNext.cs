@@ -13,7 +13,7 @@ namespace Examples
 			var example = new UpdateScalarAttributeOnStoryVNext();
 			example.Execute();
 			WriteLine("Press any key to exit...");
-			ReadKey();
+				ReadKey();
 		}
 
 		public void Execute()
@@ -23,19 +23,32 @@ namespace Examples
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken);
 
-			dynamic newStory = v1.Create("Story", new {
-				Scope = "Scope: 1015",
-				Name = $"Test Story Scope:1015 Update scalar attribute"
+			dynamic newStory = v1.Create(new {
+				AssetType = "Story",
+				Scope = "Scope:1015",
+				Name = $"Test Story Scope:1015 Update scalar attribute",
+				Description = "I am not going to change this description after it is set"
 			});
 
-			dynamic retrievedStory = v1.Query(newStory.OidToken).Select("Name").RetrieveFirst();
+			dynamic retrievedStory = v1.Query(newStory.Oid).Select("Name", "Description").RetrieveFirst();
 			retrievedStory.Name = $"{newStory.Name} - Name updated";
 
 			v1.Update(retrievedStory);
 
-			dynamic updatedStory = v1.Query(retrievedStory.OidToken).Select("Name").RetrieveFirst();
-			WriteLine($"{newStory.OidToken} original name: {newStory.Name}");
-			WriteLine($"{retrievedStory.OidToken} updated name: {updatedStory.Name}");
+			dynamic updatedRetrievedStory = v1.Query(retrievedStory.Oid).Select("Name", "Description").RetrieveFirst();
+			WriteLine($"{newStory.Oid} original name: {newStory.Name}");
+			WriteLine($"{retrievedStory.Oid} updated name: {updatedRetrievedStory.Name}");
+			WriteLine($"{newStory.Oid} original description: {newStory.Description}");
+			WriteLine($"{updatedRetrievedStory.Oid} non-updated description: {updatedRetrievedStory.Description}");
+
+			WriteLine("Now we are going to try updating the original newStory object...");
+
+			newStory.Name = "Test Story Scope:1015 updated on original newStory object!";
+			v1.Update(newStory);
+
+			dynamic newStoryFetchedAfterUpdate = v1.Query(newStory.Oid).Select("Name").RetrieveFirst();
+			WriteLine($"{newStoryFetchedAfterUpdate.Oid} updated name is: {newStoryFetchedAfterUpdate.Name}");
+
 		}
 	}
 }

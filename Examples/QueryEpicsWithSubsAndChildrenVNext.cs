@@ -1,16 +1,17 @@
 ﻿using VersionOne.SDK.APIClient;
 using static System.Console;
+using static VersionOne.Assets.ClientUtilities;
 
 namespace Examples
 {
-	public class QueryStoriesWithinAScopeVNext
+	public class QueryEpicsWIthSubsAndChildrenVNext
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new QueryStoriesWithinAScopeVNext();
+			var example = new QueryEpicsWIthSubsAndChildrenVNext();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();
@@ -25,15 +26,25 @@ namespace Examples
 				.WithUserAgentHeader("Examples", "0.1")
 				.WithAccessToken(accessToken);
 
-			dynamic scope = v1
-				.Query(scopeOid)
-				.Select("Workitems:Story")
-				.RetrieveFirst();
+			dynamic results = v1
+				.Query("Epic")
+				.Where("Scope.Name", "Josh API Test")
+				.Select(
+					"Name",
+					From("Subs")
+					.Select(
+						"Name",
+						From("Children")
+						.Select(
+							"Name", "AssetType"
+						)
+					)
+				)
+				.Retrieve();
 
-			WriteLine($"Story count: {scope["Workitems:Story"].Count}");
-			foreach (var story in scope["Workitems:Story"])
+			foreach (var result in results)
 			{
-				WriteLine(story);
+				WriteLine(result);
 			}
 		}
 	}

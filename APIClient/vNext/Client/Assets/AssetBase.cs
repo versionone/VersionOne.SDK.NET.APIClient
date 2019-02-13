@@ -7,9 +7,10 @@ using System.Dynamic;
 
 namespace VersionOne.Assets
 {
-	public class AssetBase : DynamicObject, IAssetBase
+	[Serializable]
+	public class Asset : DynamicObject, IAsset
 	{
-		private enum AddOrRemove
+		private enum RelationItemCommand
 		{
 			original,
 			add,
@@ -17,35 +18,47 @@ namespace VersionOne.Assets
 		}
 
 		private dynamic _wrapped;
-		private Dictionary<string, List<Tuple<string, AddOrRemove>>> _relationshipAssetReferencesMap =
-			new Dictionary<string, List<Tuple<string, AddOrRemove>>>();
+		private Dictionary<string, List<(string relationship, RelationItemCommand command)>>
+			_relationshipAssetReferencesMap = new Dictionary<string, List<(string relationship, RelationItemCommand command)>>();
 		private Dictionary<string, bool> _modifiedAttributes = new Dictionary<string, bool>();
 
 		private bool _fromDynamic;
 		private bool _fromQueryResult;
 
-		public AssetBase(dynamic wrapped, bool fromQueryResult = false)
+		public Asset(object wrapped, bool fromQueryResult = false)
 		{
-			_wrapped = wrapped;
+			if (wrapped == null) throw new ArgumentNullException(nameof(wrapped));
+
+			if (wrapped is JObject == false) SetWrappedDynamic(JObject.FromObject(wrapped));
+			else SetWrappedDynamic(wrapped);
 			_fromDynamic = true;
 			_fromQueryResult = fromQueryResult;
 		}
 
-		public AssetBase(string assetTypeName, object attributes = null)
+		public Asset(string assetTypeName, object attributes = null)
 		{
-			if (attributes != null) _wrapped = JObject.FromObject(attributes);
-			else _wrapped = new JObject();
-			_wrapped["AssetTypeName"] = assetTypeName;
+			if (string.IsNullOrWhiteSpace(assetTypeName)) throw new ArgumentNullException(nameof(assetTypeName));
+
+			if (attributes != null)
+			{
+				if (attributes is JObject)
+					SetWrappedDynamic(attributes);
+				else
+					SetWrappedDynamic(JObject.FromObject(attributes));
+			}
+			else SetWrappedDynamic(new JObject());
+
+			SetDirect("AssetType", assetTypeName);
 		}
 
-		public AssetBase(string assetTypeName, string oidToken) : this(assetTypeName)
-		{
-			if (string.IsNullOrWhiteSpace(oidToken))
-			{
-				throw new ArgumentNullException("oidToken");
-			}
+		private void SetWrappedDynamic(dynamic wrapped) => _wrapped = wrapped;
 
-			OidToken = oidToken;
+		public Asset(string assetTypeName, string oid) : this(assetTypeName)
+		{
+			if (string.IsNullOrWhiteSpace(assetTypeName)) throw new ArgumentNullException(nameof(assetTypeName));
+			if (string.IsNullOrWhiteSpace(oid)) throw new ArgumentNullException(nameof(oid));
+
+			Oid = oid;
 		}
 
 		[JsonIgnore]
@@ -53,27 +66,26 @@ namespace VersionOne.Assets
 		{
 			get
 			{
-				var assetTypeName = _wrapped["AssetTypeName"];
+				var assetTypeName = GetDirect("AssetType");
 				if (assetTypeName != null && !string.IsNullOrWhiteSpace(assetTypeName.ToString())) return assetTypeName.ToString();
+				else if (!string.IsNullOrEmpty(Oid)) return Oid.Split(':')[0];
 				else return string.Empty;
 			}
 		}
 
-		private string _oidToken;
+		private string _oid;
 
 		[JsonIgnore]
-		public string OidToken
+		public string Oid
 		{
 			get
 			{
-				if (!string.IsNullOrWhiteSpace(_oidToken)) return _oidToken;
-				var relation = GetRelation<JObject>("self");
-				if (relation != null) return relation["oidToken"].ToString();
-				return string.Empty;
+				if (!string.IsNullOrWhiteSpace(_oid)) return _oid;
+				return GetDirect("Oid") != null ? GetDirect("Oid").ToString() : string.Empty;
 			}
 			set
 			{
-				_oidToken = value;
+				_oid = value;
 			}
 		}
 
@@ -84,7 +96,7 @@ namespace VersionOne.Assets
 			var changesObj = new JObject();
 			foreach (var key in _modifiedAttributes.Keys)
 			{
-				changesObj[key] = _wrapped[key];
+				changesObj[key] = GetDirect(key) as JToken;
 			}
 
 			foreach (var list in _relationshipAssetReferencesMap)
@@ -92,10 +104,10 @@ namespace VersionOne.Assets
 				var items = new List<object>();
 				foreach (var oidTokenReference in list.Value)
 				{
-					var act = oidTokenReference.Item2.ToString();
+					var act = oidTokenReference.command.ToString();
 					items.Add(new
 					{
-						idref = oidTokenReference.Item1,
+						idref = oidTokenReference.relationship,
 						act = act
 					});
 				}
@@ -106,44 +118,67 @@ namespace VersionOne.Assets
 		}
 
 		// TODO this is pretty hacky
-		public object Attributes
+		public object Attributes => _wrapped;
+
+		internal void ApplyOids(IEnumerable<string> assetOidTokens)
 		{
-			get
+			var oids = assetOidTokens.ToList();
+
+			void applyOids(List<string> oidTokens, dynamic root)
 			{
-				return GetChangesDto();
+				var oid = oidTokens[0];
+				oidTokens.RemoveAt(0);
+				root.Oid = oid;
+				foreach (var obj in GetObjects(root)) applyOids(oidTokens, obj);
+			}
+			applyOids(oids, _wrapped);
+		}
+
+		private IEnumerable<JObject> GetObjects(JObject root)
+		{
+			var objs = new List<JObject>();
+
+			foreach (var prop in root.Properties())
+			{
+				if (prop.Value.Type == JTokenType.Object) yield return prop.Value<JObject>();
+				else if (prop.Value.Type == JTokenType.Array)
+				{
+					var items = prop.Value as JArray;
+					foreach (var item in items)
+					{
+						if (item.Type == JTokenType.Object)
+						{
+							var obj = item.Value<JObject>();
+							yield return obj;
+						}
+					}
+				}
 			}
 		}
 
-		public string GetYamlPayload()
-		{
-			return string.Empty;
-			//return QueryYamlPayloadBuilder.Build(this);
-		}
+		private T GetRelation<T>(string relationName) where T : class => _wrapped[relationName] as T;
 
-		// TODO: We might not need this _link thing anymore. It's a holdover from a HAL-style approach
-		private T GetRelation<T>(string relationName) where T : class => _wrapped["_links"][relationName] as T;
-
-		private List<Tuple<string, AddOrRemove>> GetOrCreateRelationMap(string relationName)
+		private List<(string relationship, RelationItemCommand command)> GetOrCreateRelationMap(string relationName)
 		{
 			if (!_relationshipAssetReferencesMap.ContainsKey(relationName))
 			{
-				var newMap = new List<Tuple<string, AddOrRemove>>();
+				var newMap = new List<(string relationship, RelationItemCommand command)>();
 				_relationshipAssetReferencesMap[relationName] = newMap;
 			}
 			var map = _relationshipAssetReferencesMap[relationName];
 			return map;
 		}
 
-		public void AddRelatedAsset(string relationName, IAssetBase asset)
+		public void AddRelatedAsset(string relationName, IAsset asset)
 		{
-			var relation = _wrapped[relationName];
+			var relation = GetDirect(relationName);
 			if (relation == null || !(relation is JArray))
 			{
 				relation = new JArray();
 			}
 			var array = relation as JArray;
 			// TODO maybe fix this?
-			var assetBase = asset as AssetBase;
+			var assetBase = asset as Asset;
 			dynamic wrapped = assetBase.GetWrappedDynamic();
 			var token = JToken.FromObject(wrapped);
 			array.Add(token);
@@ -151,23 +186,23 @@ namespace VersionOne.Assets
 		}
 
 		private void RegisterRemovedRelationshipAssetReference(string relationName, string oidToken) =>
-			RegisterRelationshipAssetReference(relationName, oidToken, AddOrRemove.remove);
+			RegisterRelationshipAssetReference(relationName, oidToken, RelationItemCommand.remove);
 
 		private void RegisterAddedRelationshipAssetReference(string relationName, string oidToken) =>
-			RegisterRelationshipAssetReference(relationName, oidToken, AddOrRemove.add);
+			RegisterRelationshipAssetReference(relationName, oidToken, RelationItemCommand.add);
 
-		private void RegisterRelationshipAssetReference(string relationName, string oidToken, AddOrRemove direction)
+		private void RegisterRelationshipAssetReference(string relationName, string oidToken, RelationItemCommand direction)
 		{
 			var map = GetOrCreateRelationMap(relationName);
-			var entry = map.FirstOrDefault(m => m.Item1 == oidToken);
-			if (entry == null)
+			var entry = map.FirstOrDefault(m => m.relationship == oidToken);
+			if (entry.Equals(default(ValueTuple<string, RelationItemCommand>)))
 			{
-				entry = new Tuple<string, AddOrRemove>(oidToken, direction);
+				entry = (oidToken, direction);
 				map.Add(entry);
 			}
 			else
 			{
-				var newEntry = new Tuple<string, AddOrRemove>(entry.Item1, direction);
+				var newEntry = (entry.relationship, direction);
 				map.Remove(entry);
 				map.Add(newEntry);
 			}
@@ -239,18 +274,37 @@ namespace VersionOne.Assets
 			return base.TryInvokeMember(binder, args, out result);
 		}
 
-		public object Get(string attributeName) => _wrapped[attributeName];
+		public object Get(string attributeName)
+		{
+			var result = GetDirect(attributeName) as dynamic;
+			if (result is JObject && result.Oid != null)
+				return new Asset(result, true);
+			else if (result is JArray)
+			{
+				var results = new List<object>();
+				var array = result as JArray;
+				foreach (dynamic i in array)
+				{
+					if (i.Oid != null) results.Add(new Asset(i, true));
+					else results.Add(i);
+				}
+				return results;
+			}
+			return result is JObject && result.Oid != null ?
+				new Asset(result, true) : result;
+		}
 
-		public override bool TryGetMember(GetMemberBinder binder,
-												 out object result)
+		private dynamic GetDirect(string attributeName) => _wrapped[attributeName];
+
+		public override bool TryGetMember(GetMemberBinder binder, out object result)
 		{
 			bool success;
 			try
 			{
-				result = _wrapped[binder.Name];
+				result = Get(binder.Name);
 				success = true;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				result = null;
 				success = false;
@@ -262,15 +316,17 @@ namespace VersionOne.Assets
 		{
 			try
 			{
-				_wrapped[atttributeName] = JToken.FromObject(value);
+				SetDirect(atttributeName, JToken.FromObject(value));
 			}
 			catch (Exception ex)
 			{
-				_wrapped[atttributeName] = JToken.FromObject(value.ToString());
+				SetDirect(atttributeName, JToken.FromObject(value.ToString()));
 				// If we still blow up, then we're just out of luck
 			}
 			_modifiedAttributes[atttributeName] = true;
 		}
+
+		private void SetDirect(string attributeName, dynamic value) => _wrapped[attributeName] = value;
 
 		public override bool TrySetMember(SetMemberBinder binder, object value)
 		{
@@ -278,7 +334,7 @@ namespace VersionOne.Assets
 
 			try
 			{
-				var originalValue = _wrapped[binder.Name];
+				var originalValue = GetDirect(binder.Name);
 				if (originalValue != value)
 				{
 					Set(binder.Name, value);
@@ -294,18 +350,28 @@ namespace VersionOne.Assets
 			return success;
 		}
 
+		public override IEnumerable<string> GetDynamicMemberNames()
+		{
+			//var names = base.GetDynamicMemberNames();
+			var names = (_wrapped as JObject).Properties().Select(s => s.Name).Cast<string>().ToArray();
+			return names;
+		}
+
 		internal dynamic GetWrappedDynamic() => _wrapped;
 
 		public object this[string attributeName]
 		{
 			get
 			{
-				return Get(attributeName);
+				var result = Get(attributeName);
+				return result;
 			}
 			set
 			{
 				Set(attributeName, value);
 			}
 		}
+
+		public override string ToString() => GetWrappedDynamic().ToString();
 	}
 }

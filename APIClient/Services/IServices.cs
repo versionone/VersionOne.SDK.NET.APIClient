@@ -19,7 +19,7 @@ namespace VersionOne.SDK.APIClient
         string Localization(string key);
         string Localization(IAttributeDefinition attribute);
         Dictionary<string, string> Localization(params IAttributeDefinition[] attributes);
-        IFluentQueryBuilder Query(string assetTypeName);
+        IFluentQueryBuilder Query(string from);
         
         /// <summary>
         /// Executes a query using the Query API (query.v1 endpoint).

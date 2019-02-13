@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Examples</RootNamespace>
     <AssemblyName>Examples</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -34,27 +34,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Program</StartupObject>
+    <StartupObject>Examples.UpdateMultipleStoriesInAScopeVNext</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.5.3.0\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateEpicWithSubsAndChildrenTuplesOnlyVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenTuplesVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenIAssetBase.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenIDictionaryVNext.cs" />
+    <Compile Include="NewStoryWithScalarAttributesVNext.cs" />
     <Compile Include="CreateStoryWithScalarAttributesVNext.cs" />
+    <Compile Include="PrintHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="QueryRelationshipAttributesOnScopeVNext.cs" />
+    <Compile Include="QueryEpicsWithSubsAndChildrenVNext.cs" />
     <Compile Include="QueryStoryByNumberVNext.cs" />
     <Compile Include="QueryStoryByNameVNext.cs" />
     <Compile Include="QueryStoryByName.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
     <Compile Include="QueryStoriesWithinAScopeVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenVerboseVNext.cs" />
+    <Compile Include="QueryStoryByOidTokenSelectNameVNext.cs" />
+    <Compile Include="ExecuteOperationOnMultipleStoriesInAScopeVNext.cs" />
+    <Compile Include="UpdateMultipleStoriesInAScopeVNext.cs" />
     <Compile Include="UpdateScalarAttributeOnStoryVNext.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +91,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

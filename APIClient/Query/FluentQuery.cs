@@ -9,7 +9,7 @@ namespace VersionOne.SDK.APIClient
         private IMetaModel metaModel;
         private IServices services;
         public Query RawQuery { get; set; }
-        public string AssetTypeName { get; set; }
+        public string From { get; set; }
         public List<Tuple<string, object, FilterTerm.Operator>> WhereCriteria { get; set; }
         public List<object> SelectFields { get; set; }
         public Action<IEnumerable<Asset>> OnSuccess { get; set; }
@@ -17,11 +17,11 @@ namespace VersionOne.SDK.APIClient
         public Action<Exception> OnError { get; set; }
 
         public FluentQuery(
-            string assetTypeName, IMetaModel metaModel, IServices services)
+            string from, IMetaModel metaModel, IServices services)
         {
             this.metaModel = metaModel;
             this.services = services;
-            AssetTypeName = assetTypeName;
+            From = from;
 
             WhereCriteria = new List<Tuple<string, object, FilterTerm.Operator>>();
             SelectFields = new List<object>();
@@ -78,7 +78,7 @@ namespace VersionOne.SDK.APIClient
                     OnSuccess?.Invoke(result.Assets);
                 }
 
-                result.Assets.ForEach(a => a.Configure(AssetTypeName, metaModel, services));
+                result.Assets.ForEach(a => a.Configure(From, metaModel, services));
 
                 if (result.Assets.Count == 0)
                 {
@@ -111,7 +111,7 @@ namespace VersionOne.SDK.APIClient
 
         private QueryResult RetrieveQueryResult()
         {
-            RawQuery = new Query(metaModel.GetAssetType(AssetTypeName));
+            RawQuery = new Query(metaModel.GetAssetType(From));
 
             var attributes = new List<IAttributeDefinition>();
 
@@ -119,7 +119,7 @@ namespace VersionOne.SDK.APIClient
             {
                 attributes.AddRange(
                     SelectFields.Select(
-                        m => metaModel.GetAttributeDefinition(AssetTypeName
+                        m => metaModel.GetAttributeDefinition(From
                             + "." + m.ToString())));
             }
             RawQuery.Selection.AddRange(attributes);
@@ -130,7 +130,7 @@ namespace VersionOne.SDK.APIClient
 
                 foreach (var tuple in WhereCriteria)
                 {
-                    var attribute = metaModel.GetAttributeDefinition(AssetTypeName
+                    var attribute = metaModel.GetAttributeDefinition(From
                         + "." + tuple.Item1);
                     var item = tuple.Item2;
                     var term = new FilterTerm(attribute);

@@ -7,48 +7,22 @@ namespace VersionOne.Assets
 {
 	public class FluentQueryBuilder : IFluentQueryBuilder
 	{
-		private Func<string, IList<IAssetBase>> _executor = null;
+		private Func<string, IList<IAsset>> _executor = null;
 		private readonly QuerySpec _querySpec;
 
-		public FluentQueryBuilder(string assetSource, Func<string, IList<IAssetBase>> executor)
+		public FluentQueryBuilder(string from, Func<string, IList<IAsset>> executor)
 		{
-			// TODO this is a little weird the way the split occurs again in the ToString()
-			string assetTypeName;
 			_querySpec = new QuerySpec();
-			if (assetSource.IndexOf(':') > -1)
+			if (string.IsNullOrWhiteSpace(from))
 			{
-				var oidTokenParts = assetSource.Split(':');
-				assetTypeName = oidTokenParts[0];
-				_querySpec.Id = assetSource;
-			}
-			else
-			{
-				assetTypeName = assetSource;
-			}
-			if (string.IsNullOrWhiteSpace(assetTypeName))
-			{
-				throw new ArgumentNullException("assetTypeName");
+				throw new ArgumentNullException(nameof(from));
 			}
 			if (executor == null)
 			{
-				throw new ArgumentNullException("executor");
+				throw new ArgumentNullException(nameof(executor));
 			}
 			_executor = executor;
-			_querySpec.AssetTypeName = assetTypeName;
-		}
-
-		public IFluentQueryBuilder Id(object id)
-		{
-			if (id == null) throw new ArgumentNullException("id");
-			var val = id.ToString();
-
-			if (string.IsNullOrWhiteSpace(val))
-			{
-				throw new ArgumentNullException("id", "id.ToString() must return a non-empty string");
-			}
-			_querySpec.Id = val;
-
-			return this;
+			_querySpec.From = from;
 		}
 
 		public IFluentQueryBuilder Select(params object[] fields)
@@ -98,15 +72,15 @@ namespace VersionOne.Assets
 			return this;
 		}
 
-		public override string ToString() => $"/{_querySpec}";
+		public override string ToString() => _querySpec.ToString();
 
-		public IList<IAssetBase> Retrieve()
+		public IList<IAsset> Retrieve()
 		{
-			var uri = ToString();
-			return _executor(uri);
+			var payload = ToString();
+			return _executor(payload);
 		}
 
-		public IAssetBase RetrieveFirst()
+		public IAsset RetrieveFirst()
 		{
 			var uri = ToString();
 			var results = _executor(uri);

@@ -2,7 +2,7 @@
 {
 	public static class ComparisonFunctions
 	{
-		public static Term Equal(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.Equal, matchValue);
+		public static Criterion Equal(string expression, params object[] matchValues) => new Criterion(expression, ComparisonOperator.Equal, matchValues);
 		public static Term NotEqual(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.NotEqual, matchValue);
 		public static Term LessThan(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.LessThan, matchValue);
 		public static Term LessThanOrEqual(string expression, object matchValue) => new Criterion(expression, ComparisonOperator.LessThanOrEqual, matchValue);

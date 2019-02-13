@@ -7,8 +7,7 @@ namespace VersionOne.Assets
 {
 	public class QuerySpec
 	{
-		public string AssetTypeName { get; set; } = string.Empty;
-		public string Id { get; set; } = string.Empty;
+		public string From { get; set; } = string.Empty;
 		public readonly List<object> Select = new List<object>();
 		public readonly List<Term> Where = new List<Term>();
 		public readonly List<string> Filter = new List<string>();
@@ -17,35 +16,47 @@ namespace VersionOne.Assets
 
 		public override string ToString()
 		{
-			var builder = new StringBuilder();
-			var query = new StringBuilder();
+			// hack temp
+			var qb = new QueryApiQueryBuilder(From);
+			var criteria = Where.Where(s => s is Criterion)
+				.Cast<Criterion>();
 
-			ApplyAssetTypeName(builder);
-			MaybeApplyOidToken(builder);
+			var wheres = criteria.Where(s => s.Operator == ComparisonOperator.Equal).ToArray();
+			qb.Where(wheres);
 
-			MaybeApplySelections(query);
-			MaybeApplyWhere(query);
-			MaybeApplyPaging(query);
+			var filters = criteria.Where(s => s.Operator != ComparisonOperator.Equal).ToArray();
+			qb.Filter(filters);
 
-			MaybeApplyQuery(query, builder);
+			qb.Select(this.Select.ToArray());
 
-			return builder.ToString();
+			if (PageSize != -1 && PageStart != -1)
+			{
+				qb.PageSize = PageSize;
+				qb.PageStart = PageStart;
+			}
+
+			var query = qb.ToString();
+
+			return query;
+
+			//var builder = new StringBuilder();
+			//var query = new StringBuilder();
+
+			//ApplyAssetTypeName(builder);
+			//MaybeApplyOidToken(builder);
+
+			//MaybeApplySelections(query);
+			//MaybeApplyWhere(query);
+			//MaybeApplyPaging(query);
+
+			//MaybeApplyQuery(query, builder);
+
+			//return builder.ToString();
 		}
 
 		private void ApplyAssetTypeName(StringBuilder builder)
 		{
-			builder.Append($"{AssetTypeName}");
-		}
-
-		private void MaybeApplyOidToken(StringBuilder builder)
-		{
-			if (string.IsNullOrWhiteSpace(Id)) return;
-
-			var oidParts = Id.Split(':');
-			if (oidParts.Length < 2)
-				throw new InvalidOperationException(
-					$"Id must contain an oidToken in the correct format, for example Story:12345, but contained: {Id}");
-			builder.Append($"/{oidParts[1]}");
+			builder.Append($"{From}");
 		}
 
 		private void MaybeApplySelections(StringBuilder query)

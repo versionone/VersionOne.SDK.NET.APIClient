@@ -36,6 +36,7 @@ namespace VersionOne.SDK.APIClient
 		private const string ATTACHMENT_API_OAUTH_ENDPOINT = "attachment.oauth.img/";
 		private const string EMBEDDED_API_ENDPOINT = "embedded.img/";
 		private const string EMBEDDED_API_OAUTH_ENDPOINT = "embedded.oauth.img/";
+		private const string ASSET_API_ENDPOINT = "api/asset/";
 
 		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
 		private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
@@ -131,6 +132,7 @@ namespace VersionOne.SDK.APIClient
 		}
 
 		internal string RestApiUrl { get { return _baseAddress.AbsoluteUri + _endpoint; } }
+		internal string AssetApiUrl => _baseAddress.AbsoluteUri + ASSET_API_ENDPOINT;
 		internal string Username { get; set; }
 		internal string Password { get; set; }
 
@@ -530,36 +532,75 @@ namespace VersionOne.SDK.APIClient
 				return this;
 			}
 
-			public IFluentQueryBuilder Query(string assetTypeName)
+			public IFluentQueryBuilder Query(string from)
 			{
 				_instance.UseDataApi();
-				return new Services(this.Build()).Query(assetTypeName);
+				return new Services(Build()).Query(from);
 			}
 
-			public IAssetBase Create(string assetTypeName, object attributes = null)
+			public IAsset Create(IAsset asset)
 			{
 				_instance.UseDataApi();
 
-				if (attributes == null) attributes = new { };
-				return new Services(this.Build()).Create(assetTypeName, attributes);
+				if (asset == null) throw new ArgumentNullException(nameof(asset));
+
+				return new Services(Build()).Create(asset);
 			}
 
-			public IAssetBase Update(string oidToken, object attributes)
+			public IAsset Create(object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new ArgumentNullException(nameof(attributes));
+
+				return new Services(Build()).Create(attributes);
+			}
+
+			public IAsset Create(params (string name, object value)[] attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new ArgumentNullException(nameof(attributes));
+
+				return new Services(Build()).Create(attributes);
+			}
+
+			public IAsset Update(string oidToken, object attributes)
 			{
 				_instance.UseDataApi();
 
 				if (attributes == null) throw new NullReferenceException("attributes");
 
-				return new Services(this.Build()).Update(oidToken, attributes);
+				return new Services(Build()).Update(oidToken, attributes);
 			}
 
-			public IAssetBase Update(IAssetBase asset)
+			public IAsset Update(IAsset asset)
 			{
 				_instance.UseDataApi();
 
 				if (asset == null) throw new NullReferenceException("asset");
 
-				return new Services(this.Build()).Update(asset);
+				return new Services(Build()).Update(asset);
+			}
+
+			public IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (querySpec == null) throw new NullReferenceException(nameof(querySpec));
+				if (attributes == null) throw new NullReferenceException(nameof(attributes));
+
+				return new Services(Build()).Update(querySpec, attributes);
+			}
+
+			public IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpec, string operation)
+			{
+				_instance.UseDataApi();
+
+				if (querySpec == null) throw new NullReferenceException(nameof(querySpec));
+				if (string.IsNullOrWhiteSpace(operation)) throw new NullReferenceException(nameof(operation));
+
+				return new Services(Build()).ExecuteOperation(querySpec, operation);
 			}
 		}
 
@@ -636,9 +677,13 @@ namespace VersionOne.SDK.APIClient
 		/// <returns>ICanSetEndpointOrGetConnector</returns>
 		ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
 		IFluentQueryBuilder Query(string assetTypeName);
-		IAssetBase Create(string assetTypeName, object attributes = null);
-		IAssetBase Update(string oidToken, object attributes);
-		IAssetBase Update(IAssetBase asset);
+		IAsset Create(object attributes);
+		IAsset Create(params (string name, object value)[] attributes);
+		IAsset Create(IAsset asset);
+		IAsset Update(string oidToken, object attributes);
+		IAsset Update(IAsset asset);
+		IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes);
+		IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpec, string operation);
 	}
 
 	public interface ICanSetEndpointOrGetConnector : ICanGetConnector

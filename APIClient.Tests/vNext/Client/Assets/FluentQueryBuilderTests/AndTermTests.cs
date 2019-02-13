@@ -11,7 +11,7 @@ namespace VersionOne.SDK.APIClient.Tests.vNext.Client.Assets.FluentQueryBuilderT
 		[TestMethod]
 		public void Can_And_two_simple_Terms()
 		{
-			var subject = new FluentQueryBuilder("Story", s => new List<IAssetBase>());
+			var subject = new FluentQueryBuilder("Story", s => new List<IAsset>());
 			subject.Where(
 				And(
 					Equal("Name", "Jogo"),
@@ -26,7 +26,7 @@ namespace VersionOne.SDK.APIClient.Tests.vNext.Client.Assets.FluentQueryBuilderT
 		[TestMethod]
 		public void Can_nest_And_Terms()
 		{
-			var subject = new FluentQueryBuilder("Story", s => new List<IAssetBase>());
+			var subject = new FluentQueryBuilder("Story", s => new List<IAsset>());
 			subject.Where(
 				And(
 					And(

@@ -30,7 +30,7 @@ namespace Examples
 
 			foreach (dynamic story in assets)
 			{
-				WriteLine(story.OidToken);
+				WriteLine(story.Oid);
 				WriteLine(story.Name);
 				WriteLine(story.Number);
 			}

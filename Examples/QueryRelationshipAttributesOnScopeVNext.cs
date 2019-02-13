@@ -28,7 +28,7 @@ namespace Examples
 
 			foreach (dynamic scope in assets)
 			{
-				WriteLine(scope.OidToken);
+				WriteLine(scope.Oid);
 				WriteLine(scope.Description);
 				WriteLine(scope.Status);
 				WriteLine($"Members count: {scope.Members.Count}");

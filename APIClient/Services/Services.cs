@@ -726,26 +726,38 @@ namespace VersionOne.SDK.APIClient
 		public IFluentQueryBuilder Query(string assetTypeName) =>
 			CreateAssetClient().Query(assetTypeName);
 
-		public IAssetBase Create(string assetTypeName, object attributes) =>
-			CreateAssetClient().Create(assetTypeName, attributes);
+		public IAsset Create(params (string name, object value)[] attributes) =>
+			CreateAssetClient().Create(attributes);
 
-		public IAssetBase Update(string oidToken, object attributes) => 
+		public IAsset Create(object attributes) =>
+			CreateAssetClient().Create(attributes);
+
+		public IAsset Create(IAsset asset) =>
+			CreateAssetClient().Create(asset);
+
+		public IAsset Update(string oidToken, object attributes) => 
 			CreateAssetClient().Update(oidToken, attributes);
 
-		public IAssetBase Update(IAssetBase asset) =>
+		public IAsset Update(IAsset asset) =>
 			CreateAssetClient().Update(asset);
+
+		public IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes) =>
+			CreateAssetClient().Update(querySpec, attributes);
+
+		public IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpece, string operation) =>
+			CreateAssetClient().ExecuteOperation(querySpece, operation);
 
 		private AssetClient CreateAssetClient()
 		{
 			AssetClient client;
 			if (!string.IsNullOrWhiteSpace(_v1Connector.Username))
 			{
-				client = new AssetClient(_v1Connector.RestApiUrl,
+				client = new AssetClient(_v1Connector.AssetApiUrl,
 					_v1Connector.Username, _v1Connector.Password);
 			}
 			else if (!string.IsNullOrWhiteSpace(_v1Connector.AccessToken))
 			{
-				client = new AssetClient(_v1Connector.RestApiUrl, _v1Connector.AccessToken);
+				client = new AssetClient(_v1Connector.AssetApiUrl, _v1Connector.AccessToken);
 			}
 			else
 			{
