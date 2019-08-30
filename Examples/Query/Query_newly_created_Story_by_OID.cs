@@ -3,14 +3,14 @@ using static System.Console;
 
 namespace Examples
 {
-	public class QueryStoryByOidTokenSelectNameVNext
+	public class Query_newly_created_Story_by_OID
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new QueryStoryByOidTokenSelectNameVNext();
+			var example = new Query_newly_created_Story_by_OID();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();
@@ -18,11 +18,12 @@ namespace Examples
 
 		public void Execute()
 		{
-			var story = V1Connector
+			var v1 = V1Connector
 				.WithInstanceUrl(instanceUrl)
 				.WithUserAgentHeader("Examples", "0.1")
-				.WithAccessToken(accessToken)
-				.Create(new
+				.WithAccessToken(accessToken);
+
+			var story = v1.Create(new
 				{
 					AssetType = "Story",
 					Scope = "Scope:0",
@@ -42,19 +43,15 @@ namespace Examples
 					}
 				});
 
-			var assets = V1Connector
-				.WithInstanceUrl(instanceUrl)
-				.WithUserAgentHeader("Examples", "0.1")
-				.WithAccessToken(accessToken)
+			dynamic queriedStory = v1
 				.Query(story.Oid)
 				.Select("Name", "Scope")
-				.Retrieve();
+				.RetrieveFirst();
 
-			dynamic fetchedStory = assets[0];
-			WriteLine(fetchedStory.Oid);
-			WriteLine(fetchedStory.Name);
-			WriteLine(fetchedStory["Scope"].Oid);
-			WriteLine(fetchedStory.Scope.Oid);
+			WriteLine(queriedStory.Oid);
+			WriteLine(queriedStory.Name);
+			WriteLine(queriedStory["Scope"].Oid);
+			WriteLine(queriedStory.Scope.Oid);
 		}
 	}
 }

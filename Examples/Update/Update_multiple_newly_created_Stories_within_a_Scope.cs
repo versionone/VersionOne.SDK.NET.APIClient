@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using VersionOne.SDK.APIClient;
 using static System.Console;
 using static VersionOne.Assets.ClientUtilities;
@@ -6,14 +7,14 @@ using static VersionOne.Assets.ComparisonFunctions;
 
 namespace Examples
 {
-	public class ExecuteOperationOnMultipleStoriesInAScopeVNext
+	public class Update_multiple_newly_created_Stories_within_a_Scope
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new ExecuteOperationOnMultipleStoriesInAScopeVNext();
+			var example = new Update_multiple_newly_created_Stories_within_a_Scope();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 				ReadKey();
@@ -37,7 +38,7 @@ namespace Examples
 					),
 					Asset(
 						("AssetType", "Story"),
-						("Name", "Story in Epic")
+						("Name", "Another Story in Epic")
 					),
 					Asset(
 						("AssetType", "Story"),
@@ -45,20 +46,23 @@ namespace Examples
 					),
 					Asset(
 						("AssetType", "Story"),
-						("Name", "Story in Epic")
+						("Name", "Another Story in Epic")
 					)
 				))
 			);
 
-			IEnumerable<string> assetsOperatedOn = v1.ExecuteOperation(
+			IEnumerable<string> updated = v1.Update(
 				From("Story")
 				.Where(
-					Equal("Name", "Story in Epic"),
+					Equal("Name", "Story in Epic", "Another Story in Epic"),
 					Equal("Scope", "Scope:0"),
 					Equal("Super", epic.Oid)
-				), "QuickClose");
+				), new
+				{
+					Description = "Updated via bulk API"
+				});
 
-			WriteLine("Operated on the following Assets: " + string.Join(", ", assetsOperatedOn));
+			WriteLine("Updated the following Assets: " + string.Join(", ", updated));
 		}
 	}
 }

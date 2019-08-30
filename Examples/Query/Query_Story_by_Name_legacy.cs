@@ -3,14 +3,14 @@ using VersionOne.SDK.APIClient;
 
 namespace Examples
 {
-	public class QueryStoryByName
+	public class Query_Story_by_Name_legacy
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new QueryStoryByName();
+			var example = new Query_Story_by_Name_legacy();
 			example.Execute();
 			Console.WriteLine("Press any key to exit...");
 			Console.ReadKey();

@@ -3,14 +3,14 @@ using static System.Console;
 
 namespace Examples
 {
-	public class QueryStoryByNumberVNext
+	public class Query_Story_by_Number
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new QueryStoryByNumberVNext();
+			var example = new Query_Story_by_Number();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();

@@ -1,18 +1,17 @@
 ﻿using VersionOne.SDK.APIClient;
 using static System.Console;
 using static VersionOne.Assets.ClientUtilities;
-using static Examples.PrintHelper;
 
 namespace Examples
 {
-	public class CreateEpicWithSubsAndChildrenAssetBaseVNext
+	public class Create_Epic_with_Subs_and_Children_via_IAssetBase
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new CreateEpicWithSubsAndChildrenAssetBaseVNext();
+			var example = new Create_Epic_with_Subs_and_Children_via_IAssetBase();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();
@@ -67,10 +66,7 @@ namespace Examples
 			WriteLine("Epic returned from .Create (which does not requery the system, but fills in Oids linearly from server response):");
 			PrintEpic(epic);
 
-			epic = V1Connector
-				.WithInstanceUrl(instanceUrl)
-				.WithUserAgentHeader("Examples", "0.1")
-				.WithAccessToken(accessToken)
+			epic = v1
 				.Query(epic.Oid)
 				.Select(
 					"Name",
@@ -91,6 +87,30 @@ namespace Examples
 			WriteLine();
 			WriteLine("Epic returned from .Query, requerying the system with subselect syntax to pull in nested relationships:");
 			PrintEpic(epic);
+		}
+
+		public static void PrintEpic(dynamic epic)
+		{
+			WriteLine($"Epic:");
+			WriteLine(epic.Oid);
+			WriteLine(epic.Name);
+			WriteLine(epic.Scope);
+			WriteLine("\tSubs:");
+			foreach (dynamic sub in epic.Subs)
+			{
+				WriteLine("\t" + sub.Oid);
+				WriteLine("\t" + sub.AssetType);
+				WriteLine("\t" + sub.Name);
+				WriteLine("\t\tChildren:");
+				foreach (dynamic child in sub.Children)
+				{
+					WriteLine("\t\t\t" + child.Oid);
+					WriteLine("\t\t\t" + child.AssetType);
+					WriteLine("\t\t\t" + child.Name);
+					WriteLine("\t\t\t---");
+				}
+				WriteLine("\t---");
+			}
 		}
 	}
 }

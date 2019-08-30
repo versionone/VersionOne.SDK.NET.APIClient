@@ -3,14 +3,14 @@ using static System.Console;
 
 namespace Examples
 {
-	public class UpdateScalarAttributeOnStoryVNext
+	public class Update_scalar_attribute_on_newly_created_Story_via_POCO
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new UpdateScalarAttributeOnStoryVNext();
+			var example = new Update_scalar_attribute_on_newly_created_Story_via_POCO();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 				ReadKey();

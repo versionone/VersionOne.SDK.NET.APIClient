@@ -4,14 +4,14 @@ using static VersionOne.Assets.ClientUtilities;
 
 namespace Examples
 {
-	public class CreateMultipleAssetsTupledVNext
+	public class Create_Multiple_Assets_via_array_of_tuples
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
 
 		static void Main()
 		{
-			var example = new CreateMultipleAssetsTupledVNext();
+			var example = new Create_Multiple_Assets_via_array_of_tuples();
 			example.Execute();
 			WriteLine("Press any key to exit...");
 			ReadKey();

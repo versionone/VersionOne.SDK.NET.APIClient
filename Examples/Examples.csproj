@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Examples.UpdateMultipleStoriesInAScopeVNext</StartupObject>
+    <StartupObject>Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -60,28 +60,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateEpicWithSubsAndChildrenIAssetBase.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenIDictionaryVNext.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenTuplesOnlyVNext.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenTuplesVNext.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenVerboseVNext.cs" />
-    <Compile Include="CreateMultipleAssetsTupledVNext.cs" />
-    <Compile Include="CreateStoryWithScalarAttributesVNext.cs" />
-    <Compile Include="ExecuteOperationOnMultipleStoriesInAScopeVNext.cs" />
-    <Compile Include="NewStoryWithScalarAttributesVNext.cs" />
-    <Compile Include="PrintHelper.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_IAssetBase.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_IDictionary.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_POCOs.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_Tuples_approach_1.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_Tuples_approach_2.cs" />
+    <Compile Include="Create\Create_Multiple_Assets_via_array_of_Tuples.cs" />
+    <Compile Include="Create\Create_Story_with_Scalars_via_Asset_class_instance.cs" />
+    <Compile Include="Create\Create_Story_with_scalars_via_POCO.cs" />
+    <Compile Include="ExecuteOperation\Execute_Operation_on_multiple_Stories_within_a_Scope.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="QueryRelationshipAttributesOnScopeVNext.cs" />
-    <Compile Include="QueryEpicsWithSubsAndChildrenVNext.cs" />
-    <Compile Include="SaveEmbeddedImage.cs" />
-    <Compile Include="QueryStoryByNumberVNext.cs" />
-    <Compile Include="QueryStoryByNameVNext.cs" />
-    <Compile Include="QueryStoryByName.cs" />
-    <Compile Include="QueryStoryByNumber.cs" />
-    <Compile Include="QueryStoriesWithinAScopeVNext.cs" />
-    <Compile Include="QueryStoryByOidTokenSelectNameVNext.cs" />
-    <Compile Include="UpdateMultipleStoriesInAScopeVNext.cs" />
-    <Compile Include="UpdateScalarAttributeOnStoryVNext.cs" />
+    <Compile Include="Query\Query_Epics_with_Subs_and_Children.cs" />
+    <Compile Include="Query\Query_newly_created_Story_by_OID.cs" />
+    <Compile Include="Query\Query_Relationship_attributes_on_Scope.cs" />
+    <Compile Include="Query\Query_Stories_within_a_Scope.cs" />
+    <Compile Include="Query\Query_Story_by_Name.cs" />
+    <Compile Include="Query\Query_Story_by_Name_legacy.cs" />
+    <Compile Include="Query\Query_Story_by_Number.cs" />
+    <Compile Include="Query\Query_Story_by_Number_legacy.cs" />
+    <Compile Include="Update\Update_multiple_newly_created_Stories_within_a_Scope.cs" />
+    <Compile Include="Update\Update_scalar_attribute_on_newly_created_Story_via_POCO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
@@ -97,11 +95,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Create\" />
-    <Folder Include="ExecuteOperation\" />
     <Folder Include="Properties\" />
-    <Folder Include="Query\" />
-    <Folder Include="Update\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
