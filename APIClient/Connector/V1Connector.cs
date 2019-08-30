@@ -565,6 +565,13 @@ namespace VersionOne.SDK.APIClient
 				return new Services(Build()).Create(attributes);
 			}
 
+			public CreateAssetsResult Create(params IAsset[] assets)
+			{
+				_instance.UseDataApi();
+
+				return new Services(Build()).Create(assets);
+			}
+
 			public IAsset Update(string oidToken, object attributes)
 			{
 				_instance.UseDataApi();
@@ -606,6 +613,15 @@ namespace VersionOne.SDK.APIClient
 
 		#endregion
 	}
+
+	#region Result types
+	public class CreateAssetsResult {
+		public int Count { get; internal set; } = -1;
+		public IEnumerable<string> OidTokens { get; internal set; }  = new List<string> ();
+		public IEnumerable<IAsset> Assets { get; internal set; } = new List<IAsset> ();
+	}
+
+	#endregion
 
 	#region Interfaces
 
@@ -680,6 +696,7 @@ namespace VersionOne.SDK.APIClient
 		IAsset Create(object attributes);
 		IAsset Create(params (string name, object value)[] attributes);
 		IAsset Create(IAsset asset);
+		CreateAssetsResult Create(params IAsset[] assets);
 		IAsset Update(string oidToken, object attributes);
 		IAsset Update(IAsset asset);
 		IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes);

@@ -4,6 +4,7 @@ using RestSharp.Validation;
 using RestSharp.Authenticators;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using VersionOne.SDK.APIClient;
 
 namespace VersionOne.Assets
 {
@@ -51,6 +52,30 @@ namespace VersionOne.Assets
 		{
 			dynamic payload = JObject.FromObject(asset.Attributes);
 			return PostAsset(payload);
+		}
+
+		public CreateAssetsResult Create(params IAsset[] assets)
+		{
+			var assetsToCreate = new JArray();
+			foreach (var asset in assets) {
+				dynamic assetPayload = JObject.FromObject(asset.Attributes);
+				assetsToCreate.Add(assetPayload);
+			}
+			dynamic result = DoPost(assetsToCreate.ToString());
+
+			var assetResults = new List<IAsset>();
+
+			foreach (dynamic assetCreated in assets) {
+				var asset = new Asset(assetCreated, true);
+				assetResults.Add(asset);
+			}
+
+			var createAssetResult = new CreateAssetsResult() {
+				Assets = assetResults,
+				Count = assets.Length,
+			};
+
+			return createAssetResult;
 		}
 
 		private IAsset PostAsset(dynamic payload)

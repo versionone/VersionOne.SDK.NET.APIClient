@@ -735,6 +735,9 @@ namespace VersionOne.SDK.APIClient
 		public IAsset Create(IAsset asset) =>
 			CreateAssetClient().Create(asset);
 
+		public CreateAssetsResult Create(params IAsset[] assets) =>
+			CreateAssetClient().Create(assets);
+
 		public IAsset Update(string oidToken, object attributes) => 
 			CreateAssetClient().Update(oidToken, attributes);
 

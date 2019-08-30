@@ -60,24 +60,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateEpicWithSubsAndChildrenTuplesOnlyVNext.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenTuplesVNext.cs" />
     <Compile Include="CreateEpicWithSubsAndChildrenIAssetBase.cs" />
     <Compile Include="CreateEpicWithSubsAndChildrenIDictionaryVNext.cs" />
-    <Compile Include="NewStoryWithScalarAttributesVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenTuplesOnlyVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenTuplesVNext.cs" />
+    <Compile Include="CreateEpicWithSubsAndChildrenVerboseVNext.cs" />
+    <Compile Include="CreateMultipleAssetsTupledVNext.cs" />
     <Compile Include="CreateStoryWithScalarAttributesVNext.cs" />
+    <Compile Include="ExecuteOperationOnMultipleStoriesInAScopeVNext.cs" />
+    <Compile Include="NewStoryWithScalarAttributesVNext.cs" />
     <Compile Include="PrintHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="QueryRelationshipAttributesOnScopeVNext.cs" />
     <Compile Include="QueryEpicsWithSubsAndChildrenVNext.cs" />
+    <Compile Include="SaveEmbeddedImage.cs" />
     <Compile Include="QueryStoryByNumberVNext.cs" />
     <Compile Include="QueryStoryByNameVNext.cs" />
     <Compile Include="QueryStoryByName.cs" />
     <Compile Include="QueryStoryByNumber.cs" />
     <Compile Include="QueryStoriesWithinAScopeVNext.cs" />
-    <Compile Include="CreateEpicWithSubsAndChildrenVerboseVNext.cs" />
     <Compile Include="QueryStoryByOidTokenSelectNameVNext.cs" />
-    <Compile Include="ExecuteOperationOnMultipleStoriesInAScopeVNext.cs" />
     <Compile Include="UpdateMultipleStoriesInAScopeVNext.cs" />
     <Compile Include="UpdateScalarAttributeOnStoryVNext.cs" />
   </ItemGroup>
@@ -95,7 +97,11 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Create\" />
+    <Folder Include="ExecuteOperation\" />
     <Folder Include="Properties\" />
+    <Folder Include="Query\" />
+    <Folder Include="Update\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
