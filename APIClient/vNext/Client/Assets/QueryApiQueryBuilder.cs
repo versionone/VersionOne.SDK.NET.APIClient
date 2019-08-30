@@ -109,9 +109,7 @@ namespace VersionOne.Assets
 
 			if (WhereCriteria.Count > 0)
 			{
-				var whereNodes = new JObject();
-
-				ProcessWhereCriteria(filterNodes, whereNodes);
+				var whereNodes = ProcessWhereCriteria(WhereCriteria);
 
 				root.Add("where", whereNodes);
 			}
@@ -143,9 +141,9 @@ namespace VersionOne.Assets
 			return root;
 		}
 
-		private (JArray filterNodes, JObject whereNodes) ProcessWhereCriteria(List<Term> whereCriteria)
+
+		private JObject ProcessWhereCriteria(List<Term> whereCriteria)
 		{
-			var filterNodes = new JArray();
 			var whereNodes = new JObject();
 
 			foreach (var term in WhereCriteria)
@@ -156,45 +154,68 @@ namespace VersionOne.Assets
 						switch (criterion.IsMultiMatch)
 						{
 							case true:
-								var matchValues = String.Join(",", criterion.MatchValues.Select(m => $"\"{m}\""));
-								filterNodes.Add($"{criterion.AttributeName}{criterion.Operator.Token}{matchValues}");
+								// TODO need to handle this or need to make it only possible with Filter
 								break;
 							case false:
 								whereNodes.Add(criterion.AttributeName, criterion.MatchValue.ToString());
 								break;
 						}
 						break;
-					case OrTerm or: // VERY Stuck here... Maybe .Where should never support "Or" and "And" because of its 
-									// simply nature, and only .Filter should.
-									// If that's the case, then we could get by with stuffing everything into filterNodes, simply
-									// mapping the false case above into its equavilent filter syntax.
-//from: StoryStatus
-//select:
-//-Name
-//filter:
-//-Name = "In Progress","Future" | Name != "Future"
-						var combined =
-						foreach (var orTerm in or.Terms)
-						{
-							var result = ProcessWhereCriteria(new List<Term>() { orTerm });
-							// TODO this seems really messed up...
-							
-						}
-
-						break;
 					default:
 						break;
-
-				}
-				if (criterion a is Criterion and a.IsMultiMatch)
-					{
-
-				}
-					else
-					{
-					whereNodes.Add(criterion.AttributeName, criterion.MatchValue.ToString());
 				}
 			}
+
+			return whereNodes;
 		}
+
+		/// This was trying to combine processing Where and Filter into one. The problem is that I allow "where" to take operators, which really are only
+		/// used with "Filter" in query.v1
+		//private JObject ProcessWhereCriteria(List<Term> whereCriteria)
+		//{
+		//	var whereNodes = new JObject();
+
+		//	foreach (var term in WhereCriteria)
+		//	{
+		//		switch (term)
+		//		{
+		//			case Criterion criterion:
+		//				switch (criterion.IsMultiMatch)
+		//				{
+		//					case true:
+		//						var matchValues = String.Join(",", criterion.MatchValues.Select(m => $"\"{m}\""));
+		//						filterNodes.Add($"{criterion.AttributeName}{criterion.Operator.Token}{matchValues}");
+		//						break;
+		//					case false:
+		//						whereNodes.Add(criterion.AttributeName, criterion.MatchValue.ToString());
+		//						break;
+		//				}
+		//				break;
+		//			case OrTerm or: // VERY Stuck here... Maybe .Where should never support "Or" and "And" because of its
+		//							// simply nature, and only .Filter should.
+		//							// If that's the case, then we could get by with stuffing everything into filterNodes, simply
+		//							// mapping the false case above into its equavilent filter syntax.
+		//							//from: StoryStatus
+		//							//select:
+		//							//-Name
+		//							//filter:
+		//							//-Name = "In Progress","Future" | Name != "Future"
+		//				//var combined =
+		//				//foreach (var orTerm in or.Terms)
+		//				//{
+		//				//	var result = ProcessWhereCriteria(new List<Term>() { orTerm });
+		//				//	// TODO this seems really messed up...
+
+		//				//}
+
+		//				break;
+		//			default:
+		//				break;
+
+		//		}
+		//	}
+
+		//	return (filterNodes, whereNodes);
+		//}
 	}
 }
