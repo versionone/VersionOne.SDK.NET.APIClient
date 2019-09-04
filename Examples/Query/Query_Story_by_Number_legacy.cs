@@ -1,12 +1,20 @@
-﻿using System;
+using System;
 using VersionOne.SDK.APIClient;
 
 namespace Examples
 {
-	public class QueryStoryByNumber
+	public class Query_Story_by_Number_legacy
 	{
 		string instanceUrl = "https://www16.v1host.com/api-examples";
 		string accessToken = "1.bndNO51GiliELZu1bbQdq3omgRI=";
+	
+		static void Main(string[] args)
+		{
+			var example = new Query_Story_by_Number_legacy();
+			example.Execute();
+			Console.WriteLine("Press any key to exit...");
+			Console.ReadKey();
+		}
 
 		public void Execute()
 		{
@@ -49,14 +57,6 @@ namespace Examples
 				Console.WriteLine(story.GetAttribute(nameAttribute).Value);
 				Console.WriteLine(story.GetAttribute(numberAttribute).Value);
 			}
-		}
-
-		static void Main(string[] args)
-		{
-			var example = new QueryStoryByNumber();
-			example.Execute();
-			Console.WriteLine("Press any key to exit...");
-			Console.ReadKey();
 		}
 	}
 }

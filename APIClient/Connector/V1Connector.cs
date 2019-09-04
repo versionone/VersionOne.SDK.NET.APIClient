@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using VersionOne.Assets;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -35,8 +36,9 @@ namespace VersionOne.SDK.APIClient
         private const string ATTACHMENT_API_OAUTH_ENDPOINT = "attachment.oauth.img/";
         private const string EMBEDDED_API_ENDPOINT = "embedded.img/";
         private const string EMBEDDED_API_OAUTH_ENDPOINT = "embedded.oauth.img/";
+		private const string ASSET_API_ENDPOINT = "api/asset/";
 
-        private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
+		private readonly Dictionary<string, MemoryStream> _pendingStreams = new Dictionary<string, MemoryStream>();
         private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
         private readonly bool _isDebugEnabled;
         //private readonly ILog _log = LogManager.GetLogger(typeof(V1Connector));
@@ -129,7 +131,27 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
 
-        internal void UseDataApi()
+		internal string RestApiUrl => _baseAddress.AbsoluteUri + _endpoint;
+			
+		internal string AssetApiUrl => _baseAddress.AbsoluteUri + ASSET_API_ENDPOINT;
+
+		internal string Username
+		{
+			get;
+			set;
+		}
+		internal string Password
+		{
+			get;
+			set;
+		}
+		internal string AccessToken
+		{
+			get;
+			set;
+		}
+
+		internal void UseDataApi()
         {
             _endpoint = _useOAuthEndpoints ? DATA_API_OAUTH_ENDPOINT : DATA_API_ENDPOINT;
         }
@@ -269,7 +291,7 @@ namespace VersionOne.SDK.APIClient
             return result;
         }
         
-        private string UserAgent
+        internal string UserAgent
         {
             get
             {
@@ -383,6 +405,7 @@ namespace VersionOne.SDK.APIClient
             return httpClientHandler;
         }
 
+
         #region Fluent Builder
 
         private class Builder : ICanSetUserAgentHeader, ICanSetAuthMethod, ICanSetProxyOrEndpointOrGetConnector, ICanSetEndpointOrGetConnector, ICanSetProxyOrGetConnector
@@ -405,8 +428,16 @@ namespace VersionOne.SDK.APIClient
 
                 return this;
             }
-            
-            public ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password)
+
+			internal bool IsWithUsernameAndPassord
+			{
+				get
+				{
+					return _instance._credentials != null;
+				}
+			}
+
+			public ICanSetProxyOrEndpointOrGetConnector WithUsernameAndPassword(string username, string password)
             {
                 if (string.IsNullOrWhiteSpace(username))
                     throw new ArgumentNullException("username");
@@ -414,8 +445,10 @@ namespace VersionOne.SDK.APIClient
                     throw new ArgumentNullException("password");
 
                 _instance._credentials = new NetworkCredential(username, password);
+				_instance.Username = username;
+				_instance.Password = password;
 
-                return this;
+				return this;
             }
 
             public ICanSetProxyOrEndpointOrGetConnector WithWindowsIntegrated()
@@ -448,8 +481,9 @@ namespace VersionOne.SDK.APIClient
                     throw new ArgumentNullException("accessToken");
 
                 _instance._requestHeaders.Add("Authorization", "Bearer " + accessToken);
+				_instance.AccessToken = accessToken;
 
-                return this;
+				return this;
             }
 
             public ICanSetProxyOrEndpointOrGetConnector WithOAuth2Token(string accessToken)
@@ -504,23 +538,116 @@ namespace VersionOne.SDK.APIClient
                 return this;
             }
 
-            ICanGetConnector ICanSetEndpointOrGetConnector.UseEndpoint(string endpoint)
-            {
-                if (string.IsNullOrWhiteSpace(endpoint))
-                    throw new ArgumentNullException("endpoint");
+			ICanGetConnector ICanSetEndpointOrGetConnector.UseEndpoint(string endpoint)
+			{
+				if (string.IsNullOrWhiteSpace(endpoint))
+					throw new ArgumentNullException("endpoint");
 
-                _instance._endpoint = endpoint;
+				_instance._endpoint = endpoint;
 
-                return this;
-            }
-        }
+				return this;
+			}
 
-        #endregion
-    }
+			#region Fluent Querying and Bulk API support
 
-    #region Interfaces
+			public IFluentQueryBuilder Query(string from)
+			{
+				_instance.UseDataApi();
+				return new Services(Build()).Query(from);
+			}
 
-    public interface ICanSetUserAgentHeader
+			public IAsset Create(IAsset asset)
+			{
+				_instance.UseDataApi();
+
+				if (asset == null) throw new ArgumentNullException(nameof(asset));
+
+				return new Services(Build()).Create(asset);
+			}
+
+			public IAsset Create(object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new ArgumentNullException(nameof(attributes));
+
+				return new Services(Build()).Create(attributes);
+			}
+
+			public IAsset Create(params (string name, object value)[] attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new ArgumentNullException(nameof(attributes));
+
+				return new Services(Build()).Create(attributes);
+			}
+
+			public CreateAssetsResult Create(params IAsset[] assets)
+			{
+				_instance.UseDataApi();
+
+				return new Services(Build()).Create(assets);
+			}
+
+			public IAsset Update(string oidToken, object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (attributes == null) throw new NullReferenceException("attributes");
+
+				return new Services(Build()).Update(oidToken, attributes);
+			}
+
+			public IAsset Update(IAsset asset)
+			{
+				_instance.UseDataApi();
+
+				if (asset == null) throw new NullReferenceException("asset");
+
+				return new Services(Build()).Update(asset);
+			}
+
+			public IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes)
+			{
+				_instance.UseDataApi();
+
+				if (querySpec == null) throw new NullReferenceException(nameof(querySpec));
+				if (attributes == null) throw new NullReferenceException(nameof(attributes));
+
+				return new Services(Build()).Update(querySpec, attributes);
+			}
+
+			public IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpec, string operation)
+			{
+				_instance.UseDataApi();
+
+				if (querySpec == null) throw new NullReferenceException(nameof(querySpec));
+				if (string.IsNullOrWhiteSpace(operation)) throw new NullReferenceException(nameof(operation));
+
+				return new Services(Build()).ExecuteOperation(querySpec, operation);
+			}
+
+			#endregion
+		}
+
+		#endregion
+	}
+
+	#region Result types
+
+	public class CreateAssetsResult
+	{
+		public int Count { get; internal set; } = -1;
+		public IEnumerable<string> OidTokens { get; internal set; } = new List<string>();
+		public IEnumerable<IAsset> Assets { get; internal set; } = new List<IAsset>();
+	}
+
+	#endregion
+
+	#region Interfaces
+
+	public interface ICanSetUserAgentHeader
     {
         /// <summary>
         /// Required method for setting a custom user agent header for all HTTP requests made to the VersionOne API.
@@ -587,7 +714,16 @@ namespace VersionOne.SDK.APIClient
         /// <param name="proxyProvider">The ProxyProvider containing the proxy URI, username, and password.</param>
         /// <returns>ICanSetEndpointOrGetConnector</returns>
         ICanSetEndpointOrGetConnector WithProxy(ProxyProvider proxyProvider);
-    }
+		IFluentQueryBuilder Query(string assetTypeName);
+		IAsset Create(object attributes);
+		IAsset Create(params (string name, object value)[] attributes);
+		IAsset Create(IAsset asset);
+		CreateAssetsResult Create(params IAsset[] assets);
+		IAsset Update(string oidToken, object attributes);
+		IAsset Update(IAsset asset);
+		IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes);
+		IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpec, string operation);
+}
 
     public interface ICanSetEndpointOrGetConnector : ICanGetConnector
     {

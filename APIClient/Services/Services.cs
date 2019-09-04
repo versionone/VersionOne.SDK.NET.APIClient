@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Xml;
 using Newtonsoft.Json.Linq;
+using VersionOne.Assets;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -706,5 +707,33 @@ namespace VersionOne.SDK.APIClient
                 }
             }
         }
-    }
+
+		public IFluentQueryBuilder Query(string assetTypeName) => CreateAssetClient().Query(assetTypeName);
+		public IAsset Create(params (string name, object value)[] attributes) => CreateAssetClient().Create(attributes);
+		public IAsset Create(object attributes) => CreateAssetClient().Create(attributes);
+		public IAsset Create(IAsset asset) => CreateAssetClient().Create(asset);
+		public CreateAssetsResult Create(params IAsset[] assets) => CreateAssetClient().Create(assets);
+		public IAsset Update(string oidToken, object attributes) => CreateAssetClient().Update(oidToken, attributes);
+		public IAsset Update(IAsset asset) => CreateAssetClient().Update(asset);
+		public IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes) => CreateAssetClient().Update(querySpec, attributes);
+		public IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpece, string operation) => CreateAssetClient().ExecuteOperation(querySpece, operation);
+		private AssetClient CreateAssetClient()
+		{
+			AssetClient client;
+			if (!string.IsNullOrWhiteSpace(_v1Connector.Username))
+			{
+				client = new AssetClient(_v1Connector.AssetApiUrl, _v1Connector.Username, _v1Connector.Password);
+			}
+			else if (!string.IsNullOrWhiteSpace(_v1Connector.AccessToken))
+			{
+				client = new AssetClient(_v1Connector.AssetApiUrl, _v1Connector.AccessToken);
+			}
+			else
+			{
+				throw new InvalidOperationException("Could not find any credentials to use. Please call either WithUsernameAndPassword or WithAccessToken before attempting to call Query.");
+			}
+			client.UserAgent = _v1Connector.UserAgent;
+			return client;
+		}
+	}
 }
