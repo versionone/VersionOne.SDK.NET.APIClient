@@ -1,5 +1,6 @@
 ﻿using HttpMock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HttpMock.Verify.NUnit;
 using System.Configuration;
 
 namespace VersionOne.SDK.APIClient.Tests.ServicesTests.Constructor

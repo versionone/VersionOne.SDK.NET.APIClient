@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <SignAssembly>false</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>http://localhost/VersionOne.SDK.APIClient/</PublishUrl>
     <Install>true</Install>
@@ -72,6 +72,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -122,9 +123,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -273,6 +280,29 @@
     <Compile Include="Obsolete\V1ConnectionValidator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="vNext\Client\Assets\AcccessTokenAuthenticator.cs" />
+    <Compile Include="vNext\Client\Assets\AndTerm.cs" />
+    <Compile Include="vNext\Client\Assets\AnyCriterion.cs" />
+    <Compile Include="vNext\Client\Assets\AssetApiPayloadBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\AssetBase.cs" />
+    <Compile Include="vNext\Client\Assets\AssetClient.cs" />
+    <Compile Include="vNext\Client\Assets\ClientUtilities.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonFunctions.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonOperator.cs" />
+    <Compile Include="vNext\Client\Assets\ComparisonOperatorConstants.cs" />
+    <Compile Include="vNext\Client\Assets\CompoundCriterion.cs" />
+    <Compile Include="vNext\Client\Assets\Criterion.cs" />
+    <Compile Include="vNext\Client\Assets\ExecuteOperationApiBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\FluentQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\IAssetBase.cs" />
+    <Compile Include="vNext\Client\Assets\IFluentQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\Mapped.cs" />
+    <Compile Include="vNext\Client\Assets\OrTerm.cs" />
+    <Compile Include="vNext\Client\Assets\QueryApiQueryBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\QuerySpec.cs" />
+    <Compile Include="vNext\Client\Assets\RestApiPayloadBuilder.cs" />
+    <Compile Include="vNext\Client\Assets\Term.cs" />
+    <Compile Include="vNext\Client\Assets\UpdateApiBuilder.cs" />
     <None Include="App.config" />
     <EmbeddedResource Include="MimeTypes.config" />
     <None Include="packages.config" />
