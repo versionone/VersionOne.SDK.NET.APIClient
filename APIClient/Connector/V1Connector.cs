@@ -639,8 +639,8 @@ namespace VersionOne.SDK.APIClient
 	public class CreateAssetsResult
 	{
 		public int Count { get; internal set; } = -1;
-		public IEnumerable<string> OidTokens { get; internal set; } = new List<string>();
-		public IEnumerable<IAsset> Assets { get; internal set; } = new List<IAsset>();
+		public IList<string> OidTokens { get; internal set; } = new List<string>();
+		public IList<IAsset> Assets { get; internal set; } = new List<IAsset>();
 	}
 
 	#endregion

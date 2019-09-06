@@ -48,7 +48,7 @@ namespace Examples
 			);
 
 			WriteLine("Result returned from .Create with multiple assets:");
-			WriteLine(result);
+			WriteLine(string.Join(", ", result.OidTokens));
 		}
 	}
 }

@@ -64,6 +64,7 @@ namespace VersionOne.Assets
 			dynamic result = DoPost(assetsToCreate.ToString());
 
 			var assetResults = new List<IAsset>();
+			var oidTokens = result.assetsCreated.oidTokens.ToObject<string[]>();
 
 			foreach (dynamic assetCreated in assets) {
 				var asset = new Asset(assetCreated, true);
@@ -73,6 +74,7 @@ namespace VersionOne.Assets
 			var createAssetResult = new CreateAssetsResult() {
 				Assets = assetResults,
 				Count = assets.Length,
+				OidTokens = oidTokens
 			};
 
 			return createAssetResult;

@@ -79,6 +79,7 @@
     <Compile Include="Legacy\TaggedWith.cs" />
     <Compile Include="Update\Update_multiple_newly_created_Stories_within_a_Scope.cs" />
     <Compile Include="Update\Update_scalar_attribute_on_newly_created_Story_via_POCO.cs" />
+    <Compile Include="Update\Update_Story_add_new_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">

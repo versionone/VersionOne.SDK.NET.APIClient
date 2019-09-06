@@ -22,6 +22,16 @@ namespace VersionOne.Assets
         public string act { get; set; }
 	}
 
+	internal class AssetReferenceAdd
+	{
+		public string add { get; set; }
+	}
+
+	internal class AssetReferenceRemove
+	{
+		public string remove { get; set; }
+	}
+
 	internal class AssetReferenceResponse
 	{
 		public AssetReferenceResponse(string idref, string href)
@@ -47,7 +57,7 @@ namespace VersionOne.Assets
 			attributes.ToDictionary(n => n.name, v => v.value);
 		public static Array Relations(params object[] relations) => relations;
         public static Array Relation(object relation) => new[] { relation };
-        public static object Add(string oidToken) => new AssetReference { idref = oidToken, act = "add" };
+        public static object Add(string oidToken) => new AssetReferenceAdd { add = oidToken };
         public static object Add(string assetType, int id) => new AssetReference { idref = $"{assetType}:{id}", act = "add" };
         public static object Remove(string oidToken) => new AssetReference { idref = oidToken, act = "remove" };
         public static object Remove(string assetType, int id) => new AssetReference { idref = $"{assetType}:{id}", act = "remove" };
