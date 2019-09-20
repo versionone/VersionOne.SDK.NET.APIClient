@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>e346adba-4144-42ba-966a-64e3068fa68c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>VersionOne.SDK.NET.APIClient.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\IV1Configuration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\V1Configuration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connector\ProxyProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connector\V1Connector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MetaModel\IMetaModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MetaModel\MetaModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MimeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Aggregate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Asset.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\AssetList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\AssetStateManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\AssetType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\Attribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\AttributeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\AttributeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\Duration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\MultiValueAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\Rank.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Attribute\SingleValueAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Asset\Operation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Interfaces\IAssetType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Interfaces\IAttributeDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Interfaces\IOperation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Oid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Pair.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Attachments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Connectors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Credentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\EnvironmentContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\IAPIConnector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\IAttachments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ILocalizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Localizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\ModelsAndServices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\Urls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\V1APIConnector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\V1Central.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\V1ConfigurationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\V1ConnectionValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\V1CredsAPIConnector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obsolete\VersionOneAPIConnector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\AndFilterTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\AttributeSelection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\AsOfBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\BuildResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\CompositeBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\FindBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\HierarchicalPartBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\IQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\PagingBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\QueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\QueryURLBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\SelectionBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\SortBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\WhereBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Builders\WithVariablesBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\FilterTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\FluentQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\GroupFilterTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\IFilterTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\IValueProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\NoOpTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Operators.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\OrderBy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Query\OrFilterTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Paging.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Query.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Query\QueryFind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\QueryResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Query\QueryVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\TokenTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\ValueProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\ValueStringizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequiredFieldValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IServices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Services.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\XmlApiWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\DB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HashCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\TextBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AcccessTokenAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AndTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AnyCriterion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AssetApiPayloadBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AssetBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\AssetClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\ClientUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\ComparisonFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\ComparisonOperator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\ComparisonOperatorConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\CompoundCriterion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\Criterion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\ExecuteOperationApiBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\FluentQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\IAssetBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\IFluentQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\Mapped.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\OrTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\QueryApiQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\QuerySpec.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\RestApiPayloadBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\Term.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\Assets\UpdateApiBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)vNext\Client\NOTES.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)App.config" />
+    <None Include="$(MSBuildThisFileDirectory)packages.config" />
+    <None Include="$(MSBuildThisFileDirectory)VersionOne.SDK.APIClient.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)MimeTypes.config" />
+  </ItemGroup>
+</Project>
