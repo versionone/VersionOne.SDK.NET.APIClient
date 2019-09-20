@@ -26,8 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Exampl
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VersionOne.SDK.NET.APIClient.Shared", "VersionOne.SDK.NET.APIClient.Shared\VersionOne.SDK.NET.APIClient.Shared.shproj", "{E346ADBA-4144-42BA-966A-64E3068FA68C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionOne.SDK.NET.Standard.ApiClient", "VersionOne.SDK.NET.Standard.ApiClient\VersionOne.SDK.NET.Standard.ApiClient.csproj", "{EC8EE226-106D-431E-A83B-1059AEE09C30}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		VersionOne.SDK.NET.APIClient.Shared\VersionOne.SDK.NET.APIClient.Shared.projitems*{b5062999-adf0-4f51-a0d2-449c9a344804}*SharedItemsImports = 4
 		VersionOne.SDK.NET.APIClient.Shared\VersionOne.SDK.NET.APIClient.Shared.projitems*{e346adba-4144-42ba-966a-64e3068fa68c}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +153,24 @@ Global
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
 		{81907CE9-E551-4661-A3B9-5A06D86A9648}.ReleaseWithDebug|x86.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.Release|x86.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|Any CPU.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|Any CPU.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|x86.ActiveCfg = Release|Any CPU
+		{EC8EE226-106D-431E-A83B-1059AEE09C30}.ReleaseWithDebug|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

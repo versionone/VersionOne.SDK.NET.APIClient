@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
-using System.Web;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using VersionOne.Assets;
@@ -230,7 +229,7 @@ namespace VersionOne.SDK.APIClient
 			if (!response.IsSuccessStatusCode)
 			{
 				var statusCode = Convert.ToInt32(response.StatusCode);
-				var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode, HttpWorkerRequest.GetStatusDescription(statusCode));
+				var message = string.Format("The remote server returned an error: ({0}) {1}.", statusCode, Microsoft.AspNetCore.WebUtilities.ReasonPhrases.GetReasonPhrase(statusCode));
 				APIException innerException = null;
 				var apiMessage = GetErrorMessageFromResponse(response);
 				if (!string.IsNullOrWhiteSpace(apiMessage))
