@@ -4,6 +4,8 @@ using RestSharp.Validation;
 using RestSharp.Authenticators;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Linq;
 using VersionOne.SDK.APIClient;
 
 namespace VersionOne.Assets
@@ -140,7 +142,8 @@ namespace VersionOne.Assets
 			Func<string, IList<IAsset>> execute = (string payload) =>
 			{
 				dynamic obj = DoPost(payload);
-				var results = obj.queryResult.results[0];
+				var resultsAll = obj["queryResult"]["results"] as IEnumerable<object>;
+				var results = resultsAll.First() as IList;
 				var assets = new List<IAsset>(results.Count);
 				foreach (dynamic item in results)
 				{
