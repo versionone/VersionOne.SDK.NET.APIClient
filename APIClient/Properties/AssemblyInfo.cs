@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("APIClient")]
 [assembly: AssemblyTitle("VersionOne SDK API Client")]
 [assembly: AssemblyDescription("VersionOne SDK .NET API Client APIClient Release Build")]
-[assembly: AssemblyCompany("VersionOne, Inc.")]
-[assembly: AssemblyCopyright("Copyright 2008-2013, VersionOne, Inc., Licensed under modified BSD.")]
+[assembly: AssemblyCompany("Digital.ai Software, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2020, Digital.ai Software, Inc. Licensed under modified BSD.")]
 
 [assembly: AssemblyConfiguration("Release")]
