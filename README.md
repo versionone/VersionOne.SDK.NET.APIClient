@@ -1,5 +1,5 @@
 # VersionOne .NET SDK
-Copyright (c) 2008-2015 [VersionOne](http://versionone.com/).
+Copyright (c) 2020 [Digital.ai Software, Inc](https://digital.ai).
 All rights reserved.
 
 The VersionOne .NET SDK is a free and open-source library that accelerates software development of applications that integrate with VersionOne. The SDK serves as a wrapper to the VersionOne REST API, eliminating the need to code the infrastructure necessary for direct handling of HTTP requests and responses.
