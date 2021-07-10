@@ -45,7 +45,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullUserAgentNameException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader(null, "1.0")
                 .WithAccessToken("accesstoken")
                 .Build();
@@ -56,7 +56,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullUserAgentVersionException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", null)
                 .WithAccessToken("accesstoken")
                 .Build();
@@ -67,7 +67,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyUserAgentNameException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("", "1.0")
                 .WithAccessToken("accesstoken")
                 .Build();
@@ -78,7 +78,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyUserAgentVersionException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "   ")
                 .WithAccessToken("accesstoken")
                 .Build();
@@ -89,7 +89,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullUsernameException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword(null, "password")
                 .Build();
@@ -100,7 +100,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullPasswordException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", null)
                 .Build();
@@ -111,7 +111,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyUsernameException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("    ", "password")
                 .Build();
@@ -122,7 +122,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyPasswordException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "")
                 .Build();
@@ -133,7 +133,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullWindowsIntegratedFQDNException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated(null, "password")
                 .Build();
@@ -144,7 +144,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullWindowsIntegratedPasswordException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithWindowsIntegrated("fqdn", null)
                 .Build();
@@ -155,7 +155,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyWindowsIntegratedFQDNException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("  ", "password")
                 .Build();
@@ -166,7 +166,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyWindowsIntegratedPasswordException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("fqdn", "")
                 .Build();
@@ -177,7 +177,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullAccessTokenException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken(null)
                 .Build();
@@ -188,7 +188,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyAccessTokenException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithAccessToken("   ")
                 .Build();
@@ -199,7 +199,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void EmptyOAuth2TokenException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithOAuth2Token("")
                 .Build();
@@ -210,7 +210,7 @@ namespace VersionOne.SDK.APIClient.Tests.ConnectorTests
         public void NullProxyException()
         {
             V1Connector connector = V1Connector
-                .WithInstanceUrl("http://localhost/VersionOne/")
+                .WithInstanceUrl("http://localhost/VersionOne.Web")
                 .WithUserAgentHeader("MyApp", "1.0")
                 .WithUsernameAndPassword("username", "password")
                 .WithProxy(null)

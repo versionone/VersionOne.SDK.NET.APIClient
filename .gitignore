@@ -52,3 +52,4 @@ packages/
 
 ## Subversion files ##
 .svn
+.vs/VersionOne.SDK.NET.APIClient/*/lut/*
