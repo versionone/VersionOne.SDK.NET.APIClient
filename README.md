@@ -8,11 +8,11 @@ The .NET SDK is open source and is licensed under a modified BSD license, which 
 
 ## System Requirements
 
-* .NET Framework 4.5.1
+* .NET Framework 4.7.1
 
 ## Supported IDEs for Development
 
-* Visual Studio 2013
+* Visual Studio 2019
 
 ## Adding the .NET SDK to your Project
 

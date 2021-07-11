@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using VersionOne.Assets;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -18,13 +19,14 @@ namespace VersionOne.SDK.APIClient
         string Localization(string key);
         string Localization(IAttributeDefinition attribute);
         Dictionary<string, string> Localization(params IAttributeDefinition[] attributes);
-        
-        /// <summary>
-        /// Executes a query using the Query API (query.v1 endpoint).
-        /// </summary>
-        /// <param name="query">string The query to execute in JSON or YAML format.</param>
-        /// <returns>String containing the query results in a JSON format.</returns>
-        string ExecutePassThroughQuery(string query);
+		IFluentQueryBuilder Query(string from);
+
+		/// <summary>
+		/// Executes a query using the Query API (query.v1 endpoint).
+		/// </summary>
+		/// <param name="query">string The query to execute in JSON or YAML format.</param>
+		/// <returns>String containing the query results in a JSON format.</returns>
+		string ExecutePassThroughQuery(string query);
 
         /// <summary>
         /// Saves an attachment to the specified asset.
