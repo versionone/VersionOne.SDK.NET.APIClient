@@ -505,7 +505,7 @@ namespace VersionOne.SDK.APIClient
 
                 return this;
             }
-
+            [Obsolete(".UseOAuthEndpoints is deprecated, use .WithWindowsIntegrated().")]
             public ICanSetProxyOrGetConnector UseOAuthEndpoints()
             {
                 _instance._useOAuthEndpoints = true;
