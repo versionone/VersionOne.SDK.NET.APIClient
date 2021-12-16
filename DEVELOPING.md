@@ -98,5 +98,5 @@ While we strive to make the SDK as easy to use as possible, you may still occasi
 
 - [Code Samples](https://community.versionone.com/Developers/Developer-Library/Sample_Code): A growing list of recipes for working with the VersionOne API. Check here first to see if an answer already exists.  
 - [StackOverflow](http://stackoverflow.com/questions/tagged/versionone): For asking question of the VersionOne Developer Community.  
-- [VersionOne Support](): Our support team is well versed in the VersionOne API, including accessing it via the SDK.  
-- [VersionOne Technical Services](http://www.versionone.com/training/technical_services/): A paid support offering, this team provides API training, development pairing, and complete custom development services.  
+- [Support](): Our support team is well versed in the VersionOne API, including accessing it via the SDK.  
+- [Professional Services](https://digital.ai/product-consulting-and-implementation/professional-services/): A paid support offering, this team provides API training, development pairing, and complete custom development services.  

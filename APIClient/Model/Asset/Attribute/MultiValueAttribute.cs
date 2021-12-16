@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace VersionOne.SDK.APIClient
 {
-    // TODO see if we can stop using old school collections here
     internal class MultiValueAttribute : Attribute
     {
-        private ArrayList values = new ArrayList();
-        private ArrayList addedValues;
-        private ArrayList removedValues;
-        private ArrayList newValues;
+        private List<object> _values = new List<object>();
+        private List<object> _addedValues;
+        private List<object> _removedValues;
+        private List<object> _newValues;
 
         internal MultiValueAttribute(IAttributeDefinition def, Asset asset) : base(def, asset) { }
 
@@ -17,16 +17,8 @@ namespace VersionOne.SDK.APIClient
         {
             get
             {
-                if (values.Count == 0)
-                {
-                    return Definition.Coerce(null);
-                }
-
-                if (values.Count == 1)
-                {
-                    return values[0];
-                }
-
+                if (_values.Count == 0) return Definition.Coerce(null);
+                if (_values.Count == 1) return _values[0];
                 throw new ApplicationException("Attribute contains multiple values: " + Definition.Token);
             }
         }
@@ -35,49 +27,22 @@ namespace VersionOne.SDK.APIClient
         {
             get
             {
-                if (newValues == null)
-                {
-                    return null;
-                }
-
-                if (newValues.Count == 0)
-                {
-                    return Definition.Coerce(null);
-                }
-
-                if (newValues.Count == 1)
-                {
-                    return newValues[0];
-                }
-
+                if (_newValues == null) return null;
+                if (_newValues.Count == 0) return Definition.Coerce(null);
+                if (_newValues.Count == 1) return _newValues[0];
                 throw new ApplicationException("Attribute contains multiple values: " + Definition.Token);
             }
         }
 
-        public override IEnumerable OriginalValues
-        {
-            get { return values; }
-        }
+        public override IEnumerable OriginalValues => _values;
 
-        public override IEnumerable NewValues
-        {
-            get { return newValues; }
-        }
+        public override IEnumerable NewValues => _newValues;
 
-        public override IEnumerable AddedValues
-        {
-            get { return addedValues; }
-        }
+        public override IEnumerable AddedValues => _addedValues;
 
-        public override IEnumerable RemovedValues
-        {
-            get { return removedValues; }
-        }
+        public override IEnumerable RemovedValues => _removedValues;
 
-        public override bool HasChanged
-        {
-            get { return (newValues != null); }
-        }
+        public override bool HasChanged => (_newValues != null);
 
         internal override void SetValue(object value)
         {
@@ -96,19 +61,13 @@ namespace VersionOne.SDK.APIClient
             CheckNull(value);
 
             EnsureNewValues();
-            newValues.Add(value);
+            _newValues.Add(value);
 
-            if (addedValues == null)
-            {
-                addedValues = new ArrayList();
-            }
+            _addedValues = _addedValues ?? new List<object>();
 
-            addedValues.Add(value);
+            _addedValues.Add(value);
 
-            if (removedValues != null)
-            {
-                removedValues.Remove(value);
-            }
+            _removedValues?.Remove(value);
         }
 
         internal override void RemoveValue(object value)
@@ -117,46 +76,34 @@ namespace VersionOne.SDK.APIClient
             value = Definition.Coerce(value);
 
             EnsureNewValues();
-            newValues.Remove(value);
+            _newValues.Remove(value);
 
-            if (removedValues == null)
-            {
-                removedValues = new ArrayList();
-            }
+            _removedValues = _removedValues ?? new List<object>();
 
-            removedValues.Add(value);
+            _removedValues.Add(value);
 
-            if (addedValues != null)
-            {
-                addedValues.Remove(value);
-            }
+            _addedValues?.Remove(value);
         }
 
-        private void EnsureNewValues()
-        {
-            if (newValues == null)
-            {
-                newValues = new ArrayList(values);
-            }
-        }
+        private void EnsureNewValues() => _newValues = _newValues ?? new List<object>(_values);
 
         public override void AcceptChanges()
         {
             if (HasChanged)
             {
-                values = newValues;
-                newValues = addedValues = removedValues = null;
+                _values = _newValues;
+                _newValues = _addedValues = _removedValues = null;
             }
         }
 
         public override void RejectChanges()
         {
-            newValues = addedValues = removedValues = null;
+            _newValues = _addedValues = _removedValues = null;
         }
 
         internal override void LoadValue(object value)
         {
-            values.Add(Definition.Coerce(value));
+            _values.Add(Definition.Coerce(value));
         }
     }
 }

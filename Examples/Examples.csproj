@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Examples</RootNamespace>
     <AssemblyName>Examples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -37,8 +37,18 @@
     <StartupObject>Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,19 +57,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_IAssetBase.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_IDictionary.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_POCOs.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_Tuples_approach_1.cs" />
+    <Compile Include="Create\Create_Epic_with_Subs_and_Children_via_Tuples_approach_2.cs" />
+    <Compile Include="Create\Create_Multiple_Assets_via_array_of_Tuples.cs" />
+    <Compile Include="Create\Create_Story_with_Scalars_via_Asset_class_instance.cs" />
+    <Compile Include="Create\Create_Story_with_scalars_via_POCO.cs" />
+    <Compile Include="ExecuteOperation\Execute_Operation_on_multiple_Stories_within_a_Scope.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryPublicationForPayloadGuidAttribute.cs" />
-    <Compile Include="QueryStoryByNumber.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <Compile Include="Legacy\QueryPublicationForPayloadGuidAttribute.cs" />
+    <Compile Include="Query\Query_Epics_with_Subs_and_Children.cs" />
+    <Compile Include="Query\Query_newly_created_Story_by_OID.cs" />
+    <Compile Include="Query\Query_Relationship_attributes_on_Scope.cs" />
+    <Compile Include="Query\Query_Stories_within_a_Scope.cs" />
+    <Compile Include="Query\Query_Story_by_Name.cs" />
+    <Compile Include="Query\Query_Story_by_Name_legacy.cs" />
+    <Compile Include="Query\Query_Story_by_Number.cs" />
+    <Compile Include="Query\Query_Story_by_Number_legacy.cs" />
+    <Compile Include="Legacy\TaggedWith.cs" />
+    <Compile Include="Update\Update_multiple_newly_created_Stories_within_a_Scope.cs" />
+    <Compile Include="Update\Update_scalar_attribute_on_newly_created_Story_via_POCO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APIClient\VersionOne.SDK.APIClient.csproj">
       <Project>{B5062999-ADF0-4F51-A0D2-449C9A344804}</Project>
       <Name>VersionOne.SDK.APIClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

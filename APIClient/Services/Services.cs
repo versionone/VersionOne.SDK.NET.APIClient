@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Xml;
 using Newtonsoft.Json.Linq;
+using VersionOne.Assets;
 
 namespace VersionOne.SDK.APIClient
 {
@@ -44,29 +45,22 @@ namespace VersionOne.SDK.APIClient
 
         public Services(IMetaModel meta, IAPIConnector connector)
         {
-            if (meta == null)
-                throw new ArgumentNullException("meta");
-            if (connector == null)
-                throw new ArgumentNullException("connector");
-
+            if (meta == null) throw new ArgumentNullException(nameof(meta));
             _meta = meta;
+
+            if (connector == null) throw new ArgumentNullException(nameof(connector));
             _connector = connector;
         }
 
         public Services(V1Connector v1Connector, bool preLoadMeta = false, IMetaModel metaModel = null)
         {
-            if (v1Connector == null)
-                throw new ArgumentNullException("v1Connector");
+            if (v1Connector == null) throw new ArgumentNullException(nameof(v1Connector));
             _v1Connector = v1Connector;
 
-            if (metaModel != null) _meta = metaModel;
-            else _meta = new MetaModel(_v1Connector, preLoadMeta);
+            _meta = metaModel ?? new MetaModel(_v1Connector, preLoadMeta);
         }
 
-        public IMetaModel Meta
-        {
-            get { return _meta; }
-        }
+        public IMetaModel Meta => _meta;
 
         public void SetUpstreamUserAgent(string userAgent)
         {
@@ -120,10 +114,7 @@ namespace VersionOne.SDK.APIClient
             return ParseQueryResult(doc.DocumentElement, query);
         }
 
-        public Oid GetOid(string token)
-        {
-            return Oid.FromToken(token, _meta);
-        }
+        public Oid GetOid(string token) => Oid.FromToken(token, _meta);
 
         public Oid ExecuteOperation(IOperation op, Oid oid)
         {
@@ -131,11 +122,11 @@ namespace VersionOne.SDK.APIClient
 
             try
             {
-                var path = oid.AssetType.Token + "/" + oid.Key + "?op=" + op.Name;
+                var path = $"{oid.AssetType.Token}/{oid.Key}?op={op.Name}";
                 Stream stream;
                 if (_connector != null)
                 {
-                    path = "Data/" + path;
+                    path = $"Data/{path}";
                     stream = _connector.SendData(path, string.Empty);
                 }
                 else
@@ -166,10 +157,7 @@ namespace VersionOne.SDK.APIClient
             }
         }
 
-        public void Save(Asset asset)
-        {
-            Save(asset, string.Empty);
-        }
+        public void Save(Asset asset) => Save(asset, string.Empty);
 
         public void Save(Asset asset, string comment)
         {
@@ -178,7 +166,7 @@ namespace VersionOne.SDK.APIClient
                 var doc = new XmlDocument();
 
                 var s = new StringWriter();
-                var writer = new XmlApiWriter(s, true);
+                var writer = new XmlApiWriter(s);
                 writer.WriteAsset(asset);
                 var data = s.ToString();
 
@@ -186,12 +174,12 @@ namespace VersionOne.SDK.APIClient
 
                 if (!asset.Oid.IsNull)
                 {
-                    path += "/" + asset.Oid.Key;
+                    path += $"/{asset.Oid.Key}";
                 }
 
                 if (comment != null & comment != string.Empty)
                 {
-                    path += string.Format("?Comment='{0}'", System.Web.HttpUtility.UrlEncode(comment));
+                    path += $"?Comment='{System.Web.HttpUtility.UrlEncode(comment)}'";
                 }
 
                 try
@@ -199,7 +187,7 @@ namespace VersionOne.SDK.APIClient
                     Stream stream;
                     if (_connector != null)
                     {
-                        path = "Data/" + path;
+                        path = $"Data/{path}";
                         stream = _connector.SendData(path, data);
                     }
                     else
@@ -250,7 +238,7 @@ namespace VersionOne.SDK.APIClient
 
             if (context != null && !context.IsNull)
             {
-                path += "?ctx=" + context.Token;
+                path += $"?ctx={context.Token}";
             }
 
             try
@@ -258,7 +246,7 @@ namespace VersionOne.SDK.APIClient
                 Stream stream;
                 if (_connector != null)
                 {
-                    path = "New/" + path;
+                    path = $"New/{path}";
                     stream = _connector.GetData(path);
                 }
                 else
@@ -279,11 +267,11 @@ namespace VersionOne.SDK.APIClient
 
         public string Localization(string key)
         {
-            var path = string.Format("?{0}", key);
+            var path = $"?{key}";
             Stream stream;
             if (_connector != null)
             {
-                path = "loc.v1/" + path;
+                path = $"loc.v1/{path}";
                 stream = _connector.GetData(path);
             }
             else
@@ -293,7 +281,7 @@ namespace VersionOne.SDK.APIClient
             }
 
             string result;
-            using (StreamReader reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream))
             {
                 result = reader.ReadToEnd();
             }
@@ -303,14 +291,14 @@ namespace VersionOne.SDK.APIClient
 
         public string Localization(IAttributeDefinition attribute)
         {
-            var urlParam = string.Format("AttributeDefinition'{0}'{1}", attribute.Name, attribute.AssetType.Token);
+            var urlParam = $"AttributeDefinition'{attribute.Name}'{attribute.AssetType.Token}";
 
-            var path = string.Format("?{0}", string.Join(",", urlParam));
+            var path = $"?{string.Join(",", urlParam)}";
 
             Stream stream;
             if (_connector != null)
             {
-                path = "loc.v1/" + path;
+                path = $"loc.v1/{path}";
                 stream = _connector.GetData(path);
             }
             else
@@ -320,7 +308,7 @@ namespace VersionOne.SDK.APIClient
             }
 
             string result;
-            using (StreamReader reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream))
             {
                 result = reader.ReadToEnd();
             }
@@ -334,15 +322,14 @@ namespace VersionOne.SDK.APIClient
             var urlParams =
                 attributes.Select(
                     attributeDefinition =>
-                        string.Format("AttributeDefinition'{0}'{1}", attributeDefinition.Name,
-                            attributeDefinition.AssetType.Token)).ToList();
+                        $"AttributeDefinition'{attributeDefinition.Name}'{attributeDefinition.AssetType.Token}").ToList();
 
-            var path = string.Format("?[{0}]", string.Join(",", urlParams));
+            var path = $"?[{string.Join(",", urlParams)}]";
 
             Stream stream;
             if (_connector != null)
             {
-                path = "loc-2.v1/" + path;
+                path = $"loc-2.v1/{path}";
                 stream = _connector.GetData(path);
             }
             else
@@ -352,7 +339,7 @@ namespace VersionOne.SDK.APIClient
             }
 
             string result;
-            using (StreamReader reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream))
             {
                 result = reader.ReadToEnd();
             }
@@ -360,8 +347,7 @@ namespace VersionOne.SDK.APIClient
             var jsonResult = JObject.Parse(result);
             foreach (var attributeDefinition in attributes)
             {
-                var param = string.Format("AttributeDefinition'{0}'{1}", attributeDefinition.Name,
-                    attributeDefinition.AssetType.Token);
+                var param = $"AttributeDefinition'{attributeDefinition.Name}'{attributeDefinition.AssetType.Token}";
                 locs.Add(attributeDefinition.Token, jsonResult[param].Value<string>());
             }
 
@@ -383,9 +369,9 @@ namespace VersionOne.SDK.APIClient
         public Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useFileNameAsFileName)
         {
             if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             if (!File.Exists(filePath))
-                throw new APIException(string.Format("File \"{0}\" does not exist.", filePath));
+                throw new APIException($"File \"{filePath}\" does not exist.");
 
             string fileName;
 
@@ -395,13 +381,13 @@ namespace VersionOne.SDK.APIClient
                 fileName = filePath;
 
             var mimeType = MimeType.Resolve(filePath);
-            IAssetType attachmentType = Meta.GetAssetType("Attachment");
-            IAttributeDefinition attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
-            IAttributeDefinition attachmentContent = attachmentType.GetAttributeDefinition("Content");
-            IAttributeDefinition attachmentContentType = attachmentType.GetAttributeDefinition("ContentType");
-            IAttributeDefinition attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
-            IAttributeDefinition attachmentNameAttr = attachmentType.GetAttributeDefinition("Name");
-            Asset attachment = New(attachmentType, Oid.Null);
+            var attachmentType = Meta.GetAssetType("Attachment");
+            var attachmentAssetDef = attachmentType.GetAttributeDefinition("Asset");
+            var attachmentContent = attachmentType.GetAttributeDefinition("Content");
+            var attachmentContentType = attachmentType.GetAttributeDefinition("ContentType");
+            var attachmentFileName = attachmentType.GetAttributeDefinition("Filename");
+            var attachmentNameAttr = attachmentType.GetAttributeDefinition("Name");
+            var attachment = New(attachmentType, Oid.Null);
             attachment.SetAttributeValue(attachmentNameAttr, attachmentName);
             attachment.SetAttributeValue(attachmentFileName, fileName);
             attachment.SetAttributeValue(attachmentContentType, mimeType);
@@ -409,16 +395,16 @@ namespace VersionOne.SDK.APIClient
             attachment.SetAttributeValue(attachmentAssetDef, asset.Oid);
             Save(attachment);
 
-            string key = attachment.Oid.Key.ToString();
+            var key = attachment.Oid.Key.ToString();
 
-            using (Stream input = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var input = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (Stream output = _connector != null ? _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)) : _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)))
+                using (var output = _connector != null ? _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)) : _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)))
                 {
-                    byte[] buffer = new byte[input.Length + 1];
+                    var buffer = new byte[input.Length + 1];
                     while (true)
                     {
-                        int read = input.Read(buffer, 0, buffer.Length);
+                        var read = input.Read(buffer, 0, buffer.Length);
                         if (read <= 0)
                             break;
 
@@ -458,9 +444,9 @@ namespace VersionOne.SDK.APIClient
         public Oid SaveEmbeddedImage(string filePath, Asset asset)
         {
             if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             if (!File.Exists(filePath))
-                throw new APIException(string.Format("File \"{0}\" does not exist.", filePath));
+                throw new APIException($"File \"{filePath}\" does not exist.");
 
             var mimeType = MimeType.Resolve(filePath);
             var embeddedImageType = Meta.GetAssetType("EmbeddedImage");
@@ -473,16 +459,16 @@ namespace VersionOne.SDK.APIClient
             newEmbeddedImage.SetAttributeValue(contentAttribute, string.Empty);
             Save(newEmbeddedImage);
 
-            string key = newEmbeddedImage.Oid.Key.ToString();
+            var key = newEmbeddedImage.Oid.Key.ToString();
 
             using (Stream input = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (Stream output = _connector != null ? _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)) : _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)))
+                using (var output = _connector != null ? _connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)) : _v1Connector.BeginRequest(key.Substring(key.LastIndexOf('/') + 1)))
                 {
-                    byte[] buffer = new byte[input.Length + 1];
+                    var buffer = new byte[input.Length + 1];
                     while (true)
                     {
-                        int read = input.Read(buffer, 0, buffer.Length);
+                        var read = input.Read(buffer, 0, buffer.Length);
                         if (read <= 0)
                             break;
 
@@ -598,8 +584,7 @@ namespace VersionOne.SDK.APIClient
 
         private QueryResult ParseAssetQueryResult(XmlElement element, Query query)
         {
-            var list = new AssetList();
-            list.Add(ParseAssetNode(element));
+            var list = new AssetList {ParseAssetNode(element)};
             return new QueryResult(list, 1, query);
         }
 
@@ -610,7 +595,7 @@ namespace VersionOne.SDK.APIClient
             var asset = new Asset(query.Oid);
             list.Add(asset);
 
-            var attribdef = _meta.GetAttributeDefinition(query.AssetType.Token + "." + element.GetAttribute("name"));
+            var attribdef = _meta.GetAttributeDefinition($"{query.AssetType.Token}.{element.GetAttribute("name")}");
 
             ParseAttributeNode(asset, attribdef, element);
 
@@ -734,5 +719,33 @@ namespace VersionOne.SDK.APIClient
                 }
             }
         }
-    }
+
+		public IFluentQueryBuilder Query(string assetTypeName) => CreateAssetClient().Query(assetTypeName);
+		public IAsset Create(params (string name, object value)[] attributes) => CreateAssetClient().Create(attributes);
+		public IAsset Create(object attributes) => CreateAssetClient().Create(attributes);
+		public IAsset Create(IAsset asset) => CreateAssetClient().Create(asset);
+		public CreateAssetsResult Create(params IAsset[] assets) => CreateAssetClient().Create(assets);
+		public IAsset Update(string oidToken, object attributes) => CreateAssetClient().Update(oidToken, attributes);
+		public IAsset Update(IAsset asset) => CreateAssetClient().Update(asset);
+		public IEnumerable<string> Update(QueryApiQueryBuilder querySpec, object attributes) => CreateAssetClient().Update(querySpec, attributes);
+		public IEnumerable<string> ExecuteOperation(QueryApiQueryBuilder querySpece, string operation) => CreateAssetClient().ExecuteOperation(querySpece, operation);
+		private AssetClient CreateAssetClient()
+		{
+			AssetClient client;
+			if (!string.IsNullOrWhiteSpace(_v1Connector.Username))
+			{
+				client = new AssetClient(_v1Connector.AssetApiUrl, _v1Connector.Username, _v1Connector.Password);
+			}
+			else if (!string.IsNullOrWhiteSpace(_v1Connector.AccessToken))
+			{
+				client = new AssetClient(_v1Connector.AssetApiUrl, _v1Connector.AccessToken);
+			}
+			else
+			{
+				throw new InvalidOperationException("Could not find any credentials to use. Please call either WithUsernameAndPassword or WithAccessToken before attempting to call Query.");
+			}
+			client.UserAgent = _v1Connector.UserAgent;
+			return client;
+		}
+	}
 }

@@ -3,13 +3,13 @@
     "nugetSources": "http://packages.nuget.org/api/v2/;http://www.myget.org/F/versionone/api/v2/",
     "configuration": "Release",
     "platform": "Any CPU",
-    "version": "15.2.3.0",
+    "version": "21.1.0.0",
 	"projectToPackage": "ApiClient\\VersionOne.SDK.APIClient.csproj",
 	"nuspecTokens":{
 		"author":"VersionOne, Inc.",
 		"description":"Provides coarse-grained access to VersionOne assets via the REST API for building custom applications against the VersionOne platform.",
 		"tags": "V1 VersionOne API SDK apiclient agile",
-		"copyright":"Copyright 2008-2016, VersionOne, Inc."
+		"copyright":"Copyright 2008-2021, VersionOne, Inc."
 	},
-    "framework": "4.6"
+    "framework": "4.7"
 }

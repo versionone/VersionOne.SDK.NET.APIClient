@@ -8,9 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("VersionOne SDK API Client")]
 [assembly: AssemblyDescription("VersionOne SDK .NET APIClient.DocumentationTests Release Build")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VersionOne, Inc.")]
+[assembly: AssemblyCompany("Digital.ai Software, Inc.")]
 [assembly: AssemblyProduct("APIClient.DocumentationTests")]
-[assembly: AssemblyCopyright("Copyright 2008-2013, VersionOne, Inc., Licensed under modified BSD.")]
+[assembly: AssemblyCopyright("Copyright © 2020, Digital.ai Software, Inc. Licensed under modified BSD.")]
+
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
