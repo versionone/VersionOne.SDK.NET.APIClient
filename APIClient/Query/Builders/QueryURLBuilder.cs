@@ -16,6 +16,7 @@
             Builders.Add(new AsOfBuilder());
             Builders.Add(new FindBuilder());
             Builders.Add(new WithVariablesBuilder());
+            Builders.Add(new NeedTotalBuilder());
         }
 
         public override string ToString()
