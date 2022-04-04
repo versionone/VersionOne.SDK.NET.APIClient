@@ -617,7 +617,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
 			services.Save(parentStory);
 
-			var query = new Query(parentStory.Oid);
+			var query = new Query(parentStory.Oid.Momentless);
 			query.Selection.Add(dependantsAttribute);
 			var story = services.Retrieve(query).Assets[0];
 
@@ -626,7 +626,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
 			services.Save(parentStory);
 
-			var query2 = new Query(parentStory.Oid);
+			var query2 = new Query(parentStory.Oid.Momentless);
 			query2.Selection.Add(dependantsAttribute);
 			story = services.Retrieve(query2).Assets[0];
 

@@ -172,14 +172,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
             _services.Save(parentStory);
 
-            var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+            var story = Query(parentStory.Oid.Momentless, dependantsAttribute).Assets[0];
 
             Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
 
             parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
             _services.Save(parentStory);
 
-            story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+            story = Query(parentStory.Oid.Momentless, dependantsAttribute).Assets[0];
 
             Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
         }
@@ -196,14 +196,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
             parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
             _services.Save(parentStory);
 
-            var story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+            var story = Query(parentStory.Oid.Momentless, dependantsAttribute).Assets[0];
 
             Assert.AreEqual(2, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
 
             parentStory.RemoveAttributeValue(dependantsAttribute, child1Story.Oid);
             _services.Save(parentStory);
 
-            story = Query(parentStory.Oid, dependantsAttribute).Assets[0];
+            story = Query(parentStory.Oid.Momentless, dependantsAttribute).Assets[0];
 
             Assert.AreEqual(1, story.GetAttribute(dependantsAttribute).Values.Cast<object>().Count());
         }
