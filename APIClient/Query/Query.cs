@@ -142,5 +142,7 @@ namespace VersionOne.SDK.APIClient
         {
             get { return variables; }
         }
+
+        public bool NeedTotal { get; set; }
     }
 }

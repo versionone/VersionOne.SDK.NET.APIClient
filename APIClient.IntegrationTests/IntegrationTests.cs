@@ -617,7 +617,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			parentStory.AddAttributeValue(dependantsAttribute, child1Story.Oid);
 			services.Save(parentStory);
 
-			var query = new Query(parentStory.Oid);
+			var query = new Query(parentStory.Oid.Momentless);
 			query.Selection.Add(dependantsAttribute);
 			var story = services.Retrieve(query).Assets[0];
 
@@ -626,7 +626,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			parentStory.AddAttributeValue(dependantsAttribute, child2Story.Oid);
 			services.Save(parentStory);
 
-			var query2 = new Query(parentStory.Oid);
+			var query2 = new Query(parentStory.Oid.Momentless);
 			query2.Selection.Add(dependantsAttribute);
 			story = services.Retrieve(query2).Assets[0];
 
@@ -1005,12 +1005,14 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			var attributeSelection = new AttributeSelection(nameAttribute);
 			query.Find = new QueryFind(name, attributeSelection);
 			query.Paging = new Paging(0, 2);
-			var result = services.Retrieve(query);
+            query.NeedTotal = true;
+            var result = services.Retrieve(query);
 
 			Assert.IsTrue(result.Assets.Count == 2);
+            Assert.IsTrue(result.TotalAvaliable == 3);
 		}
 
-		[TestMethod]
+        [TestMethod]
 		public void QueryHistory()
 		{
 			var services = GetServices();

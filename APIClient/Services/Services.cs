@@ -535,7 +535,13 @@ namespace VersionOne.SDK.APIClient
         private QueryResult ParseAssetListQueryResult(XmlElement element, Query query)
         {
             var list = new AssetList();
-            var total = int.Parse(element.GetAttribute("total"));
+
+            var totalValue = element.GetAttribute("total");
+            var total = -1;
+            if (!string.IsNullOrEmpty(totalValue))
+            {
+                total = int.Parse(totalValue);
+            }
 
             var assetnodes = element.SelectNodes("Asset");
 
