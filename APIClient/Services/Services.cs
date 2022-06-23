@@ -363,10 +363,22 @@ namespace VersionOne.SDK.APIClient
 
         public Oid SaveAttachment(string filePath, Asset asset, string attachmentName)
         {
+            return SaveAttachment(filePath, asset, attachmentName, false);
+        }
+        
+        public Oid SaveAttachment(string filePath, Asset asset, string attachmentName, bool useFileNameAsFileName)
+        {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentNullException(nameof(filePath));
             if (!File.Exists(filePath))
                 throw new APIException($"File \"{filePath}\" does not exist.");
+
+            string fileName;
+
+            if (useFileNameAsFileName)
+                fileName = Path.GetFileName(filePath);
+            else
+                fileName = filePath;
 
             var mimeType = MimeType.Resolve(filePath);
             var attachmentType = Meta.GetAssetType("Attachment");
@@ -377,7 +389,7 @@ namespace VersionOne.SDK.APIClient
             var attachmentNameAttr = attachmentType.GetAttributeDefinition("Name");
             var attachment = New(attachmentType, Oid.Null);
             attachment.SetAttributeValue(attachmentNameAttr, attachmentName);
-            attachment.SetAttributeValue(attachmentFileName, filePath);
+            attachment.SetAttributeValue(attachmentFileName, fileName);
             attachment.SetAttributeValue(attachmentContentType, mimeType);
             attachment.SetAttributeValue(attachmentContent, string.Empty);
             attachment.SetAttributeValue(attachmentAssetDef, asset.Oid);

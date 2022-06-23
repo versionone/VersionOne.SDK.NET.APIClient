@@ -456,7 +456,7 @@ namespace VersionOne.SDK.APIClient.IntegrationTests
 			newDefect.SetAttributeValue(nameAttribute, name);
 			services.Save(newDefect);
 
-			services.SaveAttachment(file, newDefect, "Test Attachment on " + newDefect.Oid);
+			services.SaveAttachment(file, newDefect, "Test Attachment on " + newDefect.Oid, true);
 
 			var query = new Query(newDefect.Oid.Momentless);
 			query.Selection.Add(attachmentsAttribute);
